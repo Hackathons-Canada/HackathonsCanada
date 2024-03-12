@@ -1,0 +1,90 @@
+/* styles.css */
+*{
+    font-family: "Offside", sans-serif;
+}
+/* Global styles */
+body {
+    background-color: #121212;
+    color: #ffffff;
+}
+
+body.light-mode {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+body .dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+}
+
+a {
+    text-decoration: none;
+}
+
+.nav-bar {
+    color:#000000;
+    background-color: #E4E4E4;
+}
+
+.nav-bar span{
+    color:#000000;
+}
+
+.nav li{
+    color:#e60303;
+}
+
+.team-form {
+    color:#424040;
+}
+
+.card-header-color {
+    color: #ffffff;
+}
+
+
+.flip-card-3D-wrapper {
+  max-width: 300px; 
+  perspective: 900px;
+  margin: 10px auto;
+}
+
+.flip-card {
+  height: 100%;
+  transition: all 1s ease-in-out;
+  transform-style: preserve-3d;
+  height: 375px;
+}
+
+
+.do-flip {transform: rotateY(-180deg);}
+
+.flip-card-btn-turn-to-back, .flip-card-btn-turn-to-front {
+  visibility: hidden;
+  border-radius: 10px;
+}
+
+.flip-card-btn-turn-to-back{
+    background: white;
+    color: #000000;
+}
+
+.flip-card-btn-turn-to-front  {
+   background: #ffffff;
+   color: #000000;
+}
+
+.flip-card-front, .flip-card-back {
+  position: absolute;
+  backface-visibility: hidden;
+  z-index: 2;
+  border-radius: 10px;
+  border:5px solid #ffffff;
+}
+
+
+.flip-card-front {background: #ffffff;}
+.flip-card-back {background: white;transform: rotateY(180deg);}
+.flip-card-front {color: rgb(0, 0, 0);}
+.flip-card-back h4 {color: #000000}
