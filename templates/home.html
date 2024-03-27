@@ -1,16 +1,16 @@
 {% extends 'base.html' %} {% block title %}Home Page{% endblock %} {% block head
 %} {% endblock %} {% block content %}
-<div class="container-fluid dark-mode">
+<div class="container-fluid dark-mode coolbody">
   <section class="py-5 text-center container-fluid">
     <div class="row py-lg-5">
       <h1 class="display-1 fw-light pb-3">
         Find all the
         <span class="display-1 fw-light pb-3 shine-text">Hackathons </span> in
-        Canada
+        Canada <br />(Beta Version)
       </h1>
       <div class="col-lg-8 col-md-8 mx-auto non-hacker-card">
         <p class="lead text-body-secondary" style="color: white">
-          Explore Ontario Hackers, a vibrant online community uniting over 500
+          Explore Ontario Hackers, a vibrant online community uniting over 900
           passionate individuals. Dive into insightful discussions about the
           latest hackathons across Canada, share experiences, and collaborate on
           innovative projects. Join us for a dynamic space where creativity,
@@ -21,7 +21,7 @@
           <a
             href="https://calendar.google.com/calendar/u/0?cid=M2Y0ODA2MjUxYTZjMGZhYTMwZWE3ZmE0YmI0NTdjMmE1NTI0ZWZlNGUzZjMwMDc4NmJlMmVlNWRjOGU1MTE3MEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t"
             class="btn btn-primary my-2 px-3"
-            >Add Every Hackathon to Calendar</a
+            >Connect to Google Calendar</a
           >
           <a
             href="https://docs.google.com/forms/d/e/1FAIpQLScS_jkH7LmZ6sBvcWnj1FGqyLsaHXa2XFn3N9alhSIpwTWuJA/viewform?usp=sf_link"
@@ -32,85 +32,74 @@
       </div>
     </div>
   </section>
-
-  <div id="hackathonList" class="album py-5 bg-body-tertiary">
-    <div class="container">
-      <div class="row">
+  <div class="album text-center">
+    <div class="container-fluid">
+      <div
+        class="row row-cols-1 row-cols-sm-2 row-cols-md-3 d-flex justify-content-center"
+      >
         {% for i in list %} {% if i[0] == "" %} {% else %} {% if i[4]
-        =="COMPLETE" %} {% else %} {% if i[4] == "unknown" %} {% else %}
-        <div class="flip-card-3D-wrapper row-sm col-lg-3 col-md-6 p-3">
-          <div class="flip-card">
-            <div class="flip-card-front">
-              <div class="card hacker-card" style="width: 18rem" ref="{{i[1]}}">
-                <div class="card-header">
-                  <h3 class="card-title">{{ i[0] }}</h3>
-                </div>
-                <ul class="list-group list-group-flush">
-                  <li class="list-group-item">Date: {{ i[2] }} - {{ i[3] }}</li>
-                  <li class="list-group-item">
-                    Application Deadline: {{ i[4] }}
-                  </li>
-                  <li class="list-group-item">Location: {{ i[6] }}</li>
-                  <li class="list-group-item">
-                    <a href="{{i[1]}}" class="card-link">Website</a>
-                  </li>
-                  <li class="list-group-item py-auto text-center">
-                    <button
-                      class="btn btn-outline-secondary flip-card-btn-turn-to-back justify-content-center"
-                    >
-                      More info
-                    </button>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class="flip-card-back">
-              <div class="card-body">
-                <div class="card hacker-card" style="width: 18rem">
-                  <div class="card-header">
-                    <h3 class="card-title card-header-color">{{ i[0] }}</h3>
-                  </div>
-                  <ul class="list-group list-group-flush">
-                    <li class="list-group-item">
-                      Travel Reimbursements: {{ i[5] }}
-                    </li>
-
-                    {% if i[7] == '' %}
-                    <li class="list-group-item">Age Restriction: Unsure</li>
-                    {% else %}
-                    <li class="list-group-item">
-                      Age Restriction: {{ i[7] }} {% endif %}
-                    </li>
-
-                    {% if i[8] == '' %}
-                    <li class="list-group-item">Prize Pool: Unsure</li>
-                    {% else %}
-                    <li class="list-group-item">Prize Pool: {{ i[8] }}</li>
-                    {% endif %} {% if i[9] == '' %}
-                    <li class="list-group-item">Notes: None</li>
-                    {% else %}
-                    <li class="list-group-item">Notes: {{ i[9] }}</li>
-                    {% endif %}
-
-                    <li class="list-group-item">
-                      <a href="{{i[1]}}" class="card-link">Website</a>
-                    </li>
-                    <li class="list-group-item text-center my-auto">
+        =="COMPLETE" %} {% else %} {% if i[11] == "unknown" %}{% else %}
+        <div class="col lockedheight p-3">
+          <div class="position-relative">
+            <div class="flip-card">
+              <div class="flip-card-inner">
+                <div class="flip-card-front roundedcards border border-5">
+                  <div class="card roundedcards">
+                    <img
+                      src="{{i[10]}}"
+                      class="card-img-top border border-5"
+                      alt="Front Image"
+                    />
+                    <div class="card-body">
+                      <h2 class="card-title pt-3">{{i[0]}}</h2>
+                      <h5 class="py-2">
+                        <span>Date:</span> {{i[2]}} - {{i[3]}}
+                      </h5>
+                      <h6 class="pb-3">
+                        <span>Location:</span> {{i[6]}}, {{i[9]}}
+                      </h6>
                       <a
-                        class="btn btn-outline-secondary flip-card-btn-turn-to-front"
-                        >Back</a
+                        href="{{i[1]}}"
+                        class="btn btn-outline-primary"
+                        tabindex="-1"
+                        role="button"
+                        aria-disabled="true"
+                        >Website</a
                       >
-                    </li>
-                  </ul>
+                      {% if i[11] == "#1" %}
+                      <span
+                        class="position-absolute top-0 start-50 translate-middle text-bg-light rounded-5"
+                      >
+                        <h5 class="pt-2 px-4">Click On Me!</h5>
+                      </span>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+                <div class="flip-card-back roundedcards">
+                  <div class="card roundedcards">
+                    <img
+                      src="{{i[10]}}"
+                      class="card-img-top"
+                      alt="Front Image"
+                    />
+                    <div class="card-body">
+                      <h5 class="card-title">{{i[0]}}</h5>
+                      <p class="card-text">Date: {{i[2]}} - {{i[3]}}</p>
+                      <p class="card-text">Location: {{i[6]}}</p>
+                      <p class="card-text">Country: {{i[9]}}</p>
+                      <p class="card-text">Application Deadline: {{i[4]}}</p>
+                      <p class="card-text">Travel Reimbursements: {{i[5]}}</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
-        {% endif %} {% endif %} {% endif %} {% endfor %}
+        {% endif %} {% endif %} {% endif %}{% endfor %}
       </div>
     </div>
   </div>
+  {% endblock %}
 </div>
-{% endblock %}

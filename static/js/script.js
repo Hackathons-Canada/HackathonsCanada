@@ -1,19 +1,24 @@
-const flipCardWrapAll = document.querySelector("#flip-card-wrap-all")
-const cardsWrapper = document.querySelectorAll(".flip-card-3D-wrapper")
-const cards = document.querySelectorAll(".flip-card")
-let frontButtons = ""
-let backButtons = ""
 
-for (let i = 0; i < cardsWrapper.length; i++) {
-frontButtons = cardsWrapper[i].querySelector(".flip-card-btn-turn-to-back")
-frontButtons.style.visibility = "visible"
-frontButtons.onclick = function() {
-cards[i].classList.toggle('do-flip')
-}
-  
-backButtons = cardsWrapper[i].querySelector(".flip-card-btn-turn-to-front")
-backButtons.style.visibility = "visible"
-backButtons.onclick = function() {
-cards[i].classList.toggle('do-flip')
- }  
-} 
+document.addEventListener("DOMContentLoaded", function() {
+    const cards = document.querySelectorAll(".flip-card-inner");
+    cards.forEach(card => {
+      card.addEventListener("click", function() {
+        card.classList.toggle("is-flipped");
+      });
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  const radioButtons = document.querySelectorAll(
+    '.btn-group input[type="radio"]'
+  );
+  radioButtons.forEach(function (radioButton) {
+    radioButton.addEventListener("change", function () {
+      const checkedRadioButton = document.querySelector(
+        '.btn-group input[type="radio"]:checked'
+      );
+      const url = checkedRadioButton.nextElementSibling.dataset.url;
+      window.location.href = url;
+    });
+  });
+});
