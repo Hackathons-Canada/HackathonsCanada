@@ -92,7 +92,7 @@ a {
     max-height: 200px;
     object-fit: cover;
     border-radius: 30px;
-    outline: 10px solid #000; 
+    outline: 7px solid #000; 
 }
 
 .lockedheight{
