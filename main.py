@@ -4,7 +4,7 @@ import pandas as pd
 from flask_bootstrap import Bootstrap4, Bootstrap5
 from flask import Flask, render_template
 
-current = "Everywhere"
+
 
 
 def main():
@@ -22,11 +22,17 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('FLASK_KEY')
 Bootstrap5(app)
 
+
+
 @app.route("/")
-def hackathon():
+def home():
+    return render_template("home.html", list = sheet_data, filter = "everywhere")
+
+@app.route("/hackathons/<current>")
+def hackathon(current):
     return render_template("home.html", list = sheet_data, filter = current)
 
-@app.route("/hackathons")
+@app.route("/home")
 def landing():
     return render_template("landingpage.html", list = sheet_data)
 

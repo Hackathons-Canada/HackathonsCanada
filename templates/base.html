@@ -24,15 +24,12 @@
     <div class="container-fluid px-5 border-bottom text-secondary">
         <header class="px-5 d-flex flex-wrap justify-content-center py-3">
           <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis">
-            <img src="static/assets/logo.png" width="50" height="50" class="mx-3">
+            <img src="../static/assets/logo.png" width="50" height="50" class="mx-3">
             <span class="fs-4">Canadain Hackers</span>
           </a>
           <ul class="nav nav-pills my-auto">
             <li class="nav-item"><a href="{{ url_for('landing') }}" class="nav-link" aria-current="page">Home</a></li>
-            <li class="nav-item"><a href="{{ url_for('hackathon') }}" class="nav-link">Hackathons</a></li>
-            <!-- <li class="nav-item"><a href="{{ url_for('hackathon') }}" class="nav-link">Saved</a></li>
-            <li class="nav-item"><a href="{{ url_for('hackathon') }}" class="nav-link">Login</a></li>
-            <li class="nav-item"><a href="{{ url_for('hackathon') }}" class="nav-link">Sign Up</a></li> -->
+            <li class="nav-item"><a href="{{ url_for('hackathon', current = 'everywhere') }}" class="nav-link">Hackathons</a></li>
           </ul>
         </header>
     </div>

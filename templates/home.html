@@ -32,24 +32,58 @@
       </div>
     </div>
   </section>
+  <div class="d-flex container text-center">
+    <div class="p-2 flex-fill">
+      <a
+        href="{{ url_for('hackathon', list = sheet_data, current = 'Canada') }}"
+        class="btn btn-light"
+        >Canada</a
+      >
+    </div>
+    <div class="p-2 flex-fill">
+      <a
+        href="{{ url_for('hackathon', list = sheet_data, current = 'United States') }}"
+        class="btn btn-light"
+        >USA</a
+      >
+    </div>
+    <div class="p-2 flex-fill">
+      <a
+        href="{{ url_for('hackathon', list = sheet_data, current = 'Online') }}"
+        class="btn btn-light"
+        >Online</a
+      >
+    </div>
+    <div class="p-2 flex-fill">
+      <a
+        href="{{ url_for('hackathon', list = sheet_data, current = 'everywhere') }}"
+        class="btn btn-outline-secondary"
+        >Everywhere</a
+      >
+    </div>
+  </div>
+
   <div class="album text-center">
     <div class="container-fluid">
       <div
         class="row row-cols-1 row-cols-sm-2 row-cols-md-3 d-flex justify-content-center"
       >
         {% for i in list %} {% if i[0] == "" %} {% else %} {% if i[4]
-        =="COMPLETE" %} {% else %} {% if i[11] == "unknown" %}{% else %}
-        <div class="col lockedheight p-3">
+        =="COMPLETE" %} {% else %} {% if i[11] == "unknown" %}{% else %}{% if
+        i[9] == filter or filter == "everywhere" %}
+
+        <div class="col lockedheight p-4">
           <div class="position-relative">
             <div class="flip-card">
               <div class="flip-card-inner">
-                <div class="flip-card-front roundedcards border">
+                <div class="flip-card-front roundedcards">
                   <div class="card roundedcards">
                     <img
                       src="{{i[10]}}"
-                      class="card-img-top border"
+                      class="card-img-top"
                       alt="Front Image"
                     />
+
                     <div class="card-body">
                       <h2 class="card-title pt-3">{{i[0]}}</h2>
                       <h5 class="py-2">
@@ -97,7 +131,7 @@
             </div>
           </div>
         </div>
-        {% endif %} {% endif %} {% endif %}{% endfor %}
+        {% endif %} {% endif %} {% endif %} {% endif %}{% endfor %}
       </div>
     </div>
   </div>
