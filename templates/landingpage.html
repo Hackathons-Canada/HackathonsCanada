@@ -1,66 +1,71 @@
-{% extends 'base.html' %} {% block title %}Home Page{% endblock %} {% block head
-%}
+{% extends 'base.html' %}
 
+{% block title %}
+    Home Page
+{% endblock %}
 
+{% block head %}
+    <link
+            rel="stylesheet"
+            type="text/css"
+            href="{% static 'css/styles.css' %}"
+    />
+{% endblock %}
 
-<link
-  rel="stylesheet"
-  type="text/css"
-  href="{{ url_for('static', filename='css/styles.css') }}"
-/>
-{% endblock %} {% block content %}
-<div class="container-fluid">
-  <div class="row flex-lg-row-reverse align-items-center pb-5">
-    <div class="col-md-6 col-sm-12 col-lg-6">
-      <img
-        src="static/assets/heroimg.png"
-        class="py-4"
-        alt="image of our website"
-        loading="lazy"
-        style="width: 85%; height: auto"
-      />
+{% block content %}
+    <div class="container-fluid">
+        <div class="row flex-lg-row-reverse align-items-center pb-5">
+            <div class="col-md-6 col-sm-12 col-lg-6">
+                <img
+                        src="{% static 'assets/heroimg.png' %}"
+                        class="py-4"
+                        alt="image of our website"
+                        loading="lazy"
+                        style="width: 85%; height: auto"
+                />
+            </div>
+            <div
+                    class="col-md-6 col-sm-12 col-lg-6 container pb-5"
+                    style="max-width: 600px"
+            >
+                <h1 class="display-1 text-body-emphasis lh-1 mb-3 headingtext">
+                    Canada’s #1<br/>
+                    Database For<br/>
+                    Hackathons
+                </h1>
+                <h5 class="">
+                    Browse through our websites to find a complete list hackathons taking
+                    place in Canada/North America. Join our discord server to ask questions
+                    to the organizers of specific events and form teams.
+                </h5>
+            </div>
+        </div>
     </div>
-    <div
-      class="col-md-6 col-sm-12 col-lg-6 container pb-5"
-      style="max-width: 600px"
-    >
-      <h1 class="display-1 text-body-emphasis lh-1 mb-3 headingtext">
-        Canada’s #1<br />
-        Database For<br />
-        Hackathons
-      </h1>
-      <h5 class="">
-        Browse through our websites to find a complete list hackathons taking
-        place in Canada/North America. Join our discord server to ask questions
-        to the organizers of specific events and form teams. 
-      </h5>
-    </div>
-  </div>
-</div>
 
-<div class="fluid-container row my-5 mx-5">
-  <div class="col-4 d-flex">
-    <div class = "justify-content-end flex-column">
-      <img class="img-fluid float-end py-5 px-4" src="static/assets/1.png" />
-      <img class="img-fluid float-end py-5 px-4" src="static/assets/4.png" />
+    <div class="fluid-container row my-5 mx-5">
+        <div class="col-4 d-flex">
+            <div class="justify-content-end flex-column">
+                <img class="img-fluid float-end py-5 px-4" src="{% static 'assets/1.png' %}"/>
+                <img class="img-fluid float-end py-5 px-4" src="{% static 'assets/4.png' %}"/>
+            </div>
+        </div>
+        <div class="col-4 d-flex">
+            <div class="mx-auto text-center my-auto">
+                <img class="img-fluid mx-auto py-3" src="{% static 'assets/duck.png' %}"/>
+                <h3 class='text-center justify-content-center py-4'>Join Our Amazing Community Of over 600 Members On
+                    Discord</h3>
+                <a href="https://discord.gg/6ahdbNrX" class="btn-lg btn btn-outline-secondary py-3 px-4">Our discord
+                    <img src="{% static 'assets/dis.png' %}" height="20px"> </a>
+                <br>
+                <br>
+                <a class="team-form py-3">Interested In Joining Our Team?</a>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="flex-column">
+                <img class="img-fluid justify-content-start py-5 px-4" src="{% static 'assets/2.png' %}"/>
+                <img class="img-fluid justify-content-start py-5 px-4" src="{% static 'assets/3.png' %}"/>
+            </div>
+        </div>
     </div>
-  </div>
-  <div class="col-4 d-flex" >
-    <div class = "mx-auto text-center my-auto">  
-      <img class="img-fluid mx-auto py-3" src="static/assets/duck.png" />
-      <h3 class = 'text-center justify-content-center py-4'>Join Our Amazing Community Of over 600 Members On Discord</h3>
-      <a href = "https://discord.gg/6ahdbNrX" class="btn-lg btn btn-outline-secondary py-3 px-4">Our discord <img src = "static/assets/dis.png" height = "20px"> </a>
-      <br>
-      <br>
-      <a class = "team-form py-3">Interested In Joining Our Team?</a>
-    </div>
-    </div>
-    <div class="col-4">
-      <div class = "flex-column">
-        <img class="img-fluid justify-content-start py-5 px-4" src="static/assets/2.png" />
-        <img class="img-fluid justify-content-start py-5 px-4" src="static/assets/3.png" />
-      </div>
-    </div>
-  </div>
-  {% endblock %}
-</div>
+{% endblock %}
