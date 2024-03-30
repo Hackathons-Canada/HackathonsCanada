@@ -1,7 +1,3 @@
-﻿beautifulsoup4==4.12.2
-gunicorn==21.2.0
-pandas==1.5.3
-requests==2.28.2
-requests-oauthlib==1.3.1
-django
-django-bootstrap-v5
+﻿pandas>=2.2.1
+django>=5.0.0
+django-countries[pyuca]>=7.6

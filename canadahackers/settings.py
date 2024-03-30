@@ -27,6 +27,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = []
 
+AUTH_USER_MODEL = "core.Hacker"
 # Application definition
 
 INSTALLED_APPS = [
@@ -36,7 +37,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "bootstrap5",
+    "django_countries",
     "core",
 ]
 
@@ -125,6 +126,10 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+COUNTRIES_OVERRIDE = {
+    "ONL": {"name": "Online", "numeric": 999, "ioc_code": "ONL"},
+}
+
 try:
     from .local_settings import *
 
@@ -133,4 +138,3 @@ except ImportError:
 
 if SECRET_KEY == "CHANGEME" and DEBUG is False:
     raise ValueError("Please set SECRET_KEY in local_config.py")
-
