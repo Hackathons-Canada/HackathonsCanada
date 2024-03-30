@@ -1,5 +1,4 @@
 {% load static %}
-{% load bootstrap5 %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,8 +6,9 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <link rel="shortcut icon" type="icon" href="{% static "assets/favicon.png" %}">
-    {% bootstrap_css %}
-    {% bootstrap_javascript %}    <!-- Link to the styles.css here to apply styling to all the child templates. -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+
     <link rel="stylesheet" type="text/css" href={% static 'css/styles.css'%}>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
