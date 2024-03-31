@@ -7,7 +7,7 @@ services:
       - "8080:8080"
     volumes:
       - ${PWD}/canadahackers/local_settings.py:/app/canadahackers/local_settings.py:ro
-      - db_data:/app/db.sqlite
+      - db_data:/app/db.sqlite3
 
 volumes:
   db_data:
