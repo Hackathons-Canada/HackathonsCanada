@@ -1,6 +1,7 @@
 from django.shortcuts import render
 import pandas as pd
 
+
 def fetch_data():
     sheet_id = "14idxG2e0n9WdDR35Ae-0APELlpl3sSNZvhRK_r1UR90"
     sheet_name = "hackathonMarchs"
