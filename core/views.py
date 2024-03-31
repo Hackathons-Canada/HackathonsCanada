@@ -15,7 +15,6 @@ def fetch_data():
 
 def index(request):
     sheet_data = fetch_data()
-    print(sheet_data)
     return render(request, "home.html", {"list": sheet_data, "filter": "everywhere"})
 
 
