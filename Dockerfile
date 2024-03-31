@@ -12,4 +12,4 @@ RUN pip install --no-cache-dir gunicorn  # Install gunicorn
 COPY . .
 
 EXPOSE 8080
-CMD ["gunicorn", "-w", "2", "-b", "0.0.0.0:8080", "canadahackers.wsgi:application"]
+ENTRYPOINT ./entrypoint.sh

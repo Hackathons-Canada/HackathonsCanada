@@ -8,7 +8,7 @@ services:
     volumes:
       - ${PWD}/canadahackers/local_settings.py:/app/canadahackers/local_settings.py:ro
       - db_data:/app/data
-      - /srv/static:/app/static
+      - /srv/static:/app/static2
 
 
 volumes:
