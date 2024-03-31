@@ -17,7 +17,9 @@ HACKATHON_EDUCATION_CHOICES = EDUCATION_CHOICES + [(5, "Any/All")]
 
 
 class Hacker(AbstractUser):
-    located = CountryField(blank_label="(select country)", blank=True, null=True)
+    country = CountryField(blank_label="(select country)", blank=True, null=True, help_text="Country you live in")
+    city = models.CharField(max_length=255, blank=True, null=True, help_text="City you live in")
+    school = models.CharField(max_length=512, blank=True, null=True, help_text="Name of your school or university")
     education = models.CharField(
         max_length=255,
         blank=True,
@@ -26,7 +28,7 @@ class Hacker(AbstractUser):
         choices=EDUCATION_CHOICES,
     )
 
-    pass
+
 
 
 class Hackathon(models.Model):

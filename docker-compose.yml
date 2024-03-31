@@ -6,7 +6,7 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ./canadahackers/local_settings.py:/app/canadahackers/local/settings.py:ro
+      - ./canadahackers/local_settings.py:/app/canadahackers/local_settings.py:ro
       - db_data:/app
 
 volumes:

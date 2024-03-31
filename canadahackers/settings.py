@@ -131,14 +131,14 @@ COUNTRIES_OVERRIDE = {
 }
 
 try:
-    from .local.settings import *
+    from .local_settings import *
 except ImportError:
     try:
-        from local.settings import *
+        from local_settings import *
     except ImportError:
         raise ImportError(
-            "Please create a local/settings.py with overrides for settings.py"
+            "Please create a local_settings.py with overrides for settings.py"
         )
 
 if SECRET_KEY == "CHANGEME" and DEBUG is False:
-    raise ValueError("Please set SECRET_KEY in local_config.py")
+    raise ValueError("Please set SECRET_KEY in local_settings.py")
