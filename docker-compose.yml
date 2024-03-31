@@ -8,8 +8,10 @@ services:
     ports:
       - "8080:8080"
     volumes:
+      - type: bind
+        source: /home/hackers/canadainhackerswebsite/canadahackers/local_settings.py
+        target: /app/canadahackers/local_settings.py
       - db_data:/app
-      - /home/hackers/canadainhackerswebsite/canadahackers/local_settings.py:/app/canadahackers/local_settings.py
 
 
 volumes:
