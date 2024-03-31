@@ -8,7 +8,7 @@ services:
     volumes:
       - ${PWD}/canadahackers/local_settings.py:/app/canadahackers/local_settings.py:ro
       - type: bind
-        source: ./db_data/db.sqlite3
+        source: db_data/db.sqlite3
         target: /app/db.sqlite3
 
 volumes:
