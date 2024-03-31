@@ -9,7 +9,8 @@ services:
       - "8080:8080"
     volumes:
       - db_data:/app
-      - ./ontariohackers/local_settings.py:./ontariohackers/local_settings.py
+      - /home/hackers/canadainhackerswebsite/ontariohackers/local_settings.py:/ontariohackers/local_settings.py
+
 
 volumes:
   db_data:
