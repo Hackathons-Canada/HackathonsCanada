@@ -134,7 +134,7 @@ try:
     from .local.settings import *
 
 except ImportError:
-    raise ImportError("Please create a local_config.py with overrides for settings.py")
+    raise ImportError("Please create a local/settings.py with overrides for settings.py")
 
 if SECRET_KEY == "CHANGEME" and DEBUG is False:
     raise ValueError("Please set SECRET_KEY in local_config.py")
