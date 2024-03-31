@@ -131,7 +131,7 @@ COUNTRIES_OVERRIDE = {
 }
 
 try:
-    from .local_settings import *
+    from .local.settings import *
 
 except ImportError:
     raise ImportError("Please create a local_config.py with overrides for settings.py")

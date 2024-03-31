@@ -1,3 +1,4 @@
 ﻿pandas>=2.2.1
 django>=5.0.0
 django-countries[pyuca]
+Pillow>=10.2.0
