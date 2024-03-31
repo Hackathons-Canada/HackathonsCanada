@@ -4,5 +4,3 @@
 .gitmodules
 .gitattributes
 README.md
-Dockerfile
-docker-compose.yml
