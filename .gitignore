@@ -1,2 +1,2 @@
 canadahackers/local_settings.py
-db.sqlite3
+data/db.sqlite3

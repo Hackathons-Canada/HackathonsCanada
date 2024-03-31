@@ -1,5 +1,8 @@
 services:
   web:
+    command:
+      - python manage.py migrate
+      - python manage.py collectstatic --noinput
     build:
       context: .
       dockerfile: Dockerfile
@@ -7,9 +10,10 @@ services:
       - "8080:8080"
     volumes:
       - ${PWD}/canadahackers/local_settings.py:/app/canadahackers/local_settings.py:ro
-      - type: bind
-        source: db_data/db.sqlite3
-        target: /app/db.sqlite3
+      - db_data:/app/data
+      - /srv/static:/app/static
+
 
 volumes:
   db_data:
+  static_volume:
