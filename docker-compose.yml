@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   web:
     build:
@@ -8,11 +6,8 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - type: bind
-        source: /home/hackers/canadainhackerswebsite/canadahackers/local_settings.py
-        target: /app/canadahackers/local_settings.py
+      - ${PWD}/canadahackers/local_settings.py:/home/hackers/canadainhackerswebsite/canadahackers/local_settings.py:ro # changed to /metropolis2/ on server
       - db_data:/app
-
 
 volumes:
   db_data:
