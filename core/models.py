@@ -3,6 +3,7 @@ from django.db import models
 # Create your models here.
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.utils import timezone
 from django_countries.fields import CountryField
 
 EDUCATION_CHOICES = [
@@ -16,10 +17,36 @@ EDUCATION_CHOICES = [
 HACKATHON_EDUCATION_CHOICES = EDUCATION_CHOICES + [(5, "Any/All")]
 
 
+class MetaDataMixin(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+    def save(
+        self, force_insert=False, force_update=False, using=None, update_fields=None
+    ):
+        self.updated_at = timezone.now()
+        super().save(force_insert, force_update, using, update_fields)
+
+
 class Hacker(AbstractUser):
-    country = CountryField(blank_label="(select country)", blank=True, null=True, help_text="Country you live in")
-    city = models.CharField(max_length=255, blank=True, null=True, help_text="City you live in")
-    school = models.CharField(max_length=512, blank=True, null=True, help_text="Name of your school or university")
+    country = CountryField(
+        blank_label="(select country)",
+        blank=True,
+        null=True,
+        help_text="Country you live in",
+    )
+    city = models.CharField(
+        max_length=255, blank=True, null=True, help_text="City you live in"
+    )
+    school = models.CharField(
+        max_length=512,
+        blank=True,
+        null=True,
+        help_text="Name of your school or university",
+    )
     education = models.CharField(
         max_length=255,
         blank=True,
@@ -29,9 +56,30 @@ class Hacker(AbstractUser):
     )
 
 
+class Category(models.Model):
+    name = models.CharField(max_length=255)
+    color = models.CharField(max_length=7, default="#007bff")
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural = "Categories"
 
 
-class Hackathon(models.Model):
+class Hackathon(MetaDataMixin):
+    categories = models.ManyToManyField(Category, related_name="hackathons")
+    created_by = models.ForeignKey(
+        Hacker, on_delete=models.SET_NULL, null=True, related_name="hackathons", blank=False
+    )
+    curators = models.ManyToManyField(Hacker, related_name="curated_hackathons")
+
+    registered_hackers = models.ManyToManyField(
+        Hacker,
+        related_name="registered_hackathons",
+        help_text="Hackers who have registered for this hackathon, note: This is just to find other people you know who are going.",
+    )
+
     short_name = models.CharField(
         max_length=255,
         blank=True,
