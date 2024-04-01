@@ -32,6 +32,7 @@ class MetaDataMixin(models.Model):
 
 
 class Hacker(AbstractUser):
+    # todo: create "notification policy" 
     country = CountryField(
         blank_label="(select country)",
         blank=True,
@@ -54,6 +55,16 @@ class Hacker(AbstractUser):
         help_text="Your current education level e.g. High School, University, etc.",
         choices=EDUCATION_CHOICES,
     )
+    saved = models.ManyToManyField(
+        "Hackathon",
+        related_name="interested_users",
+        help_text="Hackathons the user is interested in and wants updates about.",
+    )
+    saved_categories = models.ManyToManyField(
+        "Category",
+        related_name="interested_users",
+        help_text="Categories the user is interested in and wants updates when new hackathons meeting this critera are created.",
+    )
 
 
 class Category(models.Model):
@@ -73,12 +84,6 @@ class Hackathon(MetaDataMixin):
         Hacker, on_delete=models.SET_NULL, null=True, related_name="hackathons", blank=False
     )
     curators = models.ManyToManyField(Hacker, related_name="curated_hackathons")
-
-    registered_hackers = models.ManyToManyField(
-        Hacker,
-        related_name="registered_hackathons",
-        help_text="Hackers who have registered for this hackathon, note: This is just to find other people you know who are going.",
-    )
 
     short_name = models.CharField(
         max_length=255,
