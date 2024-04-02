@@ -1,8 +1,9 @@
 /* styles.css */
-*{
+* {
     font-family: "Arial", sans-serif;
     font-weight: bold;
 }
+
 /* Global styles */
 body {
     background-color: #121212;
@@ -11,6 +12,7 @@ body {
 
 .headingtext {
     font-family: "Offside", sans-serif;
+    color: #ffffff;
 }
 
 body.light-mode {
@@ -28,20 +30,20 @@ a {
 }
 
 .nav-bar {
-    color:#000000;
+    color: #000000;
     background-color: #E4E4E4;
 }
 
-.nav-bar span{
-    color:#000000;
+.nav-bar span {
+    color: #000000;
 }
 
-.nav li{
-    color:#e60303;
+.nav li {
+    color: #e60303;
 }
 
 .team-form {
-    color:#424040;
+    color: #424040;
 }
 
 .card-header-color {
@@ -62,7 +64,7 @@ a {
 }
 
 .flip-card-inner.is-flipped {
-  transform: rotateY(180deg);
+    transform: rotateY(180deg);
 }
 
 .flip-card-front,
@@ -71,34 +73,33 @@ a {
     width: 100%;
     background: #000;
     backface-visibility: hidden;
-    outline: 10px solid #000; 
+    outline: 10px solid #000;
 }
 
 .flip-card-front {
     background-color: #f8f9fa;
     color: #000;
-    border: 5px solid #000;
-    outline: 10px solid #000; 
 }
 
 .flip-card-back {
     background-color: #343a40;
     color: #000;
     transform: rotateY(180deg);
-    outline: 10px solid #000; 
+
+
 }
 
 .card-img-top {
     max-height: 200px;
     object-fit: cover;
     border-radius: 30px;
-    outline: 7px solid #000; 
+    outline: 10px solid #000;
 }
 
-.lockedheight{
+.lockedheight {
     height: 500px;
     max-width: 430px;
-    
+
 }
 
 .roundedcards {
@@ -107,4 +108,8 @@ a {
 
 .coolbody {
     background: linear-gradient(135deg, #000000, rgb(207, 202, 209));
+}
+
+.introtext {
+    color: #ffffff;
 }

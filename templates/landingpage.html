@@ -1,34 +1,23 @@
 {% extends 'base.html' %}
-
-{% block title %}
-    Home Page
-{% endblock %}
-
-{% block head %}
-    <link
-            rel="stylesheet"
-            type="text/css"
-            href="{% static 'css/styles.css' %}"
-    />
-{% endblock %}
+{% load static %}
 
 {% block content %}
     <div class="container-fluid">
         <div class="row flex-lg-row-reverse align-items-center pb-5">
             <div class="col-md-6 col-sm-12 col-lg-6">
                 <img
-                        src="{% static 'assets/heroimg.png' %}"
-                        class="py-4"
-                        alt="image of our website"
-                        loading="lazy"
-                        style="width: 85%; height: auto"
+                    src="{% static 'assets/heroimg.png' %}"    
+                    class="py-4"
+                    alt="image of our website"
+                    loading="lazy"
+                    style="width: 85%; height: auto"
                 />
             </div>
             <div
-                    class="col-md-6 col-sm-12 col-lg-6 container pb-5"
+                    class="col-md-6 col-sm-12 col-lg-6 container pb-3"
                     style="max-width: 600px"
             >
-                <h1 class="display-1 text-body-emphasis lh-1 mb-3 headingtext">
+                <h1 class="display-1 lh-1 mb-3 headingtext">
                     Canada’s #1<br/>
                     Database For<br/>
                     Hackathons
@@ -44,7 +33,7 @@
 
     <div class="fluid-container row my-5 mx-5">
         <div class="col-4 d-flex">
-            <div class="justify-content-end flex-column">
+            <div class="justify-content-end flex-column d-sm-none d-md-block">
                 <img class="img-fluid float-end py-5 px-4" src="{% static 'assets/1.png' %}"/>
                 <img class="img-fluid float-end py-5 px-4" src="{% static 'assets/4.png' %}"/>
             </div>
@@ -62,7 +51,7 @@
             </div>
         </div>
         <div class="col-4">
-            <div class="flex-column">
+            <div class="flex-column d-sm-none d-md-block">
                 <img class="img-fluid justify-content-start py-5 px-4" src="{% static 'assets/2.png' %}"/>
                 <img class="img-fluid justify-content-start py-5 px-4" src="{% static 'assets/3.png' %}"/>
             </div>
