@@ -37,6 +37,15 @@ INSTALLED_APPS = [
 	"django.contrib.messages",
 	"django.contrib.staticfiles",
 	"django_countries",
+
+	   'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+	    'allauth.socialaccount.providers.discord',
+    'allauth.socialaccount.providers.github',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.linkedin',
+
 	"core",
 ]
 
@@ -48,6 +57,8 @@ MIDDLEWARE = [
 	"django.contrib.auth.middleware.AuthenticationMiddleware",
 	"django.contrib.messages.middleware.MessageMiddleware",
 	"django.middleware.clickjacking.XFrameOptionsMiddleware",
+	    "allauth.account.middleware.AccountMiddleware",
+
 ]
 
 ROOT_URLCONF = "canadahackers.urls"
