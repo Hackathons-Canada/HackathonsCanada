@@ -44,9 +44,10 @@ INSTALLED_APPS = [
 	    'allauth.socialaccount.providers.discord',
     'allauth.socialaccount.providers.github',
     'allauth.socialaccount.providers.google',
-    'allauth.socialaccount.providers.linkedin',
-
+	# 'allauth.socialaccount.providers.linkedin',
+	
 	"core",
+	"dischannelsaver",
 ]
 
 MIDDLEWARE = [
@@ -57,7 +58,7 @@ MIDDLEWARE = [
 	"django.contrib.auth.middleware.AuthenticationMiddleware",
 	"django.contrib.messages.middleware.MessageMiddleware",
 	"django.middleware.clickjacking.XFrameOptionsMiddleware",
-	    "allauth.account.middleware.AccountMiddleware",
+	"allauth.account.middleware.AccountMiddleware",
 
 ]
 
