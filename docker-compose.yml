@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8080:8080"
+      - "22300:22300"
     volumes:
       - ${PWD}/canadahackers/local_settings.py:/app/canadahackers/local_settings.py:ro
       - postgres_data:/app/data
@@ -12,8 +12,8 @@ services:
     depends_on:
       - postgres
       - valkey
-      #  - celery
-    #        - celery-beat
+    env_file:
+      - .env
     restart: unless-stopped
 
   valkey:
@@ -32,42 +32,59 @@ services:
       timeout: 5s
       retries: 5
   
-  celery:
+  celery_worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: django_celery_example_celery_worker
+    command: /scripts/celery/worker/start
+    volumes:
+      - .:/app
+    env_file:
+      - .env
     depends_on:
-      postgres:
-        condition: service_healthy
+      - valkey
+      - postgres
+    healthcheck:
+      test: ["CMD", "celery", "worker", "-A", "dischannelsaver", "--loglevel=info"]
+      interval: 10s
+      retries: 5
 
-  # celery:
-  #   volumes:
-  #     - /var/run/docker.sock:/var/run/docker.sock # allow it to call discordchatexporter
-  #     - /srv/static/archives:/out # store the archives
-  #     - /srv/media/archives:/media # store the media
+  celery_beat:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: django_celery_example_celery_beat
+    command: /scripts/celery/beat/start
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    depends_on:
+      - valkey
+      - postgres
+    healthcheck:
+      test: ["CMD", "celery", "beat", "-A", "dischannelsaver", "--loglevel=info"]
+      interval: 10s
+      retries: 5
 
-  # archiver:
-  #   image: tyrrrz/discordchatexporter:stable
-  #   volumes:
-  #     - /srv/static/archives:/out
-  #     - /srv/media/archives:/media
-  # partition the data into 15mb files to speed up the process
-#    command: "export -t -c --include-threads all -o "/out/%C" -p 15mb --media --reuse-media --media-dir /media "
-
-#    celery:
-#      build:
-#        context: .
-#        dockerfile: Dockerfile
-#      volumes:
-#        - ${PWD}/canadahackers/local_settings.py:/app/canadahackers/local_settings.py:ro
-#        - db_data:/app/data
-#        - /srv/static:/app/static2
-#      depends_on:
-#        - db
-#        - cache
-#      env_file:
-#        .env
-#      command: celery -A canadahackers worker -l info
+  flower:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: django_celery_example_celery_flower
+    command: /scripts/flower/start
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    ports:
+      - 5557:5555
+    depends_on:
+      - valkey
+      - postgres
 
 volumes:
   postgres_data:
   static_volume:
   media_volume:
-# todo: look into https://github.com/Tyrrrz/DiscordChatExporter/ as CLI replacement for archiver. simply store the HTML file and render on request.
