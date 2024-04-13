@@ -4,3 +4,4 @@ django-countries[pyuca]
 Pillow>=10.2.0
 discord.py
 django-allauth>=0.61.1
+celery>=5.2.0

@@ -30,54 +30,51 @@ AUTH_USER_MODEL = "core.Hacker"
 # Application definition
 
 INSTALLED_APPS = [
-	"django.contrib.admin",
-	"django.contrib.auth",
-	"django.contrib.contenttypes",
-	"django.contrib.sessions",
-	"django.contrib.messages",
-	"django.contrib.staticfiles",
-	"django_countries",
-
-	   'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-	    'allauth.socialaccount.providers.discord',
-    'allauth.socialaccount.providers.github',
-    'allauth.socialaccount.providers.google',
-	# 'allauth.socialaccount.providers.linkedin',
-	
-	"core",
-	"dischannelsaver",
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "django_countries",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.discord",
+    "allauth.socialaccount.providers.github",
+    "allauth.socialaccount.providers.google",
+    # 'allauth.socialaccount.providers.linkedin',
+    "core",
+    "dischannelsaver",
 ]
 
 MIDDLEWARE = [
-	"django.middleware.security.SecurityMiddleware",
-	"django.contrib.sessions.middleware.SessionMiddleware",
-	"django.middleware.common.CommonMiddleware",
-	"django.middleware.csrf.CsrfViewMiddleware",
-	"django.contrib.auth.middleware.AuthenticationMiddleware",
-	"django.contrib.messages.middleware.MessageMiddleware",
-	"django.middleware.clickjacking.XFrameOptionsMiddleware",
-	"allauth.account.middleware.AccountMiddleware",
-
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = "canadahackers.urls"
 
 TEMPLATES = [
-	{
-		"BACKEND": "django.template.backends.django.DjangoTemplates",
-		"DIRS": [BASE_DIR / "templates"],
-		"APP_DIRS": True,
-		"OPTIONS": {
-			"context_processors": [
-				"django.template.context_processors.debug",
-				"django.template.context_processors.request",
-				"django.contrib.auth.context_processors.auth",
-				"django.contrib.messages.context_processors.messages",
-			],
-		},
-	},
+    {
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [BASE_DIR / "templates"],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+            ],
+        },
+    },
 ]
 
 WSGI_APPLICATION = "canadahackers.wsgi.application"
@@ -86,36 +83,36 @@ WSGI_APPLICATION = "canadahackers.wsgi.application"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 if DEBUG:
-	DATABASES = {
-		"default": {
-			"ENGINE": "django.db.backends.sqlite3",
-			"NAME": BASE_DIR / "db.sqlite3",
-		}
-	}
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 else:
-	DATABASES = {
-		"default": {
-			"ENGINE": "django.db.backends.sqlite3",
-			"NAME": BASE_DIR / "data/db.sqlite3",
-		}
-	}
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "data/db.sqlite3",
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-	{
-		"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
-	},
-	{
-		"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-	},
-	{
-		"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-	},
-	{
-		"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-	},
+    {
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+    },
 ]
 
 # Internationalization
@@ -142,30 +139,32 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 COUNTRIES_OVERRIDE = {
-	"ONL": {"name": "Online", "numeric": 999, "ioc_code": "ONL"},
+    "ONL": {"name": "Online", "numeric": 999, "ioc_code": "ONL"},
 }
-
 
 ### Custom settings
 
-DISCORD_ARCHIVE_AFTER = 14 # days
+DISCORD_ARCHIVE_AFTER = 14  # days
 DISCORD_ARCHIVE_ENABLED = True
-DISCORD_ARCHIVE_LIMIT = 10 # max amnt of channels that can be over but not archived
-
-
-
-
-
+DISCORD_ARCHIVE_LIMIT = 10  # max amnt of channels that can be over but not archived
+DISCORD_ARCHIVE_CATEGORY_ID = 0  # The discord category ID that you want to archive to
+DISCORD_GUILD_ID = 0  # The discord guild ID that you want to archive channels from
 
 try:
-	from .local_settings import *
+    from .local_settings import *
 except ImportError:
-	try:
-		from local_settings import *
-	except ImportError:
-		raise ImportError(
-			"Please create a local_settings.py with overrides for settings.py"
-		)
+    try:
+        from local_settings import *
+    except ImportError:
+        raise ImportError(
+            "Please create a local_settings.py with overrides for settings.py"
+        )
 
 if SECRET_KEY == "CHANGEME" and DEBUG is False:
-	raise ValueError("Please set SECRET_KEY in local_settings.py")
+    raise ValueError("Please set SECRET_KEY in local_settings.py")
+
+if DISCORD_GUILD_ID == 0:
+    raise ValueError("Please set DISCORD_GUILD_ID in local_settings.py")
+
+if DISCORD_ARCHIVE_CATEGORY_ID == 0:
+    raise ValueError("Please set DISCORD_ARCHIVE_CATEGORY_ID in local_settings.py")
