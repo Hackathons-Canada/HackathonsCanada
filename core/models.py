@@ -71,12 +71,15 @@ class Hacker(AbstractUser):
 def get_random_color():
     # generate a random color in hex format
     return "#" + "%06x" % random.randint(0, 0xFFFFFF)
-    
-    
+
+
 class Category(models.Model):
     name = models.CharField(max_length=255)
-    color = models.CharField(max_length=7, default=get_random_color, help_text="Color of the category in hex format e.g. #FF0000")
-    
+    color = models.CharField(
+        max_length=7,
+        default=get_random_color,
+        help_text="Color of the category in hex format e.g. #FF0000",
+    )
 
     def __str__(self):
         return self.name

@@ -146,11 +146,19 @@ COUNTRIES_OVERRIDE = {
 
 DISCORD_ARCHIVE_AFTER: int = 14  # days
 DISCORD_ARCHIVE_ENABLED: bool = True
-DISCORD_ARCHIVE_LIMIT: int = 10  # max amnt of channels that can be over but not archived
-DISCORD_ARCHIVE_CATEGORY_ID: int = 0  # The discord category ID that you want to archive to
-DISCORD_ACTIVE_CATEGORY_ID: int = 0  # The discord category ID that you want to archive from and create channels to
+DISCORD_ARCHIVE_LIMIT: int = (
+    10  # max amnt of channels that can be over but not archived
+)
+DISCORD_ARCHIVE_CATEGORY_ID: int = (
+    0  # The discord category ID that you want to archive to
+)
+DISCORD_ACTIVE_CATEGORY_ID: int = (
+    0  # The discord category ID that you want to archive from and create channels to
+)
 DISCORD_GUILD_ID: int = 0  # The discord guild ID that you want to archive channels from
-DISCORD_TOKEN: str = "CHANGEME"  # The discord bot token that you want to use to archive channels
+DISCORD_TOKEN: str = (
+    "CHANGEME"  # The discord bot token that you want to use to archive channels
+)
 
 try:
     from .local_settings import *

@@ -27,4 +27,3 @@ class HackathonChannel(models.Model):
     archived_time = models.DurationField(
         null=True, blank=True, help_text="How long the channel was archived for"
     )
-    
