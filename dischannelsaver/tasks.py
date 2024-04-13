@@ -8,7 +8,6 @@ from dischannelsaver.utils.archival import archive_hackathon
 
 logger = get_task_logger(__name__)
 
-
 @app.task
 async def archive_channels():
     if not settings.DISCORD_ARCHIVE_ENABLED:
