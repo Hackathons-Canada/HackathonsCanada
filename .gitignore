@@ -1,4 +1,4 @@
 canadahackers/local_settings.py
 *.pyc
 .env
-.sqlite3
+*.sqlite3
