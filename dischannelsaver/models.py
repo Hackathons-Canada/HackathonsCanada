@@ -21,3 +21,10 @@ class HackathonChannel(models.Model):
     archived = models.BooleanField(
         default=False, help_text="If the channel has been archived or not"
     )
+    archived_at = models.DateTimeField(
+        null=True, blank=True, help_text="When the channel was archived"
+    )
+    archived_time = models.DurationField(
+        null=True, blank=True, help_text="How long the channel was archived for"
+    )
+    
