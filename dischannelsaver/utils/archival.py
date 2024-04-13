@@ -4,12 +4,14 @@ import time
 from typing import Dict
 
 import discord
+from discord import CategoryChannel
 from django.conf import settings
 from django.utils import timezone
 
 from dischannelsaver.models import *
 import docker
 
+from ..apps import client
 
 def generate_discord_timestamp(date: datetime.datetime):
     return f"<t:{int(date.timestamp())}:R"
@@ -17,9 +19,11 @@ def generate_discord_timestamp(date: datetime.datetime):
 
 async def create_channel(hackathon: Hackathon):
     channel_name = generate_channel_name(hackathon)
-    category = await discord.utils.get(settings.DISCORD_ACTIVE_CATEGORY_ID)
+
+    category = await discord.utils.get(client.guilds[0].categories, id=settings.DISCORD_ACTIVE_CATEGORY_ID)
+    
     channel = await category.create_text_channel(
-        channel_name, category=category, reason="Creating hackathon channel"
+        channel_name, reason="Creating hackathon channel"
     )
 
     embed = discord.Embed(title=hackathon.name, color=discord.Color.green())
@@ -140,11 +144,11 @@ async def lock_channel(guild: discord.Guild, channel: discord.TextChannel):
 async def sort_channels():
     guild_id = settings.DISCORD_GUILD_ID
     category_id = settings.DISCORD_ARCHIVE_CATEGORY
-    category = await discord.utils.get(guild_id, id=category_id)
+    category: CategoryChannel = await discord.utils.get(guild_id, id=category_id)
     if not category:
         return  # todo log
     date_objs: Dict[datetime, discord.TextChannel] = {}
-    channels = await discord.utils.get(guild_id).channels
+    channels = category.text_channels
     for channel in channels:
         dates = get_months(channel.name)
         date_obj = create_datetime(dates[0], dates[1])
