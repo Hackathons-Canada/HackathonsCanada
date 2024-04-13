@@ -11,3 +11,7 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
+
+DISCORD_GUILD_ID = 0 # discord ID of the guild you want to use (e.g. 123456789012345678)
+DISCORD_ARCHIVE_CATEGORY_ID = 0 # discord ID of the category where archived channels will be moved to (e.g. 123456789012345678)
+DISCORD_ACTIVE_CATEGORY_ID = 0 # discord ID of the category where current channels will be created (e.g. 123456789012345678)

@@ -144,11 +144,12 @@ COUNTRIES_OVERRIDE = {
 
 ### Custom settings
 
-DISCORD_ARCHIVE_AFTER = 14  # days
-DISCORD_ARCHIVE_ENABLED = True
-DISCORD_ARCHIVE_LIMIT = 10  # max amnt of channels that can be over but not archived
-DISCORD_ARCHIVE_CATEGORY_ID = 0  # The discord category ID that you want to archive to
-DISCORD_GUILD_ID = 0  # The discord guild ID that you want to archive channels from
+DISCORD_ARCHIVE_AFTER: int = 14  # days
+DISCORD_ARCHIVE_ENABLED: bool = True
+DISCORD_ARCHIVE_LIMIT: int = 10  # max amnt of channels that can be over but not archived
+DISCORD_ARCHIVE_CATEGORY_ID: int = 0  # The discord category ID that you want to archive to
+DISCORD_ACTIVE_CATEGORY_ID: int = 0  # The discord category ID that you want to archive from and create channels to
+DISCORD_GUILD_ID: int = 0  # The discord guild ID that you want to archive channels from
 
 try:
     from .local_settings import *
@@ -168,3 +169,6 @@ if DISCORD_GUILD_ID == 0:
 
 if DISCORD_ARCHIVE_CATEGORY_ID == 0:
     raise ValueError("Please set DISCORD_ARCHIVE_CATEGORY_ID in local_settings.py")
+
+if DISCORD_ACTIVE_CATEGORY_ID == 0:
+    raise ValueError("Please set DISCORD_ACTIVE_CATEGORY_ID in local_settings.py")
