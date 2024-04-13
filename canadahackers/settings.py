@@ -142,6 +142,11 @@ COUNTRIES_OVERRIDE = {
     "ONL": {"name": "Online", "numeric": 999, "ioc_code": "ONL"},
 }
 
+### CELERY CONF
+
+CELERY_BROKER_URL = "redis://valkey:6379/0"
+CELERY_RESULT_BACKEND = "redis://valkey:6379/0"
+
 ### Custom settings
 
 DISCORD_ARCHIVE_AFTER: int = 14  # days

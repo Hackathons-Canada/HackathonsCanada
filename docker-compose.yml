@@ -7,45 +7,49 @@ services:
       - "8080:8080"
     volumes:
       - ${PWD}/canadahackers/local_settings.py:/app/canadahackers/local_settings.py:ro
-      - db_data:/app/data
+      - postgres_data:/app/data
       - /srv/static:/app/static2
     depends_on:
-        - db
-        - cache
-#        - celery
-#        - celery-beat
+      - postgres
+      - valkey
+      #  - celery
+    #        - celery-beat
     restart: unless-stopped
-    cache:
-        image: "redis:alpine"
 
-    db:
-      image: postgres:16-alpine
-      volumes:
-        - postgres_data:/var/lib/postgresql/data/
-      env_file:
-        .env
-      restart: always
-      healthcheck:
-        test: [ "CMD-SHELL", "pg_isready" ]
-        interval: 10s
-        timeout: 5s
-        retries: 5
+  valkey:
+    image: "valkey/valkey:7.2-alpine"
+    restart: always
 
+  postgres:
+    image: postgres:16-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file: .env
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  
   celery:
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock # allow it to call discordchatexporter
-      - /srv/static/archives:/out # store the archives
-      - /srv/media/archives:/media # store the media
+    depends_on:
+      postgres:
+        condition: service_healthy
 
-  archiver:
-    image: tyrrrz/discordchatexporter:stable
-    volumes:
-      - /srv/static/archives:/out
-      - /srv/media/archives:/media
-    # partition the data into 15mb files to speed up the process
+  # celery:
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock # allow it to call discordchatexporter
+  #     - /srv/static/archives:/out # store the archives
+  #     - /srv/media/archives:/media # store the media
+
+  # archiver:
+  #   image: tyrrrz/discordchatexporter:stable
+  #   volumes:
+  #     - /srv/static/archives:/out
+  #     - /srv/media/archives:/media
+  # partition the data into 15mb files to speed up the process
 #    command: "export -t -c --include-threads all -o "/out/%C" -p 15mb --media --reuse-media --media-dir /media "
-
-
 
 #    celery:
 #      build:
@@ -62,14 +66,8 @@ services:
 #        .env
 #      command: celery -A canadahackers worker -l info
 
-
-
-
-
-
 volumes:
-  db_data:
+  postgres_data:
   static_volume:
-
-
+  media_volume:
 # todo: look into https://github.com/Tyrrrz/DiscordChatExporter/ as CLI replacement for archiver. simply store the HTML file and render on request.

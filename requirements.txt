@@ -3,6 +3,7 @@ django>=5.0.0
 django-countries[pyuca]
 Pillow>=10.2.0
 discord.py
+psycopg2-binary
 django-allauth>=0.61.1
 celery>=5.2.0
 docker>=5.0.0
