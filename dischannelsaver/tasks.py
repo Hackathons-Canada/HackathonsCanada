@@ -1,10 +1,8 @@
-import discord
 from celery.utils.log import get_task_logger
 from django.conf import settings
 from django.utils import timezone
 
 from canadahackers.celery import app
-from core.models import Hackathon
 from dischannelsaver.models import *
 from dischannelsaver.utils.archival import archive_hackathon
 
@@ -29,4 +27,4 @@ async def archive_channels():
         return
     logger.info(f"Archiving {await archive_channels.acount()} channels")
     async for hackathon in achievable_channels:
-        await archive_hackathon(hackathon) # todo fix type error
+        await archive_hackathon(hackathon)
