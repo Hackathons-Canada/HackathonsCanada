@@ -1,8 +1,9 @@
-from django.db import models
+import random
+
+from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 from django.db import models
-from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
 from django_countries.fields import CountryField
 
@@ -32,7 +33,7 @@ class MetaDataMixin(models.Model):
 
 
 class Hacker(AbstractUser):
-    # todo: create "notification policy" 
+    # todo: create "notification policy"
     country = CountryField(
         blank_label="(select country)",
         blank=True,
@@ -67,9 +68,15 @@ class Hacker(AbstractUser):
     )
 
 
+def get_random_color():
+    # generate a random color in hex format
+    return "#" + "%06x" % random.randint(0, 0xFFFFFF)
+    
+    
 class Category(models.Model):
     name = models.CharField(max_length=255)
-    color = models.CharField(max_length=7, default="#007bff")
+    color = models.CharField(max_length=7, default=get_random_color, help_text="Color of the category in hex format e.g. #FF0000")
+    
 
     def __str__(self):
         return self.name
@@ -81,7 +88,11 @@ class Category(models.Model):
 class Hackathon(MetaDataMixin):
     categories = models.ManyToManyField(Category, related_name="hackathons")
     created_by = models.ForeignKey(
-        Hacker, on_delete=models.SET_NULL, null=True, related_name="hackathons", blank=False
+        Hacker,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name="hackathons",
+        blank=False,
     )
     curators = models.ManyToManyField(Hacker, related_name="curated_hackathons")
 

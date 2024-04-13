@@ -1,5 +1,5 @@
-from django.shortcuts import render
 import pandas as pd
+from django.shortcuts import render
 
 
 def fetch_data():
