@@ -83,12 +83,10 @@ WSGI_APPLICATION = "canadahackers.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-Path(BASE_DIR / "data").mkdir(exist_ok=True)
-
 DATABASES = {
     "default": {
         "ENGINE": os.environ.get("DB_ENGINE", "django.db.backends.sqlite3"),
-        "NAME": os.environ.get("POSTGRES_DATABASE", os.path.join(BASE_DIR,  "data/db.sqlite3")),
+        "NAME": os.environ.get("POSTGRES_DB", os.path.join(BASE_DIR,  "db.sqlite3")),
         "USER": os.environ.get("POSTGRES_USER", "user"),
         "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "password"),
         "HOST": os.environ.get("POSTGRES_HOST", "postgres"),
