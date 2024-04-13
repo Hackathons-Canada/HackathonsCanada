@@ -138,7 +138,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 COUNTRIES_OVERRIDE = {
     "ONL": {"name": "Online", "numeric": 999, "ioc_code": "ONL"},
 }
-
+COUNTRIES_FIRST = ["CA", "US"]
 ### CELERY CONF
 
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://valkey:6379/1")
