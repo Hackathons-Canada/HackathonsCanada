@@ -3,11 +3,11 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    command: /scripts/django/start
     ports:
       - "22300:22300"
     volumes:
       - ${PWD}/canadahackers/local_settings.py:/app/canadahackers/local_settings.py:ro
-      - postgres_data:/app/data
       - /srv/static:/app/static2
     depends_on:
       - postgres
@@ -31,12 +31,12 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-  
+
   celery_worker:
     build:
       context: .
       dockerfile: Dockerfile
-    image: django_celery_example_celery_worker
+    image: celery_worker
     command: /scripts/celery/worker/start
     volumes:
       - .:/app
@@ -54,7 +54,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: django_celery_example_celery_beat
+    image: celery_beat
     command: /scripts/celery/beat/start
     volumes:
       - .:/app
@@ -72,7 +72,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: django_celery_example_celery_flower
+    image: flower
     command: /scripts/flower/start
     volumes:
       - .:/app

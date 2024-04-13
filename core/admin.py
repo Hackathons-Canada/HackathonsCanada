@@ -6,3 +6,4 @@ from .models import *
 
 admin.site.register(Hacker, UserAdmin)
 admin.site.register(Hackathon)
+admin.site.register(Category)

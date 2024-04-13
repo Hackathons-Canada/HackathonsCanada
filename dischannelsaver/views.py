@@ -4,4 +4,4 @@ from django.shortcuts import render
 
 
 def render_channel(request, channel_id: int):
-	pass
+    pass
