@@ -9,8 +9,50 @@ services:
       - ${PWD}/canadahackers/local_settings.py:/app/canadahackers/local_settings.py:ro
       - db_data:/app/data
       - /srv/static:/app/static2
+    depends_on:
+        - db
+        - cache
+        - celery
+#        - celery-beat
+    cache:
+        image: "redis:alpine"
+
+    db:
+      image: postgres:16-alpine
+      volumes:
+        - postgres_data:/var/lib/postgresql/data/
+      env_file:
+        .env
+      restart: always
+      healthcheck:
+        test: [ "CMD-SHELL", "pg_isready" ]
+        interval: 10s
+        timeout: 5s
+        retries: 5
+
+    celery:
+      build:
+        context: .
+        dockerfile: Dockerfile
+      volumes:
+        - ${PWD}/canadahackers/local_settings.py:/app/canadahackers/local_settings.py:ro
+        - db_data:/app/data
+        - /srv/static:/app/static2
+      depends_on:
+        - db
+        - cache
+      env_file:
+        .env
+      command: celery -A canadahackers worker -l info
+
+
+
+
 
 
 volumes:
   db_data:
   static_volume:
+
+
+# todo: look into https://github.com/Tyrrrz/DiscordChatExporter/ as CLI replacement for archiver. simply store the HTML file and render on request.
