@@ -1,16 +1,4 @@
 SECRET_KEY = "changeme"
-SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        # For each OAuth based provider, either add a ``SocialApp``
-        # (``socialaccount`` app) containing the required client
-        # credentials, or list them here:
-        'APP': {
-            'client_id': '123',
-            'secret': '456',
-            'key': ''
-        }
-    }
-}
 
 DISCORD_GUILD_ID = 0 # discord ID of the guild you want to use (e.g. 123456789012345678)
 DISCORD_ARCHIVE_CATEGORY_ID = 0 # discord ID of the category where archived channels will be moved to (e.g. 123456789012345678)
