@@ -10,6 +10,24 @@ from django.utils import timezone
 from dischannelsaver.models import *
 import docker
 
+def generate_discord_timestamp(date: datetime.datetime):
+    return f"<t:{int(date.timestamp())}:R"
+
+
+async def create_channel(hackathon: Hackathon):
+    channel_name = generate_channel_name(hackathon)
+    category = await discord.utils.get(settings.DISCORD_ACTIVE_CATEGORY_ID)
+    
+    channel = await category.create_text_channel(channel_name)
+    
+    embed = discord.Embed(title=hackathon.name, color=discord.Color.green())
+    embed.add_field(name="Website", value=hackathon.website)
+    embed.add_field(name="Categories", value=", ".join([category.name for category in hackathon.categories.all()]))
+    embed.add_field(name="Event dates", value=f'{generate_discord_timestamp(hackathon.start_date)} - {generate_discord_timestamp(hackathon.end_date)}')
+    embed.add_field(name="Application dates", value=f'{generate_discord_timestamp(hackathon.application_start)} - {generate_discord_timestamp(hackathon.application_deadline)}')
+    channel.send(embed=embed)
+    
+    HackathonChannel.objects.create(hackathon=hackathon, name=channel_name, discord_id=channel.id, archived=False)
 
 def generate_channel_name(hackathon: Hackathon):
     """
