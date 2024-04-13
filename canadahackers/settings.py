@@ -145,6 +145,18 @@ COUNTRIES_OVERRIDE = {
 	"ONL": {"name": "Online", "numeric": 999, "ioc_code": "ONL"},
 }
 
+
+### Custom settings
+
+DISCORD_ARCHIVE_AFTER = 14 # days
+DISCORD_ARCHIVE_ENABLED = True
+DISCORD_ARCHIVE_LIMIT = 10 # max amnt of channels that can be over but not archived
+
+
+
+
+
+
 try:
 	from .local_settings import *
 except ImportError:
