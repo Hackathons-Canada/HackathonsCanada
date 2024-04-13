@@ -12,8 +12,9 @@ services:
     depends_on:
         - db
         - cache
-        - celery
+#        - celery
 #        - celery-beat
+    restart: unless-stopped
     cache:
         image: "redis:alpine"
 
@@ -30,20 +31,36 @@ services:
         timeout: 5s
         retries: 5
 
-    celery:
-      build:
-        context: .
-        dockerfile: Dockerfile
-      volumes:
-        - ${PWD}/canadahackers/local_settings.py:/app/canadahackers/local_settings.py:ro
-        - db_data:/app/data
-        - /srv/static:/app/static2
-      depends_on:
-        - db
-        - cache
-      env_file:
-        .env
-      command: celery -A canadahackers worker -l info
+  celery:
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock # allow it to call discordchatexporter
+      - /srv/static/archives:/out # store the archives
+      - /srv/media/archives:/media # store the media
+
+  archiver:
+    image: tyrrrz/discordchatexporter:stable
+    volumes:
+      - /srv/static/archives:/out
+      - /srv/media/archives:/media
+    # partition the data into 15mb files to speed up the process
+#    command: "export -t -c --include-threads all -o "/out/%C" -p 15mb --media --reuse-media --media-dir /media "
+
+
+
+#    celery:
+#      build:
+#        context: .
+#        dockerfile: Dockerfile
+#      volumes:
+#        - ${PWD}/canadahackers/local_settings.py:/app/canadahackers/local_settings.py:ro
+#        - db_data:/app/data
+#        - /srv/static:/app/static2
+#      depends_on:
+#        - db
+#        - cache
+#      env_file:
+#        .env
+#      command: celery -A canadahackers worker -l info
 
 
 
