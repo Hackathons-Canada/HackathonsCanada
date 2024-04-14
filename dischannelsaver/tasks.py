@@ -9,9 +9,8 @@ from canadahackers.celery import app
 from dischannelsaver.models import *
 from dischannelsaver.utils.archival import (
     archive_hackathon,
-    create_channel,
-    sort_channels,
 )
+from dischannelsaver.utils.disc import create_channel, sort_channels
 
 logger = get_task_logger(__name__)
 
