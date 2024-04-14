@@ -38,7 +38,7 @@
     role="tablist"
   >
     <button
-      class="nav-link canada mx-4 my-2"
+      class="nav-link canada mx-4 my-2 nav-contact-tabca"
       id="nav-contact-tabca"
       data-bs-toggle="tab"
       data-bs-target="#nav-home"
@@ -95,7 +95,9 @@
         class="row row-cols-1 row-cols-sm-2 row-cols-md-3 d-flex justify-content-center"
       >
         {% for i in list %}
-        <div class="col lockedheight p-4 {{i.9}}">
+        <div
+          class="col lockedheight p-4 {% if i.9 == 'Canada' or i.9 == 'United States' or i.9 == 'Online' %} {{i.9}} {% else %} other {{i.9}} {% endif %}"
+        >
           <div class="position-relative">
             <div class="flip-card">
               <div class="flip-card-inner">

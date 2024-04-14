@@ -22,16 +22,17 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-document
-  .getElementById("nav-contact-tabca")
-  .addEventListener("click", function () {
-    let usalist1 = document.querySelectorAll(".United");
-    usalist1.forEach((ca) => (ca.style.display = "none"));
-    let onlinelist1 = document.querySelectorAll(".Online");
-    onlinelist1.forEach((ca) => (ca.style.display = "none"));
-    let canadalist1 = document.querySelectorAll(".Canada");
-    canadalist1.forEach((ca) => (ca.style.display = "block"));
-  });
+console.log(document.querySelector("button"));
+document.querySelector("button").addEventListener("click", function () {
+  let usalist1 = document.querySelectorAll(".United");
+  usalist1.forEach((ca) => (ca.style.display = "none"));
+  let onlinelist1 = document.querySelectorAll(".Online");
+  onlinelist1.forEach((ca) => (ca.style.display = "none"));
+  let canadalist1 = document.querySelectorAll(".Canada");
+  canadalist1.forEach((ca) => (ca.style.display = "block"));
+  let otherlist1 = document.querySelectorAll(".other");
+  otherlist1.forEach((ca) => (ca.style.display = "none"));
+});
 
 document
   .getElementById("nav-contact-tabus")
@@ -42,6 +43,8 @@ document
     onlinelist2.forEach((ca) => (ca.style.display = "none"));
     let usalist2 = document.querySelectorAll(".United");
     usalist2.forEach((ca) => (ca.style.display = "block"));
+    let otherlist1 = document.querySelectorAll(".other");
+    otherlist1.forEach((ca) => (ca.style.display = "none"));
   });
 
 document
@@ -53,6 +56,8 @@ document
     usalist.forEach((ca) => (ca.style.display = "none"));
     let onlinelist = document.querySelectorAll(".Online");
     onlinelist.forEach((ca) => (ca.style.display = "block"));
+    let otherlist1 = document.querySelectorAll(".other");
+    otherlist1.forEach((ca) => (ca.style.display = "none"));
   });
 
 document
@@ -64,4 +69,6 @@ document
     usalist.forEach((ca) => (ca.style.display = "block"));
     let onlinelist = document.querySelectorAll(".Online");
     onlinelist.forEach((ca) => (ca.style.display = "block"));
+    let otherlist1 = document.querySelectorAll(".other");
+    otherlist1.forEach((ca) => (ca.style.display = "block"));
   });
