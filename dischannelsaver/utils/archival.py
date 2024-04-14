@@ -13,6 +13,7 @@ import docker
 
 from ..apps import client
 
+
 def generate_discord_timestamp(date: datetime.datetime):
     return f"<t:{int(date.timestamp())}:R"
 
@@ -20,8 +21,10 @@ def generate_discord_timestamp(date: datetime.datetime):
 async def create_channel(hackathon: Hackathon):
     channel_name = generate_channel_name(hackathon)
 
-    category = await discord.utils.get(client.guilds[0].categories, id=settings.DISCORD_ACTIVE_CATEGORY_ID)
-    
+    category = await discord.utils.get(
+        client.guilds[0].categories, id=settings.DISCORD_ACTIVE_CATEGORY_ID
+    )
+
     channel = await category.create_text_channel(
         channel_name, reason="Creating hackathon channel"
     )
