@@ -1,115 +1,134 @@
 /* styles.css */
 * {
-    font-family: "Arial", sans-serif;
-    font-weight: bold;
+  font-family: "Arial", sans-serif;
+  font-weight: bold;
 }
 
 /* Global styles */
 body {
-    background-color: #121212;
-    color: #ffffff;
+  background-color: #121212;
+  color: #ffffff;
 }
 
 .headingtext {
-    font-family: "Offside", sans-serif;
-    color: #ffffff;
+  font-family: "Offside", sans-serif;
+  color: #ffffff;
 }
 
 body.light-mode {
-    background-color: #ffffff;
-    color: #000000;
+  background-color: #ffffff;
+  color: #000000;
 }
 
 body .dark-mode {
-    background-color: #121212;
-    color: #ffffff;
+  background-color: #121212;
+  color: #ffffff;
 }
 
 a {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 .nav-bar {
-    color: #000000;
-    background-color: #E4E4E4;
+  color: #000000;
+  background-color: #e4e4e4;
 }
 
 .nav-bar span {
-    color: #000000;
+  color: #000000;
 }
 
 .nav li {
-    color: #e60303;
+  color: #e60303;
 }
 
 .team-form {
-    color: #424040;
+  color: #424040;
 }
 
 .card-header-color {
-    color: #ffffff;
+  color: #ffffff;
 }
 
 .flip-card {
-    perspective: 1000px;
+  perspective: 1000px;
 }
 
 .flip-card-inner {
-    position: relative;
-    width: 100%;
-    /* height: 100%; */
-    text-align: center;
-    transition: transform 0.6s;
-    transform-style: preserve-3d;
+  position: relative;
+  width: 100%;
+  /* height: 100%; */
+  text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
 }
 
 .flip-card-inner.is-flipped {
-    transform: rotateY(180deg);
+  transform: rotateY(180deg);
 }
 
 .flip-card-front,
 .flip-card-back {
-    position: absolute;
-    width: 100%;
-    background: #000;
-    backface-visibility: hidden;
-    outline: 10px solid #000;
+  position: absolute;
+  width: 100%;
+  background: #000;
+  backface-visibility: hidden;
+  outline: 10px solid #000;
 }
 
 .flip-card-front {
-    background-color: #f8f9fa;
-    color: #000;
+  background-color: #f8f9fa;
+  color: #000;
 }
 
 .flip-card-back {
-    background-color: #343a40;
-    color: #000;
-    transform: rotateY(180deg);
-
-
+  background-color: #343a40;
+  color: #000;
+  transform: rotateY(180deg);
 }
 
 .card-img-top {
-    max-height: 200px;
-    object-fit: cover;
-    border-radius: 30px;
-    outline: 10px solid #000;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 30px;
+  outline: 10px solid #000;
 }
 
 .lockedheight {
-    height: 500px;
-    max-width: 430px;
-
+  height: 500px;
+  max-width: 430px;
 }
 
 .roundedcards {
-    border-radius: 30px;
+  border-radius: 30px;
 }
 
 .coolbody {
-    background: linear-gradient(135deg, #000000, rgb(207, 202, 209));
+  background: linear-gradient(135deg, #000000, rgb(207, 202, 209));
 }
 
 .introtext {
-    color: #ffffff;
+  color: #ffffff;
+}
+
+.Canada {
+  display: block;
+}
+.Online {
+  display: block;
+}
+.United {
+  display: block;
+}
+
+.navbarchoice {
+  background-color: black;
+  border-radius: 50px;
+}
+
+.nav-tab-shape {
+  color: #000000;
+  background-color: #ffffff;
+  border-color: #dee2e6 #dee2e6 #ffffff;
+  border-radius: 30px;
 }
