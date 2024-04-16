@@ -1,22 +1,26 @@
+from typing import TYPE_CHECKING
+
 from celery.schedules import crontab
 from celery.utils.log import get_task_logger
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils import timezone
 
 from canadahackers.celery import app
-from dischannelsaver.models import *
-from dischannelsaver.utils.archival import (
-    archive_hackathon,
-)
+from dischannelsaver.utils.archival import archive_hackathon
 from dischannelsaver.utils.disc import create_channel, sort_channels
 
+if TYPE_CHECKING:
+    from core.models import Hackathon, Hacker
+
 logger = get_task_logger(__name__)
+hacker: "Hacker" = get_user_model()
 
 
 @receiver(post_save, sender=Hackathon)
-async def my_handler(sender, instance, created, **kwargs):
+async def channel_create(sender, instance, created, **kwargs):
     if created or not instance.channel.exists():
         logger.info(f"Creating channel for {instance}")
         await create_channel(instance)

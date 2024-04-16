@@ -1,11 +1,17 @@
 import random
 
 from django.contrib.auth.models import AbstractUser
-
 # Create your models here.
 from django.db import models
 from django.utils import timezone
 from django_countries.fields import CountryField
+
+from core.tasks import send_new_hackathon_email
+
+# from django.contrib.gis.geos import Point
+
+
+# from location_field.models.spatial import LocationField
 
 EDUCATION_CHOICES = [
     (0, "Middle School"),
@@ -83,8 +89,14 @@ class NotificationPolicy(models.Model):
         ]
 
 
+class Notifiable(models.QuerySet):
+    async def anotify(self):
+        async for user in self.iterator():
+            send_new_hackathon_email.delay(user)
+
+
 class Hacker(AbstractUser):
-    # todo: create "notification policy"
+    objects = Notifiable.as_manager()
     country = CountryField(
         blank_label="(select country)",
         blank=True,
@@ -124,7 +136,7 @@ class Hacker(AbstractUser):
         blank=False,
         null=False,
     )
-    
+
     def save(
         self, force_insert=False, force_update=False, using=None, update_fields=None
     ):
@@ -184,6 +196,7 @@ class Hackathon(MetaDataMixin):
     reimbursements = models.CharField(max_length=255, blank=True, null=True)
 
     country = CountryField(blank_label="(select country)", blank=True, null=True)
+    # location = LocationField(based_fields=['city'], zoom=7, default=Point(1.0, 1.0))
 
     min_age = models.SmallIntegerField(
         blank=True,

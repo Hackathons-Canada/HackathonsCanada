@@ -2,11 +2,11 @@ import datetime
 import time
 
 import discord
+import docker
 from django.conf import settings
 from django.utils import timezone
 
-from dischannelsaver.models import *
-import docker
+from core.models import Hackathon
 
 from .disc import lock_channel, sort_channels
 
@@ -35,10 +35,10 @@ async def archive_channel(channel_id: int):
     if not channel:
         return  # todo log
     await lock_channel(guild, channel)
-    time = await call_archiver(channel_id)
+    exec_time = await call_archiver(channel_id)
     # todo verify that the archiver has finished archiving
     await channel.delete()
-    return time
+    return exec_time
 
 
 async def archive_hackathon(hackathon: Hackathon):

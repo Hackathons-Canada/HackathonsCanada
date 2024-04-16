@@ -1,7 +1,6 @@
 from django.db import models
 
 # import discord
-from core.models import Hackathon
 
 # Create your models here.
 
@@ -14,7 +13,7 @@ class Settings(models.Model):
 
 class HackathonChannel(models.Model):
     hackathon = models.OneToOneField(
-        Hackathon, on_delete=models.PROTECT, related_name="channel"
+        "core.Hackathon", on_delete=models.PROTECT, related_name="channel"
     )
     name = models.CharField(max_length=255)
     discord_id = models.CharField(max_length=18, null=True, blank=True)

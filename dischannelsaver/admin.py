@@ -1,10 +1,8 @@
-from functools import wraps
-
+from asgiref.sync import async_to_sync
 from django.contrib import admin
 
 from dischannelsaver.models import HackathonChannel, Settings
 from dischannelsaver.utils.archival import archive_hackathon
-from asgiref.sync import async_to_sync
 
 
 # Register your models here.
