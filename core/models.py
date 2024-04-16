@@ -32,6 +32,57 @@ class MetaDataMixin(models.Model):
         super().save(force_insert, force_update, using, update_fields)
 
 
+class NotificationPolicy(models.Model):
+    enabled = models.BooleanField(
+        default=False, help_text="Enable or disable notifications"
+    )
+    weekly = models.BooleanField(default=False, help_text="Send weekly notifications")
+    monthly = models.BooleanField(default=False, help_text="Send monthly notifications")
+    added = models.BooleanField(
+        default=False,
+        help_text="Send notifications when a new hackathon is added",
+    )
+    local_only = models.BooleanField(
+        default=False,
+        help_text="Only send notifications for hackathons in your local area (as defined by radius) - Changes the behavior of all other notification settings",
+    )
+
+    radius_type = models.CharField(
+        max_length=255,
+        choices=[
+            ("km", "Kilometers"),
+            ("mi", "Miles"),
+        ],
+        default="km",
+        help_text="Unit of radius",
+    )
+    radius = models.PositiveIntegerField(
+        default=150,
+        help_text="Radius in which a hackathon must be in to be considered local",
+    )
+
+    @property
+    def standard_radius(self) -> float | int:
+        """
+        Get the radius in kilometers
+        :return: radius in kilometers
+        """
+        if self.radius_type == "km":
+            return self.radius
+
+        MILES_TO_KM = 1.60934
+        return self.radius * MILES_TO_KM
+
+    class Meta:
+        verbose_name_plural = "Notification Policies"
+        constraints = [
+            models.CheckConstraint(
+                check=models.Q(weekly=True) ^ models.Q(monthly=True),
+                name="weekly_or_monthly_not_both",
+            ),
+        ]
+
+
 class Hacker(AbstractUser):
     # todo: create "notification policy"
     country = CountryField(
@@ -66,6 +117,20 @@ class Hacker(AbstractUser):
         related_name="interested_users",
         help_text="Categories the user is interested in and wants updates when new hackathons meeting this critera are created.",
     )
+    notification_policy = models.OneToOneField(
+        NotificationPolicy,
+        on_delete=models.CASCADE,
+        related_name="user",
+        blank=False,
+        null=False,
+    )
+    
+    def save(
+        self, force_insert=False, force_update=False, using=None, update_fields=None
+    ):
+        if not self.notification_policy:
+            self.notification_policy = NotificationPolicy.objects.create()
+        super().save(force_insert, force_update, using, update_fields)
 
 
 def get_random_color():
