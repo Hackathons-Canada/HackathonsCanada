@@ -10,6 +10,7 @@ import docker
 
 from .disc import lock_channel, sort_channels
 
+
 async def call_archiver(channel_id: int) -> float:
     """
     Calls the discord chat exporter to archive a channel
