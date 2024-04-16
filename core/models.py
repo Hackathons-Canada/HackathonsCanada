@@ -52,6 +52,11 @@ class NotificationPolicy(models.Model):
         default=False,
         help_text="Only send notifications for hackathons in your local area (as defined by radius) - Changes the behavior of all other notification settings",
     )
+    only_eligible = models.BooleanField(
+        default=True,
+        help_text="Only send notifications for hackathons you are eligible for (based on age and education level)",
+    )
+    # todo: fields abt travel reimbursement?
 
     radius_type = models.CharField(
         max_length=255,
