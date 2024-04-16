@@ -4,3 +4,4 @@
 .gitmodules
 .gitattributes
 README.md
+celerybeat-schedule

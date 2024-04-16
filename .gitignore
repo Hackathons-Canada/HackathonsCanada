@@ -2,3 +2,4 @@ canadahackers/local_settings.py
 *.pyc
 .env
 *.sqlite3
+celerybeat-schedule
