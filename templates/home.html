@@ -16,7 +16,7 @@
           coding, and collaboration intersect in the world of Canadian
           hackathons.
         </p>
-        
+
         <p class="px-3">
           <a
             href="https://calendar.google.com/calendar/u/0?cid=M2Y0ODA2MjUxYTZjMGZhYTMwZWE3ZmE0YmI0NTdjMmE1NTI0ZWZlNGUzZjMwMDc4NmJlMmVlNWRjOGU1MTE3MEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t"
@@ -32,98 +32,136 @@
       </div>
     </div>
   </section>
-  <div class="d-flex container text-center pb-5">
-    <div class="p-2 flex-fill">
-      <a href="{% url 'hackathon' 'Canada' %}" class="btn btn-light">Canada</a>
-    </div>
-    <div class="p-2 flex-fill">
-      <a href="{% url 'hackathon' 'United States' %}" class="btn btn-light"
-        >USA</a
-      >
-    </div>
-    <div class="p-2 flex-fill">
-      <a href="{% url 'hackathon' 'Online' %}" class="btn btn-light">Online</a>
-    </div>
-    <div class="p-2 flex-fill">
-      <a href="{% url 'hackathon' 'everywhere' %}" class="btn btn-light"
-        >Everywhere</a
-      >
-    </div>
+  <div
+    class="nav nav-tabs mb-3 d-flex justify-content-center navbarchoice"
+    id="nav-tab"
+    role="tablist"
+  >
+    <button
+      class="nav-link canada mx-4 my-2 nav-contact-tabca"
+      id="nav-contact-tabca"
+      data-bs-toggle="tab"
+      data-bs-target="#nav-home"
+      type="button"
+      role="tab"
+      aria-controls="nav-home"
+      aria-selected="false"
+      tabindex="-1"
+    >
+      Canada
+    </button>
+    <button
+      class="nav-link active usa mx-4 my-2"
+      id="nav-contact-tabus"
+      data-bs-toggle="tab"
+      data-bs-target="#nav-profile"
+      type="button"
+      role="tab"
+      aria-controls="nav-profile"
+      aria-selected="true"
+    >
+      United States
+    </button>
+    <button
+      class="nav-link online mx-4 my-2"
+      id="nav-contact-tabon"
+      data-bs-toggle="tab"
+      data-bs-target="#nav-contact"
+      type="button"
+      role="tab"
+      aria-controls="nav-contact"
+      aria-selected="false"
+      tabindex="-1"
+    >
+      Online
+    </button>
+    <button
+      class="nav-link online everywhere mx-4 my-2"
+      id="nav-contact-tabev"
+      data-bs-toggle="tab"
+      data-bs-target="#nav-contact"
+      type="button"
+      role="tab"
+      aria-controls="nav-contact"
+      aria-selected="false"
+      tabindex="-1"
+    >
+      Everywhere
+    </button>
   </div>
-
   <div class="album text-center">
     <div class="container-fluid">
       <div
         class="row row-cols-1 row-cols-sm-2 row-cols-md-3 d-flex justify-content-center"
       >
         {% for i in list %}
-            {% if i.9 == filter or filter == "everywhere" %}
-              <div class="col lockedheight p-4">
-                  <div class="position-relative">
-                    <div class="flip-card">
-                      <div class="flip-card-inner">
-                        <div class="flip-card-front roundedcards">
-                          <div class="card roundedcards">
-                            <img
-                              src="{{ i.10 }}"
-                              class="card-img-top"
-                              alt="Front Image"
-                            />
+        <div
+          class="col lockedheight p-4 {% if i.9 == 'Canada' or i.9 == 'United States' or i.9 == 'Online' %} {{i.9}} {% else %} other {{i.9}} {% endif %}"
+        >
+          <div class="position-relative">
+            <div class="flip-card">
+              <div class="flip-card-inner">
+                <div class="flip-card-front roundedcards">
+                  <div class="card roundedcards">
+                    <img
+                      src="{{ i.10 }}"
+                      class="card-img-top"
+                      alt="Front Image"
+                    />
 
-                            <div class="card-body">
-                              <h2 class="card-title pt-3">{{ i.0 }}</h2>
+                    <div class="card-body">
+                      <h2 class="card-title pt-3">{{ i.0 }}</h2>
 
-                              <h5 class="py-2">
-                                <span>Date:</span> {{ i.2 }} - {{ i.3 }}
-                              </h5>
-                              <h6 class="pb-3">
-                                <span>Location:</span> {{ i.6 }}, {{ i.9 }}
-                              </h6>
-                              <a
-                                href="{{ i.1 }}"
-                                class="btn btn-outline-primary"
-                                tabindex="-1"
-                                role="button"
-                                aria-disabled="true"
-                                >Website</a
-                              >
-                              {% if i.11 == "#1" %}
-                              <span
-                                class="position-absolute top-0 start-50 translate-middle text-bg-light rounded-5"
-                              >
-                                <h5 class="pt-2 px-4">Click On Me!</h5>
-                              </span>
-                              {% endif %}
-                            </div>
-                          </div>
-                        </div>
-                        <div class="flip-card-back roundedcards">
-                          <div class="card roundedcards">
-                            <img
-                              src="{{ i.10 }}"
-                              class="card-img-top"
-                              alt="Front Image"
-                            />
-                            <div class="card-body">
-                              <h5 class="card-title">{{ i.0 }}</h5>
-
-                              <p class="card-text">Date: {{ i.2 }} - {{ i.3 }}</p>
-
-                              <p class="card-text">Location: {{ i.6 }}</p>
-
-                              <p class="card-text">Country: {{ i.9 }}</p>
-
-                              <p class="card-text">Application Deadline: {{ i.4 }}</p>
-
-                              <p class="card-text">Travel Reimbursements: {{ i.5 }}</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                      <h5 class="py-2">
+                        <span>Date:</span> {{ i.2 }} - {{ i.3 }}
+                      </h5>
+                      <h6 class="pb-3">
+                        <span>Location:</span> {{ i.6 }}, {{ i.9 }}
+                      </h6>
+                      <a
+                        href="{{ i.1 }}"
+                        class="btn btn-outline-primary"
+                        tabindex="-1"
+                        role="button"
+                        aria-disabled="true"
+                        >Website</a
+                      >
+                      {% if i.11 == "#1" %}
+                      <span
+                        class="position-absolute top-0 start-50 translate-middle text-bg-light rounded-5"
+                      >
+                        <h5 class="pt-2 px-4">Click On Me!</h5>
+                      </span>
+                      {% endif %}
                     </div>
                   </div>
+                </div>
+                <div class="flip-card-back roundedcards">
+                  <div class="card roundedcards">
+                    <img
+                      src="{{ i.10 }}"
+                      class="card-img-top"
+                      alt="Front Image"
+                    />
+                    <div class="card-body">
+                      <h5 class="card-title">{{ i.0 }}</h5>
+
+                      <p class="card-text">Date: {{ i.2 }} - {{ i.3 }}</p>
+
+                      <p class="card-text">Location: {{ i.6 }}</p>
+
+                      <p class="card-text">Country: {{ i.9 }}</p>
+
+                      <p class="card-text">Application Deadline: {{ i.4 }}</p>
+
+                      <p class="card-text">Travel Reimbursements: {{ i.5 }}</p>
+                    </div>
+                  </div>
+                </div>
               </div>
-            {% endif %}
+            </div>
+          </div>
+        </div>
         {% endfor %}
       </div>
     </div>

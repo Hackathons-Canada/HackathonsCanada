@@ -116,7 +116,7 @@ class Hackathon(MetaDataMixin):
     application_start = models.DateTimeField(blank=True, null=True)
     application_deadline = models.DateTimeField(blank=True, null=True)
 
-    reimbursements = models.CharField(max_length=255)
+    reimbursements = models.CharField(max_length=255, blank=True, null=True)
 
     country = CountryField(blank_label="(select country)", blank=True, null=True)
 

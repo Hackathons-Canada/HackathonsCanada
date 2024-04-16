@@ -86,7 +86,7 @@ WSGI_APPLICATION = "canadahackers.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": os.environ.get("DB_ENGINE", "django.db.backends.sqlite3"),
-        "NAME": os.environ.get("POSTGRES_DB", os.path.join(BASE_DIR,  "db.sqlite3")),
+        "NAME": os.environ.get("POSTGRES_DB", os.path.join(BASE_DIR, "db.sqlite3")),
         "USER": os.environ.get("POSTGRES_USER", "user"),
         "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "password"),
         "HOST": os.environ.get("POSTGRES_HOST", "postgres"),
@@ -138,7 +138,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 COUNTRIES_OVERRIDE = {
     "ONL": {"name": "Online", "numeric": 999, "ioc_code": "ONL"},
 }
-
+COUNTRIES_FIRST = ["CA", "US"]
 ### CELERY CONF
 
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://valkey:6379/1")

@@ -1,12 +1,33 @@
+from celery.schedules import crontab
 from celery.utils.log import get_task_logger
 from django.conf import settings
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils import timezone
 
 from canadahackers.celery import app
 from dischannelsaver.models import *
-from dischannelsaver.utils.archival import archive_hackathon
+from dischannelsaver.utils.archival import (
+    archive_hackathon,
+)
+from dischannelsaver.utils.disc import create_channel, sort_channels
 
 logger = get_task_logger(__name__)
+
+
+@receiver(post_save, sender=Hackathon)
+async def my_handler(sender, instance, created, **kwargs):
+    if created or not instance.channel.exists():
+        logger.info(f"Creating channel for {instance}")
+        await create_channel(instance)
+    await sort_channels()  # sort channels after creating a new one
+
+
+@app.on_after_configure.connect
+def setup_periodic_tasks(sender, **kwargs):
+    sender.add_periodic_task(
+        crontab(hour=0, minute=0), archive_channels
+    )  # every day at midnight
 
 
 @app.task
