@@ -8,10 +8,12 @@ from django.conf import settings
 from core.models import Hackathon
 from dischannelsaver.apps import client
 from dischannelsaver.models import HackathonChannel
-from dischannelsaver.utils.nomenclature import (create_datetime,
-                                                generate_channel_name,
-                                                generate_discord_timestamp,
-                                                get_months)
+from dischannelsaver.utils.nomenclature import (
+    create_datetime,
+    generate_channel_name,
+    generate_discord_timestamp,
+    get_months,
+)
 
 
 async def create_channel(hackathon: Hackathon):
