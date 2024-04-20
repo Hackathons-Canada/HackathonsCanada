@@ -171,7 +171,28 @@ class Category(models.Model):
         verbose_name_plural = "Categories"
 
 
+class HackthonsManager(models.Manager):
+    def online(self):
+        return self.filter(country="Onl")
+    
+    def in_person(self):
+        return self.exclude(country="Onl")
+    
+    def local(self, user: Hacker):
+        ... # todo: implement this
+    
+    def eligible(self, user: Hacker):
+        # todo rewrite
+        return self.filter(
+            application_deadline__gte=timezone.now(),
+            # min_age__lte=user.age,
+            maximum_education_level__gte=user.education,
+        )
+    
+    
+
 class Hackathon(MetaDataMixin):
+    objects = HackthonsManager()
     categories = models.ManyToManyField(Category, related_name="hackathons")
     created_by = models.ForeignKey(
         Hacker,
