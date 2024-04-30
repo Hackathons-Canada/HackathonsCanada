@@ -10,7 +10,9 @@
     organizers of specific events and form teams.
   </p>
   <div class="d-grid-flex">
-    <a class="button-try button-white mt-3 mb-2"><span>Try Now</span></a>
+    <a class="button-try button-white mt-3 mb-2"
+      ><span>Browse Hackathons</span></a
+    >
     <div class="gap-2 mb-4">
       <a class="button-discord button-white"
         >Join Our Discord
@@ -111,22 +113,69 @@
     Join Our Amazing Community Of Over 1000 Hackers on Discord.
   </h1>
 </div>
-<div class=”gallery”>
-    <figure class=”gallery__item gallery__item--1">
-      <img src="img/image-1.jpg" class="gallery__img" alt="Image 1">
-    </figure>
-    <figure class="gallery__item gallery__item--2">
-      <img src="img/image-2.jpg" class="gallery__img" alt="Image 2">
-    </figure>
-    <figure class="gallery__item gallery__item--3">
-      <img src="img/image-3.jpg" class="gallery__img" alt="Image 3">
-    </figure>
-    <figure class="gallery__item gallery__item--4">
-      <img src="img/image-4.jpg" class="gallery__img" alt="Image 4">
-    </figure>
-    <figure class="gallery__item gallery__item--5">
-      <img src="img/image-5.jpg" class="gallery__img" alt="Image 5">
-    </figure>
-  </div>
+<div class="gallery mx-auto">
+  <figure class="gallery__item gallery__item--1">
+    <img
+      src="{% static 'assets/discordCard.png' %}"
+      class="gallery__img"
+      alt="Image 1"
+    />
+  </figure>
+  <figure class="gallery__item gallery__item--2">
+    <img
+      src="{% static 'assets/emailCard.png'%}"
+      class="gallery__img"
+      alt="Image 2"
+    />
+  </figure>
+  <figure class="gallery__item gallery__item--3">
+    <img
+      src="{% static 'assets/googleCal.png' %}"
+      class="gallery__img"
+      alt="Image 3"
+    />
+  </figure>
+  <figure class="gallery__item gallery__item--4">
+    <img
+      src="{% static 'assets/serverCard.png' %}"
+      class="gallery__img"
+      alt="Image 4"
+    />
+  </figure>
+  <figure class="gallery__item gallery__item--5">
+    <div>
+      <p>
+        Hello <br />
+        World
+      </p>
+    </div>
+  </figure>
+</div>
 
+<section class="red-section">
+  <div class="trig-section">
+    <svg
+      data-name="Layer 1"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 1200 120"
+      preserveAspectRatio="none"
+    >
+      <path d="M1200 0L0 0 598.97 114.72 1200 0z" class="shape-fill"></path>
+    </svg>
+  </div>
+  <div class="red-section">
+    <h1 class="text-center inter-mintext intro-text">
+      Join Our Amazing Community Of Over 1000 Hackers on Discord.
+    </h1>
+    <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+      <div class="feature col"></div>
+      <div class="feature col"></div>
+      <div class="feature col"></div>
+    </div>
+    <div class="row g-4 py-5 row-cols-1 row-cols-lg-2">
+      <div class="feature col"></div>
+      <div class="feature col"></div>
+    </div>
+  </div>
+</section>
 {% endblock %}
