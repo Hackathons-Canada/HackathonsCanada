@@ -277,5 +277,28 @@ section {
 
 .red-section {
   background-color: #dd5353;
+}
+
+.text-white {
   color: white;
+}
+
+.card-section {
+  display: flex;
+  justify-content: center;
+}
+
+.card-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  width: 1200px;
+}
+
+.card-web {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  width: 350px;
+  height: 250px;
 }
