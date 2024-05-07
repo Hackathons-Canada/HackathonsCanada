@@ -1,6 +1,6 @@
 * {
-  font-family: "Arial", sans-serif;
-  font-weight: bold;
+  color: #000000;
+  font-family: "Inter", sans-serif;
 }
 
 body {
@@ -324,46 +324,114 @@ section {
   border-radius: 8px;
   padding: 20px;
   color: white;
+  
 }
 
 .avasfasvdf
-{position: absolute;}
+{position: absolute;
+  }
 
 .avasfasvdf:nth-child(1) {
-  top: 0;
+  top: 495px;
   left: 0%;
-  width: 45%;
+  width: 44%;
 }
 
 .avasfasvdf:nth-child(2) {
-  top: 0;
-  left: 50%;
-  width: 50%; 
+  top: 495px;
+  left: 47%;
+  width: 53%; 
 }
 
 .avasfasvdf:nth-child(3) {
-  top: 450px;
-  left: 50%;
-  width: 50%;
+  top: 970px;
+  left: 47%;
+  width: 53%;
 }
 
 .avasfasvdf:nth-child(4) {
-  top: 630px;
+  top: 0;
   left: 0%;
-  width: 31%;
+  width: 40%;
 }
 
 .avasfasvdf:nth-child(5) {
   max-height: 530px;
-  top: 630px;
+  top: 0;
   left: 43%;
   width: 57%;
 }
 
 .avasfasvdf:nth-child(6) {
-  top: 475px;
-  left: 48%;
+  top: 1050px;
+  left: 45%;
   width: 5%;
 }
 
+.avasfasvdf:nth-child(7) {
+  top: 1050px;
+  left: 5%;
+  width: 45%;
+}
 
+.shawdow-card {
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 10px 15px;
+  border-radius: 8px;
+  border: 7px solid #dd5353;
+}
+
+.avasfasvdfhac{
+  height: auto;
+  width: 500px;
+  background-color: #DD5353;
+  border-radius: 8px;
+  padding: 20px;
+  color: white;
+}
+
+.scroller {
+  max-width: 900px;
+}
+
+.scroller__inner {
+  padding-block: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.scroller[data-animated="true"] {
+  overflow: hidden;
+  -webkit-mask: linear-gradient(
+    90deg,
+    transparent,
+    white 20%,
+    white 80%,
+    transparent
+  );
+  mask: linear-gradient(90deg, transparent, white 20%, white 80%, transparent);
+}
+
+.scroller[data-animated="true"] .scroller__inner {
+  width: max-content;
+  flex-wrap: nowrap;
+  animation: scroll 90s forwards linear infinite;
+}
+
+@keyframes scroll {
+  to {
+    transform: translate(calc(-50% - 0.5rem));
+  }
+}
+
+.discord-role{
+  background-color: #2B2D31;
+  color: white;
+  padding: 0.7rem 1.4rem;
+  border-radius: 0.5rem;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+  font-size: 20px;
+  list-style-type: none;
+}
