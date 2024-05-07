@@ -302,3 +302,68 @@ section {
   width: 350px;
   height: 250px;
 }
+
+
+.box-cards {
+  position: relative;
+  top: 0px;
+  width: auto;
+  display: flex;
+  margin: 24px;
+  max-width: 1200px;
+  height: 1200px;
+}
+
+
+
+.avasfasvdfdv{
+  height: auto;
+  width: 650px;
+  position: absolute;
+  background-color: #DD5353;
+  border-radius: 8px;
+  padding: 20px;
+  color: white;
+}
+
+.avasfasvdf
+{position: absolute;}
+
+.avasfasvdf:nth-child(1) {
+  top: 0;
+  left: 0%;
+  width: 45%;
+}
+
+.avasfasvdf:nth-child(2) {
+  top: 0;
+  left: 50%;
+  width: 50%; 
+}
+
+.avasfasvdf:nth-child(3) {
+  top: 450px;
+  left: 50%;
+  width: 50%;
+}
+
+.avasfasvdf:nth-child(4) {
+  top: 630px;
+  left: 0%;
+  width: 31%;
+}
+
+.avasfasvdf:nth-child(5) {
+  max-height: 530px;
+  top: 630px;
+  left: 43%;
+  width: 57%;
+}
+
+.avasfasvdf:nth-child(6) {
+  top: 475px;
+  left: 48%;
+  width: 5%;
+}
+
+
