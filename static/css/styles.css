@@ -71,16 +71,11 @@ a {
   color: #ffffff;
 }
 
-.flip-card {
-  perspective: 1000px;
-}
 
 .flip-card-inner {
   position: relative;
-  width: 100%;
-  /* height: 100%; */
   text-align: center;
-  transition: transform 0.6s;
+  transition: transform 0.4s;
   transform-style: preserve-3d;
 }
 
@@ -91,20 +86,10 @@ a {
 .flip-card-front,
 .flip-card-back {
   position: absolute;
-  width: 100%;
-  background: #000;
   backface-visibility: hidden;
-  outline: 10px solid #000;
-}
-
-.flip-card-front {
-  background-color: #f8f9fa;
-  color: #000;
 }
 
 .flip-card-back {
-  background-color: #343a40;
-  color: #000;
   transform: rotateY(180deg);
 }
 
@@ -116,17 +101,14 @@ a {
 }
 
 .lockedheight {
-  height: 500px;
-  max-width: 430px;
+  height: 420px;
+  max-width: 400px;
 }
 
 .roundedcards {
   border-radius: 30px;
 }
 
-.coolbody {
-  background: linear-gradient(135deg, #000000, rgb(207, 202, 209));
-}
 
 .introtext {
   color: #ffffff;
@@ -369,7 +351,7 @@ section {
 }
 
 .avasfasvdf:nth-child(7) {
-  top: 1050px;
+  top: 1000px;
   left: 5%;
   width: 45%;
 }
@@ -427,11 +409,61 @@ section {
 .discord-role{
   background-color: #2B2D31;
   color: white;
-  padding: 0.7rem 1.4rem;
+  padding: 0.5rem 1rem;
   border-radius: 0.5rem;
   font-family: "Inter", sans-serif;
   font-weight: 500;
   font-style: normal;
-  font-size: 20px;
+  font-size: 15px;
   list-style-type: none;
+}
+
+
+.hackathon-card {
+  perspective: 1000px;
+  display: flex;
+  flex-direction: column;
+  height: 350px;
+  width: 350px;
+  background-color: white;
+  color: black;
+  border-radius: 25px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.hackathon-img-front {
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+  height: 200px;
+  width: 350px;
+  overflow: hidden;
+  object-fit: cover;
+  object-position: center;
+}
+
+.hackathon-img-back {
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+  height: 200px;
+  width: 350px;
+  overflow: hidden;
+  object-fit: cover;
+  object-position: center;
+  position: relative;
+}
+
+.hackathon-card-imgtext {
+  position: absolute;
+  top: 35%;
+  text-align: left;
+  
+}
+
+.card-image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0.5;
+  background-image: linear-gradient(
+    to top, red, transparent
+  );
 }

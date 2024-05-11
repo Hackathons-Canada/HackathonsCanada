@@ -1,94 +1,6 @@
 {% extends 'base.html' %} {% block content %}
-<div class="container-fluid dark-mode coolbody">
-  <section class="py-5 text-center container-fluid">
-    <div class="row py-lg-5">
-      <h1 class="display-1 fw-light pb-3">
-        Find all the
-        <span class="display-1 fw-light pb-3 shine-text">Hackathons </span> in
-        Canada <br />(Beta Version)
-      </h1>
-      <div class="col-lg-8 col-md-8 mx-auto non-hacker-card">
-        <p class="lead introtext">
-          Explore Ontario Hackers, a vibrant online community uniting over 900
-          passionate individuals. Dive into insightful discussions about the
-          latest hackathons across Canada, share experiences, and collaborate on
-          innovative projects. Join us for a dynamic space where creativity,
-          coding, and collaboration intersect in the world of Canadian
-          hackathons.
-        </p>
 
-        <p class="px-3">
-          <a
-            href="https://calendar.google.com/calendar/u/0?cid=M2Y0ODA2MjUxYTZjMGZhYTMwZWE3ZmE0YmI0NTdjMmE1NTI0ZWZlNGUzZjMwMDc4NmJlMmVlNWRjOGU1MTE3MEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t"
-            class="btn btn-primary my-2 px-3"
-            >Connect to Google Calendar</a
-          >
-          <a
-            href="https://docs.google.com/forms/d/e/1FAIpQLScS_jkH7LmZ6sBvcWnj1FGqyLsaHXa2XFn3N9alhSIpwTWuJA/viewform?usp=sf_link"
-            class="btn btn-secondary my-2 px-3"
-            >Add A Hackathon</a
-          >
-        </p>
-      </div>
-    </div>
-  </section>
-  <div
-    class="nav nav-tabs mb-3 d-flex justify-content-center navbarchoice"
-    id="nav-tab"
-    role="tablist"
-  >
-    <button
-      class="nav-link canada mx-4 my-2 nav-contact-tabca"
-      id="nav-contact-tabca"
-      data-bs-toggle="tab"
-      data-bs-target="#nav-home"
-      type="button"
-      role="tab"
-      aria-controls="nav-home"
-      aria-selected="false"
-      tabindex="-1"
-    >
-      Canada
-    </button>
-    <button
-      class="nav-link active usa mx-4 my-2"
-      id="nav-contact-tabus"
-      data-bs-toggle="tab"
-      data-bs-target="#nav-profile"
-      type="button"
-      role="tab"
-      aria-controls="nav-profile"
-      aria-selected="true"
-    >
-      United States
-    </button>
-    <button
-      class="nav-link online mx-4 my-2"
-      id="nav-contact-tabon"
-      data-bs-toggle="tab"
-      data-bs-target="#nav-contact"
-      type="button"
-      role="tab"
-      aria-controls="nav-contact"
-      aria-selected="false"
-      tabindex="-1"
-    >
-      Online
-    </button>
-    <button
-      class="nav-link online everywhere mx-4 my-2"
-      id="nav-contact-tabev"
-      data-bs-toggle="tab"
-      data-bs-target="#nav-contact"
-      type="button"
-      role="tab"
-      aria-controls="nav-contact"
-      aria-selected="false"
-      tabindex="-1"
-    >
-      Everywhere
-    </button>
-  </div>
+  
   <div class="album text-center">
     <div class="container-fluid">
       <div
@@ -96,53 +8,45 @@
       >
         {% for i in list %}
         <div
-          class="col lockedheight p-4 {% if i.9 == 'Canada' or i.9 == 'United States' or i.9 == 'Online' %} {{i.9}} {% else %} other {{i.9}} {% endif %}"
+          class="col flip-card lockedheight p-4 {% if i.9 == 'Canada' or i.9 == 'United States' or i.9 == 'Online' %} {{i.9}} {% else %} other {{i.9}} {% endif %}"
         >
-          <div class="position-relative">
-            <div class="flip-card">
               <div class="flip-card-inner">
-                <div class="flip-card-front roundedcards">
-                  <div class="card roundedcards">
+                <div class="flip-card-front">
+                  <div class="hackathon-card">
                     <img
                       src="{{ i.10 }}"
-                      class="card-img-top"
+                      class="hackathon-img-front"
                       alt="Front Image"
                     />
 
-                    <div class="card-body">
-                      <h2 class="card-title pt-3">{{ i.0 }}</h2>
-
-                      <h5 class="py-2">
-                        <span>Date:</span> {{ i.2 }} - {{ i.3 }}
-                      </h5>
-                      <h6 class="pb-3">
+                    <div class="hackathon-content">
+                      <h2 class="card-title pt-4">{{ i.0 }}</h2>
+                      <h6 class="">
                         <span>Location:</span> {{ i.6 }}, {{ i.9 }}
                       </h6>
-                      {% if i.11 == "#1" %}
-                      <span
-                        class="position-absolute top-0 start-50 translate-middle text-bg-light rounded-5"
-                      >
-                        <h5 class="pt-2 px-4">Click On Me!</h5>
-                      </span>
-                      {% endif %}
+                      <h5 class="">
+                        <span>Date:</span> {{ i.2 }} - {{ i.3 }}
+                      </h5>
+                      
                     </div>
                   </div>
                 </div>
-                <div class="flip-card-back roundedcards">
-                  <div class="card roundedcards">
+                <div class="flip-card-back">
+                  <div class="hackathon-card">
+                    <div class = "card-image-overlay">
+                    </div>
                     <img
                       src="{{ i.10 }}"
-                      class="card-img-top"
+                      class="hackathon-img-back"
                       alt="Front Image"
                     />
+                    <div class = 'hackathon-card-imgtext'>
+                      <h6 >{{ i.6 }} | {{ i.2 }} - {{ i.3 }}</h6>
+                      <h3 class="card-title">{{ i.0 }}</h3>
+                    </div>
+                    
                     <div class="card-body">
-                      <h5 class="card-title">{{ i.0 }}</h5>
-
-                      <p class="card-text">Date: {{ i.2 }} - {{ i.3 }}</p>
-
-                      <p class="card-text">Location: {{ i.6 }}</p>
-
-                      <p class="card-text">Country: {{ i.9 }}</p>
+                    
 
                       <p class="card-text">Application Deadline: {{ i.4 }}</p>
 
@@ -151,12 +55,11 @@
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
+
         </div>
         {% endfor %}
       </div>
     </div>
   </div>
-</div>
+
 {% endblock %}

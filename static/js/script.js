@@ -7,26 +7,8 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-  const radioButtons = document.querySelectorAll(
-    '.btn-group input[type="radio"]'
-  );
-  radioButtons.forEach(function (radioButton) {
-    radioButton.addEventListener("change", function () {
-      const checkedRadioButton = document.querySelector(
-        '.btn-group input[type="radio"]:checked'
-      );
-      const url = checkedRadioButton.nextElementSibling.dataset.url;
-      window.location.href = url;
-    });
-  });
-});
-
 const scrollers = document.querySelectorAll(".scroller");
-
-
 addAnimation();
-
 
 function addAnimation() {
   scrollers.forEach((scroller) => {
