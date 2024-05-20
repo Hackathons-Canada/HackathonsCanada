@@ -3,3 +3,4 @@ canadahackers/local_settings.py
 .env
 *.sqlite3
 celerybeat-schedule
+venv

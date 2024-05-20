@@ -1,5 +1,58 @@
 {% extends 'base.html' %} {% block content %}
+{% load static %}
 
+<main>
+  <section class="banner">
+      <img src="{% static 'assets/banner.png' %}" alt="Banner Image">
+  </section>
+  <section class="search">
+      <div class="search-bar">
+          <div>
+            <p>Where</p>
+            <input type="text" placeholder="Search countries">
+          </div>
+          <div>
+            <p>Start</p>
+            <input type="date" placeholder="Start date">
+          </div>
+          <div>
+            <p>End</p>
+            <input type="date" placeholder="End date">
+          </div>
+          <div>
+            <p>Age</p>
+            <input type="text" placeholder="Age Requirement">
+          </div>
+          <div>
+            <p>Education</p>
+            <input type="text" placeholder="Education level">
+          </div>
+          <div>
+            <p>Travel</p>
+            <input type="text" placeholder="Travel Coverage">
+          </div>
+          <button><img src="{% static 'assets/lens.png' %}" alt="Search"></button>
+      </div>
+  </section>
+  <section class="filters">
+      <div class="filter-option">
+          <img src="{% static 'assets/canada.png' %}" alt="Canada" class="region-image">
+          <p>Canada</p>
+      </div>
+      <div class="filter-option">
+          <img src="{% static 'assets/united_states.png' %}" alt="United States" class="region-image">
+          <p>United States</p>
+      </div>
+      <div class="filter-option">
+          <img src="{% static 'assets/world_wide.png' %}" alt="World Wide" class="region-image">
+          <p>World Wide</p>
+      </div>
+      <div class="filter-option">
+          <img src="{% static 'assets/online.png' %}" alt="Online" class="region-image">
+          <p>Online</p>
+      </div>
+  </section>
+</main>
   
   <div class="album text-center">
     <div class="container-fluid">

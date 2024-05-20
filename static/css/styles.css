@@ -71,7 +71,6 @@ a {
   color: #ffffff;
 }
 
-
 .flip-card-inner {
   position: relative;
   text-align: center;
@@ -108,7 +107,6 @@ a {
 .roundedcards {
   border-radius: 30px;
 }
-
 
 .introtext {
   color: #ffffff;
@@ -285,7 +283,6 @@ section {
   height: 250px;
 }
 
-
 .box-cards {
   position: relative;
   top: 0px;
@@ -296,22 +293,19 @@ section {
   height: 1200px;
 }
 
-
-
-.avasfasvdfdv{
+.avasfasvdfdv {
   height: auto;
   width: 650px;
   position: absolute;
-  background-color: #DD5353;
+  background-color: #dd5353;
   border-radius: 8px;
   padding: 20px;
   color: white;
-  
 }
 
-.avasfasvdf
-{position: absolute;
-  }
+.avasfasvdf {
+  position: absolute;
+}
 
 .avasfasvdf:nth-child(1) {
   top: 495px;
@@ -322,7 +316,7 @@ section {
 .avasfasvdf:nth-child(2) {
   top: 495px;
   left: 47%;
-  width: 53%; 
+  width: 53%;
 }
 
 .avasfasvdf:nth-child(3) {
@@ -362,10 +356,10 @@ section {
   border: 7px solid #dd5353;
 }
 
-.avasfasvdfhac{
+.avasfasvdfhac {
   height: auto;
   width: 500px;
-  background-color: #DD5353;
+  background-color: #dd5353;
   border-radius: 8px;
   padding: 20px;
   color: white;
@@ -406,8 +400,8 @@ section {
   }
 }
 
-.discord-role{
-  background-color: #2B2D31;
+.discord-role {
+  background-color: #2b2d31;
   color: white;
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
@@ -417,7 +411,6 @@ section {
   font-size: 15px;
   list-style-type: none;
 }
-
 
 .hackathon-card {
   perspective: 1000px;
@@ -455,7 +448,6 @@ section {
   position: absolute;
   top: 35%;
   text-align: left;
-  
 }
 
 .card-image-overlay {
@@ -463,7 +455,101 @@ section {
   top: 0;
   left: 0;
   opacity: 0.5;
-  background-image: linear-gradient(
-    to top, red, transparent
-  );
+  background-image: linear-gradient(to top, red, transparent);
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #fff;
+  border-bottom: 1px solid #ccc;
+}
+
+header .logo {
+  display: flex;
+  align-items: center;
+}
+
+header .logo img {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+header nav ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+header nav ul li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+}
+
+.banner {
+  position: relative;
+  text-align: center;
+}
+
+.banner img {
+  width: 100%;
+  height: auto;
+}
+
+.search {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  background-color: white;
+  border-bottom: 1px solid #ccc;
+}
+
+.search-bar {
+  display: flex;
+  gap: 10px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.search-bar > div {
+  display: flex;
+  padding: 10px;
+  flex-direction: column;
+  border-radius: 5px;
+}
+.search-bar > div:hover {
+  background-color: #f9f9f9;
+}
+.search-bar p {
+  margin: 0;
+}
+.search-bar input,
+.search-bar button {
+  border: 0px solid #ccc;
+  border-radius: 5px;
+}
+
+.filters {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  flex-direction: row;
+}
+
+.filter-option {
+  text-align: center;
+  margin: 0 20px;
+}
+
+.filter-option img {
+  height: 50px;
+}
+
+.filter-option p {
+  margin: 10px 0 0;
 }
