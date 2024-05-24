@@ -21,15 +21,25 @@
           </div>
           <div>
             <p>Age</p>
-            <input type="text" placeholder="Age Requirement">
+            <input type="number" placeholder="Age Requirement" min="0">
           </div>
           <div>
-            <p>Education</p>
-            <input type="text" placeholder="Education level">
+            <label for="education_choices">Education</label>
+            <select name="education_choices" id="education_choices">
+              <option value="Middle School">Middle School</option>
+              <option value="High School">High School</option>
+              <option value="University/College">University/College</option>
+              <option value="Graduated University/College">Graduated University/College</option>
+              <option value="Other">Other</option>
+            </select>
           </div>
           <div>
-            <p>Travel</p>
-            <input type="text" placeholder="Travel Coverage">
+            <label for="travel_coverage">Travel</label>
+            <select name="travel_coverage" id="travel_coverage">
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+              <option value="Any">Any</option>
+            </select>
           </div>
           <button><img src="{% static 'assets/lens.png' %}" alt="Search"></button>
       </div>
