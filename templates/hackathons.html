@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% load static %}
+    <main>
+        <section class="banner">
+            <img src="{% static 'assets/banner.png' %}" alt="Banner Image">
+        </section>
+        <section class="search">
+            <div class="search-bar">
+                <div>
+                    <p>Where</p>
+                    <input type="text" placeholder="Search countries">
+                </div>
+                <div>
+                    <p>Start</p>
+                    <input type="date" placeholder="Start date">
+                </div>
+                <div>
+                    <p>End</p>
+                    <input type="date" placeholder="End date">
+                </div>
+                <div>
+                    <p>Age</p>
+                    <input type="number" placeholder="Age Requirement" min="0">
+                </div>
+                <div>
+                    <label for="education_choices">Education</label>
+                    <select name="education_choices" id="education_choices">
+                        <option value="Middle School">Middle School</option>
+                        <option value="High School">High School</option>
+                        <option value="University/College">University/College</option>
+                        <option value="Graduated University/College">Graduated University/College</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="travel_coverage">Travel</label>
+                    <select name="travel_coverage" id="travel_coverage">
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                        <option value="Any">Any</option>
+                    </select>
+                </div>
+                <button>
+                    <img src="{% static 'assets/lens.png' %}" alt="Search">
+                </button>
+            </div>
+        </section>
+        <section class="filters">
+            <div class="filter-option">
+                <img src="{% static 'assets/canada.png' %}"
+                     alt="Canada"
+                     class="region-image">
+                <p>Canada</p>
+            </div>
+            <div class="filter-option">
+                <img src="{% static 'assets/united_states.png' %}"
+                     alt="United States"
+                     class="region-image">
+                <p>United States</p>
+            </div>
+            <div class="filter-option">
+                <img src="{% static 'assets/world_wide.png' %}"
+                     alt="World Wide"
+                     class="region-image">
+                <p>World Wide</p>
+            </div>
+            <div class="filter-option">
+                <img src="{% static 'assets/online.png' %}"
+                     alt="Online"
+                     class="region-image">
+                <p>Online</p>
+            </div>
+        </section>
+    </main>
+    <div class="album text-center">
+        <div class="container-fluid">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 d-flex justify-content-center">
+                {% for i in list %}
+                    <div class="col flip-card lockedheight p-4 {% if i.9 == 'Canada' or i.9 == 'United States' or i.9 == 'Online' %} {{ i.9 }} {% else %} other {{ i.9 }} {% endif %}">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <div class="hackathon-card">
+                                    <img src="{{ i.10 }}" class="hackathon-img-front" alt="Front Image" />
+                                    <div class="hackathon-content">
+                                        <h2 class="card-title pt-4">{{ i.0 }}</h2>
+                                        <h6 class="">
+                                            <span>Location:</span> {{ i.6 }}, {{ i.9 }}
+                                        </h6>
+                                        <h5 class="">
+                                            <span>Date:</span> {{ i.2 }} - {{ i.3 }}
+                                        </h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flip-card-back">
+                                <div class="hackathon-card">
+                                    <div class = "card-image-overlay"></div>
+                                    <img src="{{ i.10 }}" class="hackathon-img-back" alt="Front Image" />
+                                    <div class = 'hackathon-card-imgtext'>
+                                        <h6>{{ i.6 }} | {{ i.2 }} - {{ i.3 }}</h6>
+                                        <h3 class="card-title">{{ i.0 }}</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text">Application Deadline: {{ i.4 }}</p>
+                                        <p class="card-text">Travel Reimbursements: {{ i.5 }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

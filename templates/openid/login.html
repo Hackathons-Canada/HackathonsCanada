@@ -6,19 +6,19 @@
 {% endblock head_title %}
 {% block content %}
     {% element h1 %}
-        OpenID {% trans 'Sign In' %}
-    {% endelement %}
-    {% url 'openid_login' as action_url %}
-    {% element form method="post" action=action_url %}
-        {% slot body %}
-            {% csrf_token %}
-            {% element fields form=form unlabeled=True %}
-            {% endelement %}
-        {% endslot %}
-        {% slot actions %}
-            {% element button type="submit" %}
-                {% translate "Sign In" %}
-            {% endelement %}
-        {% endslot %}
-    {% endelement %}
+    OpenID {% trans 'Sign In' %}
+{% endelement %}
+{% url 'openid_login' as action_url %}
+{% element form method="post" action=action_url %}
+{% slot body %}
+{% csrf_token %}
+{% element fields form=form unlabeled=True %}
+{% endelement %}
+{% endslot %}
+{% slot actions %}
+{% element button type="submit" %}
+{% translate "Sign In" %}
+{% endelement %}
+{% endslot %}
+{% endelement %}
 {% endblock content %}

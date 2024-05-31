@@ -172,6 +172,9 @@ class Category(models.Model):
 
 
 class HackthonsManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(is_public=True)
+    
     def online(self):
         return self.filter(country="Onl")
 
@@ -192,6 +195,7 @@ class HackthonsManager(models.Manager):
 
 class Hackathon(MetaDataMixin):
     objects = HackthonsManager()
+    is_public = models.BooleanField(help_text="Is the hackathon visible to all users", default=False)
     categories = models.ManyToManyField(Category, related_name="hackathons")
     created_by = models.ForeignKey(
         Hacker,
