@@ -174,15 +174,3 @@ except ImportError:
 
 if SECRET_KEY == "CHANGEME" and DEBUG is False:
     raise ValueError("Please set SECRET_KEY in local_settings.py")
-
-if DISCORD_GUILD_ID == 0:
-    raise ValueError("Please set DISCORD_GUILD_ID in local_settings.py")
-
-if DISCORD_ARCHIVE_CATEGORY_ID == 0:
-    raise ValueError("Please set DISCORD_ARCHIVE_CATEGORY_ID in local_settings.py")
-
-if DISCORD_ACTIVE_CATEGORY_ID == 0:
-    raise ValueError("Please set DISCORD_ACTIVE_CATEGORY_ID in local_settings.py")
-
-if DISCORD_TOKEN == "CHANGEME":
-    raise ValueError("Please set DISCORD_TOKEN in local_settings.py")
