@@ -174,13 +174,13 @@ class Category(models.Model):
 class HackthonsManager(models.Manager):
     def online(self):
         return self.filter(country="Onl")
-    
+
     def in_person(self):
         return self.exclude(country="Onl")
-    
+
     def local(self, user: Hacker):
-        ... # todo: implement this
-    
+        ...  # todo: implement this
+
     def eligible(self, user: Hacker):
         # todo rewrite
         return self.filter(
@@ -188,8 +188,7 @@ class HackthonsManager(models.Manager):
             # min_age__lte=user.age,
             maximum_education_level__gte=user.education,
         )
-    
-    
+
 
 class Hackathon(MetaDataMixin):
     objects = HackthonsManager()

@@ -18,7 +18,7 @@ def run(token: str):
     except discord.errors.LoginFailure:
         print("Note: Discord bot token is invalid")
         pass
-    
+
 
 class DisChannelSaverConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
@@ -27,8 +27,6 @@ class DisChannelSaverConfig(AppConfig):
 
     def ready(self):
         global client_thread, loop
-        client_thread = threading.Thread(
-            target=run, args=[settings.DISCORD_TOKEN]
-        )
+        client_thread = threading.Thread(target=run, args=[settings.DISCORD_TOKEN])
         client_thread.start()
         loop = asyncio.get_event_loop()
