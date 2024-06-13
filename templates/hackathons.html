@@ -77,18 +77,18 @@
         <div class="container-fluid">
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 d-flex justify-content-center">
                 {% for i in hackathons %}
-                    <div class="col flip-card lockedheight p-4 {% if i.9 == 'Canada' or i.9 == 'United States' or i.9 == 'Online' %} {{ i.9 }} {% else %} other {{ i.9 }} {% endif %}">
+                    <div class="col flip-card lockedheight p-4 {% if i.country == 'Canada' or i.country == 'United States' or i.country == 'Online' %} {{ i.country }} {% else %} other {{ i.country }} {% endif %}">
                         <div class="flip-card-inner">
                             <div class="flip-card-front">
                                 <div class="hackathon-card">
-                                    <img src="{{ i.10 }}" class="hackathon-img-front" alt="Front Image" />
+                                    <img src="{{ i.image }}" class="hackathon-img-front" alt="Front Image" />
                                     <div class="hackathon-content">
-                                        <h2 class="card-title pt-4">{{ i.0 }}</h2>
+                                        <h2 class="card-title pt-4">{{ i.name }}</h2>
                                         <h6 class="">
-                                            <span>Location:</span> {{ i.6 }}, {{ i.9 }}
+                                            <span>Location:</span> {{ i.country }}
                                         </h6>
                                         <h5 class="">
-                                            <span>Date:</span> {{ i.2 }} - {{ i.3 }}
+                                            <span>Date:</span> {{ i.start_date }} - {{ i.end_date }}
                                         </h5>
                                     </div>
                                 </div>
@@ -98,12 +98,12 @@
                                     <div class = "card-image-overlay"></div>
                                     <img src="{{ i.10 }}" class="hackathon-img-back" alt="Front Image" />
                                     <div class = 'hackathon-card-imgtext'>
-                                        <h6>{{ i.6 }} | {{ i.2 }} - {{ i.3 }}</h6>
-                                        <h3 class="card-title">{{ i.0 }}</h3>
+                                        <h6>{{ i.6 }} | {{ i.start_date }} - {{ i.end_date }}</h6>
+                                        <h3 class="card-title">{{ i.name }}</h3>
                                     </div>
                                     <div class="card-body">
-                                        <p class="card-text">Application Deadline: {{ i.4 }}</p>
-                                        <p class="card-text">Travel Reimbursements: {{ i.5 }}</p>
+                                        <p class="card-text">Application Deadline: {{ i.application_deadline }}</p>
+                                        <p class="card-text">Travel Reimbursements: {{ i.reimbursements }}</p>
                                     </div>
                                 </div>
                             </div>
