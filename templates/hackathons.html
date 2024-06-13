@@ -76,7 +76,7 @@
     <div class="album text-center">
         <div class="container-fluid">
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 d-flex justify-content-center">
-                {% for i in list %}
+                {% for i in hackathons %}
                     <div class="col flip-card lockedheight p-4 {% if i.9 == 'Canada' or i.9 == 'United States' or i.9 == 'Online' %} {{ i.9 }} {% else %} other {{ i.9 }} {% endif %}">
                         <div class="flip-card-inner">
                             <div class="flip-card-front">
