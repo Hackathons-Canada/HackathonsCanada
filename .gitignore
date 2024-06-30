@@ -1,5 +1,5 @@
 canadahackers/local_settings.py
-canadahackers/local_settings.py.template
+canadahackers/local_settings.py
 *.pyc
 .env
 *.sqlite3

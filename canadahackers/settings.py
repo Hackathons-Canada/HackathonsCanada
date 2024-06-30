@@ -25,7 +25,7 @@ SECRET_KEY = "CHANGEME"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["DEBUG"]
 
 AUTH_USER_MODEL = "core.Hacker"
 # Application definition

@@ -604,7 +604,7 @@ body {
   gap: 20px;
 }
 .footer nav a {
-  color: #fff;
+  color: rgba(141, 141, 141, 0.72);
   text-decoration: none;
 }
 .footer nav a:hover {
@@ -614,6 +614,9 @@ body {
   display: flex;
   gap: 10px;
 }
+
+
+
 .footer .social-footer a {
   text-decoration: none;
 }
