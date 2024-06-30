@@ -1,6 +1,13 @@
 * {
   color: #000000;
-  font-family: "Inter", sans-serif;
+  font-family: "Rubik", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.rubik {
+  font-family: "Rubik", sans-serif;
 }
 
 body {
@@ -552,4 +559,32 @@ header nav ul li a {
 
 .filter-option p {
   margin: 10px 0 0;
+}
+
+.nav-head-text {
+  color: #000;
+  font-size: 19px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 90.3%; /* 20.643px */
+}
+
+.nav-link-text-parent {
+  color: #181818;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+.nav-link-text-child {
+  text-decoration: none;
+  color: #000;
+}
+
+.nav-link-sign {
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #ff5a50 0%, #ef233c 100%);
+  box-shadow: 0px 0px 12px -1px #eb5757;
+  color: #fff;
 }
