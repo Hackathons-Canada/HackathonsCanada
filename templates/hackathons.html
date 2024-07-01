@@ -86,6 +86,49 @@
     <div
       class="row row-cols-1 row-cols-sm-2 row-cols-md-3 d-flex justify-content-center"
     >
+      <div class="col flip-card lockedheight p-4">
+        <div class="flip-card-inner">
+          <div class="flip-card-front">
+            <div class="hackathon-card">
+              <img
+                src="https://s3.amazonaws.com/assets.mlh.io/events/splashes/000/213/024/thumb/devpost_icon.jpg?1718704752"
+                class="hackathon-img-front"
+                alt="Front Image"
+              />
+              <div class="hackathon-content">
+                <h2 class="card-title pt-4">TechTogether Online</h2>
+                <h6 class=""><span>Location:</span> West Bengal</h6>
+                <h5 class=""><span>Date:</span> AUG 1 - 13</h5>
+              </div>
+            </div>
+          </div>
+          <div class="flip-card-back">
+            <div class="hackathon-card">
+              <div class="card-image-overlay"></div>
+              <img
+                src="https://s3.amazonaws.com/assets.mlh.io/events/splashes/000/212/657/thumb/Backsplash_300.png?1688131132"
+                class="hackathon-img-back"
+                alt="Front Image"
+              />
+              <div class="hackathon-card-imgtext">
+                <h6>Waterloo, ON | May 17-19, 2024</h6>
+                <h3 class="card-title">HawkHacks</h3>
+              </div>
+              <div class="card-body">
+                <p class="card-text">Application Deadline: 2345</p>
+                <p class="card-text">Travel Reimbursements: 3245</p>
+                <p class="card-text">Travel Reimbursements: 3245</p>
+                <p class="card-text">Travel Reimbursements: 3245</p>
+                <p class="card-text">Travel Reimbursements: 3245</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div
+      class="row row-cols-1 row-cols-sm-2 row-cols-md-3 d-flex justify-content-center"
+    >
       {% for i in hackathons %}
       <div
         class="col flip-card lockedheight p-4 {% if i.country == 'Canada' or i.country == 'United States' or i.country == 'Online' %} {{ i.country }} {% else %} other {{ i.country }} {% endif %}"
@@ -132,7 +175,7 @@
         </div>
       </div>
       {% endfor %}
-    </div>
+    </div> -->
   </div>
 </div>
 {% endblock %}
