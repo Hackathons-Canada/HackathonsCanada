@@ -774,7 +774,7 @@ header nav ul li a {
 .scroller-wrapper-layout {
   max-width: 56vw;
   width: 90%;
-  height: 16vw;
+  height: 8vw;
   position: relative;
   mask-image: linear-gradient(
     to right,
@@ -794,18 +794,21 @@ header nav ul li a {
   background: #fff;
   position: absolute;
   box-shadow: 2.7px 3.6px 12.6px 2.7px rgba(0, 0, 0, 0.1);
-  left: calc(7vw * 6);
-  animation-duration: 30s;
+
   animation-timing-function: linear;
   animation-iteration-count: infinite;
 }
 
 .item-scroller-left-layout {
   animation-name: scrollleft;
+  animation-duration: 30s;
+  left: max(calc(7vw * 6), 100%);
 }
 
 .item-scroller-right-layout {
   animation-name: scrollright;
+  animation-duration: 15s;
+  left: -7vw;
 }
 
 @keyframes scrollleft {
@@ -813,6 +816,14 @@ header nav ul li a {
   }
   to {
     left: -7vw;
+  }
+}
+
+@keyframes scrollright {
+  from {
+  }
+  to {
+    left: max(calc(7vw * 6), 100%);
   }
 }
 
@@ -838,4 +849,35 @@ header nav ul li a {
 
 .item-scroller-left-layout:nth-child(6) {
   animation-delay: calc(30s / 6 * (6 - 6) * -1);
+}
+
+.hero-scroller-layout {
+  width: 50vw;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.item-scroller-right-layout:nth-child(1) {
+  animation-delay: calc(15s / 6 * (6 - 1) * -1);
+}
+
+.item-scroller-right-layout:nth-child(2) {
+  animation-delay: calc(15s / 6 * (6 - 2) * -1);
+}
+
+.item-scroller-right-layout:nth-child(3) {
+  animation-delay: calc(15s / 6 * (6 - 3) * -1);
+}
+
+.item-scroller-right-layout:nth-child(4) {
+  animation-delay: calc(15s / 6 * (6 - 4) * -1);
+}
+
+.item-scroller-right-layout:nth-child(5) {
+  animation-delay: calc(15s / 6 * (6 - 5) * -1);
+}
+
+.item-scroller-right-layout:nth-child(6) {
+  animation-delay: calc(15s / 6 * (6 - 6) * -1);
 }
