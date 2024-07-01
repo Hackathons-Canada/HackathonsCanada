@@ -642,13 +642,130 @@ header nav ul li a {
   gap: 30px;
 }
 
-.card-img-1 img {
-  position: relative;
-}
-
 .card-img-1 text {
   position: absolute;
   display: flex;
   justify-content: center;
   align-items: baseline;
+}
+
+.header-text-black {
+  color: #000;
+  text-align: right;
+  font-size: 48px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 52.8px; /* 110% */
+}
+.header-text-red {
+  color: var(--3, #e5462e);
+  font-size: 58px;
+  font-style: italic;
+  font-weight: 700;
+  line-height: 52.8px;
+}
+.card-header-layout {
+  display: flex;
+  align-items: flex-end;
+}
+
+.card-join-text {
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.button-discord-style {
+  padding: 10px 40px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #5865f2 0%, #505cc4 100%);
+  box-shadow: 0px 0px 12px -1px #515eea;
+  color: #fff;
+  text-align: center;
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 96%; /* 16.32px */
+}
+
+.button-discord-text2 {
+  color: var(--7, #4a5769);
+  text-align: center;
+  font-size: 19px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+.button-discord-text1 {
+  color: #000;
+  text-align: center;
+  font-size: 48px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 52.8px; /* 110% */
+}
+
+.button-discord-blue {
+  color: #5e6ad2;
+  font-size: 48px;
+  font-style: italic;
+  font-weight: 700;
+  line-height: 52.8px;
+}
+
+.card-join-layout {
+  position: relative;
+}
+
+.hero-text-light {
+  color: #f9e7e5;
+  font-size: 80px;
+  font-style: italic;
+  font-weight: 500;
+  line-height: 101%; /* 80.8px */
+}
+
+.hero-text-dark {
+  color: var(--1, #000e22);
+  font-size: 58px;
+  font-style: italic;
+  font-weight: 500;
+  line-height: 101%; /* 58.58px */
+  letter-spacing: -0.58px;
+  text-transform: uppercase;
+}
+
+.hero-text-red {
+  color: var(--3, #e5462e);
+  font-family: Rubik;
+  font-size: 81px;
+  font-style: italic;
+  font-weight: 500;
+  line-height: 101%; /* 81.81px */
+  letter-spacing: 3.24px;
+  text-transform: uppercase;
+}
+
+.hero-text-body {
+  color: #000;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+  max-width: 60vh;
+}
+
+.hero-container-layout {
+  padding: 10vw 10vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
 }
