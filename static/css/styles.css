@@ -11,7 +11,6 @@
 }
 
 body {
-  background-color: rgb(255, 255, 255);
   color: #000000;
 }
 
@@ -290,67 +289,6 @@ section {
   height: 250px;
 }
 
-.box-cards {
-  position: relative;
-  top: 0px;
-  width: auto;
-  display: flex;
-  margin: 24px;
-  max-width: 1200px;
-  height: 1200px;
-}
-
-.avasfasvdf {
-  position: absolute;
-  border-radius: 20px;
-  border: 3px solid #2f80ed;
-  background: url(<path-to-image>) lightgray 50% / cover no-repeat;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-}
-
-.avasfasvdf:nth-child(1) {
-  top: 495px;
-  left: 0%;
-  width: 44%;
-}
-
-.avasfasvdf:nth-child(2) {
-  top: 495px;
-  left: 47%;
-  width: 53%;
-}
-
-.avasfasvdf:nth-child(3) {
-  top: 970px;
-  left: 47%;
-  width: 53%;
-}
-
-.avasfasvdf:nth-child(4) {
-  top: 0;
-  left: 0%;
-  width: 40%;
-}
-
-.avasfasvdf:nth-child(5) {
-  max-height: 530px;
-  top: 0;
-  left: 43%;
-  width: 57%;
-}
-
-.avasfasvdf:nth-child() {
-  top: 1050px;
-  left: 45%;
-  width: 5%;
-}
-
-.avasfasvdf:nth-child() {
-  top: 1000px;
-  left: 5%;
-  width: 45%;
-}
-
 .hackathon-card {
   perspective: 1000px;
   display: flex;
@@ -521,11 +459,6 @@ header nav ul li a {
   color: #fff;
 }
 
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: #f8f8f8;
-}
 .hero {
   background-color: #fff;
   height: 100vh;
@@ -615,8 +548,6 @@ body {
   gap: 10px;
 }
 
-
-
 .footer .social-footer a {
   text-decoration: none;
 }
@@ -693,4 +624,31 @@ body {
 .logo-svg-img {
   width: 38px;
   height: 38px;
+}
+
+.card-box-layout {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.card-row-layout {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  gap: 30px;
+}
+
+.card-img-1 img {
+  position: relative;
+}
+
+.card-img-1 text {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
 }
