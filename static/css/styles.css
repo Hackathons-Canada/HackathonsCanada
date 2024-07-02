@@ -80,7 +80,7 @@ a {
 .flip-card-inner {
   position: relative;
   text-align: center;
-  transition: transform 0.4s;
+  transition: transform 0.6s;
   transform-style: preserve-3d;
 }
 
@@ -319,12 +319,17 @@ section {
   object-fit: cover;
   object-position: center;
   position: relative;
+  z-index: 1;
 }
 
 .hackathon-card-imgtext {
   position: absolute;
-  top: 35%;
-  text-align: left;
+  top: 0%;
+  z-index: 2;
+  height: 200px;
+  width: 350px;
+  color: white;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));
 }
 
 .card-image-overlay {

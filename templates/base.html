@@ -26,6 +26,8 @@
       rel="stylesheet"
     />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="{% static 'js/script.js' %}"></script>
+
     {% block deps %}{% endblock %}
     <title>{% block title %}Hackathons Canada{% endblock %}</title>
   </head>
@@ -92,6 +94,5 @@
     </div>
 
     {% block content %}{% endblock %}
-    <script src="{% static 'js/scripts.js' %}"></script>
   </body>
 </html>

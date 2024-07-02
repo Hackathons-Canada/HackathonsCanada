@@ -126,56 +126,6 @@
         </div>
       </div>
     </div>
-    <!-- <div
-      class="row row-cols-1 row-cols-sm-2 row-cols-md-3 d-flex justify-content-center"
-    >
-      {% for i in hackathons %}
-      <div
-        class="col flip-card lockedheight p-4 {% if i.country == 'Canada' or i.country == 'United States' or i.country == 'Online' %} {{ i.country }} {% else %} other {{ i.country }} {% endif %}"
-      >
-        <div class="flip-card-inner">
-          <div class="flip-card-front">
-            <div class="hackathon-card">
-              <img
-                src="{{ i.image }}"
-                class="hackathon-img-front"
-                alt="Front Image"
-              />
-              <div class="hackathon-content">
-                <h2 class="card-title pt-4">{{ i.name }}</h2>
-                <h6 class=""><span>Location:</span> {{ i.country }}</h6>
-                <h5 class="">
-                  <span>Date:</span> {{ i.start_date }} - {{ i.end_date }}
-                </h5>
-              </div>
-            </div>
-          </div>
-          <div class="flip-card-back">
-            <div class="hackathon-card">
-              <div class="card-image-overlay"></div>
-              <img
-                src="{{ i.10 }}"
-                class="hackathon-img-back"
-                alt="Front Image"
-              />
-              <div class="hackathon-card-imgtext">
-                <h6>{{ i.6 }} | {{ i.start_date }} - {{ i.end_date }}</h6>
-                <h3 class="card-title">{{ i.name }}</h3>
-              </div>
-              <div class="card-body">
-                <p class="card-text">
-                  Application Deadline: {{ i.application_deadline }}
-                </p>
-                <p class="card-text">
-                  Travel Reimbursements: {{ i.reimbursements }}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      {% endfor %}
-    </div> -->
   </div>
 </div>
 {% endblock %}
