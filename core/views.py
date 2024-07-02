@@ -8,6 +8,14 @@ from core.models import Hackathon
 def home(request):
     return render(request, "home.html")
 
+
+def addHackathons(request):
+    context = {
+        'title': 'Add a New Hackathon',
+        'content': 'Use this form to add a new hackathon to the database.'
+    }
+    return render(request, '../templates/add_hackathon.html', context)
+
 class HackathonsPage(ListView):
     template_name = "hackathons.html"
     context_object_name = "hackathons"

@@ -1,0 +1,217 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Hackathon</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        form p {
+            margin-bottom: 15px;
+        }
+        label {
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            background: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .messages {
+            margin-bottom: 20px;
+        }
+        .messages ul {
+            list-style: none;
+            padding: 0;
+        }
+        .messages li {
+            padding: 10px;
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            margin-bottom: 5px;
+        }
+        .hackathon-list {
+            margin-top: 30px;
+        }
+        .hackathon-list h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .hackathon-list ul {
+            list-style: none;
+            padding: 0;
+        }
+        .hackathon-list li {
+            padding: 10px;
+            background: #f1f1f1;
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+        }
+        footer {
+            background: #333;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 50px;
+        }
+        .footer-logo img {
+            height: 40px;
+        }
+        .footer-logo span {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        nav a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+        .info-footer, .social-footer {
+            display: flex;
+            align-items: center;
+        }
+        .info-footer a, .social-footer a {
+            margin: 0 10px;
+        }
+        .social-footer svg {
+            width: 24px;
+            height: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Add a New Hackathon</h1>
+        {% if messages %}
+            <div class="messages">
+                <ul>
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <p>
+                <label for="id_name">Name:</label>
+                <input type="text" name="name" id="id_name" required>
+            </p>
+            <p>
+                <label for="id_start_date">Start Date:</label>
+                <input type="date" name="start_date" id="id_start_date" required>
+            </p>
+            <p>
+                <label for="id_end_date">End Date:</label>
+                <input type="date" name="end_date" id="id_end_date" required>
+            </p>
+            <p>
+                <label for="id_location">Location:</label>
+                <input type="text" name="location" id="id_location" required>
+            </p>
+            <p>
+                <label for="id_url">Website:</label>
+                <input type="url" name="url" id="id_url" required>
+            </p>
+            <p>
+                <label for="id_fgimage">Foreground Image:</label>
+                <input type="file" name="fgimage" id="id_fgimage" required>
+            </p>
+            <p>
+                <label for="id_bgimage">Background Image:</label>
+                <input type="file" name="bgimage" id="id_bgimage" required>
+            </p>
+            <button type="submit">Submit</button>
+        </form>
+
+        <div class="hackathon-list">
+            <h2>All Hackathons</h2>
+            <ul>
+            {% for hackathon in hackathons %}
+                <li>{{ hackathon.name }} - {{ hackathon.start_date }} to {{ hackathon.end_date }} - {{ hackathon.location }} - <a href="{{ hackathon.url }}">{{ hackathon.url }}</a></li>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="{% static 'assets/logo.png' %}" alt="Hackathons Canada Logo">
+                <span class="foot-head-text">Hackathons <br />Canada</span>
+            </div>
+            <nav style="flex-grow: 1; display: flex; justify-content: flex-end;">
+                <a href="#">Code of Conduct</a>
+                <span>|</span>
+                <a href="#">Privacy Policy</a>
+                <span>|</span>
+                <a href="#">Contact Us</a>
+            </nav>
+        </div>
+        <div class="footer-bottom">
+            <div>
+                <nav class="info-footer">
+                    <a href="#"> Copyright Hackathons Canada @ 2023 </a>
+                    <a href="#">Terms</a>
+                    <span>|</span>
+                    <a href="#">Privacy</a>
+                </nav>
+            </div>
+            <div class="social-footer">
+                <a href="#"><svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="#0A66C2" d="M12.225 12.225h-1.778V9.44c0-.664-.012-1.519-.925-1.519-.926 0-1.068.724-1.068 1.47v2.834H6.676V6.498h1.707v.783h.024c.348-.594.996-.95 1.684-.925 1.802 0 2.135 1.185 2.135 2.728l-.001 3.14zM4.67 5.715a1.037 1.037 0 01-1.032-1.031c0-.566.466-1.032 1.032-1.032.566 0 1.031.466 1.032 1.032 0 .566-.466 1.032-1.032 1.032zm.889 6.51h-1.78V6.498h1.78v5.727zM13.11 2H2.885A.88.88 0 002 2.866v10.268a.88.88 0 00.885.866h10.226a.882.882 0 00.889-.866V2.865a.88.88 0 00-.889-.864z"></path></g></svg></a>
+                <a href="#"><svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect x="2" y="2" width="28" height="28" rx="6" fill="url(#paint0_radial_87_7153)"></rect> <rect x="2" y="2" width="28" height="28" rx="6" fill="url(#paint1_radial_87_7153)"></rect> <path d="M11.9365 17.8968C13.7778 17.8968 15.2612 16.4134 15.2612 14.5721C15.2612 12.7308 13.7778 11.2474 11.9365 11.2474C10.0952 11.2474 8.61182 12.7308 8.61182 14.5721C8.61182 16.4134 10.0952 17.8968 11.9365 17.8968Z" fill="white"></path> <path d="M21.8561 17.643C22.9598 17.643 23.855 16.7478 23.855 15.6441C23.855 14.5404 22.9598 13.6451 21.8561 13.6451C20.7524 13.6451 19.8572 14.5404 19.8572 15.6441C19.8572 16.7478 20.7524 17.643 21.8561 17.643Z" fill="white"></path> <path d="M19.5206 20.2939C18.9166 20.2939 18.339 20.5293 17.921 20.9472C17.503 21.3652 17.2676 21.9428 17.2676 22.5468V23.9997H24.4443V22.5468C24.4443 22.2468 24.3853 21.9503 24.2717 21.6781C24.1581 21.4059 23.9923 21.1643 23.7859 20.9688C23.5795 20.7733 23.3374 20.6288 23.0722 20.5456C22.807 20.4624 22.5252 20.4421 22.2476 20.486C21.9318 20.535 21.6151 20.5718 21.2974 20.5965C20.9634 20.6223 20.6294 20.6291 20.2955 20.6168C20.0372 20.6072 19.7784 20.5741 19.5206 20.5182V20.2939Z" fill="white"></path> <path d="M16.4 8H15.6C13.8868 8 12.7223 8.00156 11.8221 8.0751C10.9452 8.14674 10.4968 8.27659 10.184 8.43597C9.43139 8.81947 8.81947 9.43139 8.43597 10.184C8.27659 10.4968 8.14674 10.9452 8.0751 11.8221C8.00156 12.7223 8 13.8868 8 15.6V16.4C8 18.1132 8.00156 19.2777 8.0751 20.1779C8.14674 21.0548 8.27659 21.5032 8.43597 21.816C8.81947 22.5686 9.43139 23.1805 10.184 23.564C10.4968 23.7234 10.9452 23.8533 11.8221 23.9249C12.7223 23.9984 13.8868 24 15.6 24H16.4C18.1132 24 19.2777 23.9984 20.1779 23.9249C21.0548 23.8533 21.5032 23.7234 21.816 23.564C22.5686 23.1805 23.1805 22.5686 23.564 21.816C23.7234 21.5032 23.8533 21.0548 23.9249 20.1779C23.9984 19.2777 24 18.1132 24 16.4V15.6C24 13.8868 23.9984 12.7223 23.9249 11.8221C23.8533 10.9452 23.7234 10.4968 23.564 10.184C23.1805 9.43139 22.5686 8.81947 21.816 8.43597C21.5032 8.27659 21.0548 8.14674 20.1779 8.0751C19.2777 8.00156 18.1132 8 16.4 8H15.6Z" fill="url(#paint2_radial_87_7153)"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M15.6 8H16.4C18.1132 8 19.2777 8.00156 20.1779 8.0751C21.0548 8.14674 21.5032 8.27659 21.816 8.43597C22.5686 8.81947 23.1805 9.43139 23.564 10.184C23.7234 10.4968 23.8533 10.9452 23.9249 11.8221C23.9984 12.7223 24 13.8868 24 15.6V16.4C24 18.1132 23.9984 19.2777 23.9249 20.1779C23.8533 21.0548 23.7234 21.5032 23.564 21.816C23.1805 22.5686 22.5686 23.1805 21.816 23.564C21.5032 23.7234 21.0548 23.8533 20.1779 23.9249C19.2777 23.9984 18.1132 24 16.4 24H15.6C13.8868 24 12.7223 23.9984 11.8221 23.9249C10.9452 23.8533 10.4968 23.7234 10.184 23.564C9.43139 23.1805 8.81947 22.5686 8.43597 21.816C8.27659 21.5032 8.14674 21.0548 8.0751 20.1779C8.00156 19.2777 8 18.1132 8 16.4V15.6C8 13.8868 8.00156 12.7223 8.0751 11.8221C8.14674 10.9452 8.27659 10.4968 8.43597 10.184C8.81947 9.43139 9.43139 8.81947 10.184 8.43597C10.4968 8.27659 10.9452 8.14674 11.8221 8.0751C12.7223 8.00156 13.8868 8 15.6 8Z" fill="white"></path> <defs> <radialGradient id="paint0_radial_87_7153" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(12 23) rotate(-55.3758) scale(25.5196)"> <stop stop-color="#B13589"></stop> <stop offset="0.79309" stop-color="#C62F94"></stop> <stop offset="1" stop-color="#8A3AC8"></stop> </radialGradient> <radialGradient id="paint1_radial_87_7153" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(11 31) rotate(-65.1363) scale(22.5942)"> <stop stop-color="#E0E8B7"></stop> <stop offset="0.444662" stop-color="#FB8A2E"></stop> <stop offset="0.71474" stop-color="#E2425C"></stop> <stop offset="1" stop-color="#E2425C" stop-opacity="0"></stop> </radialGradient> <radialGradient id="paint2_radial_87_7153" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(8 5.00003) scale(32.1963 30.2899)"> <stop stop-color="#E0E8B7"></stop> <stop offset="0.408688" stop-color="#FB8A2E"></stop> <stop offset="0.618647" stop-color="#E2425C"></stop> <stop offset="0.8375" stop-color="#8A3AC8"></stop> </radialGradient> </defs></g></svg></a>
+                <a href="#"><svg fill="#00acee" height="32px" width="32px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M512,97.248c-18.838,8.354-39.082,14.001-60.419,16.545c21.735-13.005,38.343-33.601,46.165-58.115 c-20.343,12.065-42.857,20.814-66.853,25.523c-19.158-20.404-46.326-33.124-76.515-33.124c-57.867,0-104.813,46.946-104.813,104.803 c0,8.218,0.943,16.221,2.733,23.873C177.668,179.91,94.01,134.128,40.246,68.792c-8.945,15.354-14.061,33.217-14.061,52.294 c0,36.084,18.354,67.947,46.252,86.541c-17.058-0.539-33.092-5.231-47.155-13.045c-0.001,0.434-0.001,0.868-0.001,1.307 c0,50.385,35.843,92.444,83.437,102.013c-8.723,2.372-17.93,3.649-27.429,3.649c-6.719,0-13.25-0.648-19.611-1.85 c13.274,41.379,51.721,71.523,97.3,72.368c-35.65,27.928-80.571,44.596-129.366,44.596c-8.405,0-16.712-0.495-24.88-1.459 c46.084,29.568,100.869,46.832,159.639,46.832c191.442,0,296.019-158.527,296.019-296.018c0-4.511-0.102-9.006-0.303-13.481 C480.111,136.775,497.92,118.096,512,97.248z"></path> </g> </g></svg></a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
+{% endblock %}
