@@ -919,3 +919,21 @@ header nav ul li a {
   display: flex;
   align-items: flex-start;
 }
+
+.card-body-layout {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin: 20px;
+}
+
+.hackathon-card-div-text {
+  display: flex;
+  bottom: 0px;
+}
+
+.card-body-text {
+  color: black;
+  font-size: 15px;
+  margin-bottom: 0;
+}
