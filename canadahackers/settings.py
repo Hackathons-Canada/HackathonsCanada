@@ -25,7 +25,11 @@ SECRET_KEY = "CHANGEME"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["DEBUG"]
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost',
+    # Add any other allowed hosts here
+]
 
 AUTH_USER_MODEL = "core.Hacker"
 # Application definition
