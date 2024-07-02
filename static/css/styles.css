@@ -322,14 +322,14 @@ section {
   z-index: 1;
 }
 
-.hackathon-card-imgtext {
+.hackathon-card-div {
   position: absolute;
   top: 0%;
   z-index: 2;
   height: 200px;
   width: 350px;
   color: white;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));
+  background: linear-gradient(to top, rgba(157, 0, 0, 0.8), rgba(0, 0, 0, 0));
 }
 
 .card-image-overlay {
@@ -901,4 +901,21 @@ header nav ul li a {
   margin-right: auto;
   width: 70%;
   height: auto;
+}
+
+.card-top-text-head {
+  color: white;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.card-top-text-side {
+  color: white;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.hackathon-card-div-text {
+  display: flex;
+  align-items: flex-start;
 }
