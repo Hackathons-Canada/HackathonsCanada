@@ -6,3 +6,4 @@ canadahackers/local_settings.py
 celerybeat-schedule
 venv
 
+.prettierignore

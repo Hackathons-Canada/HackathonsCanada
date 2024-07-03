@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     # 'allauth.socialaccount.providers.linkedin',
     "core",
     "dischannelsaver",
+    "widget_tweaks",
 ]
 
 MIDDLEWARE = [
