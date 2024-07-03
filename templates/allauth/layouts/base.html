@@ -9,7 +9,9 @@
     {% block extra_head %} {% endblock extra_head %}
     <link rel="stylesheet" href="{% static 'css/auth.css'%}" />
   </head>
-  <body>
+  <body class = "main-bg-{{ origin }}-layout">
+    
+
     {% block body %} {% if messages %}
     <div>
       <strong>{% trans "Messages:" %}</strong>

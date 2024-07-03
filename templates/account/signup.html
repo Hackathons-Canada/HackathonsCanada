@@ -5,8 +5,9 @@
     {% trans "Signup" %}
 {% endblock head_title %}
 {% block content %}
-<div class="flex items-center justify-center px-4 py-12 my-4 sm:px-6 lg:px-8">
-  <div class="w-full max-w-md space-y-8">
+<div class="main-bg-sign-layout">
+  
+  <div class="main-section-layout">
       <div>
           <h2 class="mt-6 text-3xl font-extrabold text-center text-gray-900">
               Create your account
@@ -17,7 +18,7 @@
                 login if you have one already.
             </a>
         </p>
-      </div>
+       
       <form class="mt-8 space-y-6" id="signup_form" method="post" action="{% url 'account_signup' %}">
         {% csrf_token %}
 
@@ -70,5 +71,5 @@
         </div>
       </form>
     </div>
-  </div>
+  
 {% endblock content %}
