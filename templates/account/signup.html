@@ -1,5 +1,4 @@
 {% extends "account/base_entrance.html" %}
-{% load widget_tweaks %}
 {% load allauth i18n %}
 {% block head_title %}
     {% trans "Signup" %}
@@ -21,29 +20,29 @@
        
       <form class="mt-8 space-y-6" id="signup_form" method="post" action="{% url 'account_signup' %}">
         {% csrf_token %}
-
-        {{ form.non_field_errors | safe }}
+      
+        {{ form.non_field_errors }}
         <input type="hidden" name="remember" value="true" />
         <div class="-space-y-px rounded-md shadow-sm">
           <div>
-            {{ form.username.errors | safe }}
+            {{ form.username.errors }}
             <label for="username" class="sr-only">Username</label>
-            {% render_field form.username placeholder="Username" id="username" name="username" type="text" autocomplete="username" required=True class="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" %}
+            <input placeholder="Username" id="username" name="username" type="text" autocomplete="username" required class="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" />
           </div>
           <div>
-            {{ form.email.errors | safe }}
+            {{ form.email.errors  }}
             <label for="email" class="sr-only">Username</label>
-            {% render_field form.email id="email" name="email" placeholder="Email" type="email" autocomplete="email" required="True" class="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" %}
+            <input id="email" name="email" placeholder="Email" type="email" autocomplete="email" required class="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"/>
           </div>
           <div>
-            {{ form.password1.errors | safe }}
+            {{ form.password1.errors }}
             <label for="password1" class="sr-only">Password</label>
-            {% render_field form.password1 id="password1" name="password1" placeholder="Password" type="password" autocomplete="current-password" required="True" class="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" %}
+            <input id="password1" name="password1" placeholder="Password" type="password" autocomplete="current-password" required class="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" />
           </div>
           <div>
-            {{ form.password2.errors | safe }}
+            {{ form.password2.errors }}
             <label for="password2" class="sr-only">Password</label>
-            {% render_field form.password2 id="password2" name="password2" type="password" autocomplete="current-password" required="True" class="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Cofirm Password" %}
+            <input id="password2" name="password2" type="password" autocomplete="current-password" required class="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Cofirm Password"/>
           </div>
         </div>
 

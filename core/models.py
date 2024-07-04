@@ -87,12 +87,12 @@ class NotificationPolicy(models.Model):
 
     class Meta:
         verbose_name_plural = "Notification Policies"
-        constraints = [
-            models.CheckConstraint(
-                check=models.Q(weekly=True) ^ models.Q(monthly=True),
-                name="weekly_or_monthly_not_both",
-            ),
-        ]
+        # constraints = [
+        #     models.CheckConstraint(
+        #         check=models.Q(weekly=True)&  models.Q(monthly=True),
+        #         name="weekly_or_monthly_not_both",
+        #     ),
+        # ]
 
 
 class Notifiable(models.QuerySet):
@@ -146,7 +146,7 @@ class Hacker(AbstractUser):
     def save(
         self, force_insert=False, force_update=False, using=None, update_fields=None
     ):
-        if not self.notification_policy:
+        if self.notification_policy_id is None:
             self.notification_policy = NotificationPolicy.objects.create()
         super().save(force_insert, force_update, using, update_fields)
 
@@ -170,10 +170,12 @@ class Category(models.Model):
     class Meta:
         verbose_name_plural = "Categories"
 
-
+class HackathonSource(models.TextChoices):
+    Scraped = "SCR", "Scrapped"
+    UserSubmitted = "USR", "User Submitted"
 class HackthonsManager(models.Manager):
     def get_queryset(self):
-        return super().get_queryset().filter(is_public=True)
+        return super().get_queryset().filter(status=HackathonStatuses.Approved)
     
     def online(self):
         return self.filter(country="Onl")
@@ -195,6 +197,17 @@ class HackthonsManager(models.Manager):
 
 class Hackathon(MetaDataMixin):
     objects = HackthonsManager()
+    source = models.CharField(
+        max_length=3,
+        choices=HackathonSource.choices,
+        default=HackathonSource.UserSubmitted,
+    )
+    metadata = models.JSONField(
+        blank=True,
+        null=True,
+        help_text="Metadata about the source of the hackathon",
+    )
+    
     is_public = models.BooleanField(help_text="Is the hackathon visible to all users", default=False)
     categories = models.ManyToManyField(Category, related_name="hackathons")
     created_by = models.ForeignKey(

@@ -51,7 +51,6 @@ INSTALLED_APPS = [
     # 'allauth.socialaccount.providers.linkedin',
     "core",
     "dischannelsaver",
-    "widget_tweaks",
 ]
 
 MIDDLEWARE = [
@@ -90,6 +89,8 @@ AUTHENTICATION_BACKENDS = [
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
 WSGI_APPLICATION = "canadahackers.wsgi.application"
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
@@ -154,6 +155,8 @@ COUNTRIES_FIRST = ["CA", "US"]
 
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://valkey:6379/1")
 CELERY_RESULT_BACKEND = os.environ.get("CELERY_BACKEND", "redis://valkey:6379/1")
+
+LOGIN_REDIRECT_URL = "/"  # todo change to profile page once created
 
 ### Custom settings
 
