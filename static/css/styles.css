@@ -671,7 +671,9 @@ header nav ul li a {
 }
 .card-header-layout {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
+  justify-content: center;
+  padding: 3vw 0px;
 }
 
 .card-join-text {
@@ -796,10 +798,7 @@ header nav ul li a {
   width: 7vw;
   height: 7.5vw;
   border-radius: 10px;
-  background: #fff;
   position: absolute;
-  box-shadow: 2.7px 3.6px 12.6px 2.7px rgba(0, 0, 0, 0.1);
-
   animation-timing-function: linear;
   animation-iteration-count: infinite;
 }
