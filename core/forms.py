@@ -33,9 +33,11 @@ class HackathonForm(forms.ModelForm):
             HTML("<h2 class = 'pt-5'>Feature Your Hackathon with Us.</h2>"),
             HTML("<h3>Let us help you promote your hackathon event.</h3>"),
             Fieldset(
+                
                 Div(
+                    'general info',
                     Field('short_name', css_class='form-group'),
-                    Field('short_name', css_class='form-group'),
+                    Field('name', css_class='form-group'),
                     css_class='form-group'
                     ),
                 Div(
@@ -49,12 +51,13 @@ class HackathonForm(forms.ModelForm):
                 Field('end_date', css_class='form-control'),
                 ),
             Div(
-                HTML("<img src = "" />"),
+                # HTML("<img src = "" />"),
                 HTML("<h2>Click to upload or drag and drop</h2>"),
                 HTML("<h3>PNG or JPG (max. 800x400px)</h3>"),
                 css_class='py-5'
                 ),
             Fieldset(
+                'detail',
                 Field("image", css_class="form-control"),
                 Field('application_start', css_class='form-control'),
                 Field('application_deadline', css_class='form-control'), 
@@ -62,6 +65,7 @@ class HackathonForm(forms.ModelForm):
             HTML("<h2>Participant Info & Criteria</h2>"),
             HTML("<h2>Define your criteria for the event’s participants.</h2>"),
             Fieldset(
+                'requirements',
                 Field('min_age', css_class='form-control'),
                 Field('minimum_education_level', css_class='form-control'),
                 Field('maximum_education_level', css_class='form-control'),
