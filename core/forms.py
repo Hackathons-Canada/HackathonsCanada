@@ -30,47 +30,53 @@ class HackathonForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
-            HTML("<h2 class = 'pt-5'>Feature Your Hackathon with Us.</h2>"),
-            HTML("<h3>Let us help you promote your hackathon event.</h3>"),
+            HTML("<h2 class = 'form-head-text py-2 pt-5'>Feature Your Hackathon with Us.</h2>"),
+            HTML("<h3 class = 'form-side-text pb-2'>Let us help you promote your hackathon event.</h3>"),
             Fieldset(
-                
+                "",
                 Div(
                     'general info',
-                    Field('short_name', css_class='form-group'),
-                    Field('name', css_class='form-group'),
-                    css_class='form-group'
+                    Field('short_name'),
+                    Field('name'),
+                    css_class='form-group-style'
                     ),
                 Div(
-                    Field('country', css_class='form-control'),
-                    Field('city', css_class='form-control'),
-                    css_class='form-group'
+                    Field('country'),
+                    Field('city'),
+                    css_class='form-group-style'
+                    
                 ),
-                Field('website', css_class='form-control'),
+                Field('website'),
                 # To Do Make this look Better:
-                Field('start_date', css_class='form-control'),
-                Field('end_date', css_class='form-control'),
+                Field('start_date'),
+                Field('end_date'),
                 ),
             Div(
                 # HTML("<img src = "" />"),
                 HTML("<h2>Click to upload or drag and drop</h2>"),
                 HTML("<h3>PNG or JPG (max. 800x400px)</h3>"),
-                css_class='py-5'
+                css_class='form-group-style'
                 ),
             Fieldset(
                 '', #this is for the legend
                 Field("image", css_class="form-control"),
-                Field('application_start', css_class='form-control'),
-                Field('application_deadline', css_class='form-control'), 
+                Field('application_start'),
+                Field('application_deadline'), 
                 ),
-            HTML("<h2>Participant Info & Criteria</h2>"),
-            HTML("<h2>Define your criteria for the event’s participants.</h2>"),
+            HTML("<h2 class = 'form-head-text py-2'>Participant Info & Criteria</h2>"),
+            HTML("<h2 class = 'form-side-text pb-2'>Define your criteria for the event’s participants.</h2>"),
             Fieldset(
                 '',#this is for the legend
-                Field('min_age', css_class='form-control'),
-                Field('minimum_education_level', css_class='form-control'),
-                Field('maximum_education_level', css_class='form-control'),
-                Field('numerical_prize_pool', css_class='form-control'),
+                Field('min_age'),
+                Field('minimum_education_level'),
+                Field('maximum_education_level'),
+                Field('numerical_prize_pool'),
                 ),
             Submit('submit', 'Submit', css_class='button white'),
+            
            )
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-button-style py-2'
+            
+        
 

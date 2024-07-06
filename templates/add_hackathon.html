@@ -1,7 +1,6 @@
 {% extends 'base.html' %} {% load static %} {% load crispy_forms_tags %}
 {% block title %} Add a New Hackathon {% endblock title %} {% block content %}
 <div class="container">
-  <h1>Add a New Hackathon</h1>
 
   <div class="container">
 
@@ -9,9 +8,8 @@
       {% csrf_token %} {% crispy form %}
     </form>
   </div>
-
+<!-- 
   <div class="hackathon-list">
-    <h2>All Hackathons</h2>
     <ul>
       {% for hackathon in hackathons %}
       <li>
@@ -21,7 +19,7 @@
       </li>
       {% endfor %}
     </ul>
-  </div>
+  </div> -->
 </div>
 
 {% endblock content %}

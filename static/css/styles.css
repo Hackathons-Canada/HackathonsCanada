@@ -951,3 +951,34 @@ header nav ul li a {
 .fc .fc-prev-button {
   background-color: white;
 }
+
+.form-button-style {
+  border-radius: 10px;
+  border: 0.5px solid var(--1, #000e22);
+  background: var(--6, #fff);
+  box-shadow: 1px 2px 3px 0px rgba(0, 0, 0, 0.5);
+}
+
+.form-label-text {
+  color: var(--1, #000e22);
+  font-size: 21px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 96%; /* 20.16px */
+}
+
+.form-head-text {
+  color: var(--1, #000e22);
+  font-size: 48px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 101%; /* 48.48px */
+}
+
+.form-side-text {
+  color: var(--1, #000e22);
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 96%; /* 23.04px */
+}
