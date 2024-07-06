@@ -57,7 +57,7 @@ class HackathonForm(forms.ModelForm):
                 css_class='py-5'
                 ),
             Fieldset(
-                'detail',
+                '', #this is for the legend
                 Field("image", css_class="form-control"),
                 Field('application_start', css_class='form-control'),
                 Field('application_deadline', css_class='form-control'), 
@@ -65,7 +65,7 @@ class HackathonForm(forms.ModelForm):
             HTML("<h2>Participant Info & Criteria</h2>"),
             HTML("<h2>Define your criteria for the event’s participants.</h2>"),
             Fieldset(
-                'requirements',
+                '',#this is for the legend
                 Field('min_age', css_class='form-control'),
                 Field('minimum_education_level', css_class='form-control'),
                 Field('maximum_education_level', css_class='form-control'),
