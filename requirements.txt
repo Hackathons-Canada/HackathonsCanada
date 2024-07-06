@@ -9,4 +9,4 @@ docker>=5.0.0
 flower>=2.0.1
 redis>=5.0.1
 django-location-field>=2.7.3
-
+django-crispy-forms
