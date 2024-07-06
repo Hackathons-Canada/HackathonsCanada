@@ -4,10 +4,9 @@
   <h1>Add a New Hackathon</h1>
 
   <div class="container">
-    <form action="{% url 'add_hackathons' %}" method="post">
-      {% csrf_token %} {% crispy HackathonForm %}
 
-      <button type="submit" class="btn btn-primary">Submit</button>
+    <form action="{% url 'add_hackathons' %}" method="post">
+      {% csrf_token %} {% crispy form %}
     </form>
   </div>
 

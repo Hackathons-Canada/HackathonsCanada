@@ -34,6 +34,9 @@ ALLOWED_HOSTS = [
 AUTH_USER_MODEL = "core.Hacker"
 # Application definition
 
+# this is the default template pack for crispy forms
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -52,6 +55,7 @@ INSTALLED_APPS = [
     "core",
     "dischannelsaver",
     'crispy_forms',
+    'crispy_bootstrap4',
 ]
 
 MIDDLEWARE = [
