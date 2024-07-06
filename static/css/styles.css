@@ -936,3 +936,18 @@ header nav ul li a {
   font-size: 15px;
   margin-bottom: 0;
 }
+
+.fc .fc-today-button {
+  border-radius: 11px;
+  border: none;
+  background: linear-gradient(90deg, #ff5a50 0%, #ef6c23 100%);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  margin: 0px 30px;
+  padding: 5px 15px;
+  color: white;
+}
+
+.fc .fc-next-button,
+.fc .fc-prev-button {
+  background-color: white;
+}
