@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     # 'allauth.socialaccount.providers.linkedin',
     "core",
     "dischannelsaver",
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [

@@ -1,32 +1,28 @@
-{% extends 'base.html' %}
-{% load static %}
-{#{% load crispy_forms_tags %}#}
+{% extends 'base.html' %} {% load static %} {% load crispy_forms_tags %}
+{% block title %} Add a New Hackathon {% endblock title %} {% block content %}
+<div class="container">
+  <h1>Add a New Hackathon</h1>
 
-{% block title %}
-    Add a New Hackathon
-{% endblock title %}
-{% block content %}
-    <div class="container">
-        <h1>Add a New Hackathon</h1>
+  <div class="container">
+    <form action="{% url 'add_hackathons' %}" method="post">
+      {% csrf_token %} {% crispy HackathonForm %}
 
-        <div class="container">
-            <form action="{% url "add_hackathons" %}" method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
-        </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
 
-
-        <div class="hackathon-list">
-            <h2>All Hackathons</h2>
-            <ul>
-                {% for hackathon in hackathons %}
-                    <li>{{ hackathon.name }} - {{ hackathon.start_date }} to {{ hackathon.end_date }}
-                        - {{ hackathon.location }} - <a href="{{ hackathon.url }}">{{ hackathon.url }}</a></li>
-                {% endfor %}
-            </ul>
-        </div>
-    </div>
+  <div class="hackathon-list">
+    <h2>All Hackathons</h2>
+    <ul>
+      {% for hackathon in hackathons %}
+      <li>
+        {{ hackathon.name }} - {{ hackathon.start_date }} to {{
+        hackathon.end_date }} - {{ hackathon.location }} -
+        <a href="{{ hackathon.url }}">{{ hackathon.url }}</a>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
 
 {% endblock content %}
