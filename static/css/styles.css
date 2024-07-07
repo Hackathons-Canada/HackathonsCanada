@@ -101,7 +101,7 @@ a {
 .card-img-top {
   max-height: 200px;
   object-fit: cover;
-  border-radius: 30px;
+  border-radius: 0px;
   outline: 10px solid #000;
 }
 
@@ -1038,3 +1038,16 @@ header nav ul li a {
   font-weight: 400;
   line-height: 20px; /* 142.857% */
 }
+
+        .card-row-layout img {
+            transition: transform 0.3s ease;
+            width: 100%;
+            height: auto;
+
+        }
+        .card-row-layout img:hover {
+            transform: scale(1.05);
+
+
+
+        }
