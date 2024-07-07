@@ -474,6 +474,7 @@ header nav ul li a {
   text-align: center;
   color: #333;
   position: relative;
+  overflow:hidden;
 }
 .hero h1 {
   font-size: 3rem;
@@ -591,32 +592,60 @@ header nav ul li a {
 }
 .leaf {
   position: absolute;
+  animation: fall 10s infinite;
 }
+
 .leaf1 {
   top: 40px;
   left: 40px;
+  animation-duration: 12s;
+  animation-delay: 1s;
 }
+
 .leaf2 {
   top: 550px;
   left: 450px;
   width: 60px;
+  animation-duration: 10s;
+  animation-delay: 3s;
 }
+
 .leaf3 {
   top: 50%;
   right: 200px;
   width: 80px;
+  animation-duration: 14s;
+  animation-delay: 5s;
 }
+
 .leaf4 {
   top: calc(100% - 40px);
   left: 50%;
   width: 30px;
   transform: translateX(-50%);
+  animation-duration: 9s;
+  animation-delay: 7s;
 }
+
 .leaf5 {
   top: 20px;
   right: 0;
   width: 100px;
+  animation-duration: 11s;
+  animation-delay: 2s;
 }
+
+@keyframes fall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(360deg);
+    opacity: 0.5;
+  }
+}
+
 
 .foot-head-text {
   color: white;
