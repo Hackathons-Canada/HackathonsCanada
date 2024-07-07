@@ -72,7 +72,7 @@ class HackathonForm(forms.ModelForm):
                 Field('maximum_education_level'),
                 Field('numerical_prize_pool'),
                 ),
-            Submit('submit', 'Submit', css_class='button white my-5'),
+            Submit('submit', 'Submit', css_class='button white py-5'),
             
            )
         for visible in self.visible_fields():

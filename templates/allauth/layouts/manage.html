@@ -1,2 +1,19 @@
 {% extends "allauth/layouts/base.html" %}
 {% block content %}{% endblock %}
+<div class="socialaccount-section">
+    <h2>{% trans "Connected Social Accounts" %}</h2>
+    <ul>
+        {% for account in socialaccounts %}
+            <li>
+                <img src="{{ account.get_avatar_url }}" alt="{{ account.provider }} avatar">
+                <strong>{{ account.provider }}</strong> - {{ account.uid }}
+                <form method="post" action="{% url 'socialaccount_disconnect' account.id %}">
+                    {% csrf_token %}
+                    <button type="submit">{% trans "Disconnect" %}</button>
+                </form>
+            </li>
+        {% empty %}
+            <li>{% trans "No social accounts connected." %}</li>
+        {% endfor %}
+    </ul>
+</div>
