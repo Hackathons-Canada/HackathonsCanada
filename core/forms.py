@@ -52,9 +52,9 @@ class HackathonForm(forms.ModelForm):
                 Field('end_date'),
                 ),
             Div(
-                # HTML("<img src = "" />"),
-                HTML("<h2>Click to upload or drag and drop</h2>"),
-                HTML("<h3>PNG or JPG (max. 800x400px)</h3>"),
+                HTML("<h2 class = 'form-side-text pt-5'>Banner</h2>"),
+                HTML("<h2 class = 'form-upload-head'>Click to upload or drag and drop</h2>"),
+                HTML("<h3 class = 'form-upload-side'>PNG or JPG (max. 800x400px)</h3>"),
                 css_class='form-group-style'
                 ),
             Fieldset(
@@ -63,7 +63,7 @@ class HackathonForm(forms.ModelForm):
                 Field('application_start'),
                 Field('application_deadline'), 
                 ),
-            HTML("<h2 class = 'form-head-text py-2'>Participant Info & Criteria</h2>"),
+            HTML("<h2 class = 'form-head-text pt-5 py-2'>Participant Info & Criteria</h2>"),
             HTML("<h2 class = 'form-side-text pb-2'>Define your criteria for the event’s participants.</h2>"),
             Fieldset(
                 '',#this is for the legend
@@ -72,7 +72,7 @@ class HackathonForm(forms.ModelForm):
                 Field('maximum_education_level'),
                 Field('numerical_prize_pool'),
                 ),
-            Submit('submit', 'Submit', css_class='button white'),
+            Submit('submit', 'Submit', css_class='button white my-5'),
             
            )
         for visible in self.visible_fields():

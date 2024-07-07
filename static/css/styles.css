@@ -982,3 +982,30 @@ header nav ul li a {
   font-weight: 400;
   line-height: 96%; /* 23.04px */
 }
+
+.form-group {
+  margin: 20px 0;
+}
+
+.form-upload-side {
+  color: var(--7, #4a5769);
+  text-align: center;
+
+  /* Text xs / Regular */
+  font-family: Inter;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px; /* 150% */
+}
+
+.form-upload-head {
+  color: var(--7, #4a5769);
+  text-align: center;
+  /* Text sm / Regular */
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px; /* 142.857% */
+}
