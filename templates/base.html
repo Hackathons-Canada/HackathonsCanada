@@ -23,62 +23,50 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="{% static 'js/script.js' %}"></script>
   {% block deps %}{% endblock %}
-  <title>{% block title %}Hackathons Canada{% endblock %}</title>
 </head>
 
 <body>
 
-  <header>
-    <nav>
-      <ul class="nav-bar text-secondary">
-        <li class="nav-logo">
-          <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis">
-            <img src="{% static 'assets/logo.png' %}" width="50" height="50" class="mx-3" />
-            <span class="nav-head-text">Hackathons Canada</span>
-          </a>
+  <nav>
+    <ul class="nav-bar text-secondary">
+      <li class="nav-logo">
+        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis">
+          <img src="{% static 'assets/logo.png' %}" width="50" height="50" class="mx-3" />
+          <span class="nav-head-text">Hackathons Canada</span>
+        </a>
+      </li>
+      <input type='checkbox' id='nav-check' />
+      <span class="nav-menu">
+        <li class="nav-item">
+          <a href="{% url 'hackathons' %}" class="nav-link nav-link-text-child" aria-current="page">Hackathons</a>
         </li>
-        <input type='checkbox' id='nav-check' />
-        <span class="nav-menu">
-          <li class="nav-item">
-            <a href="{% url 'hackathons' %}" class="nav-link nav-link-text-child" aria-current="page">Hackathons</a>
-          </li>
-          <!-- <li class="nav-item">
-              <a
-                href="{% url 'home' %}"
-                class="nav-link nav-link-text-child"
-                aria-current="page"
-                >Saved</a
-              >
-            </li> -->
-          <li class="nav-item">
-            <a href="{% url 'add_hackathons' %}" class="nav-link nav-link-text-child">Add Hackathon</a>
-          </li>
-          <li class="nav-item">
-            <a href="{% url 'calendar' %}" class="nav-link nav-link-text-child">Calendar</a>
-          </li>
-          {% if user.is_authenticated %}
-          <li class="nav-item">
-            <a href="{% url 'account_login' %}" class="nav-link nav-link-text-child" aria-current="page">Saved</a>
-          </li>
+        <li class="nav-item">
+          <a href="{% url 'add_hackathons' %}" class="nav-link nav-link-text-child">Add Hackathon</a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'calendar' %}" class="nav-link nav-link-text-child">Calendar</a>
+        </li>
+        {% if user.is_authenticated %}
+        <li class="nav-item">
+          <a href="{% url 'account_login' %}" class="nav-link nav-link-text-child" aria-current="page">Saved</a>
+        </li>
 
-          <li class="nav-item">
-            <a href="{% url 'account_login' %}" class="nav-link nav-link-text-child" aria-current="page">Log Out</a>
-          </li>
-          {% else %}
-          <li class="nav-item">
-            <a href="{% url 'account_login' %}" class="nav-link nav-link-text-child" aria-current="page">Login</a>
-          </li>
-          <li class="">
-            <a href="{% url 'account_signup' %}" class="nav-button">Sign Up</a>
-          </li>
-          {% endif %}
-          <label for="nav-check" class="close-nav-menu"><i class="fas fa-times"></i></label>
-        </span>
-        <label for="nav-check" class="open-nav-menu"><i class="fas fa-bars"></i></label>
-      </ul>
-
-    </nav>
-  </header>
+        <li class="nav-item">
+          <a href="{% url 'account_login' %}" class="nav-link nav-link-text-child" aria-current="page">Log Out</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a href="{% url 'account_login' %}" class="nav-link nav-link-text-child" aria-current="page">Login</a>
+        </li>
+        <li class="">
+          <a href="{% url 'account_signup' %}" class="nav-button">Sign Up</a>
+        </li>
+        {% endif %}
+        <label for="nav-check" class="close-nav-menu"><i class="fas fa-times"></i></label>
+      </span>
+      <label for="nav-check" class="open-nav-menu"><i class="fas fa-bars"></i></label>
+    </ul>
+  </nav>
 
   <main>
     {% block content %}{% endblock %}
