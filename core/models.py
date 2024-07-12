@@ -102,7 +102,7 @@ class Notifiable(UserManager):
 
 
 class Hacker(AbstractUser):
-    objects = Notifiable.as_manager()
+    objects = Notifiable()
     country = CountryField(
         blank_label="(select country)",
         blank=True,
