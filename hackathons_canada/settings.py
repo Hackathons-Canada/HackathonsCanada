@@ -34,10 +34,8 @@ ALLOWED_HOSTS = [
 AUTH_USER_MODEL = "core.Hacker"
 # Application definition
 
-# this is the default template pack for crispy forms
-CRISPY_TEMPLATE_PACK = "bootstrap4"
-
 INSTALLED_APPS = [
+    "simpleui",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -146,6 +144,17 @@ USE_TZ = True
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
 STATIC_URL = "static/"
+
+# Styling settings
+CRISPY_TEMPLATE_PACK = "bootstrap4"
+
+SIMPLEUI_LOGO = "//hackathonscanada.com/static/assets/favicon.png"
+SIMPLEUI_HOME_INFO = True
+SIMPLEUI_HOME_QUICK = True
+SIMPLEUI_HOME_ACTION = True
+
+
+SIMPLEUI_ANALYSIS = False
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

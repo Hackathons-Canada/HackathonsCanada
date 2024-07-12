@@ -1,100 +1,100 @@
 {% extends 'base.html' %} {% load static %} {% block content %}
 
-<div class="hero-container-layout">
-  <div class="container-fluid ">
-    <h1 class="hero-text-light">Welcome to</h1>
-    <h2 class="hero-text-dark">
-      The BEST DATABASE FOR </h2>
-    <h3 class="hero-text-red">
-      HACKATHONS
-    </h3>
-    <p class="hero-text-body">
-      Browse through to find a complete list of hackathons taking place in Canada and North America. Join our Discord
-      server to ask questions to the organizers of specific events and form teams.
-    </p>
-    <a href="{% url 'hackathons' %}" class="hero-add-button">
-      Browse Hackathons ➜
-    </a>
-  </div>
-
-
-
-  <div class="hero-scroller-layout">
-    <div class="scroller-wrapper-layout">
-      <img class="item-scroller-left-layout" src="{% static 'assets/uft.png'%}">
-      <img class="item-scroller-left-layout" src="{% static 'assets/cal.png'%}">
-      <img class="item-scroller-left-layout " src="{% static 'assets/delta.png'%}">
-      <img class="item-scroller-left-layout " src="{% static 'assets/form.png'%}">
-      <img class="item-scroller-left-layout " src="{% static 'assets/gt.png'%}">
-      <img class="item-scroller-left-layout " src="{% static 'assets/har.png'%}">
-
+  <div class="hero-container-layout">
+    <div class="container-fluid ">
+      <h1 class="hero-text-light">Welcome to</h1>
+      <h2 class="hero-text-dark">
+        The BEST DATABASE FOR </h2>
+      <h3 class="hero-text-red">
+        HACKATHONS
+      </h3>
+      <p class="hero-text-body">
+        Browse through to find a complete list of hackathons taking place in Canada and North America. Join our Discord
+        server to ask questions to the organizers of specific events and form teams.
+      </p>
+      <a href="{% url 'hackathons' %}" class="hero-add-button">
+        Browse Hackathons ➜
+      </a>
     </div>
-    <div class="scroller-wrapper-layout">
-      <img class="item-scroller-right-layout " src="{% static 'assets/hawk.png'%}">
-      <img class="item-scroller-right-layout" src="{% static 'assets/la.png'%}">
-      <img class="item-scroller-right-layout " src="{% static 'assets/mit.png'%}">
-      <img class="item-scroller-right-layout " src="{% static 'assets/north.png'%}">
-      <img class="item-scroller-right-layout " src="{% static 'assets/ryth.png'%}">
-      <img class="item-scroller-right-layout " src="{% static 'assets/tree.png'%}">
 
-    </div>
-  </div>
-</div>
 
-<img class="hero-image-position text-center" src="{% static 'assets/homegra.png'%}">
 
-<div class="card-header-layout">
-  <h5 class="header-text-black">More than just a
-    <span class="header-text-red">website.</span>
-  </h5>
-</div>
-<div class="card-box-layout">
+    <div class="hero-scroller-layout">
+      <div class="scroller-wrapper-layout">
+        <img class="item-scroller-left-layout" src="{% static 'assets/uft.png'%}">
+        <img class="item-scroller-left-layout" src="{% static 'assets/cal.png'%}">
+        <img class="item-scroller-left-layout " src="{% static 'assets/delta.png'%}">
+        <img class="item-scroller-left-layout " src="{% static 'assets/form.png'%}">
+        <img class="item-scroller-left-layout " src="{% static 'assets/gt.png'%}">
+        <img class="item-scroller-left-layout " src="{% static 'assets/har.png'%}">
 
-  <div class="card-row-layout">
-    <a>
-      <div>
-        <img class="card-img-stack" src="{% static 'assets/hackcanadabg.png' %}" alt="Image 2" />
       </div>
-    </a>
-    <a>
-      <img class="" src="{% static 'assets/discord.png' %}" alt="Image 1" />
-    </a>
-  </div>
-  <div class="card-row-layout">
-    <a>
-      <img class="" src="{% static 'assets/discordcard.png' %}" alt="Image 2" />
-    </a>
-    <a>
-      <img class="" src="{% static 'assets/gcal.png' %}" alt="Image 1" />
-    </a>
-  </div>
-  <div class="card-join-layout">
-    <div class="card-join-image">
-      <img src="{%static 'assets/jointeam.png'%}">
-    </div>
-    <div class="card-join-text">
-      <h4 class=" button-discord-text1">Interested In Joining us as a
-        <span class=" button-discord-blue">hackathon organizer?</span>
-      </h4>
-      <h5 class="button-discord-text2">Join Our Discord and Answer your communities <br /> burning questions.</h5>
-      <a href="#" class="button-discord-style">Join Our Discord ➜</a>
-    </div>
-  </div>
-</div>
+      <div class="scroller-wrapper-layout">
+        <img class="item-scroller-right-layout " src="{% static 'assets/hawk.png'%}">
+        <img class="item-scroller-right-layout" src="{% static 'assets/la.png'%}">
+        <img class="item-scroller-right-layout " src="{% static 'assets/mit.png'%}">
+        <img class="item-scroller-right-layout " src="{% static 'assets/north.png'%}">
+        <img class="item-scroller-right-layout " src="{% static 'assets/ryth.png'%}">
+        <img class="item-scroller-right-layout " src="{% static 'assets/tree.png'%}">
 
-<div class="hero">
-  <h1>READY TO <span class="fw-bold fst-italic"> HACK YOUR WAY </span> <br> TO SUCCESS?</h1>
-  <p>Join to discover upcoming hackathons in Canada.</p>
-  <button class="btn-start">Get Started</button>
-  <div class="social-icons">
-    <a href="#"><img class="logo-svg-img" src="{% static 'assets/insta.svg'%}" /></a>
-    <a href="#"><img class="logo-svg-img" src="{% static 'assets/linkedin.svg'%}" /></a>
+      </div>
+    </div>
   </div>
-  <img src="{% static 'assets/leaf1.png'%}" class="leaf leaf1" alt="Leaf Image">
-  <img src="{% static 'assets/leaf2.png'%}" class="leaf leaf2" alt="Leaf Image">
-  <img src="{% static 'assets/leaf3.png'%}" class="leaf leaf3" alt="Leaf Image">
-  <img src="{% static 'assets/leaf3.png'%}" class="leaf leaf4" alt="Leaf Image">
-  <img src="{% static 'assets/leaf4.png'%}" class="leaf leaf5" alt="Leaf Image">
-</div>
+
+  <img class="hero-image-position text-center" src="{% static 'assets/homegra.png'%}">
+
+  <div class="card-header-layout">
+    <h5 class="header-text-black">More than just a
+      <span class="header-text-red">website.</span>
+    </h5>
+  </div>
+  <div class="card-box-layout">
+
+    <div class="card-row-layout">
+      <a>
+        <div>
+          <img class="card-img-stack" src="{% static 'assets/hackcanadabg.png' %}" alt="Image 2" />
+        </div>
+      </a>
+      <a>
+        <img class="" src="{% static 'assets/discord.png' %}" alt="Image 1" />
+      </a>
+    </div>
+    <div class="card-row-layout">
+      <a>
+        <img class="" src="{% static 'assets/discordcard.png' %}" alt="Image 2" />
+      </a>
+      <a>
+        <img class="" src="{% static 'assets/gcal.png' %}" alt="Image 1" />
+      </a>
+    </div>
+    <div class="card-join-layout">
+      <div class="card-join-image">
+        <img src="{%static 'assets/jointeam.png'%}">
+      </div>
+      <div class="card-join-text">
+        <h4 class=" button-discord-text1">Interested In Joining us as a
+          <span class=" button-discord-blue">hackathon organizer?</span>
+        </h4>
+        <h5 class="button-discord-text2">Join Our Discord and Answer your communities <br /> burning questions.</h5>
+        <a href="#" class="button-discord-style">Join Our Discord ➜</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero">
+    <h1>READY TO <span class="fw-bold fst-italic"> HACK YOUR WAY </span> <br> TO SUCCESS?</h1>
+    <p>Join to discover upcoming hackathons in Canada.</p>
+    <button class="btn-start">Get Started</button>
+    <div class="social-icons">
+      <a href="#"><img class="logo-svg-img" src="{% static 'assets/insta.svg'%}" /></a>
+      <a href="#"><img class="logo-svg-img" src="{% static 'assets/linkedin.svg'%}" /></a>
+    </div>
+    <img src="{% static 'assets/leaf1.png'%}" class="leaf leaf1" alt="Leaf Image">
+    <img src="{% static 'assets/leaf2.png'%}" class="leaf leaf2" alt="Leaf Image">
+    <img src="{% static 'assets/leaf3.png'%}" class="leaf leaf3" alt="Leaf Image">
+    <img src="{% static 'assets/leaf3.png'%}" class="leaf leaf4" alt="Leaf Image">
+    <img src="{% static 'assets/leaf4.png'%}" class="leaf leaf5" alt="Leaf Image">
+  </div>
 
 {% endblock %}

@@ -1,4 +1,5 @@
 import random
+from typing import Final
 
 from django.contrib.auth.models import AbstractUser, UserManager
 
@@ -11,10 +12,17 @@ from core.tasks import send_new_hackathon_email
 
 # from django.contrib.gis.geos import Point
 
-
 # from location_field.models.spatial import LocationField
+__all__ = [
+    "Hacker",
+    "Hackathon",
+    "Category",
+    "NotificationPolicy",
+    "EDUCATION_CHOICES",
+    "HACKATHON_EDUCATION_CHOICES",
+]
 
-EDUCATION_CHOICES = [
+EDUCATION_CHOICES: Final = [
     (0, "Middle School"),
     (1, "High School"),
     (2, "University/College"),
@@ -126,7 +134,7 @@ class Hacker(AbstractUser):
         choices=EDUCATION_CHOICES,
     )
     saved = models.ManyToManyField(
-        "Hackathon",
+        "core.Hackathon",
         related_name="interested_users",
         help_text="Hackathons the user is interested in and wants updates about.",
     )
