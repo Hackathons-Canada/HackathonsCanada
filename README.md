@@ -17,7 +17,7 @@
 ### Setup
 1. Clone the repo
 2. Install Poetry (https://python-poetry.org/docs/)
-3. Install deps using `poetry install --no-root`
+3. Install deps using `poetry install --no-root --with dev`
 4. Run `poetry shell` to activate the virtual environment
 
 [//]: # (3. Run `poetry instalize` to rename local settings & create the db&#41;)
