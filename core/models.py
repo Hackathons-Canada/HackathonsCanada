@@ -173,10 +173,13 @@ class Category(models.Model):
 class HackathonSource(models.TextChoices):
     Scraped = "SCR", "Scrapped"
     UserSubmitted = "USR", "User Submitted"
+    
 class HackthonsManager(models.Manager):
     def get_queryset(self):
-        return super().get_queryset().filter(status=HackathonStatuses.Approved)
+        return super().get_queryset().filter(is_public=True)
     
+    def unapproved(self):
+        return super().get_queryset().filter(is_public=False) # todo add a "approval_status" field
     def online(self):
         return self.filter(country="Onl")
 
