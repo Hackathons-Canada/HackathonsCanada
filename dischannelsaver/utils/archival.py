@@ -49,5 +49,5 @@ async def archive_hackathon(hackathon: Hackathon):
     channel.archived = True
     channel.archived_at = timezone.now()
     channel.archived_time = datetime.timedelta(seconds=time_taken)
-    await channel.save()
+    channel.save()
     await sort_channels()
