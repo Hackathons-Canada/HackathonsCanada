@@ -2,7 +2,7 @@ import datetime
 import time
 
 import discord
-import docker
+import docker  # type: ignore
 from django.conf import settings
 from django.utils import timezone
 
@@ -46,7 +46,7 @@ async def archive_hackathon(hackathon: Hackathon):
     if not channel.discord_id:
         return
     time_taken = await archive_channel(channel.discord_id)
-    channel.is_archived = True
+    channel.archived = True
     channel.archived_at = timezone.now()
     channel.archived_time = datetime.timedelta(seconds=time_taken)
     await channel.save()

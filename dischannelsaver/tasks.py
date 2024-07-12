@@ -16,7 +16,7 @@ if TYPE_CHECKING:
     from core.models import Hackathon, Hacker
 
 logger = get_task_logger(__name__)
-hacker: "Hacker" = get_user_model()
+hacker: "Hacker" = get_user_model() # type: ignore
 
 
 @receiver(post_save, sender=Hackathon)

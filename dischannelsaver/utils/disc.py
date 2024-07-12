@@ -14,6 +14,7 @@ from dischannelsaver.utils.nomenclature import (
     generate_discord_timestamp,
     get_months,
 )
+__all__ = ["create_channel", "lock_channel", "sort_channels"]
 
 
 async def create_channel(hackathon: Hackathon):

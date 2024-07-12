@@ -28,13 +28,15 @@ mypy = "^1.10.1"
 django-stubs = {version = "^5.0.2", extras = ["compatible-mypy"]}
 ruff = "^0.5.1"
 djhtml = "^3.0.6"
+celery-types = "^0.22.0"
 
 
 [tool.mypy]
 plugins = ["mypy_django_plugin.main"]
+exclude = ["migrations", "node_modules", "static", "venv", ".idea"]
 
 [tool.django-stubs]
-django_settings_module = "core.settings"
+django_settings_module = "hackathons_canada.settings"
 
 
 [build-system]

@@ -14,7 +14,12 @@ def generate_channel_name(hackathon: Hackathon):
     :param hackathon:
     :return: discord channel name (e.g. hackathon-name-Jan-3-5), or if it's a 1-day hackathon, hackathon-name-Jan-24
     """
-    name = hackathon.name.casefold().replace(" ", "-")
+    
+    assert hackathon.start_date is not None, "Hackathon start date is None"
+    assert hackathon.end_date is not None, "Hackathon end date is None"
+    
+    
+    name = hackathon.name.casefold().replace(" ", "-")   # todo redo using the spec william provided in #general
     if hackathon.end_date.day == hackathon.start_date.day:
         return f"{name}-{hackathon.start_date.strftime('%b-%-d')}"
     return f"{name}-{hackathon.start_date.strftime('%b-%-d')}-{hackathon.end_date.strftime('%-d')}"
