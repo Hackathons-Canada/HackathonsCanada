@@ -19,6 +19,7 @@ celery = { extras = ["redis"], version = "^5.4.0" }
 django-allauth = { extras = ["socialaccount"], version = "0.63.5" }
 django-countries = { extras = ["pyuca"], version = "^7.6.1" }
 pillow = "^10.4.0"
+django-simpleui = "^2024.4.1"
 
 
 [tool.poetry.group.dev]
