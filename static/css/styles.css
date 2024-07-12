@@ -919,6 +919,7 @@ section {
   overflow: hidden;
   height: 40rem;
   width: 95%;
+  max-width: 1200px;
   border-radius: 20px;
   position: relative;
   display: flex;
