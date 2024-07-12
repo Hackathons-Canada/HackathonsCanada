@@ -1,6 +1,6 @@
 import random
 
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, UserManager
 
 # Create your models here.
 from django.db import models
@@ -95,7 +95,7 @@ class NotificationPolicy(models.Model):
         # ]
 
 
-class Notifiable(models.QuerySet):
+class Notifiable(UserManager):
     async def anotify(self):
         async for user in self.iterator():
             send_new_hackathon_email.delay(user)

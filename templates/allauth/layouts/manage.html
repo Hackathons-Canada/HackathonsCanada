@@ -1,5 +1,6 @@
 {% extends "allauth/layouts/base.html" %}
-{% block content %}{% endblock %}
+{% load i18n %}
+{% block content %}
 <div class="socialaccount-section">
     <h2>{% trans "Connected Social Accounts" %}</h2>
     <ul>
@@ -17,3 +18,4 @@
         {% endfor %}
     </ul>
 </div>
+{% endblock %}
