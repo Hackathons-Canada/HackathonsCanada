@@ -170,24 +170,28 @@ class Category(models.Model):
     class Meta:
         verbose_name_plural = "Categories"
 
+
 class HackathonSource(models.TextChoices):
     Scraped = "SCR", "Scrapped"
     UserSubmitted = "USR", "User Submitted"
-    
+
+
 class HackthonsManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().filter(is_public=True)
-    
+
     def unapproved(self):
-        return super().get_queryset().filter(is_public=False) # todo add a "approval_status" field
+        return (
+            super().get_queryset().filter(is_public=False)
+        )  # todo add a "approval_status" field
+
     def online(self):
         return self.filter(country="Onl")
 
     def in_person(self):
         return self.exclude(country="Onl")
 
-    def local(self, user: Hacker):
-        ...  # todo: implement this
+    def local(self, user: Hacker): ...  # todo: implement this
 
     def eligible(self, user: Hacker):
         # todo rewrite
@@ -210,8 +214,10 @@ class Hackathon(MetaDataMixin):
         null=True,
         help_text="Metadata about the source of the hackathon",
     )
-    
-    is_public = models.BooleanField(help_text="Is the hackathon visible to all users", default=False)
+
+    is_public = models.BooleanField(
+        help_text="Is the hackathon visible to all users", default=False
+    )
     categories = models.ManyToManyField(Category, related_name="hackathons")
     created_by = models.ForeignKey(
         Hacker,

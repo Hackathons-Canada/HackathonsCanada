@@ -15,16 +15,16 @@ def addHackathons(request):
             return "form is valid, Nirek do smth here"
     else:
         form = HackathonForm()
-    
+
     return render(request, "add_hackathon.html", {"form": form})
 
 
 def calendar(request):
     context = {
-        'title': 'Add a New Hackathon',
-        'content': 'Use this form to add a new hackathon to the database.'
+        "title": "Add a New Hackathon",
+        "content": "Use this form to add a new hackathon to the database.",
     }
-    return render(request, '../templates/calendar.html', context)
+    return render(request, "../templates/calendar.html", context)
 
 
 class HackathonsPage(ListView):

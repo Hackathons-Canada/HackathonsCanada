@@ -26,8 +26,8 @@ SECRET_KEY = "CHANGEME"
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    '127.0.0.1',
-    'localhost',
+    "127.0.0.1",
+    "localhost",
     # Add any other allowed hosts here
 ]
 
@@ -35,7 +35,7 @@ AUTH_USER_MODEL = "core.Hacker"
 # Application definition
 
 # this is the default template pack for crispy forms
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
+CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -54,8 +54,8 @@ INSTALLED_APPS = [
     # 'allauth.socialaccount.providers.linkedin',
     "core",
     "dischannelsaver",
-    'crispy_forms',
-    'crispy_bootstrap4',
+    "crispy_forms",
+    "crispy_bootstrap4",
 ]
 
 MIDDLEWARE = [
