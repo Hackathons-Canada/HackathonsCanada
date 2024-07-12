@@ -8,7 +8,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils import timezone
 
-from canadahackers.celery import app
+from hackathons_canada.celery import app
 from dischannelsaver.utils.archival import archive_hackathon
 from dischannelsaver.utils.disc import create_channel, sort_channels
 

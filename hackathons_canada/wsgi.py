@@ -1,5 +1,5 @@
 """
-WSGI config for canadahackers project.
+WSGI config for hackathons_canada project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "canadahackers.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "hackathons_canada.settings")
 
 application = get_wsgi_application()

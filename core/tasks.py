@@ -2,7 +2,7 @@ from typing import TYPE_CHECKING
 
 from celery.utils.log import get_task_logger
 
-from canadahackers.celery import app
+from hackathons_canada.celery import app
 
 if TYPE_CHECKING:
     from core.models import Hacker
