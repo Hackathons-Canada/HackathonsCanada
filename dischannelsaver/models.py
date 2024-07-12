@@ -16,7 +16,7 @@ class HackathonChannel(models.Model):
         "core.Hackathon", on_delete=models.PROTECT, related_name="channel"
     )
     name = models.CharField(max_length=255)
-    discord_id = models.IntegerField(max_length=18, null=True, blank=True)
+    discord_id = models.IntegerField(null=True, blank=True)
     archived = models.BooleanField(
         default=False, help_text="If the channel has been archived or not"
     )
