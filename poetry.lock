@@ -690,6 +690,19 @@ django = "*"
 typing-extensions = "*"
 
 [[package]]
+name = "djhtml"
+version = "3.0.6"
+description = "Django/Jinja template indenter"
+optional = false
+python-versions = "*"
+files = [
+    {file = "djhtml-3.0.6.tar.gz", hash = "sha256:abfc4d7b4730432ca6a98322fbdf8ae9d6ba254ea57ba3759a10ecb293bc57de"},
+]
+
+[package.extras]
+dev = ["nox", "pre-commit"]
+
+[[package]]
 name = "docker"
 version = "7.1.0"
 description = "A Python library for the Docker Engine API."
@@ -1564,4 +1577,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "4678ae375c3ab99f6e74918ad503a3f18fcd82c9d3936af65a278a2981dcbbe5"
+content-hash = "db2745f834cdc678fe1bda8af50a795a0a6f1ac4f752f76ac2e7ba095a5ab4f5"

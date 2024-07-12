@@ -27,6 +27,7 @@ pillow = "^10.4.0"
 mypy = "^1.10.1"
 django-stubs = {version = "^5.0.2", extras = ["compatible-mypy"]}
 ruff = "^0.5.1"
+djhtml = "^3.0.6"
 
 
 [tool.mypy]
