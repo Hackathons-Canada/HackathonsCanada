@@ -19,10 +19,9 @@
 2. Install Poetry (https://python-poetry.org/docs/)
 3. Install deps using `poetry install --no-root --with dev`
 4. Run `poetry shell` to activate the virtual environment
-
-[//]: # (3. Run `poetry instalize` to rename local settings & create the db&#41;)
-5. Rename `/canadahackers/local_settings.py.example` to `/canadahackers/local_settings.py` and update the settings accordingly
-6. Create the database using `python manage.py migrate`
-7. Run the server using `python manage.py runserver`
-8. Visit `http://localhost:8000` in your browser
-9. You're all set!
+5. Run `pre-commit install` to install the pre-commit hooks 
+6. Rename `/canadahackers/local_settings.py.example` to `/canadahackers/local_settings.py` and update the settings accordingly
+7. Create the database using `python manage.py migrate`
+8. Run the server using `python manage.py runserver`
+9. Visit `http://localhost:8000` in your browser
+10. You're all set!

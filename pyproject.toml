@@ -31,6 +31,7 @@ django-stubs = { version = "^5.0.2", extras = ["compatible-mypy"] }
 ruff = "^0.5.1"
 djhtml = "^3.0.6"
 celery-types = "^0.22.0"
+pre-commit = "^3.7.1"
 
 [tool.poetry.group.prod]
 optional = true
