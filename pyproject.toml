@@ -48,6 +48,19 @@ exclude = ["migrations", "node_modules", "static", "venv", ".idea"]
 django_settings_module = "hackathons_canada.settings"
 
 
+[tool.ruff]
+exclude = ["migrations", "node_modules", "static", "venv", ".idea", ".git"]
+fix = true
+show-fixes = true
+
+[tool.ruff.format]
+docstring-code-format = true
+line-ending = "lf"
+
+
+
+
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

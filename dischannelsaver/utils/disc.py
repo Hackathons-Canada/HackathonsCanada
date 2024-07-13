@@ -14,6 +14,7 @@ from dischannelsaver.utils.nomenclature import (
     generate_discord_timestamp,
     get_months,
 )
+
 __all__ = ["create_channel", "lock_channel", "sort_channels"]
 
 
@@ -38,9 +39,9 @@ async def create_channel(hackathon: Hackathon):
     )
     if hackathon.start_date is not None and hackathon.end_date is not None:
         embed.add_field(
-        name="Event dates",
-        value=f"{generate_discord_timestamp(hackathon.start_date)} - {generate_discord_timestamp(hackathon.end_date)}",
-    )
+            name="Event dates",
+            value=f"{generate_discord_timestamp(hackathon.start_date)} - {generate_discord_timestamp(hackathon.end_date)}",
+        )
     embed.add_field(
         name="Application dates",
         value=f"{generate_discord_timestamp(hackathon.application_start)} - {generate_discord_timestamp(hackathon.application_deadline)}",
@@ -54,7 +55,9 @@ async def create_channel(hackathon: Hackathon):
 async def lock_channel(guild: discord.Guild, channel: discord.TextChannel):
     everyone = discord.utils.get(guild.roles, name="@everyone")
     await channel.set_permissions(
-        everyone, send_messages=False, reason="Archiving channel"  # type: ignore
+        everyone,
+        send_messages=False,
+        reason="Archiving channel",  # type: ignore
     )
 
 

@@ -34,8 +34,8 @@ ALLOWED_HOSTS = [
 AUTH_USER_MODEL = "core.Hacker"
 # Application definition
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = 'media/'
+MEDIA_URL = "/media/"
+MEDIA_ROOT = "media/"
 
 INSTALLED_APPS = [
     "simpleui",
@@ -156,7 +156,6 @@ SIMPLEUI_HOME_INFO = True
 SIMPLEUI_HOME_QUICK = True
 SIMPLEUI_HOME_ACTION = True
 
-
 SIMPLEUI_ANALYSIS = False
 
 # Default primary key field type
@@ -168,14 +167,14 @@ COUNTRIES_OVERRIDE = {
     "ONL": {"name": "Online", "numeric": 999, "ioc_code": "ONL"},
 }
 COUNTRIES_FIRST = ["CA", "US"]
-### CELERY CONF
+# CELERY CONF
 
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://valkey:6379/1")
 CELERY_RESULT_BACKEND = os.environ.get("CELERY_BACKEND", "redis://valkey:6379/1")
 
 LOGIN_REDIRECT_URL = "/"  # todo change to profile page once created
 
-### Custom settings
+# Custom settings
 
 DISCORD_ARCHIVE_AFTER: int = 14  # days
 DISCORD_ARCHIVE_ENABLED: bool = True
@@ -192,16 +191,19 @@ DISCORD_GUILD_ID: int = 0  # The discord guild ID that you want to archive chann
 DISCORD_TOKEN: str = (
     "CHANGEME"  # The discord bot token that you want to use to archive channels
 )
+# fmt: off
 
-try:
-    from .local_settings import *
+try: 
+    from .local_settings import *  # noqa: F403
 except ImportError:
     try:
-        from local_settings import *
+        from local_settings import *  # noqa: F403
     except ImportError:
         raise ImportError(
             "Please create a local_settings.py with overrides for settings.py"
         )
+
+# fmt: on
 
 if SECRET_KEY == "CHANGEME" and DEBUG is False:
     raise ValueError("Please set SECRET_KEY in local_settings.py")

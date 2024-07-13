@@ -1,6 +1,6 @@
 from django import forms
 from .models import Hackathon
-from crispy_forms.helper import FormHelper # type: ignore
+from crispy_forms.helper import FormHelper  # type: ignore
 from crispy_forms.layout import Layout, Field, HTML, Submit, Div, Fieldset, Row, Column
 
 

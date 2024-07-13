@@ -30,7 +30,9 @@ EDUCATION_CHOICES: Final = [
     (4, "Other"),
 ]
 
-HACKATHON_EDUCATION_CHOICES: List[Tuple[int, str]] = EDUCATION_CHOICES + [(5, "Any/All")]
+HACKATHON_EDUCATION_CHOICES: List[Tuple[int, str]] = EDUCATION_CHOICES + [
+    (5, "Any/All")
+]
 
 
 class MetaDataMixin(models.Model):
@@ -110,7 +112,7 @@ class Notifiable(UserManager):
 
 
 class Hacker(AbstractUser):
-    objects = Notifiable() # type: ignore
+    objects = Notifiable()  # type: ignore
     country = CountryField(
         blank_label="(select country)",
         blank=True,
@@ -190,6 +192,7 @@ class HackthonsManager(models.Manager):
 
     def admin(self):
         return super().get_queryset()
+
     def unapproved(self):
         return (
             super().get_queryset().filter(is_public=False)
