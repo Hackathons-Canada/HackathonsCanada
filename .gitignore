@@ -7,3 +7,4 @@ celerybeat-schedule
 venv
 
 .prettierignore
+/media/hackathon_images

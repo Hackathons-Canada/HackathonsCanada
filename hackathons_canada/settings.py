@@ -34,6 +34,9 @@ ALLOWED_HOSTS = [
 AUTH_USER_MODEL = "core.Hacker"
 # Application definition
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = 'media/'
+
 INSTALLED_APPS = [
     "simpleui",
     "django.contrib.admin",
