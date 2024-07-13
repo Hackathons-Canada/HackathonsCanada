@@ -1,5 +1,5 @@
 import random
-from typing import Final
+from typing import Final, Tuple, List
 
 from django.contrib.auth.models import AbstractUser, UserManager
 
@@ -30,7 +30,7 @@ EDUCATION_CHOICES: Final = [
     (4, "Other"),
 ]
 
-HACKATHON_EDUCATION_CHOICES = EDUCATION_CHOICES + [(5, "Any/All")]
+HACKATHON_EDUCATION_CHOICES: List[Tuple[int, str]] = EDUCATION_CHOICES + [(5, "Any/All")]
 
 
 class MetaDataMixin(models.Model):
@@ -159,7 +159,7 @@ class Hacker(AbstractUser):
         super().save(force_insert, force_update, using, update_fields)
 
 
-def get_random_color():
+def get_random_color() -> str:
     # generate a random color in hex format
     return "#" + "%06x" % random.randint(0, 0xFFFFFF)
 
@@ -188,6 +188,8 @@ class HackthonsManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().filter(is_public=True)
 
+    def admin(self):
+        return super().get_queryset()
     def unapproved(self):
         return (
             super().get_queryset().filter(is_public=False)
