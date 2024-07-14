@@ -11,9 +11,10 @@ from django.utils import timezone
 from hackathons_canada.celery import app
 from dischannelsaver.utils.archival import archive_hackathon
 from dischannelsaver.utils.disc import create_channel, sort_channels
+from core.models import Hackathon
 
 if TYPE_CHECKING:
-    from core.models import Hackathon, Hacker
+    from core.models import Hacker
 
 logger = get_task_logger(__name__)
 hacker: "Hacker" = get_user_model()  # type: ignore

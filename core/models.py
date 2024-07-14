@@ -2,18 +2,15 @@ import random
 from typing import Final, Tuple, List
 
 from django.contrib.auth.models import AbstractUser, UserManager
+from django.contrib.gis.db.models import PointField
 
 # Create your models here.
 from django.db import models
 from django.utils import timezone
 from django_countries.fields import CountryField
-from location_field.models.spatial import LocationField  # type: ignore
 
 from core.tasks import send_new_hackathon_email
 
-# from django.contrib.gis.geos import Point
-
-# from location_field.models.spatial import LocationField
 __all__ = [
     "Hacker",
     "Hackathon",
@@ -222,9 +219,7 @@ class HackathonLocation(models.Model):
         help_text="Where the hackathon is located (e.g. University of Toronto)",
     )
     country = CountryField(blank_label="(select country)")
-    location = LocationField(
-        help_text="Physical location of the hackathon (used for distance calculations)"
-    )
+    location = PointField(geography=True, spatial_index=True)
 
 
 class Hackathon(MetaDataMixin):

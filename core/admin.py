@@ -2,7 +2,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from .models import *  # type: ignore
+from .models import Category, Hacker, Hackathon
 
 
 class HackathonAdmin(admin.ModelAdmin):
@@ -11,13 +11,10 @@ class HackathonAdmin(admin.ModelAdmin):
         "start_date",
         "end_date",
         "location",
-        "category",
-        "is_virtual",
-        "is_approved",
+        "categories",
     )
-    list_filter = ("is_virtual", "is_approved", "category")
-    search_fields = ("name", "location", "category")
-    readonly_fields = ("created_at", "updated_at")
+    list_filter = ("categories",)
+    search_fields = ("name", "location")
 
     def get_queryset(self, request):
         return self.model.objects.admin()

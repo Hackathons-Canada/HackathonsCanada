@@ -677,13 +677,14 @@ files = [
 django = ">=4.2"
 
 [[package]]
-name = "django-location-field"
-version = "2.7.3"
-description = "Location field for Django"
+name = "django-map-widgets"
+version = "0.5.1"
+description = "Configurable and user-friendly map widgets for GeoDjango fields"
 optional = false
 python-versions = "*"
 files = [
-    {file = "django_location_field-2.7.3-py2.py3-none-any.whl", hash = "sha256:b0660d3fd024541fbe53ef723e3b02ec4014fbc886ee3d8342e031f1ab28d11d"},
+    {file = "django_map_widgets-0.5.1-py3-none-any.whl", hash = "sha256:7307935163b46c6a2a225c85c91c7262a8b47a5c3aefbbc6d8fc7a5fda53b7cd"},
+    {file = "django_map_widgets-0.5.1.tar.gz", hash = "sha256:68e81f9c58c1cd6d180421220a4d100a185c8062ae0ca7be790658fcfd4eda1d"},
 ]
 
 [[package]]
@@ -1896,4 +1897,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "c9c739584d375e4104b88e1d8b912b6240a3d42620773935b01fa869d2b9b2e3"
+content-hash = "3dc59779d0d0e317589d14b6810374a75669ab6928318be413ebaee7bcb5b036"

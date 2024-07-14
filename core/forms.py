@@ -1,7 +1,12 @@
 from django import forms
+from django.contrib.gis.gdal import Point
+from mapwidgets import widgets
+
 from .models import Hackathon
 from crispy_forms.helper import FormHelper  # type: ignore
-from crispy_forms.layout import Layout, Field, HTML, Submit, Div, Fieldset, Row, Column
+from crispy_forms.layout import Layout, Field, HTML, Submit, Div, Fieldset
+from django.contrib.gis import forms as gis_forms
+from django.contrib.gis.db import models as gis_models
 
 
 class HackathonForm(forms.ModelForm):
@@ -88,3 +93,16 @@ class HackathonForm(forms.ModelForm):
         )
         for visible in self.visible_fields():
             visible.field.widget.attrs["class"] = "form-button-style py-2"
+
+
+class GoogleAddressForm(gis_forms.ModelForm):
+    location = gis_forms.PointField(
+        widget=widgets.GooglePointFieldWidget(),
+    )
+
+    class Meta:
+        model = Point
+        fields = "__all__"
+        formfield_overrides = {
+            gis_models.PointField: {"widget": widgets.GooglePointFieldWidget()}
+        }
