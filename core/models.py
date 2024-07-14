@@ -216,6 +216,13 @@ class HackthonsManager(models.Manager):
 
 
 class Location(models.Model):
+    """
+    TODO:
+     - remove this model and replace with a proper implementation of GeoDjango for location
+     - Add a proper Widget for the location field in the Hackathon model (look into django-map-widgets)
+
+    """
+
     latitude = DecimalField(max_digits=22, decimal_places=16)
     longitude = DecimalField(max_digits=22, decimal_places=16)
 

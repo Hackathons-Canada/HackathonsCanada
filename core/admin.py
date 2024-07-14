@@ -11,7 +11,6 @@ class HackathonAdmin(admin.ModelAdmin):
         "start_date",
         "end_date",
         "location",
-        "categories",
     )
     list_filter = ("categories",)
     search_fields = ("name", "location")
