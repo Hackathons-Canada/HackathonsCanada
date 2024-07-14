@@ -6,6 +6,8 @@ set -o errexit
 set -o pipefail
 # exits if any of your variables is not set
 set -o nounset
+source /opt/pysetup/.venv/bin/activate
+
 
 
 postgres_ready() {
