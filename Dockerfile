@@ -20,7 +20,7 @@ WORKDIR /app
 COPY poetry.lock pyproject.toml ./
 
 
-RUN --mount=type=cache,target=/tmp/pypoetry poetry install --with prod --no-root
+RUN poetry install --with prod --no-root
 
 FROM python:3.12-slim-buster
 
