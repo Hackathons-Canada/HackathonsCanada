@@ -27,7 +27,11 @@ COPY . .
 COPY poetry.lock pyproject.toml ./
 
 RUN poetry bundle venv --python=/usr/bin/python3 --with prod /venv
-RUN mv ./scripts /scripts
+
+FROM gcr.io/distroless/python3-debian12
+COPY --from=builder /venv /venv
+
+COPY ./scripts /scripts
 
 RUN sed -i 's/\r$//g' /scripts/django/start &&  \
     sed -i 's/\r$//g' /scripts/celery/worker/start &&  \
@@ -40,11 +44,5 @@ RUN chmod +x /scripts/django/start && \
     chmod +x /scripts/celery/beat/start && \
     chmod +x /scripts/flower/start && \
     chmod +x /scripts/entrypoint.sh
-
-
-
-FROM gcr.io/distroless/python3-debian12
-COPY --from=builder /venv /venv
-ENTRYPOINT ["/venv/bin/my-awesome-app"]
 
 ENTRYPOINT ["/scripts/entrypoint.sh"]
