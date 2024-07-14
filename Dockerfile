@@ -22,7 +22,7 @@ COPY poetry.lock pyproject.toml ./
 
 RUN poetry install --with prod --no-root
 
-FROM python:3.12-slim-buster
+FROM python:3.12-slim
 
 ENV VIRTUAL_ENV=/app/.venv \
     PATH="/app/.venv/bin:$PATH"
