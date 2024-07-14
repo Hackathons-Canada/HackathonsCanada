@@ -14,7 +14,7 @@ RUN apt-get update \
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && rm -rf /var/lib/apt/lists/* \
 
-RUN pip install poetry==1.8.3
+RUN pip install poetry
 
 WORKDIR /app
 COPY poetry.lock pyproject.toml ./
