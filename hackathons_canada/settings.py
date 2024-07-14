@@ -174,6 +174,22 @@ CELERY_RESULT_BACKEND = os.environ.get("CELERY_BACKEND", "redis://valkey:6379/1"
 
 LOGIN_REDIRECT_URL = "/"  # todo change to profile page once created
 
+# Logging settings
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "INFO",
+    },
+}
+
 # Custom settings
 
 DISCORD_ARCHIVE_AFTER: int = 14  # days
