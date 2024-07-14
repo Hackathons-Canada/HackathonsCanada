@@ -1,4 +1,4 @@
-FROM python:3.12-slim
+FROM python:3.12-slim         as builder
 LABEL org.opencontainers.image.authors="Jason Cameron <jason@jasoncameron.dev>"
 LABEL org.opencontainers.image.source="https://github.com/Hackathons-Canada/HackathonsCanada"
 ENV PYTHONFAULTHANDLER=1 \
@@ -19,18 +19,14 @@ RUN apt-get update \
   && apt-get install  --no-install-suggests --no-install-recommends -y build-essential libpq-dev gettext pipx \
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && rm -rf /var/lib/apt/lists/*
-
+ENV PATH="/root/.local/bin:${PATH}"
 RUN pipx install poetry
-
-
-
-WORKDIR /app
+RUN pipx inject poetry poetry-plugin-bundle
+WORKDIR /src
+COPY . .
 COPY poetry.lock pyproject.toml ./
 
-RUN poetry install --no-root --with prod
-
-COPY . .
-
+RUN poetry bundle venv --python=/usr/bin/python3 --with prod --no-root /venv
 RUN mv ./scripts /scripts
 
 RUN sed -i 's/\r$//g' /scripts/django/start &&  \
@@ -44,5 +40,11 @@ RUN chmod +x /scripts/django/start && \
     chmod +x /scripts/celery/beat/start && \
     chmod +x /scripts/flower/start && \
     chmod +x /scripts/entrypoint.sh
+
+
+
+FROM gcr.io/distroless/python3-debian12
+COPY --from=builder /venv /venv
+ENTRYPOINT ["/venv/bin/my-awesome-app"]
 
 ENTRYPOINT ["/scripts/entrypoint.sh"]
