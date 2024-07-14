@@ -28,7 +28,7 @@ COPY poetry.lock pyproject.toml ./
 
 RUN poetry bundle venv --python=/usr/bin/python3 --with prod /venv
 
-FROM gcr.io/distroless/python3-debian12
+FROM python:3.12-slim
 COPY --from=builder /venv /venv
 
 COPY ./scripts /scripts
