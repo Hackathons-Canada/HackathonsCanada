@@ -41,14 +41,15 @@ RUN apt-get update \
         build-essential \
 
 # install poetry - respects $POETRY_VERSION & $POETRY_HOME
-RUN curl -sSL https://install.python-poetry.org | python3 -
+RUN curl -sSL https://install.python-poetry.org | POETRY_HOME=$POETRY_HOME python3 -
+ENV PATH="$POETRY_HOME/bin:$PATH"
+
 # copy project requirement files here to ensure they will be cached.
 WORKDIR $PYSETUP_PATH
 COPY poetry.lock pyproject.toml ./
 
 # install runtime deps - uses $POETRY_VIRTUALENVS_IN_PROJECT internally
-RUN ls -lah $POETRY_HOME
-RUN /opt/poetry/bin/poetry install --with prod --no-root
+RUN poetry install --with prod --no-root
 
 
 
