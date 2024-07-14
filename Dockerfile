@@ -16,19 +16,12 @@ ENV PYTHONFAULTHANDLER=1 \
   POETRY_VERSION=1.8.3
 
 RUN apt-get update \
-  # dependencies for building Python packages
-  && apt-get install -y build-essential \
-  # psycopg2 dependencies
-  && apt-get install -y libpq-dev \
-  # Translations dependencies
-  && apt-get install -y gettext \
-  # Additional dependencies
-  && apt-get install -y git \
-  # cleaning up unused files
+  && apt-get install  --no-install-suggests --no-install-recommends -y build-essential libpq-dev gettext pipx \
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && rm -rf /var/lib/apt/lists/*
 
-RUN curl -sSL https://install.python-poetry.org | python3 -
+RUN pipx install poetry
+
 
 
 WORKDIR /app
