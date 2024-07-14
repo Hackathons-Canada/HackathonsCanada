@@ -26,7 +26,7 @@ WORKDIR /src
 COPY . .
 COPY poetry.lock pyproject.toml ./
 
-RUN poetry bundle venv --python=/usr/bin/python3 --with prod --no-root /venv
+RUN poetry bundle venv --python=/usr/bin/python3 --with prod /venv
 RUN mv ./scripts /scripts
 
 RUN sed -i 's/\r$//g' /scripts/django/start &&  \
