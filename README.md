@@ -20,7 +20,7 @@
 3. Install deps using `poetry install --no-root --with dev`
 4. Run `poetry shell` to activate the virtual environment
 5. Run `pre-commit install` to install the pre-commit hooks 
-6. Rename `/canadahackers/local_settings.py.example` to `/canadahackers/local_settings.py` and update the settings accordingly
+6. Rename `/hackathons_canada/local_settings.py.example` to `/hackathons_canada/local_settings.py` and update the settings accordingly
 7. Create the database using `python manage.py migrate`
 8. Run the server using `python manage.py runserver`
 9. Visit `http://localhost:8000` in your browser

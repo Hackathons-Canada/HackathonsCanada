@@ -3,4 +3,4 @@
 set -o errexit
 set -o nounset
 
-celery -A canadahackers worker -l INFO
+celery -A hackathons_canada worker -l INFO

@@ -4,7 +4,7 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
-python manage.py migrate 
+python manage.py migrate
 python manage.py collectstatic --noinput
 
-gunicorn -w 3 -t 3 -b 0.0.0.0:22300 canadahackers.wsgi:application
+gunicorn -w 3 -t 3 -b 0.0.0.0:22300 hackathons_canada.wsgi:application
