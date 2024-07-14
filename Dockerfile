@@ -13,7 +13,7 @@ ENV PYTHONUNBUFFERED=1 \
     \
     # poetry
     # https://python-poetry.org/docs/configuration/#using-environment-variables
-    POETRY_VERSION=1.0.3 \
+    POETRY_VERSION=1.8.3 \
     # make poetry install to this location
     POETRY_HOME="/opt/poetry" \
     # make poetry create the virtual environment in the project's root
@@ -55,7 +55,6 @@ RUN poetry install --with prod --no-root
 
 # `production` image used for runtime
 FROM python-base as production
-ENV FASTAPI_ENV=production
 COPY --from=builder-base $PYSETUP_PATH $PYSETUP_PATH
 COPY . /app/
 WORKDIR /app
