@@ -47,7 +47,7 @@ services:
       - valkey
       - postgres
     healthcheck:
-      test: ["CMD", "celery", "worker", "-A", "dischannelsaver", "--loglevel=info"]
+      test: ["CMD", "/opt/pysetup/.venv/bin/celery", "worker", "-A", "dischannelsaver", "--loglevel=info"]
       interval: 10s
       retries: 5
 
@@ -65,7 +65,7 @@ services:
       - valkey
       - postgres
     healthcheck:
-      test: ["CMD", "celery", "beat", "-A", "dischannelsaver", "--loglevel=info"]
+      test: ["CMD", "/opt/pysetup/.venv/bin/celery", "beat", "-A", "dischannelsaver", "--loglevel=info"]
       interval: 10s
       retries: 5
 
