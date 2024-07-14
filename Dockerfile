@@ -29,7 +29,6 @@ ENV PYTHONUNBUFFERED=1 \
 
 
 # prepend poetry and venv to path
-ENV PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$PATH"
 
 
 # `builder-base` stage is used to build deps + create our virtual environment
@@ -43,13 +42,13 @@ RUN apt-get update \
 
 # install poetry - respects $POETRY_VERSION & $POETRY_HOME
 RUN curl -sSL https://install.python-poetry.org | python
-
 # copy project requirement files here to ensure they will be cached.
 WORKDIR $PYSETUP_PATH
 COPY poetry.lock pyproject.toml ./
 
 # install runtime deps - uses $POETRY_VIRTUALENVS_IN_PROJECT internally
-RUN poetry install --with prod --no-root
+RUN ls -lah /opt/poetry/bin
+RUN /opt/poetry/bin/poetry install --with prod --no-root
 
 
 
