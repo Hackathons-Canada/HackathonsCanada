@@ -1,4 +1,4 @@
-FROM python:3.12-buster as builder
+FROM python:3.12-slim-bullseye as builder
 LABEL org.opencontainers.image.authors="Jason Cameron <jason@jasoncameron.dev>"
 LABEL org.opencontainers.image.source="https://github.com/Hackathons-Canada/HackathonsCanada"
 ENV PYTHONFAULTHANDLER=1 \
@@ -22,7 +22,7 @@ COPY poetry.lock pyproject.toml ./
 
 RUN poetry install --with prod --no-root
 
-FROM python:3.12-slim
+FROM python:3.12-slim-bullseye
 
 ENV VIRTUAL_ENV=/app/.venv \
     PATH="/app/.venv/bin:$PATH"
