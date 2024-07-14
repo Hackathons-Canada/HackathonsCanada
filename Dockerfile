@@ -1,37 +1,37 @@
-FROM python:3.12-slim         as builder
+FROM python:3.12-buster as builder
 LABEL org.opencontainers.image.authors="Jason Cameron <jason@jasoncameron.dev>"
 LABEL org.opencontainers.image.source="https://github.com/Hackathons-Canada/HackathonsCanada"
 ENV PYTHONFAULTHANDLER=1 \
   PYTHONUNBUFFERED=1 \
   PYTHONUNBUFFERED=1 \
-  PYTHONHASHSEED=random \
-  PIP_NO_CACHE_DIR=off \
-  PIP_DISABLE_PIP_VERSION_CHECK=on \
-  PIP_DEFAULT_TIMEOUT=100 \
-  # Poetry's configuration:
+  POETRY_VIRTUALENVS_CREATE=1 \
   POETRY_NO_INTERACTION=1 \
-  POETRY_VIRTUALENVS_CREATE=false \
-  POETRY_CACHE_DIR='/var/cache/pypoetry' \
-  POETRY_HOME='/usr/local' \
-  POETRY_VERSION=1.8.3
+  POETRY_VIRTUALENVS_IN_PROJECT=True \
+  POETRY_CACHE_DIR='/tmp/pypoetry' \
 
 RUN apt-get update \
-  && apt-get install  --no-install-suggests --no-install-recommends -y build-essential libpq-dev gettext pipx \
+  && apt-get install --no-install-suggests --no-install-recommends -y build-essential libpq-dev gettext \
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
-  && rm -rf /var/lib/apt/lists/*
-ENV PATH="/root/.local/bin:${PATH}"
-RUN pipx install poetry
-RUN pipx inject poetry poetry-plugin-bundle
-WORKDIR /src
-COPY . .
+  && rm -rf /var/lib/apt/lists/* \
+
+RUN pip install poetry==1.8.3
+
+WORKDIR /app
 COPY poetry.lock pyproject.toml ./
 
-RUN poetry bundle venv --python=/usr/bin/python3 --with prod /venv
 
-FROM python:3.12-slim
-COPY --from=builder /venv /venv
+RUN --mount=type=cache,target=$POETRY_CACHE_DIR poetry install --with prod --no-root
 
-COPY ./scripts /scripts
+FROM python:3.12-slim-buster
+
+ENV VIRTUAL_ENV=/app/.venv \
+    PATH="/app/.venv/bin:$PATH"
+
+COPY --from=builder ${VIRTUAL_ENV} ${VIRTUAL_ENV}
+
+WORKDIR /app
+COPY . .
+RUN mv ./scripts /scripts
 
 RUN sed -i 's/\r$//g' /scripts/django/start &&  \
     sed -i 's/\r$//g' /scripts/celery/worker/start &&  \
