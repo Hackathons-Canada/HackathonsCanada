@@ -9,6 +9,8 @@ services:
     volumes:
       - ${PWD}/hackathons_canada/local_settings.py:/app/hackathons_canada/local_settings.py:ro
       - /srv/static:/app/static2
+      - /srv/media:/app/media
+      - ./web.log:/app/access.log
     depends_on:
       - postgres
       - valkey
@@ -41,6 +43,7 @@ services:
     command: /scripts/celery/worker/start
     volumes:
       - .:/app
+      - ./celery_worker.log:/app/access.log
     env_file:
       - .env
     depends_on:
@@ -59,6 +62,7 @@ services:
     command: /scripts/celery/beat/start
     volumes:
       - .:/app
+      - ./celery_beat.log:/app/access.log
     env_file:
       - .env
     depends_on:
@@ -77,6 +81,7 @@ services:
     command: /scripts/flower/start
     volumes:
       - .:/app
+      - ./flower.log:/app/access.log
     env_file:
       - .env
     ports:
