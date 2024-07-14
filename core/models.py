@@ -2,10 +2,10 @@ import random
 from typing import Final, Tuple, List
 
 from django.contrib.auth.models import AbstractUser, UserManager
-from django.contrib.gis.db.models import PointField
 
 # Create your models here.
 from django.db import models
+from django.db.models import DecimalField
 from django.utils import timezone
 from django_countries.fields import CountryField
 
@@ -14,6 +14,8 @@ from core.tasks import send_new_hackathon_email
 __all__ = [
     "Hacker",
     "Hackathon",
+    "HackathonLocation",
+    "Location",
     "Category",
     "NotificationPolicy",
     "EDUCATION_CHOICES",
@@ -213,13 +215,20 @@ class HackthonsManager(models.Manager):
         )
 
 
+class Location(models.Model):
+    latitude = DecimalField(max_digits=22, decimal_places=16)
+    longitude = DecimalField(max_digits=22, decimal_places=16)
+
+
 class HackathonLocation(models.Model):
     name = models.CharField(
         max_length=255,
         help_text="Where the hackathon is located (e.g. University of Toronto)",
     )
     country = CountryField(blank_label="(select country)")
-    location = PointField(geography=True, spatial_index=True)
+    location = models.OneToOneField(
+        Location, on_delete=models.RESTRICT, related_name="location"
+    )
 
 
 class Hackathon(MetaDataMixin):

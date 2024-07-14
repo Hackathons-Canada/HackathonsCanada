@@ -677,17 +677,6 @@ files = [
 django = ">=4.2"
 
 [[package]]
-name = "django-map-widgets"
-version = "0.5.1"
-description = "Configurable and user-friendly map widgets for GeoDjango fields"
-optional = false
-python-versions = "*"
-files = [
-    {file = "django_map_widgets-0.5.1-py3-none-any.whl", hash = "sha256:7307935163b46c6a2a225c85c91c7262a8b47a5c3aefbbc6d8fc7a5fda53b7cd"},
-    {file = "django_map_widgets-0.5.1.tar.gz", hash = "sha256:68e81f9c58c1cd6d180421220a4d100a185c8062ae0ca7be790658fcfd4eda1d"},
-]
-
-[[package]]
 name = "django-simpleui"
 version = "2024.4.1"
 description = "django admin theme 后台模板"
@@ -1897,4 +1886,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "3dc59779d0d0e317589d14b6810374a75669ab6928318be413ebaee7bcb5b036"
+content-hash = "ab7a39f1e310772919fba7c94b51d375864648fcf957b175cb43427b879b65dd"

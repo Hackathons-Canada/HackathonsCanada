@@ -53,8 +53,6 @@ INSTALLED_APPS = [
     "allauth.socialaccount.providers.github",
     "allauth.socialaccount.providers.google",
     # 'allauth.socialaccount.providers.linkedin',
-    "django.contrib.gis",
-    "mapwidgets",
     "core",
     "dischannelsaver",
     "crispy_forms",
@@ -195,26 +193,8 @@ DISCORD_TOKEN: str = (
 )
 # fmt: off
 
-# Map settings
 
-MAP_WIDGETS = {
-    "GoogleMap": {
-        "apiKey": "CHANGE_ME",
-        "PointField": {
-            "interactive": {
-                "mapOptions": {
-                    "zoom": 15,  # set initial zoom
-                    "streetViewControl": False,
-                },
-                "GooglePlaceAutocompleteOptions": {
-                    "componentRestrictions": {"country": "uk"}
-                },
-            }
-        }
-    },
-}
-
-try: 
+try:
     from .local_settings import *  # noqa: F403
 except ImportError:
     try:

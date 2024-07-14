@@ -40,9 +40,6 @@ RUN apt-get update \
         curl \
         # deps for building python deps
         build-essential \
-        # Install GDAL binaries and Python bindings
-        gdal-bin \
-        python3-gdal
 
 # install poetry - respects $POETRY_VERSION & $POETRY_HOME
 RUN curl -sSL https://install.python-poetry.org | python
