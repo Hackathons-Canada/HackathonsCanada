@@ -57,7 +57,7 @@ RUN poetry install --with prod --no-root
 FROM python-base as production
 ENV FASTAPI_ENV=production
 COPY --from=builder-base $PYSETUP_PATH $PYSETUP_PATH
-COPY ./app /app/
+COPY . /app/
 WORKDIR /app
 RUN mv ./scripts /scripts
 
