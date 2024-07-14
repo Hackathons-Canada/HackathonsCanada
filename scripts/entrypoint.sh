@@ -9,7 +9,7 @@ set -o nounset
 
 
 postgres_ready() {
-python << END
+/opt/pysetup/.venv/bin/python << END
 import sys
 
 import psycopg2
