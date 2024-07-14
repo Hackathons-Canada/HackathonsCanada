@@ -7,6 +7,7 @@ from django.contrib.auth.models import AbstractUser, UserManager
 from django.db import models
 from django.utils import timezone
 from django_countries.fields import CountryField
+from location_field.models.spatial import LocationField  # type: ignore
 
 from core.tasks import send_new_hackathon_email
 
@@ -215,6 +216,17 @@ class HackthonsManager(models.Manager):
         )
 
 
+class HackathonLocation(models.Model):
+    name = models.CharField(
+        max_length=255,
+        help_text="Where the hackathon is located (e.g. University of Toronto)",
+    )
+    country = CountryField(blank_label="(select country)")
+    location = LocationField(
+        help_text="Physical location of the hackathon (used for distance calculations)"
+    )
+
+
 class Hackathon(MetaDataMixin):
     objects = HackthonsManager()
     source = models.CharField(
@@ -260,8 +272,11 @@ class Hackathon(MetaDataMixin):
 
     reimbursements = models.CharField(max_length=255, blank=True, null=True)
 
-    country = CountryField(blank_label="(select country)", blank=True, null=True)
-    # location = LocationField(based_fields=['city'], zoom=7, default=Point(1.0, 1.0))
+    location = models.ForeignKey(
+        HackathonLocation,
+        on_delete=models.RESTRICT,
+        related_name="hackathons",
+    )
 
     min_age = models.SmallIntegerField(
         blank=True,
