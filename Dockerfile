@@ -47,7 +47,7 @@ WORKDIR $PYSETUP_PATH
 COPY poetry.lock pyproject.toml ./
 
 # install runtime deps - uses $POETRY_VIRTUALENVS_IN_PROJECT internally
-RUN ls -lah /opt/poetry/bin
+RUN ls -lah $POETRY_HOME
 RUN /opt/poetry/bin/poetry install --with prod --no-root
 
 
