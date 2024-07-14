@@ -14,13 +14,13 @@ RUN apt-get update \
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && rm -rf /var/lib/apt/lists/* \
 
-RUN pip install poetry==1.8.3
+RUN pip install poetry
 
 WORKDIR /app
 COPY poetry.lock pyproject.toml ./
 
 
-RUN --mount=type=cache,target=$POETRY_CACHE_DIR poetry install --with prod --no-root
+RUN poetry install --with prod --no-root
 
 FROM python:3.12-slim-buster
 
