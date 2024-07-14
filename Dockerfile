@@ -7,7 +7,8 @@ ENV PYTHONFAULTHANDLER=1 \
   POETRY_VIRTUALENVS_CREATE=1 \
   POETRY_NO_INTERACTION=1 \
   POETRY_VIRTUALENVS_IN_PROJECT=True \
-  POETRY_CACHE_DIR='/tmp/pypoetry'
+  POETRY_CACHE_DIR='/tmp/pypoetry' \
+  PATH="${PATH}:/root/.poetry/bin"
 
 RUN apt-get update \
   && apt-get install --no-install-suggests --no-install-recommends -y build-essential libpq-dev gettext ca-certificates curl \
