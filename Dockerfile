@@ -10,16 +10,16 @@ ENV PYTHONFAULTHANDLER=1 \
   POETRY_CACHE_DIR='/tmp/pypoetry'
 
 RUN apt-get update \
-  && apt-get install --no-install-suggests --no-install-recommends -y build-essential libpq-dev gettext \
+  && apt-get install --no-install-suggests --no-install-recommends -y build-essential libpq-dev gettext ca-certificates curl \
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
-  && rm -rf /var/lib/apt/lists/* \
+  && rm -rf /var/lib/apt/lists/*
 
-RUN pip install poetry
+RUN curl -sSL https://install.python-poetry.org | python3 -
 
 WORKDIR /app
 COPY poetry.lock pyproject.toml ./
 
-RUN python -m poetry install --with prod --no-root
+RUN poetry install --with prod --no-root
 
 FROM python:3.12-slim-bullseye
 
