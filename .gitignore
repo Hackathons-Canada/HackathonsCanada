@@ -8,3 +8,5 @@ venv
 
 .prettierignore
 /media/hackathon_images
+
+.log
