@@ -216,14 +216,12 @@ DISCORD_TOKEN: str = (
 
 
 try:
-    from .local_settings import *  # noqa: F403
-except ImportError:
-    try:
-        from local_settings import *  # noqa: F403
-    except ImportError:
-        raise ImportError(
-            "Please create a local_settings.py with overrides for settings.py"
-        )
+    with open(os.path.join(os.path.dirname(__file__), "local_settings.py")) as f:
+        exec(f.read(), globals())
+except IOError:
+    raise TypeError(
+        "There is an error in the naming of local_settings.py or it doesn't exist. Please read docs for proper setup steps."
+    )
 
 # fmt: on
 
