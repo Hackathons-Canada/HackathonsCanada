@@ -4,4 +4,4 @@
 .gitmodules
 .gitattributes
 celerybeat-schedule
-.log
+*.log
