@@ -186,7 +186,7 @@ LOGGING = {
         "file": {
             "class": "logging.FileHandler",
             "filename": "/var/access.log",
-            "formatter": "verbose",
+            "formatter": "%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s",
         },
     },
     "root": {
