@@ -47,7 +47,6 @@ class HackathonForm(forms.ModelForm):
             Fieldset(
                 "",
                 Div(
-                    "general info",
                     Field("short_name"),
                     Field("name"),
                     css_class="form-group-style",
@@ -85,7 +84,7 @@ class HackathonForm(forms.ModelForm):
                 Field("maximum_education_level"),
                 Field("numerical_prize_pool"),
             ),
-            Submit("submit", "Submit", css_class="button white py-5"),
+            Submit("submit", "Submit", css_class="button white py-3 px-5"),
         )
         for visible in self.visible_fields():
             visible.field.widget.attrs["class"] = "form-button-style py-2"
