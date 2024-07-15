@@ -184,9 +184,9 @@ LOGGING = {
             "class": "logging.StreamHandler",
         },
         "file": {
+            "level": "INFO",
             "class": "logging.FileHandler",
             "filename": "/var/access.log",
-            "formatter": "%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s",
         },
     },
     "root": {
