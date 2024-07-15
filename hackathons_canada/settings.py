@@ -186,7 +186,7 @@ LOGGING = {
         "file": {
             "level": "INFO",
             "class": "logging.FileHandler",
-            "filename": "/var/access.log",
+            "filename": "/logs/access.log",
         },
     },
     "root": {
