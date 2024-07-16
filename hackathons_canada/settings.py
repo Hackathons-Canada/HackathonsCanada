@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 import os
 from pathlib import Path
+from django.templatetags.static import static
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -38,7 +39,7 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = "media/"
 
 INSTALLED_APPS = [
-    "simpleui",
+    "unfold",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -152,11 +153,7 @@ STATIC_URL = "static/"
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 SIMPLEUI_LOGO = "//hackathonscanada.com/static/assets/favicon.png"
-SIMPLEUI_HOME_INFO = True
-SIMPLEUI_HOME_QUICK = True
-SIMPLEUI_HOME_ACTION = True
 
-SIMPLEUI_ANALYSIS = False
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -213,6 +210,74 @@ DISCORD_TOKEN: str = (
     "CHANGEME"  # The discord bot token that you want to use to archive channels
 )
 # fmt: off
+
+
+# Admin settings - https://unfoldadmin.com/
+UNFOLD = {
+    "SITE_TITLE": "Hackathons Canada Admin",
+    "SITE_HEADER": "Hackathons Canada Admin",
+    "SITE_URL": "/",
+    "SITE_ICON": lambda request: static("assets/logo.png"),
+    "SITE_LOGO": lambda request: static("assets/logo.png"),  # both modes, optimise for 32px height
+    "SITE_SYMBOL": "dynamic_form",  # symbol from google font icons
+    "SITE_FAVICONS": [
+        {
+            "rel": "icon",
+            "sizes": "32x32",
+            "type": "image/svg+xml",
+            "href": lambda request: static("favicon.png"),
+        },
+    ],
+    "SHOW_HISTORY": True, # show/hide "History" button, default: True
+    "SHOW_VIEW_ON_SITE": True, # show/hide "View on site" button, default: True
+    "ENVIRONMENT": "hackathons_canada.environment_callback",
+    "COLORS": {
+        "primary": {
+            "50": "250 245 255",
+            "100": "243 232 255",
+            "200": "233 213 255",
+            "300": "216 180 254",
+            "400": "192 132 252",
+            "500": "168 85 247",
+            "600": "147 51 234",
+            "700": "126 34 206",
+            "800": "107 33 168",
+            "900": "88 28 135",
+            "950": "59 7 100",
+        },
+    },
+    "EXTENSIONS": {
+        "modeltranslation": {
+            "flags": {
+                "en": "🇬🇧",
+                "fr": "🇫🇷",
+                "nl": "🇧🇪",
+            },
+        },
+    },
+    "SIDEBAR": {
+        "show_search": False,  # Search in applications and models names
+        "show_all_applications": False,  # Dropdown with all applications and models
+        "hide_empty_categories": True,  # Hide empty categories
+    },
+    # "TABS": [
+    #     {
+    #         "models": [
+    #             "core.Hackathon",
+    #         ],
+    #         "items": [
+    #             {
+    #                 "title": _("Your custom title"),
+    #                 "link": reverse_lazy("admin:app_label_model_name_changelist"),
+    #                 "permission": lambda x: True,
+    #             },
+    #         ],
+    #     },
+    # ],
+}
+
+
+
 
 
 try:

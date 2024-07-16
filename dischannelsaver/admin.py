@@ -3,6 +3,7 @@ from django.contrib import admin
 
 from dischannelsaver.models import HackathonChannel, Settings
 from dischannelsaver.utils.archival import archive_hackathon
+from unfold.admin import ModelAdmin
 
 
 # Register your models here.
@@ -14,7 +15,7 @@ def archive_channels(modeladmin, request, queryset):
     return async_to_sync(inner)
 
 
-class HackathonChannelAdmin(admin.ModelAdmin):
+class HackathonChannelAdmin(ModelAdmin):
     list_display = (
         "name",
         "hackathon",
@@ -30,5 +31,9 @@ class HackathonChannelAdmin(admin.ModelAdmin):
     actions = [archive_channels]
 
 
-admin.site.register(Settings)
+class SettingsAdmin(ModelAdmin):
+    pass
+
+
+admin.site.register(Settings, SettingsAdmin)
 admin.site.register(HackathonChannel, HackathonChannelAdmin)
