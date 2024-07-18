@@ -399,7 +399,7 @@ a {
   height: auto;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(221, 83, 83, 1), 0 0 20px 5px rgba(221, 83, 83, 0.8),
-    0 0 30px 15px rgba(221, 83, 83, 0.5);
+              0 0 30px 15px rgba(221, 83, 83, 0.5);
 }
 
 .gallery {
@@ -977,6 +977,17 @@ section {
     rgba(0, 0, 0, 0)
   );
   overflow: hidden;
+  opacity: 0;
+  animation: fadeIn 1s ease-in forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .item-scroller-right-layout,
@@ -985,19 +996,15 @@ section {
   height: 7.5vw;
   border-radius: 10px;
   position: absolute;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
 }
 
 .item-scroller-left-layout {
-  animation-name: scrollleft;
-  animation-duration: 30s;
+  animation: scrollleft 30s linear infinite;
   left: max(calc(7vw * 6), 100%);
 }
 
 .item-scroller-right-layout {
-  animation-name: scrollright;
-  animation-duration: 15s;
+  animation: scrollright 15s linear infinite;
   left: -7vw;
 }
 
