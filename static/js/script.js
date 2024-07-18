@@ -67,9 +67,12 @@ document.addEventListener("DOMContentLoaded", function () {
   populateScroller("scrollerWrapperLeft", leftImages);
   populateScroller("scrollerWrapperRight", rightImages);
 
+  // Initialize FullCalendar
   var calendarEl = document.getElementById("calendar");
-  var calendar = new FullCalendar.Calendar(calendarEl, {
-    initialView: "dayGridMonth",
-  });
-  calendar.render();
+  if (calendarEl) {
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: "dayGridMonth",
+    });
+    calendar.render();
+  }
 });
