@@ -656,6 +656,18 @@ section {
   align-items: center;
   justify-content: center;
   margin-top: auto;
+  position: relative;
+}
+
+.footer-flag {
+  position: absolute;
+  top: 0;
+  height: 3.5px;
+  width: 100%;
+  background-color: red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .footer-content {

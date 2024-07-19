@@ -30,14 +30,15 @@
             <ul class="nav-bar text-secondary">
                 <li class="nav-logo">
                     <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis">
-                        <img src="{% static 'assets/logo.png' %}" width="50" height="50" class="mx-3"/>
+                        <img src="{% static 'assets/logo.png' %}" width="50" height="50" class="mx-3" />
                         <span class="nav-head-text">Hackathons Canada</span>
                     </a>
                 </li>
-                <input type='checkbox' id='nav-check'/>
+                <input type='checkbox' id='nav-check' />
                 <span class="nav-menu">
                     <li class="nav-item">
-                        <a href="{% url 'hackathons' %}" class="nav-link nav-link-text-child" aria-current="page">Hackathons</a>
+                        <a href="{% url 'hackathons' %}" class="nav-link nav-link-text-child"
+                           aria-current="page">Hackathons</a>
                     </li>
                     <li class="nav-item">
                         <a href="{% url 'add_hackathons' %}" class="nav-link nav-link-text-child">Add Hackathon</a>
@@ -47,11 +48,13 @@
                     </li>
                     {% if user.is_authenticated %}
                         <li class="nav-item">
-                            <a href="{% url 'account_login' %}" class="nav-link nav-link-text-child" aria-current="page">Saved</a>
+                            <a href="{% url 'account_login' %}" class="nav-link nav-link-text-child"
+                               aria-current="page">Saved</a>
                         </li>
 
                         <li class="nav-item">
-                            <a href="{% url 'account_logout' %}" class="nav-link nav-link-text-child" aria-current="page">Log Out</a>
+                            <a href="{% url 'account_logout' %}" class="nav-link nav-link-text-child" aria-current="page">Log
+                                Out</a>
                         </li>
                         {% if user.is_staff %}
                             <li class="nav-item">
@@ -60,7 +63,8 @@
                         {% endif %}
                     {% else %}
                         <li class="nav-item">
-                            <a href="{% url 'account_login' %}" class="nav-link nav-link-text-child" aria-current="page">Login</a>
+                            <a href="{% url 'account_login' %}" class="nav-link nav-link-text-child"
+                               aria-current="page">Login</a>
                         </li>
                         <li class="">
                             <a href="{% url 'account_signup' %}" class="nav-button">Sign Up</a>
@@ -78,10 +82,18 @@
         </main>
 
         <footer class="footer">
+            <div class="footer-flag">
+                <svg width="50" height="52" viewBox="0 0 50 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                          d="M49.8399 22.6297C49.8399 22.6297 42.2655 30.541 42.303 32.1904C42.3415 33.8386 47.3492 37.655 47.3492 37.655C47.3492 37.655 40.7872 39.337 39.9652 45.2526L33.5993 42.953L32.5637 45.2328C32.5637 45.2328 28.8012 42.8247 26.6323 41.5605V52H24.2359V41.2528C22.231 42.3773 17.7612 45.2322 17.7612 45.2322L16.7322 42.9535L10.3728 45.252C9.55032 39.3358 2.92999 37.72 2.92999 37.72C2.92999 37.72 7.99549 33.8391 8.03462 32.1903C8.0736 30.5414 0.49825 22.629 0.49825 22.629C0.49825 22.629 3.10008 22.9758 4.10318 21.5103C5.10472 20.0442 0.492188 12.5645 0.492188 12.5645C0.492188 12.5645 8.85711 15.0189 10.8105 11.3015C10.8105 11.3015 17.4269 19.933 17.7485 19.7039C18.0702 19.4749 17.7738 5.07156 17.7738 5.07156C21.5198 13.2571 24.9299 0.868805 25.1622 0C25.1622 0 28.8179 13.2572 32.5638 5.07164C32.5638 5.07164 32.2676 19.4751 32.5903 19.703C32.9118 19.9319 39.5282 11.3005 39.5282 11.3005C41.4805 15.0189 49.8388 12.5646 49.8388 12.5646C49.8388 12.5646 45.2329 20.0443 46.2361 21.5099C47.2369 22.9755 49.8399 22.6297 49.8399 22.6297Z"
+                          fill="#E5462E" />
+                </svg>
+
+            </div>
             <div class="footer-content">
                 <a href="/">
                     <div class="footer-logo">
-                        <img src="{% static 'assets/logo.png' %}" alt="Hackathons Canada Logo"/>
+                        <img src="{% static 'assets/logo.png' %}" alt="Hackathons Canada Logo" />
                         <span class="foot-head-text">
                             Hackathons Canada
                         </span>
