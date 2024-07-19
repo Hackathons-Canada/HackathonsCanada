@@ -3,9 +3,38 @@ from django.views.generic import ListView
 from core.models import Hackathon
 from .forms import HackathonForm
 
+import random
+
 
 def home(request):
-    return render(request, "home.html")
+    image_names = [
+        "uft.png",
+        "cal.png",
+        "delta.png",
+        "form.png",
+        "gt.png",
+        "har.png",
+        "hawk.png",
+        "la.png",
+        "mit.png",
+        "north.png",
+        "ryth.png",
+        "tree.png",
+    ]
+
+    shuffled_images = random.sample(image_names, len(image_names))
+
+    # this splits the shuffled array in two halves
+    midpoint = len(shuffled_images) // 2
+    left_images = shuffled_images[:midpoint]
+    right_images = shuffled_images[midpoint:]
+
+    context = {
+        "left_images": left_images,
+        "right_images": right_images,
+    }
+
+    return render(request, "home.html", context)
 
 
 def addHackathons(request):
