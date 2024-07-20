@@ -1,11 +1,36 @@
+import os
+import random
+from functools import cache
+
 from django.shortcuts import render
 from django.views.generic import ListView
+
 from core.models import Hackathon
 from .forms import HackathonForm
+from django.conf import settings
+
+
+@cache
+def get_images() -> list[str]:
+    IMAGE_DIR = f"{settings.BASE_DIR}/static/assets/hackbanners"
+    #  get all the image names in the directory
+    return [f"assets/hackbanners/{img}" for img in os.listdir(IMAGE_DIR)]
 
 
 def home(request):
-    return render(request, "home.html")
+    N_IMAGES = 10  # Number of images to be in the array
+    image_names = get_images()
+    shuffled_images = random.sample(image_names, N_IMAGES)
+    # this splits the shuffled array in two halves
+    left_images = shuffled_images[: N_IMAGES // 2]
+    right_images = shuffled_images[N_IMAGES // 2 :]
+
+    context = {
+        "left_images": left_images,
+        "right_images": right_images,
+    }
+
+    return render(request, "home.html", context)
 
 
 def addHackathons(request):

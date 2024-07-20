@@ -18,27 +18,20 @@
     </div>
 
 
-
+  <!-- GO TO "\core\views.py" TO SEE THE COMPLETE LIST OF IMAGES  -->
     <div class="hero-scroller-layout">
-      <div class="scroller-wrapper-layout">
-        <img class="item-scroller-left-layout" src="{% static 'assets/uft.png'%}">
-        <img class="item-scroller-left-layout" src="{% static 'assets/cal.png'%}">
-        <img class="item-scroller-left-layout " src="{% static 'assets/delta.png'%}">
-        <img class="item-scroller-left-layout " src="{% static 'assets/form.png'%}">
-        <img class="item-scroller-left-layout " src="{% static 'assets/gt.png'%}">
-        <img class="item-scroller-left-layout " src="{% static 'assets/har.png'%}">
-
+      <div id="scrollerWrapperLeft" class="scroller-wrapper-layout">
+        {% for image in left_images %}
+          <img src="{% static image %}" class="item-scroller-left-layout" alt="Hackathon banner icon">
+        {% endfor %}
       </div>
-      <div class="scroller-wrapper-layout">
-        <img class="item-scroller-right-layout " src="{% static 'assets/hawk.png'%}">
-        <img class="item-scroller-right-layout" src="{% static 'assets/la.png'%}">
-        <img class="item-scroller-right-layout " src="{% static 'assets/mit.png'%}">
-        <img class="item-scroller-right-layout " src="{% static 'assets/north.png'%}">
-        <img class="item-scroller-right-layout " src="{% static 'assets/ryth.png'%}">
-        <img class="item-scroller-right-layout " src="{% static 'assets/tree.png'%}">
-
+      <div id="scrollerWrapperRight" class="scroller-wrapper-layout">
+        {% for image in right_images %}
+          <img alt="Hackathon banner icon" src="{% static image %}" class="item-scroller-right-layout">
+        {% endfor %}
       </div>
     </div>
+
   </div>
 
   <img class="hero-image-position text-center" src="{% static 'assets/homegra.png'%}">
