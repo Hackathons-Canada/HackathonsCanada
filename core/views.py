@@ -1,33 +1,29 @@
+import os
+import random
+from functools import cache
+
 from django.shortcuts import render
 from django.views.generic import ListView
+
 from core.models import Hackathon
 from .forms import HackathonForm
+from django.conf import settings
 
-import random
+
+@cache
+def get_images() -> list[str]:
+    IMAGE_DIR = f"{settings.BASE_DIR}/static/assets/hackbanners"
+    #  get all the image names in the directory
+    return [f"assets/hackbanners/{img}" for img in os.listdir(IMAGE_DIR)]
 
 
 def home(request):
-    image_names = [
-        "uft.png",
-        "cal.png",
-        "delta.png",
-        "form.png",
-        "gt.png",
-        "har.png",
-        "hawk.png",
-        "la.png",
-        "mit.png",
-        "north.png",
-        "ryth.png",
-        "tree.png",
-    ]
-
-    shuffled_images = random.sample(image_names, len(image_names))
-
+    N_IMAGES = 10  # Number of images to be in the array
+    image_names = get_images()
+    shuffled_images = random.sample(image_names, N_IMAGES)
     # this splits the shuffled array in two halves
-    midpoint = len(shuffled_images) // 2
-    left_images = shuffled_images[:midpoint]
-    right_images = shuffled_images[midpoint:]
+    left_images = shuffled_images[: N_IMAGES // 2]
+    right_images = shuffled_images[N_IMAGES // 2 :]
 
     context = {
         "left_images": left_images,

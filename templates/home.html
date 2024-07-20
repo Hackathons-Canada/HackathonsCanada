@@ -22,12 +22,12 @@
     <div class="hero-scroller-layout">
       <div id="scrollerWrapperLeft" class="scroller-wrapper-layout">
         {% for image in left_images %}
-          <img src="{% static 'assets/'|add:image %}" class="item-scroller-left-layout">
+          <img src="{% static image %}" class="item-scroller-left-layout" alt="Hackathon banner icon">
         {% endfor %}
       </div>
       <div id="scrollerWrapperRight" class="scroller-wrapper-layout">
         {% for image in right_images %}
-          <img src="{% static 'assets/'|add:image %}" class="item-scroller-right-layout">
+          <img alt="Hackathon banner icon" src="{% static image %}" class="item-scroller-right-layout">
         {% endfor %}
       </div>
     </div>
