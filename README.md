@@ -1,7 +1,5 @@
 # Canada Hackers
-> A platform to connect hackers across Canada & Beyond
- 
-
+> A platform to connect hackers across Canada & Beyond. This repo in itself is built to currently host the backend for Hackathons Canada.
 
 
 ## Development
@@ -13,6 +11,10 @@
 
 ### Prerequisites
 - Python 3.12+ (https://www.python.org/downloads/)
+- Check out the specific documentation, and scope /templates and /scripts
+
+### Requirements
+>Do not change settings.py nor ask an LLM service whether to do so. Since this is a local repo, you can change local_settings.
 
 ### Setup
 1. Clone the repo
@@ -25,3 +27,5 @@
 8. Run the server using `python manage.py runserver`
 9. Visit `http://localhost:8000` in your browser
 10. You're all set!
+
+
