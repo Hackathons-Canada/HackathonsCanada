@@ -107,6 +107,14 @@
                       {{hackathon.startdate}}
                     </h5>
                   </div>
+                  {% if user.is_authenticated %}
+                    <form method="post" action="{% url 'save_hackathon' hackathon.id %}">
+                      {% csrf_token %}
+                      <button type="submit">Save</button>
+                    </form>
+                  {% else %}
+                    <p><em>Login to save</em></p>
+                  {% endif %}
                 </div>
               </div></a
                 >

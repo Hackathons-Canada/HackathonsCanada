@@ -9,6 +9,9 @@ from core.models import Hackathon
 from .forms import HackathonForm
 from django.conf import settings
 
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404, redirect
+
 
 @cache
 def get_images() -> list[str]:
@@ -58,3 +61,22 @@ class HackathonsPage(ListView):
 
     def get_queryset(self):
         return Hackathon.objects.all()
+
+
+@login_required
+def save_hackathon(request, hackathon_id):
+    if request.method == "POST":
+        user = request.user
+        hackathon = get_object_or_404(Hackathon, id=hackathon_id)
+        user.saved.add(hackathon)
+
+    return redirect("hackathons")
+
+
+class SavedHackathonsPage(ListView):
+    template_name = "saved_hackathons.html"
+    context_object_name = "saved_hackathons"
+
+    def get_queryset(self):
+        user = self.request.user
+        return user.saved.all()
