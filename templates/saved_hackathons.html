@@ -1,9 +1,41 @@
 {% extends 'base.html' %} {% load static %} {% load crispy_forms_tags %}
 {% block title %} Saved Hackathons {% endblock title %} {% block content %}
-  <div class="container">
-
-    <div class="container">
-
+  <div class="album text-center">
+    <div class="container-fluid">
+      <div
+        class="row row-cols-1 row-cols-sm-2 row-cols-md-3 d-flex justify-content-center"
+      >
+        {% for hackathon in saved_hackathons %}
+          <div class="col flip-card lockedheight p-4">
+            <div class="flip-card-inner">
+              <a href="{{ hackathon.url }}"
+              ><div class="flip-card-front">
+                <div class="hackathon-card">
+                  <img
+                    src="../media/{{ hackathon.image }}"
+                    class="hackathon-img-front"
+                    alt="Front Image"
+                  />
+                  <div class="hackathon-content">
+                    <h2 class="card-title py-3">{{ hackathon.name}}</h2>
+                    <h6 class="">
+                      <span>Location:</span> {{hackathon.location}}
+                    </h6>
+                    <h5 class="">
+                      <span>Date:</span> {{hackathon.startdate}} -
+                      {{hackathon.startdate}}
+                    </h5>
+                  </div>
+                  <form method="post" action="{% url 'unsave_hackathon' hackathon.id %}">
+                    {% csrf_token %}
+                    <button type="submit">Unsave</button>
+                  </form>
+                </div>
+              </div></a>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
     </div>
   </div>
 
