@@ -1,3 +1,6 @@
+/* User may not have font installed */
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+
 * {
   color: #000000;
   font-family: "Rubik", sans-serif;
@@ -169,6 +172,60 @@ body {
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
 
+.home-panel
+{
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+}
+
+svg .title-text{
+  font   : bold 44px Rubik, Century Gothic, Arial;
+  width  : 100%;
+  height : 120px;
+}
+
+svg .title-text.main-text{
+  font-style: italic;
+  fill            : #e5462e;
+  stroke          : none;
+  stroke-width    : 0px;
+}
+
+svg .title-text.offset-text{
+  font-style: italic;
+  fill            : none;
+  stroke          : #e5462e;
+  stroke-width    : 0.6px;
+  stroke-linejoin : round;
+}
+
+svg .stat-text{
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  font   : bold 45px Rubik, Century Gothic, Arial;
+  font-weight: 500;
+  width  : 100%;
+  height : 120px;
+}
+
+svg .stat-text.main-text{
+  font-style: italic;
+  fill            : #e5462e;
+  stroke          : none;
+  stroke-width    : 0px;
+}
+
+svg .stat-text.offset-text{
+  font-style: italic;
+  fill            : none;
+  stroke          : #e5462e;
+  stroke-width    : 0.6px;
+  stroke-linejoin : round;
+}
+
+svg .stat-text.offset-text.transparent{
+}
+
 .hero-scroller-layout {
   width: 50vw;
   display: flex;
@@ -182,7 +239,7 @@ body {
   justify-content: flex-start;
   align-items: center;
   flex-direction: row;
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
 }
 
@@ -205,7 +262,7 @@ body {
 .hero-text-dark {
   color: var(--1, #000e22);
   font-size: clamp(30px, 4vw, 50px);
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1.01;
   letter-spacing: -0.58px;
   text-transform: uppercase;
@@ -226,7 +283,7 @@ body {
 .hero-text-body {
   color: #000;
   font-size: 16px;
-  font-weight: 300;
+  font-weight: 400;
   line-height: 1.5;
   max-width: 60ch;
   margin-bottom: 2rem;
@@ -254,6 +311,9 @@ body {
   max-width: 70%;
   height: auto;
   margin: 2rem auto 0;
+  filter:
+  drop-shadow(-20px 0px 20px rgba(240, 95, 29, 0.23))
+  drop-shadow(20px 0px 20px rgba(243, 25, 203, 0.23));
 }
 
 @media (max-width: 720px) {
@@ -623,7 +683,7 @@ section {
 }
 .hero .btn-start {
   margin: 20px 0px;
-  padding: 10px 40px;
+  padding: 10px 70px;
   font-size: 1rem;
   color: #fff;
   border-radius: 100px;
@@ -646,7 +706,20 @@ section {
   text-decoration: none;
   color: inherit;
   font-size: 1.5rem;
+  border: 1px solid #808080;
+  border-radius: 1000px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
+.social-icons img {
+  width: 20px;
+  height: 20px;
+}
+
 .footer {
   background-color: #0e1822;
   color: #fff;
@@ -851,6 +924,9 @@ section {
 }
 
 .card-box-layout {
+  width: 1200px;
+  padding-left: 20px;
+  padding-right: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -859,9 +935,10 @@ section {
 }
 
 .card-row-layout {
+  width: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: stretch;
   flex-direction: row;
   gap: 30px;
 }
@@ -888,10 +965,37 @@ section {
   line-height: 52.8px;
 }
 .card-header-layout {
+  margin-top: 30px;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 3vw;
+}
+
+.card-option
+{
+  background-color: white;
+  border-radius: 20px;
+  flex-grow: 1;
+  flex-basis: 0;
+  overflow: hidden;
+  filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.2));
+  display: flex;
+  flex-direction: column;
+}
+
+.card-option h3
+{
+  color: #000E22;
+  text-shadow: 0px 4px 3px #00000040;
+  font-weight: 600;
+  font-size: 36px;
+}
+
+.card-option p
+{
+  font-weight: 400;
+  color: #4A5769;
 }
 
 .button-discord-style {
@@ -944,7 +1048,7 @@ section {
 }
 .card-join-layout {
   overflow: hidden;
-  height: 40rem;
+  height: 30rem;
   width: 95%;
   max-width: 1200px;
   border-radius: 20px;
@@ -979,12 +1083,12 @@ section {
 .scroller-wrapper-layout {
   max-width: 56vw;
   width: 90%;
-  height: 8vw;
+  height: clamp(80px, 6.2vw, 300px);
   position: relative;
   mask-image: linear-gradient(
     to right,
     rgba(0, 0, 0, 0),
-    rgba(0, 0, 0, 1) 20%,
+    rgba(0, 0, 0, 1) 30%,
     rgba(0, 0, 0, 1) 80%,
     rgba(0, 0, 0, 0)
   );
@@ -1005,7 +1109,7 @@ section {
 .item-scroller-right-layout,
 .item-scroller-left-layout {
   width: 7vw;
-  height: 7.5vw;
+  height: 6.3vw;
   border-radius: 10px;
   position: absolute;
 }
@@ -1195,8 +1299,110 @@ section {
 .card-row-layout img {
   transition: transform 0.3s ease;
   width: 100%;
-  height: auto;
-}
-.card-row-layout img:hover {
+  height: 100%;
+  object-fit: cover;
+  object-position: top left; /* Pin img to top-left */
   transform: scale(1.05);
+}
+
+.card-row-layout img:hover {
+  transform: scale(1.1);
+}
+
+.stats-panel {
+  display: grid;
+  width: 100%;
+  grid-template-rows: repeat(2, 1fr);
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.stat {
+  transition: all 0.5s ease;
+  background: linear-gradient(107.3deg, rgba(255, 255, 255, 0.7) -6.41%, rgba(251, 251, 251, 0.7) 100%);
+  backdrop-filter: blur(8px);
+  padding: 35px;
+  border-radius: 20px;
+  border: 2px solid #D0D0D0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.stats-panel p {
+  color: #4A5769;
+  font-weight: 400;
+  margin-bottom: 0px;
+  margin-right: 10px;
+  text-align: center;
+}
+
+.stats-panel div:hover .stat-text {
+  transform: scale(1.05);
+}
+
+.stats-panel div:hover .stat-text.offset-text {
+  transform: translate(12px, 8px);
+}
+
+.stats-panel div:hover .stat-text.offset-text.transparent {
+  transform: translate(24px, 16px);
+}
+
+.stat:hover{
+  border-color: #FF1321;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(10px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(10px);
+  }
+}
+
+.floater
+{
+  animation: float 7.5s ease-in-out infinite;
+  translate: clamp(-600px, -60vw, 0px);
+}
+
+.floater-b
+{
+  animation: float 7s ease-in-out infinite;
+  animation-delay: -2s;
+  translate: clamp(0px, 60vw, 600px);
+}
+
+.chip-speech-layout {
+  height: 25rem;
+  width: 95%;
+  max-width: 1200px;
+  border-radius: 20px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chip-img
+{
+  width: clamp(350px, 20vw, 700px);
+  transform: scaleX(-1);
+}
+
+.chip-speech
+{
+  font-size: 18px;
+  font-weight: 400;
+  color: #4A5769;
+  padding: 35px;
+  border-radius: 20px;
+  box-shadow: 9px 9px 0px 0px #A230294D;
+
+  border: 2px solid #E5462E;
 }
