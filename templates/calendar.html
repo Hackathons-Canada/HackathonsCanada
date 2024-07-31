@@ -1,14 +1,6 @@
-{% extends 'base.html' %}
-{% load static %}
-
-{% block deps %}
-  {{ block.super }}
-  <script src="{% static 'js/calendar.js' %}"></script>
-{% endblock %}
-
-{% block content %}
+{% extends 'base.html' %} {% block content %}
   <div class="container p-5">
     <h1 class="text-center pt-5">Calendar</h1>
     <div id="calendar"></div>
   </div>
-{% endblock %}
+{%endblock%}

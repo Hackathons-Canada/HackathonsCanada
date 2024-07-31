@@ -3,5 +3,12 @@
   <component name="DiscordProjectSettings">
     <option name="show" value="PROJECT_FILES" />
     <option name="description" value="" />
+    <option name="applicationTheme" value="default" />
+    <option name="iconsTheme" value="default" />
+    <option name="button1Title" value="GitHub" />
+    <option name="button1Url" value="https://github.com/Hackathons-Canada/HackathonsCanada" />
+    <option name="button2Title" value="Website" />
+    <option name="button2Url" value="https://hackathonscanada.com/" />
+    <option name="customApplicationId" value="" />
   </component>
 </project>

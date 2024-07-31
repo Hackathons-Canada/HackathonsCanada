@@ -19,6 +19,7 @@ django-allauth = { extras = ["socialaccount"], version = "0.63.5" }
 django-countries = { extras = ["pyuca"], version = "^7.6.1" }
 pillow = "^10.4.0"
 django-unfold = "^0.30.0"
+django-tailwind = {extras = ["reload"], version = "^3.8.0"}
 
 
 [tool.poetry.group.dev]

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Confirm Logout{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h2>Confirm Logout</h2>
+                    </div>
+                    <div class="card-body text-center">
+                        <p>Are you sure you want to log out?</p>
+                        <form method="POST" action="{% url 'account_logout' %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Logout</button>
+                            <a href="{% url 'index' %}" class="btn btn-secondary">Cancel</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -58,7 +58,12 @@ INSTALLED_APPS = [
     "dischannelsaver",
     "crispy_forms",
     "crispy_bootstrap4",
+    "tailwind",
+    "wahootailwind",
+    "django_browser_reload",
 ]
+
+TAILWIND_APP_NAME = "wahootailwind"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -69,6 +74,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
+    "django_browser_reload.middleware.BrowserReloadMiddleware",
 ]
 
 ROOT_URLCONF = "hackathons_canada.urls"
@@ -171,6 +177,7 @@ CELERY_RESULT_BACKEND = os.environ.get("CELERY_BACKEND", "redis://valkey:6379/1"
 
 LOGIN_REDIRECT_URL = "/"  # todo change to profile page once created
 
+
 # Logging settings
 
 LOGGING = {
@@ -191,6 +198,10 @@ LOGGING = {
         "level": "INFO",
     },
 }
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
 
 # Custom settings
 

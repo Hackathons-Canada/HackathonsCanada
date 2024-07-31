@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block content %}
+  <main className="signup-bg">
+    <div className="flex flex-col w-full h-screen justify-center items-center">
+      <div className="gradient-1 border shadow-[0px_6px_20px_0px_rgba(0,0,0,0.25)] backdrop-blur-[15px] rounded-3xl border-solid border-[rgba(255,255,255,0.50)] flex flex-col justify-center items-center px-20 py-12">
+        <h1 className="text-2xl font-bold text-center  tracking-wide">Log In!</h1>
+        <p className="mb-5 text-gray-400 font-light mt-1 text-sm">to continue to HackCanada</p>
+        <div className="flex justify-center items-center w-11/12">
+          <div className='w-5/12'>
+            <hr className='border border-red-600 mr-3' />
+          </div>
+          <span>🇨🇦</span>
+          <div className="w-5/12">
+            <hr className="border border-red-600 ml-3" />
+          </div>
+        </div>
+        <form className="flex flex-col justify-center items-center gap-y-5 w-full mt-10">
+          <div className="w-10/12">
+            <p className="font-semibold">Email Address</p>
+            <input placeholder='bebicat@example.com' className="py-2 px-2 color-1 w-full rounded border shadow-[0px_3px_8.3px_0px_rgba(0,0,0,0.10)] backdrop-blur-[14.75px] border-solid border-[rgba(255,255,255,0.00)]"/>
+          </div>
+          <div className="w-10/12">
+            <p className="font-semibold">Password</p>
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="************"
+                className="py-2 px-2 color-1 w-full rounded border shadow-[0px_3px_8.3px_0px_rgba(0,0,0,0.10)] backdrop-blur-[14.75px] border-solid border-[rgba(255,255,255,0.00)]"
+              />
+              <button
+                type="button"
+                className="absolute inset-y-0 right-0 px-3 flex items-center"
+                onClick={handleTogglePassword}
+              >
+                <img
+                  src={showPassword ? "/eye.svg" : "/eye-original.svg"}
+                  alt={showPassword ? "Hide password" : "Show password"}
+                  width="20"
+                  height="20"
+                />
+              </button>
+            </div>
+          </div>
+
+          <div className="w-10/12">
+            <button className="button-1 w-full py-4">
+              <p className="font-semibold text-white">Log In</p>
+            </button>
+          </div>
+        </form>
+        <div className="flex justify-center items-center w-full mt-8">
+          <div className='w-5/12'>
+            <hr className='border border-black mr-3' />
+          </div>
+          <span>OR</span>
+          <div className="w-5/12">
+            <hr className="border border-black ml-3" />
+          </div>
+        </div>
+        <p className="text-center mt-8">Continue with</p>
+        <div className="flex gap-x-8 mt-4">
+          <button className="button-2 flex justify-center items-center">
+            <Image src="/google.png" width={21.15} height={19.81} alt="signup using google"/>
+          </button>
+          <button className="button-2 flex justify-center items-center">
+            <Image src="/github.svg" width={21.15} height={19.81} alt="signup using github"/>
+          </button>
+          <button className="button-2 flex justify-center items-center">
+            <Image src="/linkedin.png" width={21.15} height={19.81} alt="signup using linkedin"/>
+          </button>
+          <button className="button-2 flex justify-center items-center">
+            <Image src="/mlh.png" width={39.49} height={13.69} alt="signup using mlh"/>
+          </button>
+        </div>
+        <div className="text-red-600 font-medium flex w-full justify-center items-center mt-8">Dont have an account? <Link href={'/signup'} target="_blank" className="flex ml-1">Click here to <p className="ml-1 text-blue-600 underline hover:text-blue-950">Sign Up</p></Link></div>
+
+      </div>
+    </div>
+  </main>
+
+{% endblock %}

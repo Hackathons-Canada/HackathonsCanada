@@ -1,3 +1,5 @@
+
+
 * {
   color: #000000;
   font-family: "Rubik", sans-serif;
@@ -656,18 +658,6 @@ section {
   align-items: center;
   justify-content: center;
   margin-top: auto;
-  position: relative;
-}
-
-.footer-flag {
-  position: absolute;
-  top: 0;
-  height: 3.5px;
-  width: 100%;
-  background-color: red;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .footer-content {
@@ -989,17 +979,6 @@ section {
     rgba(0, 0, 0, 0)
   );
   overflow: hidden;
-  opacity: 0;
-  animation: fadeIn 1s ease-in forwards;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
 }
 
 .item-scroller-right-layout,
@@ -1008,15 +987,19 @@ section {
   height: 7.5vw;
   border-radius: 10px;
   position: absolute;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
 }
 
 .item-scroller-left-layout {
-  animation: scrollleft 30s linear infinite;
+  animation-name: scrollleft;
+  animation-duration: 30s;
   left: max(calc(7vw * 6), 100%);
 }
 
 .item-scroller-right-layout {
-  animation: scrollright 15s linear infinite;
+  animation-name: scrollright;
+  animation-duration: 15s;
   left: -7vw;
 }
 
@@ -1199,4 +1182,14 @@ section {
 }
 .card-row-layout img:hover {
   transform: scale(1.05);
+}
+
+.hr-1 {
+  border: 1px solid black;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.signup-bg{
+  background-image: '../../static/assets/signup-bg.jpg';
 }
