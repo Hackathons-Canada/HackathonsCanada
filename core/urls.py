@@ -14,5 +14,9 @@ urlpatterns = [
         views.SavedHackathonsPage.as_view(),
         name="saved_hackathons",
     ),
-    path("unsave/<int:hackathon_id>/", views.unsave_hackathon, name="unsave_hackathon"),
+    path(
+        "saved_hackathons/unsave/<int:hackathon_id>/",
+        views.unsave_hackathon,
+        name="unsave_hackathon",
+    ),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
