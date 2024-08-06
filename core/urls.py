@@ -5,7 +5,11 @@ from . import views
 
 urlpatterns = [
     path("", views.home, name="home"),
-    path("hackathons/<int:hackathon_id>/", views.save_hackathon, name="save_hackathon"),
+    path(
+        "hackathons/<int:hackathon_id>/save",
+        views.save_hackathon,
+        name="save_hackathon",
+    ),
     path("hackathons/", views.HackathonsPage.as_view(), name="hackathons"),
     path("add-hackathons/", views.addHackathons, name="add_hackathons"),
     path("calendar/", views.calendar, name="calendar"),
@@ -15,7 +19,7 @@ urlpatterns = [
         name="saved_hackathons",
     ),
     path(
-        "saved_hackathons/unsave/<int:hackathon_id>/",
+        "hackathons/<int:hackathon_id>/unsave",
         views.unsave_hackathon,
         name="unsave_hackathon",
     ),

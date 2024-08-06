@@ -108,24 +108,10 @@
                     </h5>
                   </div>
                   {% if user.is_authenticated %}
-                    {% if hackathon.id in saved_hackathons.hackathon_id.all %}
-                      <form method="post" action="{% url 'unsave_hackathon' hackathon.id %}">
-                        {% csrf_token %}
-                        <button type="submit">Unsave</button>
-                      </form>
-                    {% else %}
-                      <h4>
-                        {{ hackathon.name }}
-                        {{ hackathon.id }}
-                        {{ user.id }}
-
-                        {{ saved_hackathons.hackathon_id.all }}
-                      </h4>
-                      <form method="post" action="{% url 'save_hackathon' hackathon.id %}">
-                        {% csrf_token %}
-                        <button type="submit">uSave</button>
-                      </form>
-                    {% endif %}
+                    <form method="post" action="{% url 'save_hackathon' hackathon.id %}">
+                      {% csrf_token %}
+                      <button type="submit">Save</button>
+                    </form>
                   {% else %}
                     <p><em>Login to save</em></p>
                   {% endif %}
