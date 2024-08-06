@@ -2,6 +2,7 @@ import os
 import random
 from functools import cache
 
+from django.http import HttpRequest
 from django.shortcuts import render
 from django.views.generic import ListView
 
@@ -70,6 +71,19 @@ def save_hackathon(request, hackathon_id):
         hackathon = get_object_or_404(Hackathon, id=hackathon_id)
         user.saved.add(hackathon)
 
+    return redirect("hackathons")
+
+
+@login_required
+def unsave_hackathon(request: HttpRequest, hackathon_id):
+    if request.method == "POST":
+        user = request.user
+        hackathon = get_object_or_404(Hackathon, id=hackathon_id)
+        user.saved.remove(hackathon)
+
+    print(request.path)
+    if "saved_hackathons" in request.path:
+        return redirect("saved_hackathons")
     return redirect("hackathons")
 
 
