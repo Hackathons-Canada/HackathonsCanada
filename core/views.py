@@ -82,9 +82,7 @@ def unsave_hackathon(request: HttpRequest, hackathon_id):
         user.saved.remove(hackathon)
 
     print(request.path)
-    if "saved_hackathons" in request.path:
-        return redirect("saved_hackathons")
-    return redirect("hackathons")
+    return redirect("saved_hackathons")
 
 
 class SavedHackathonsPage(ListView):
