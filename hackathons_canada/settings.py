@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.gis",
     "django_countries",
     "allauth",
     "allauth.account",
@@ -104,7 +105,7 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 DATABASES = {
     "default": {
-        "ENGINE": os.environ.get("DB_ENGINE", "django.db.backends.sqlite3"),
+        "ENGINE": os.environ.get("DB_ENGINE", "django.db.backends.postgis"),
         "NAME": os.environ.get("POSTGRES_DB", os.path.join(BASE_DIR, "db.sqlite3")),
         "USER": os.environ.get("POSTGRES_USER", "user"),
         "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "password"),
