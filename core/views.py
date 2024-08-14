@@ -2,7 +2,7 @@ import os
 import random
 from functools import cache
 
-from django.http import HttpRequest
+from django.http import HttpRequest, JsonResponse
 from django.shortcuts import render
 from django.views.generic import ListView
 
@@ -11,7 +11,7 @@ from .forms import HackathonForm
 from django.conf import settings
 
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404
 
 
 @cache
@@ -71,7 +71,16 @@ def save_hackathon(request, hackathon_id):
         hackathon = get_object_or_404(Hackathon, id=hackathon_id)
         user.saved.add(hackathon)
 
-    return redirect("hackathons")
+        return JsonResponse(
+            {
+                "status": "success",
+                "hackathon": {
+                    "id": hackathon.id,
+                    "name": hackathon.name,
+                },
+            }
+        )
+    return JsonResponse({"status": "fail", "error": "Invalid request"}, status=400)
 
 
 @login_required
@@ -81,8 +90,16 @@ def unsave_hackathon(request: HttpRequest, hackathon_id):
         hackathon = get_object_or_404(Hackathon, id=hackathon_id)
         user.saved.remove(hackathon)
 
-    print(request.path)
-    return redirect("saved_hackathons")
+        return JsonResponse(
+            {
+                "status": "success",
+                "hackathon": {
+                    "id": hackathon.id,
+                    "name": hackathon.name,
+                },
+            }
+        )
+    return JsonResponse({"status": "fail", "error": "Invalid request"}, status=400)
 
 
 class SavedHackathonsPage(ListView):

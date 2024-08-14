@@ -6,7 +6,7 @@
         class="row row-cols-1 row-cols-sm-2 row-cols-md-3 d-flex justify-content-center"
       >
         {% for hackathon in saved_hackathons %}
-          <div class="col flip-card lockedheight p-4">
+          <div id="hackathon-{{hackathon.id}}" class="col flip-card lockedheight p-4">
             <div class="flip-card-inner">
               <a href="{{ hackathon.url }}"
               ><div class="flip-card-front">
@@ -26,10 +26,8 @@
                       {{hackathon.startdate}}
                     </h5>
                   </div>
-                  <form method="post" action="{% url 'unsave_hackathon' hackathon.id %}">
-                    {% csrf_token %}
-                    <button type="submit">Unsave</button>
-                  </form>
+                  <script src="../static/js/hackathons.js"></script>
+                  <button type="button" onclick="unsaveHackathon(event, {{ hackathon.id }})">Unsave</button>
                 </div>
               </div></a>
             </div>
