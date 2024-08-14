@@ -9,13 +9,10 @@ function saveHackathon(event, hackathonId) {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 var response = JSON.parse(xhr.responseText);
-                if (response.status === 'success') {
-                    console.log(`${response.hackathon.id} Hackathon ${response.hackathon.name} saved successfully`);
-                } else {
-                    console.log('Failed to save item: ' + response.error);
-                }
-            } else {
-                console.log('An error occurred during the request.');
+                console.log(`${response.hackathon.id} Hackathon ${response.hackathon.name} saved successfully`);
+            }
+            else {
+                console.log('An error occurred during the request: saveHackathon()');
             }
         }
     };
@@ -34,17 +31,16 @@ function unsaveHackathon(event, hackathonId) {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 var response = JSON.parse(xhr.responseText);
-                if (response.status === 'success') {
-                    var hackathon = document.getElementById(`hackathon-${hackathonId}`);
-                    if (hackathon) {
-                        hackathon.remove();
-                    }
-                    console.log(`${response.hackathon.id} Hackathon ${response.hackathon.name} removed successfully`);
-                } else {
-                    console.log('Failed to remove item: ' + response.error);
+
+                var hackathon = document.getElementById(`hackathon-${hackathonId}`);
+                if (hackathon) {
+                    hackathon.remove();
                 }
-            } else {
-                console.log('An error occurred during the request.');
+
+                console.log(`${response.hackathon.id} Hackathon ${response.hackathon.name} removed successfully`);
+            }
+            else {
+                console.log('An error occurred during the request: unsaveHackathon()');
             }
         }
     };
