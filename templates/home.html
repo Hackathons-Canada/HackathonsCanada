@@ -1,93 +1,231 @@
 {% extends 'base.html' %} {% load static %} {% block content %}
 
-  <div class="hero-container-layout">
-    <div class="container-fluid ">
-      <h1 class="hero-text-light">Welcome to</h1>
-      <h2 class="hero-text-dark">
-        The BEST DATABASE FOR </h2>
-      <h3 class="hero-text-red">
-        HACKATHONS
-      </h3>
-      <p class="hero-text-body">
-        Browse through to find a complete list of hackathons taking place in Canada and North America. Join our Discord
-        server to ask questions to the organizers of specific events and form teams.
-      </p>
-      <a href="{% url 'hackathons' %}" class="hero-add-button">
-        Browse Hackathons ➜
-      </a>
-    </div>
-
+<div class="hero-container-layout">
+  <div class="container-fluid">
+    <h1 class="hero-text-light">Welcome to</h1>
+    <h2 class="hero-text-dark">The BEST DATABASE FOR</h2>
+    <h3 class="hero-text-red">HACKATHONS</h3>
+    <p class="hero-text-body">
+      Browse through to find a complete list of hackathons taking place in
+      Canada and North America. Join our Discord server to ask questions to the
+      organizers of specific events and form teams.
+    </p>
+    <a href="{% url 'hackathons' %}" class="hero-add-button">
+      Browse Hackathons ➜
+    </a>
+  </div>
 
   <!-- GO TO "\core\views.py" TO SEE THE COMPLETE LIST OF IMAGES  -->
-    <div class="hero-scroller-layout">
-      <div id="scrollerWrapperLeft" class="scroller-wrapper-layout">
-        {% for image in left_images %}
-          <img src="{% static image %}" class="item-scroller-left-layout" alt="Hackathon banner icon">
-        {% endfor %}
-      </div>
-      <div id="scrollerWrapperRight" class="scroller-wrapper-layout">
-        {% for image in right_images %}
-          <img alt="Hackathon banner icon" src="{% static image %}" class="item-scroller-right-layout">
-        {% endfor %}
-      </div>
+  <div class="hero-scroller-layout">
+    <div id="scrollerWrapperLeft" class="scroller-wrapper-layout">
+      {% for image in left_images %}
+      <img
+        src="{% static image %}"
+        class="item-scroller-left-layout"
+        alt="Hackathon banner icon"
+      />
+      {% endfor %}
     </div>
+    <div id="scrollerWrapperRight" class="scroller-wrapper-layout">
+      {% for image in right_images %}
+      <img
+        alt="Hackathon banner icon"
+        src="{% static image %}"
+        class="item-scroller-right-layout"
+      />
+      {% endfor %}
+    </div>
+  </div>
+</div>
 
+<img
+  class="hero-image-position text-center"
+  src="{% static 'assets/homegra.png'%}"
+/>
+
+<div class="card-header-layout">
+  <h5 class="header-text-black">
+    More than just a
+    <span class="header-text-red">website.</span>
+  </h5>
+</div>
+<div class="card-box-layout">
+  <div class="card-row-layout">
+    <a>
+      <div>
+        <img
+          class="card-img-stack"
+          src="{% static 'assets/hackcanadabg.png' %}"
+          alt="Image 2"
+        />
+      </div>
+    </a>
+    <a>
+      <img class="" src="{% static 'assets/discord.png' %}" alt="Image 1" />
+    </a>
+  </div>
+  <div class="card-row-layout">
+    <a>
+      <img class="" src="{% static 'assets/discordcard.png' %}" alt="Image 2" />
+    </a>
+    <a>
+      <img class="" src="{% static 'assets/gcal.png' %}" alt="Image 1" />
+    </a>
   </div>
 
-  <img class="hero-image-position text-center" src="{% static 'assets/homegra.png'%}">
-
-  <div class="card-header-layout">
-    <h5 class="header-text-black">More than just a
-      <span class="header-text-red">website.</span>
-    </h5>
-  </div>
-  <div class="card-box-layout">
-
-    <div class="card-row-layout">
-      <a>
-        <div>
-          <img class="card-img-stack" src="{% static 'assets/hackcanadabg.png' %}" alt="Image 2" />
+  <div class="accordion" id="accordionExample">
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingOne">
+        <button
+          class="accordion-button"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseOne"
+          aria-expanded="true"
+          aria-controls="collapseOne"
+        >
+          Accordion Item #1
+        </button>
+      </h2>
+      <div
+        id="collapseOne"
+        class="accordion-collapse collapse show"
+        aria-labelledby="headingOne"
+        data-bs-parent="#accordionExample"
+      >
+        <div class="accordion-body">
+          <strong>This is the first item's accordion body.</strong> It is shown
+          by default, until the collapse plugin adds the appropriate classes
+          that we use to style each element. These classes control the overall
+          appearance, as well as the showing and hiding via CSS transitions. You
+          can modify any of this with custom CSS or overriding our default
+          variables. It's also worth noting that just about any HTML can go
+          within the <code>.accordion-body</code>, though the transition does
+          limit overflow.
         </div>
-      </a>
-      <a>
-        <img class="" src="{% static 'assets/discord.png' %}" alt="Image 1" />
-      </a>
-    </div>
-    <div class="card-row-layout">
-      <a>
-        <img class="" src="{% static 'assets/discordcard.png' %}" alt="Image 2" />
-      </a>
-      <a>
-        <img class="" src="{% static 'assets/gcal.png' %}" alt="Image 1" />
-      </a>
-    </div>
-    <div class="card-join-layout">
-      <div class="card-join-image">
-        <img src="{%static 'assets/jointeam.png'%}">
       </div>
-      <div class="card-join-text">
-        <h4 class=" button-discord-text1">Interested In Joining us as a
-          <span class=" button-discord-blue">hackathon organizer?</span>
-        </h4>
-        <h5 class="button-discord-text2">Join Our Discord and Answer your communities <br /> burning questions.</h5>
-        <a href="#" class="button-discord-style">Join Our Discord ➜</a>
+    </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingTwo">
+        <button
+          class="accordion-button collapsed"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseTwo"
+          aria-expanded="false"
+          aria-controls="collapseTwo"
+        >
+          Accordion Item #2
+        </button>
+      </h2>
+      <div
+        id="collapseTwo"
+        class="accordion-collapse collapse"
+        aria-labelledby="headingTwo"
+        data-bs-parent="#accordionExample"
+      >
+        <div class="accordion-body">
+          <strong>This is the second item's accordion body.</strong> It is
+          hidden by default, until the collapse plugin adds the appropriate
+          classes that we use to style each element. These classes control the
+          overall appearance, as well as the showing and hiding via CSS
+          transitions. You can modify any of this with custom CSS or overriding
+          our default variables. It's also worth noting that just about any HTML
+          can go within the <code>.accordion-body</code>, though the transition
+          does limit overflow.
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingThree">
+        <button
+          class="accordion-button collapsed"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseThree"
+          aria-expanded="false"
+          aria-controls="collapseThree"
+        >
+          Accordion Item #3
+        </button>
+      </h2>
+      <div
+        id="collapseThree"
+        class="accordion-collapse collapse"
+        aria-labelledby="headingThree"
+        data-bs-parent="#accordionExample"
+      >
+        <div class="accordion-body">
+          <strong>This is the third item's accordion body.</strong> It is hidden
+          by default, until the collapse plugin adds the appropriate classes
+          that we use to style each element. These classes control the overall
+          appearance, as well as the showing and hiding via CSS transitions. You
+          can modify any of this with custom CSS or overriding our default
+          variables. It's also worth noting that just about any HTML can go
+          within the <code>.accordion-body</code>, though the transition does
+          limit overflow.
+        </div>
       </div>
     </div>
   </div>
+  <div class="card-join-layout">
+    <div class="card-join-image">
+      <img src="{%static 'assets/jointeam.png'%}" />
+    </div>
+    <div class="card-join-text">
+      <h4 class="button-discord-text1">
+        Interested In Joining us as a
+        <span class="button-discord-blue">hackathon organizer?</span>
+      </h4>
+      <h5 class="button-discord-text2">
+        Join Our Discord and Answer your communities <br />
+        burning questions.
+      </h5>
+      <a href="#" class="button-discord-style">Join Our Discord ➜</a>
+    </div>
+  </div>
+</div>
 
-  <div class="hero">
-    <h1>READY TO <span class="fw-bold fst-italic"> HACK YOUR WAY </span> <br> TO SUCCESS?</h1>
-    <p>Join to discover upcoming hackathons in Canada.</p>
-    <button class="btn-start">Get Started</button>
-    <div class="social-icons">
-      <a href="#"><img class="logo-svg-img" src="{% static 'assets/insta.svg'%}" /></a>
-      <a href="#"><img class="logo-svg-img" src="{% static 'assets/linkedin.svg'%}" /></a>
-    </div>
-    <img src="{% static 'assets/leaf1.png'%}" class="leaf leaf1" alt="Leaf Image">
-    <img src="{% static 'assets/leaf2.png'%}" class="leaf leaf2" alt="Leaf Image">
-    <img src="{% static 'assets/leaf3.png'%}" class="leaf leaf3" alt="Leaf Image">
-    <img src="{% static 'assets/leaf3.png'%}" class="leaf leaf4" alt="Leaf Image">
-    <img src="{% static 'assets/leaf4.png'%}" class="leaf leaf5" alt="Leaf Image">
+<div class="hero">
+  <h1>
+    READY TO <span class="fw-bold fst-italic"> HACK YOUR WAY </span> <br />
+    TO SUCCESS?
+  </h1>
+  <p>Join to discover upcoming hackathons in Canada.</p>
+  <button class="btn-start">Get Started</button>
+  <div class="social-icons">
+    <a href="#"
+      ><img class="logo-svg-img" src="{% static 'assets/insta.svg'%}"
+    /></a>
+    <a href="#"
+      ><img class="logo-svg-img" src="{% static 'assets/linkedin.svg'%}"
+    /></a>
   </div>
+  <img
+    src="{% static 'assets/leaf1.png'%}"
+    class="leaf leaf1"
+    alt="Leaf Image"
+  />
+  <img
+    src="{% static 'assets/leaf2.png'%}"
+    class="leaf leaf2"
+    alt="Leaf Image"
+  />
+  <img
+    src="{% static 'assets/leaf3.png'%}"
+    class="leaf leaf3"
+    alt="Leaf Image"
+  />
+  <img
+    src="{% static 'assets/leaf3.png'%}"
+    class="leaf leaf4"
+    alt="Leaf Image"
+  />
+  <img
+    src="{% static 'assets/leaf4.png'%}"
+    class="leaf leaf5"
+    alt="Leaf Image"
+  />
+</div>
 
 {% endblock %}
