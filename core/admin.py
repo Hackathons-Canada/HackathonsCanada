@@ -1,9 +1,14 @@
 # Register your models here.
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from unfold.contrib.forms.widgets import WysiwygWidget
 
 from .models import Category, Hacker, Hackathon
+from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
 from unfold.admin import ModelAdmin
+from unfold.decorators import display
+from unfold.forms import AdminPasswordChangeForm, UserChangeForm, UserCreationForm
+from django.utils.translation import gettext_lazy as _
+from django.db import models
 
 
 class HackathonAdmin(ModelAdmin):
@@ -20,8 +25,52 @@ class HackathonAdmin(ModelAdmin):
         return self.model.objects.admin()
 
 
-class UserAdmin(ModelAdmin, BaseUserAdmin):
-    pass
+class HackerAdmin(DjangoUserAdmin, ModelAdmin):
+    form = UserChangeForm
+    add_form = UserCreationForm
+    change_password_form = AdminPasswordChangeForm
+    list_display = [
+        "display_header",
+        "is_active",
+        "display_staff",
+        "display_superuser",
+        "display_created",
+        "display_hackathons",
+    ]
+
+    filter_horizontal = (
+        "groups",
+        "user_permissions",
+    )
+    formfield_overrides = {
+        models.TextField: {
+            "widget": WysiwygWidget,
+        }
+    }
+    readonly_fields = ["last_login", "date_joined"]
+
+    @display(description=_("User"))
+    def display_header(self, instance: Hacker):
+        return instance.username
+
+    @display(description=_("Staff"), boolean=True)
+    def display_staff(self, instance: Hacker):
+        return instance.is_staff
+
+    @display(description=_("Superuser"), boolean=True)
+    def display_superuser(self, instance: Hacker):
+        return instance.is_superuser
+
+    @display(description=_("Created"))
+    def display_created(self, instance: Hacker):
+        return instance.date_joined
+
+    @display(
+        description=_("Hackathons Attended"),
+        empty_value="0",
+    )
+    def display_hackathons(self, instance: Hacker):
+        return instance.hackathons.count()
 
 
 class CategoryAdmin(ModelAdmin):
@@ -36,6 +85,6 @@ admin.site.site_header = "Hackathons Canada Admin"  # set header
 admin.site.site_title = "Admin - Hackathons Canada"  # set title
 admin.site.index_title = "Welcome to Hackathons Canada Admin Dashboard"
 
-admin.site.register(Hacker, UserAdmin)
+admin.site.register(Hacker, HackerAdmin)
 admin.site.register(Hackathon, HackathonAdmin)
 admin.site.register(Category, CategoryAdmin)
