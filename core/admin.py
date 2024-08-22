@@ -1,14 +1,35 @@
 # Register your models here.
 from django.contrib import admin
+from django.contrib.auth.models import Group
 from unfold.contrib.forms.widgets import WysiwygWidget
 
 from .models import Category, Hacker, Hackathon
-from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
+from django.contrib.auth.admin import (
+    UserAdmin as DjangoUserAdmin,
+    GroupAdmin as BaseGroupAdmin,
+)
 from unfold.admin import ModelAdmin
 from unfold.decorators import display
 from unfold.forms import AdminPasswordChangeForm, UserChangeForm, UserCreationForm
 from django.utils.translation import gettext_lazy as _
 from django.db import models
+
+
+class GroupAdmin(BaseGroupAdmin, ModelAdmin):
+    list_display = (
+        "name",
+        "display_permissions",
+        "member_count",
+    )
+    search_fields = ("name",)
+
+    @display(description=_("Permissions"))
+    def display_permissions(self, instance):
+        return instance.permissions.count()
+
+    @display(description=_("Members"))
+    def member_count(self, instance):
+        return instance.user_set.count()
 
 
 class HackathonAdmin(ModelAdmin):
@@ -88,3 +109,6 @@ admin.site.index_title = "Welcome to Hackathons Canada Admin Dashboard"
 admin.site.register(Hacker, HackerAdmin)
 admin.site.register(Hackathon, HackathonAdmin)
 admin.site.register(Category, CategoryAdmin)
+
+admin.site.unregister(Group)
+admin.site.register(Group, GroupAdmin)
