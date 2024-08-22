@@ -141,7 +141,7 @@ class Hacker(AbstractUser):
         help_text="Hackathons the user is interested in and wants updates about.",
     )
     saved_categories = models.ManyToManyField(
-        "Category",
+        "core.Category",
         related_name="interested_users",
         help_text="Categories the user is interested in and wants updates when new hackathons meeting this critera are created.",
     )
