@@ -20,6 +20,7 @@ __all__ = [
     "NotificationPolicy",
     "EDUCATION_CHOICES",
     "HACKATHON_EDUCATION_CHOICES",
+    "ReviewStatus",
 ]
 
 EDUCATION_CHOICES: Final = [
@@ -238,6 +239,13 @@ class HackathonLocation(models.Model):
     )
 
 
+class ReviewStatus(models.TextChoices):
+    Approved = "approved", "Approved"
+    Rejected = "rejected", "Rejected"
+    Pending = "pending", "Pending"
+    RequestingChanges = "requesting_changes", "Requesting Changes"
+
+
 class Hackathon(MetaDataMixin):
     objects = HackthonsManager()
     source = models.CharField(
@@ -254,6 +262,15 @@ class Hackathon(MetaDataMixin):
     is_public = models.BooleanField(
         help_text="Is the hackathon visible to all users", default=False
     )
+    review_status = models.CharField(
+        max_length=255,
+        blank=True,
+        null=False,
+        default=ReviewStatus.Pending,
+        help_text="Status of the review process",
+        choices=ReviewStatus.choices,
+    )
+
     categories = models.ManyToManyField(Category, related_name="hackathons")
     created_by = models.ForeignKey(
         Hacker,

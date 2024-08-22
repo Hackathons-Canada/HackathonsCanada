@@ -44,6 +44,10 @@ psycopg2-binary = "^2.9.1"
 plugins = ["mypy_django_plugin.main"]
 exclude = ["migrations", "node_modules", "static", "venv", ".idea"]
 
+[[tool.mypy.overrides]]
+module = "*"
+ignore_missing_imports = true
+
 [tool.django-stubs]
 django_settings_module = "hackathons_canada.settings"
 

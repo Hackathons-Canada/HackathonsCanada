@@ -1,4 +1,5 @@
 # Register your models here.
+from allauth.account import app_settings
 from django.contrib import admin
 from django.contrib.auth.models import Group
 from unfold.contrib.forms.widgets import WysiwygWidget
@@ -13,6 +14,19 @@ from unfold.decorators import display
 from unfold.forms import AdminPasswordChangeForm, UserChangeForm, UserCreationForm
 from django.utils.translation import gettext_lazy as _
 from django.db import models
+from allauth.account.admin import (
+    EmailConfirmationAdmin as BaseEmailConfirmation,
+    EmailAddressAdmin as BaseEmailAddress,
+)
+from allauth.account.models import EmailAddress, EmailConfirmation
+
+
+class EmailAddressAdmin(BaseEmailAddress, ModelAdmin):
+    pass
+
+
+class EmailConfirmationAdmin(ModelAdmin, BaseEmailConfirmation):
+    pass
 
 
 class GroupAdmin(BaseGroupAdmin, ModelAdmin):
@@ -112,3 +126,10 @@ admin.site.register(Category, CategoryAdmin)
 
 admin.site.unregister(Group)
 admin.site.register(Group, GroupAdmin)
+
+if not app_settings.EMAIL_CONFIRMATION_HMAC:
+    admin.site.unregister(EmailConfirmation)
+    admin.site.register(EmailConfirmation, EmailConfirmationAdmin)
+
+admin.site.unregister(EmailAddress)
+admin.site.register(EmailAddress, EmailAddressAdmin)
