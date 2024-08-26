@@ -14,4 +14,14 @@ urlpatterns = [
         views.SavedHackathonsPage.as_view(),
         name="saved_hackathons",
     ),
+    path(
+        "request_curator_access/",
+        views.request_curator_access,
+        name="request_curator_access",
+    ),
+    path(
+        "curator_request_success/",
+        views.curator_request_success,
+        name="curator_request_success",
+    ),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -88,3 +88,22 @@ class HackathonForm(forms.ModelForm):
         )
         for visible in self.visible_fields():
             visible.field.widget.attrs["class"] = "form-button-style py-2"
+
+
+class CuratorRequestForm(forms.Form):
+    hackathon = forms.CharField(label="Hackathon")
+    team_name = forms.CharField(label="Team/Organization Name")
+    team_description = forms.CharField(
+        label="Team/Organization Description", widget=forms.Textarea
+    )
+    reason = forms.CharField(
+        label="Why do you want to be a curator for this hackathon?",
+        widget=forms.Textarea,
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["hackathon"].widget.attrs.update({"class": "form-control"})
+        self.fields["team_name"].widget.attrs.update({"class": "form-control"})
+        self.fields["team_description"].widget.attrs.update({"class": "form-control"})
+        self.fields["reason"].widget.attrs.update({"class": "form-control"})
