@@ -12,7 +12,7 @@ function saveHackathon(event, hackathonId) {
                 console.log(`${response.hackathon.id} Hackathon ${response.hackathon.name} saved successfully`);
             }
             else {
-                console.log('An error occurred during the request: saveHackathon()');
+                console.log(`ERROR: ${response.hackathon.id} Hackathon ${response.hackathon.name} saved unsuccessfully`);
             }
         }
     };
@@ -40,7 +40,7 @@ function unsaveHackathon(event, hackathonId) {
                 console.log(`${response.hackathon.id} Hackathon ${response.hackathon.name} removed successfully`);
             }
             else {
-                console.log('An error occurred during the request: unsaveHackathon()');
+                console.log(`ERROR: ${response.hackathon.id} Hackathon ${response.hackathon.name} removed unsuccessfully`);
             }
         }
     };

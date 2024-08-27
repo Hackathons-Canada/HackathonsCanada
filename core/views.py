@@ -6,7 +6,7 @@ from django.http import HttpRequest, JsonResponse
 from django.shortcuts import render
 from django.views.generic import ListView
 
-from core.models import Hackathon
+from core.models import Hackathon, Hacker
 from .forms import HackathonForm
 from django.conf import settings
 
@@ -65,40 +65,46 @@ class HackathonsPage(ListView):
 
 
 @login_required
-def save_hackathon(request, hackathon_id):
+def save_hackathon(request: HttpRequest, hackathon_id):
     if request.method == "POST":
-        user = request.user
         hackathon = get_object_or_404(Hackathon, id=hackathon_id)
-        user.saved.add(hackathon)
+        user = request.user
+        hacker = get_object_or_404(Hacker, id=user.id)
 
-        return JsonResponse(
-            {
-                "status": "success",
-                "hackathon": {
-                    "id": hackathon.id,
-                    "name": hackathon.name,
-                },
-            }
-        )
+        if hackathon not in hacker.saved.all():
+            hacker.saved.add(hackathon)
+            # print("successfully added " + hackathon.name + " to " + hacker.get_username())
+            return JsonResponse(
+                {
+                    "status": "success",
+                    "hackathon": {
+                        "id": hackathon.id,
+                        "name": hackathon.name,
+                    },
+                }
+            )
     return JsonResponse({"status": "fail", "error": "Invalid request"}, status=400)
 
 
 @login_required
 def unsave_hackathon(request: HttpRequest, hackathon_id):
     if request.method == "POST":
-        user = request.user
         hackathon = get_object_or_404(Hackathon, id=hackathon_id)
-        user.saved.remove(hackathon)
+        user = request.user
+        hacker = get_object_or_404(Hacker, id=user.id)
 
-        return JsonResponse(
-            {
-                "status": "success",
-                "hackathon": {
-                    "id": hackathon.id,
-                    "name": hackathon.name,
-                },
-            }
-        )
+        if hackathon in hacker.saved.all():
+            hacker.saved.remove(hackathon)
+            # print("successfully removed " + hackathon.name + " from " + hacker.get_username())
+            return JsonResponse(
+                {
+                    "status": "success",
+                    "hackathon": {
+                        "id": hackathon.id,
+                        "name": hackathon.name,
+                    },
+                }
+            )
     return JsonResponse({"status": "fail", "error": "Invalid request"}, status=400)
 
 
