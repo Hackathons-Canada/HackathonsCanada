@@ -73,7 +73,6 @@ def save_hackathon(request: HttpRequest, hackathon_id):
 
         if hackathon not in hacker.saved.all():
             hacker.saved.add(hackathon)
-            # print("successfully added " + hackathon.name + " to " + hacker.get_username())
             return JsonResponse(
                 {
                     "status": "success",
@@ -95,7 +94,6 @@ def unsave_hackathon(request: HttpRequest, hackathon_id):
 
         if hackathon in hacker.saved.all():
             hacker.saved.remove(hackathon)
-            # print("successfully removed " + hackathon.name + " from " + hacker.get_username())
             return JsonResponse(
                 {
                     "status": "success",
