@@ -2,15 +2,15 @@ import os
 import random
 from functools import cache
 
+from django.conf import settings
+from django.contrib.auth.decorators import login_required
+from django.http import HttpRequest, JsonResponse
+from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from django.views.generic import ListView
 
-from core.models import Hackathon
+from core.models import Hackathon, Hacker
 from .forms import HackathonForm
-from django.conf import settings
-
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404, redirect
 
 
 @cache
@@ -64,13 +64,49 @@ class HackathonsPage(ListView):
 
 
 @login_required
-def save_hackathon(request, hackathon_id):
+def save_hackathon(request: HttpRequest, hackathon_id):
     if request.method == "POST":
-        user = request.user
         hackathon = get_object_or_404(Hackathon, id=hackathon_id)
-        user.saved.add(hackathon)
+        hacker = get_object_or_404(Hacker, id=request.user.id)
 
-    return redirect("hackathons")
+        if hacker.saved.filter(id=hackathon_id).exists():
+            return JsonResponse(
+                {"status": "fail", "error": "Invalid request"}, status=400
+            )
+
+        hacker.saved.add(hackathon)
+        return JsonResponse(
+            {
+                "status": "success",
+                "hackathon": {
+                    "id": hackathon.id,
+                    "name": hackathon.name,
+                },
+            }
+        )
+
+
+@login_required
+def unsave_hackathon(request: HttpRequest, hackathon_id):
+    if request.method == "POST":
+        hackathon = get_object_or_404(Hackathon, id=hackathon_id)
+        hacker = get_object_or_404(Hacker, id=request.user.id)
+
+        if not hacker.saved.filter(id=hackathon_id).exists():
+            return JsonResponse(
+                {"status": "fail", "error": "Invalid request"}, status=400
+            )
+
+        hacker.saved.remove(hackathon)
+        return JsonResponse(
+            {
+                "status": "success",
+                "hackathon": {
+                    "id": hackathon.id,
+                    "name": hackathon.name,
+                },
+            }
+        )
 
 
 class SavedHackathonsPage(ListView):
@@ -78,5 +114,5 @@ class SavedHackathonsPage(ListView):
     context_object_name = "saved_hackathons"
 
     def get_queryset(self):
-        user = self.request.user
+        user: Hacker = self.request.user
         return user.saved.all()
