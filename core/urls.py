@@ -8,7 +8,6 @@ urlpatterns = [
     path("hackathons/", views.HackathonsPage.as_view(), name="hackathons"),
     path("add-hackathons/", views.addHackathons, name="add_hackathons"),
     path("calendar/", views.calendar, name="calendar"),
-    path("save/<int:hackathon_id>/", views.save_hackathon, name="save_hackathon"),
     path(
         "saved_hackathons/",
         views.SavedHackathonsPage.as_view(),
@@ -23,5 +22,13 @@ urlpatterns = [
         "curator_request_success/",
         views.curator_request_success,
         name="curator_request_success",
+      "hackathons/<int:hackathon_id>/save",
+        views.save_hackathon,
+        name="save_hackathon",
+    ),
+    path(
+        "hackathons/<int:hackathon_id>/unsave",
+        views.unsave_hackathon,
+        name="unsave_hackathon",
     ),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
