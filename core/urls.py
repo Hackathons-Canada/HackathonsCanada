@@ -22,7 +22,9 @@ urlpatterns = [
         "curator_request_success/",
         views.curator_request_success,
         name="curator_request_success",
-      "hackathons/<int:hackathon_id>/save",
+    ),
+    path(
+        "hackathons/<int:hackathon_id>/save",
         views.save_hackathon,
         name="save_hackathon",
     ),
