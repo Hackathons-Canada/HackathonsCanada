@@ -108,7 +108,7 @@
                     </h5>
                   </div>
                   {% if user.is_authenticated %}
-                    <script src="../static/js/hackathons.js"></script>
+                    <script src="../../static/js/hackathons.js"></script>
                     <button type="button" onclick="saveHackathon(event, {{ hackathon.id }})">Save</button>
                   {% else %}
                     <p><em>Login to save</em></p>

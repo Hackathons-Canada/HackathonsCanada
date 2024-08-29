@@ -13,10 +13,8 @@ from core.models import Hackathon, Hacker
 from .forms import HackathonForm
 from .forms import CuratorRequestForm
 
-from django.conf import settings
 
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import redirect
 
 
 @cache
@@ -50,7 +48,7 @@ def addHackathons(request):
     else:
         form = HackathonForm()
 
-    return render(request, "add_hackathon.html", {"form": form})
+    return render(request, "hackathons/add_hackathon.html", {"form": form})
 
 
 def calendar(request):
@@ -62,7 +60,7 @@ def calendar(request):
 
 
 class HackathonsPage(ListView):
-    template_name = "hackathons.html"
+    template_name = "hackathons/hackathons.html"
     context_object_name = "hackathons"
 
     def get_queryset(self):
@@ -133,15 +131,15 @@ def request_curator_access(request):
             return redirect("curator_request_success")
     else:
         form = CuratorRequestForm()
-    return render(request, "curator_request.html", {"form": form})
+    return render(request, "curator/curator_request.html", {"form": form})
 
 
 def curator_request_success(request):
-    return render(request, "curator_request_success.html")
+    return render(request, "curator/curator_request_success.html")
 
 
 class SavedHackathonsPage(ListView):
-    template_name = "saved_hackathons.html"
+    template_name = "hackathons/saved_hackathons.html"
     context_object_name = "saved_hackathons"
 
     def get_queryset(self):
