@@ -11,6 +11,12 @@ from django.views.generic import ListView
 
 from core.models import Hackathon, Hacker
 from .forms import HackathonForm
+from .forms import CuratorRequestForm
+
+from django.conf import settings
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404, redirect
 
 
 @cache
@@ -107,6 +113,31 @@ def unsave_hackathon(request: HttpRequest, hackathon_id):
                 },
             }
         )
+
+
+@login_required
+def request_curator_access(request):
+    if request.method == "POST":
+        form = CuratorRequestForm(request.POST)
+        if form.is_valid():
+            hackathon = form.cleaned_data["hackathon"]
+            team_name = form.cleaned_data["team_name"]
+            team_description = form.cleaned_data["team_description"]
+            reason = form.cleaned_data["reason"]
+            # Send an email to the hackathon organizers with the request
+            # Django's email system?
+            # just print the request to the console
+            print(
+                f"Request from {team_name} to be a curator for {hackathon}: {reason}. {team_name} description: {team_description}"
+            )
+            return redirect("curator_request_success")
+    else:
+        form = CuratorRequestForm()
+    return render(request, "curator_request.html", {"form": form})
+
+
+def curator_request_success(request):
+    return render(request, "curator_request_success.html")
 
 
 class SavedHackathonsPage(ListView):

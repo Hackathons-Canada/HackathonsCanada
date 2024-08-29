@@ -14,7 +14,15 @@ urlpatterns = [
         name="saved_hackathons",
     ),
     path(
-        "hackathons/<int:hackathon_id>/save",
+        "request_curator_access/",
+        views.request_curator_access,
+        name="request_curator_access",
+    ),
+    path(
+        "curator_request_success/",
+        views.curator_request_success,
+        name="curator_request_success",
+      "hackathons/<int:hackathon_id>/save",
         views.save_hackathon,
         name="save_hackathon",
     ),

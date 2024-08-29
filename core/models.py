@@ -355,3 +355,14 @@ class Hackathon(MetaDataMixin):
 
     def __str__(self):
         return self.name
+
+
+class CuratorRequest(models.Model):
+    hackathon = models.ForeignKey(Hackathon, on_delete=models.CASCADE)
+    team_name = models.CharField(max_length=255)
+    team_description = models.TextField()
+    reason = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Curator request from {self.team_name} for {self.hackathon}"
