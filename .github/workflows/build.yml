@@ -1,0 +1,32 @@
+name: Build and Push Tailwind CSS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-tailwind:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        run: npm install -D tailwindcss postcss autoprefixer && npm install
+
+      - name: Build Tailwind CSS
+        run: npx tailwindcss -i ./static/css/input.css -o ./static/css/tailwind.min.css --minify
+
+      - name: Commit and Push Changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: 'Build Tailwind CSS'
+          add: 'static/css/tailwind.min.css'
+          push: true
