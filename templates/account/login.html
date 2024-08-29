@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load i18n  account static socialaccount %}
+
+{% block title %}{% translate  "Sign In" %}{% endblock title %}
+{% block navbar %}{% endblock navbar %}
+
+{% block content %}
+  <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-md">
+      <div class="flex justify-between items-center">
+        <a href="{% url "home" %}">
+          <img src="{% static 'assets/logo.png' %}" alt="Hack Canada" class="h-12 w-auto">
+        </a>
+        <div class="text-right">
+          <h2 class="text-3xl font-extrabold text-gray-900">Welcome.</h2>
+          <div class="flex justify-end mt-2">
+            <img src="{% static 'assets/canada.png' %}" alt="Canadian Flag" class="h-6">
+          </div>
+        </div>
+      </div>
+      <form class="mt-8 space-y-6" method="POST" action="{% url 'account_login' %}">
+        {% csrf_token %}
+        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+        <div class="rounded-md shadow-sm -space-y-px">
+          <div>
+            <label for="id_login" class="sr-only">{% translate  "Username or Email" %}</label>
+            <input id="id_login" name="login" type="text" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500 focus:z-10 sm:text-sm" placeholder="{% translate  'Username or Email' %}">
+          </div>
+          <div>
+            <label for="id_password" class="sr-only">{% translate  "Password" %}</label>
+            <input id="id_password" name="password" type="password" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-red-500 focus:border-red-500 focus:z-10 sm:text-sm" placeholder="{% translate  'Password' %}">
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <div class="flex items-center">
+            <input id="remember_me" name="remember" type="checkbox" class="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded">
+            <label for="remember_me" class="ml-2 block text-sm text-gray-900">
+              {% translate  "Remember Me" %}
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+            {% translate  "Log in" %}
+          </button>
+        </div>
+      </form>
+
+      {% include "snippets/provider_list.html" %}
+
+      <div class="text-sm text-center">
+        <a href="{% url 'account_signup' %}" class="font-medium text-red-600 hover:text-red-500">
+          {% translate  "Don't have an account? Sign up" %}
+        </a>
+      </div>
+    </div>
+  </div>
+{% endblock %}
