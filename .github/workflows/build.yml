@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+permissions:
+    contents: write
+
 jobs:
   build-tailwind:
     runs-on: ubuntu-latest
@@ -27,6 +30,9 @@ jobs:
       - name: Commit and Push Changes
         uses: EndBug/add-and-commit@v9
         with:
+          author_email: 41898282+github-actions[bot]@users.noreply.github.com
+          author_name: github-actions[bot]
           message: 'Build Tailwind CSS'
           add: 'static/css/tailwind.min.css'
           push: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
