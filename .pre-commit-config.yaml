@@ -1,14 +1,15 @@
 repos:
 -   repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.5.2
+    rev: 'v0.6.2'
     hooks:
     -   id: ruff
         args:
         - --fix
     -   id: ruff-format
 -   repo: https://github.com/rtts/djhtml
-    rev: 3.0.6
+    rev: '3.0.6'
     hooks:
     -   id: djhtml
+        entry: djhtml --tabwidth 2
     -   id: djcss
     -   id: djjs

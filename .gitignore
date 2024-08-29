@@ -5,6 +5,7 @@ hackathons_canada/local_settings.py
 *.sqlite3
 celerybeat-schedule
 venv
+.venv
 
 .prettierignore
 /media/hackathon_images
