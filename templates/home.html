@@ -58,68 +58,45 @@
       </a>
     </div>
 
-    <div class="accordian-container">
-      <h1 class="header-text-black">FAQ<span class="header-text-red">s</span></h1>
-      <div class="accordion accordian-w">
-        <div class="accordion-item">
-          <h2 class="accordion-header">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="false"
-                    aria-controls="panelsStayOpen-collapseOne">
-              Accordion Item #1
-            </button>
-          </h2>
-          <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse">
-            <div class="accordion-body">
-              <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin
-              adds
-              the appropriate classes that we use to style each element. These classes control the overall appearance, as
-              well
-              as the showing and hiding via CSS transitions. You can modify any of this with custom `CSS or overriding our
-              default variables. It's also worth noting that just about any HTML can go within the
-              <code>.accordion-body</code>, though the transition does limit overflow.
+    <div class="w-full flex flex-col justify-center items-center">
+      <p class='header-text-black'>FAQ<span class='header-text-red'>s</span></p>
+      <div class='w-7/12 flex flex-col gap-y-4'>
+          <!-- Accordion 1 -->
+        <div class="border w-full hover:border-blue-300 glow-on-hover">
+          <button class="w-full bg-gray-200 p-4 text-left hover:border-blue-300 glow-on-hover" onclick="toggleAccordion(1)">
+            <div class='flex justify-between items-center'>
+              <span class="font-semibold">Accordian Item #1</span>
+              <img src='/static/assets/down-arrow.svg' class='w-[20px] h-[20px]'></img>
             </div>
+          </button>
+          <div id="accordion-content-1" class="p-4 hidden bg-white">
+            <p>This is the first item's accordion body. It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the .accordion-body, though the transition does limit overflow.</p>
           </div>
         </div>
-        <div class="accordion-item">
-          <h2 class="accordion-header">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false"
-                    aria-controls="panelsStayOpen-collapseTwo">
-              Accordion Item #2
-            </button>
-          </h2>
-          <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse">
-            <div class="accordion-body">
-              <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse
-              plugin
-              adds the appropriate classes that we use to style each element. These classes control the overall
-              appearance, as
-              well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding
-              our
-              default variables. It's also worth noting that just about any HTML can go within the
-              <code>.accordion-body</code>, though the transition does limit overflow.
+
+          <!-- Accordion 2 -->
+        <div class="w-full border">
+          <button class="w-full bg-gray-200 p-4 text-left" onclick="toggleAccordion(2)">
+            <div class='flex justify-between items-center'>
+              <span class="font-semibold">Accordian Item #1</span>
+              <img src='/static/assets/down-arrow.svg' class='w-[20px] h-[20px]'></img>
             </div>
+          </button>
+          <div id="accordion-content-2" class="p-4 hidden bg-white">
+            <p>This is the second item's accordion body. It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the .accordion-body, though the transition does limit overflow.</p>
           </div>
         </div>
-        <div class="accordion-item">
-          <h2 class="accordion-header">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false"
-                    aria-controls="panelsStayOpen-collapseThree">
-              Accordion Item #3
-            </button>
-          </h2>
-          <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse">
-            <div class="accordion-body">
-              <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin
-              adds the appropriate classes that we use to style each element. These classes control the overall
-              appearance, as
-              well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding
-              our
-              default variables. It's also worth noting that just about any HTML can go within the
-              <code>.accordion-body</code>, though the transition does limit overflow.
+
+          <!-- Accordion 3 -->
+        <div class="w-full border">
+          <button class="w-full bg-gray-200 p-4 text-left" onclick="toggleAccordion(3)">
+            <div class='flex justify-between items-center'>
+              <span class="font-semibold">Accordian Item #1</span>
+              <img src='/static/assets/down-arrow.svg' class='w-[20px] h-[20px]'></img>
             </div>
+          </button>
+          <div id="accordion-content-3" class="p-4 hidden bg-white">
+            <p>This is the third item's accordion body. It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the .accordion-body, though the transition does limit overflow.</p>
           </div>
         </div>
       </div>
@@ -162,4 +139,18 @@
     <img src="{% static 'assets/leaf4.png'%}" class="leaf leaf5" alt="Leaf Image" />
   </div>
 
+  <script>
+    function toggleAccordion(index) {
+      const content = document.getElementById(`accordion-content-${index}`);
+      const allContents = document.querySelectorAll('[id^="accordion-content-"]');
+
+      allContents.forEach((item) => {
+        if (item !== content) {
+          item.classList.add('hidden');
+        }
+      });
+
+      content.classList.toggle('hidden');
+    }
+  </script>
 {% endblock %}
