@@ -20,6 +20,7 @@ __all__ = [
     "NotificationPolicy",
     "EDUCATION_CHOICES",
     "HACKATHON_EDUCATION_CHOICES",
+    "SOURCE_CHOICES",
     "ReviewStatus",
 ]
 
@@ -34,6 +35,18 @@ EDUCATION_CHOICES: Final = [
 HACKATHON_EDUCATION_CHOICES: List[Tuple[int, str]] = EDUCATION_CHOICES + [
     (5, "Any/All")
 ]
+
+SOURCE_CHOICES = (
+    {'admn': "Admin Added"}
+    ('mlh', "MLH"),
+    ('dev', "Devpost"),
+    ('eth', "ETHGlobal"),
+    ('hcl', "Hack Club"),
+    ('taik', "Taikai"),
+    ('dora', "DoraHacks"),
+    ('user', "User Submitted"),
+    ('othr', "Other"),
+)
 
 
 class MetaDataMixin(models.Model):
@@ -248,6 +261,9 @@ class ReviewStatus(models.TextChoices):
 
 class Hackathon(MetaDataMixin):
     objects = HackthonsManager()
+
+    # This ID is to make it easier to identify hackathons when scraping in order to avoid duplicates
+    id = models.CharField(max_length=32, primary_key=True, editable=False)
     source = models.CharField(
         max_length=3,
         choices=HackathonSource.choices,
@@ -332,8 +348,17 @@ class Hackathon(MetaDataMixin):
         blank=True, null=True, help_text="List of items in the prize pool"
     )
 
-    image = models.ImageField(upload_to="hackathon_images")
+    source = models.CharField(max_length=4, choices=SOURCE_CHOICES)
+
+
+    fg_image = models.ImageField(upload_to="hackathon_images")
+    bg_image = models.ImageField(upload_to="hackathon_images")
     notes = models.TextField(blank=True, default="")
+
+    freeze_data = models.BooleanField(
+        default=False,
+        help_text="Set to True to not update any details using scraped data. Use if you get accurate details directly from the hackathon organizers."
+    )
 
     class Meta:
         ordering = ["start_date"]
@@ -355,6 +380,14 @@ class Hackathon(MetaDataMixin):
 
     def __str__(self):
         return self.name
+
+    def get_id(cls, name, date):
+        return f"{name.lower().replace(' ', '_')}-{date.year}"
+    
+    # TODO do something about the ID field changing: either fix all references or change the way this works
+    def save(self, **kwargs):
+        self.id = self.get_id(self.name, self.enddate)
+        super().save(**kwargs)
 
 
 class CuratorRequest(models.Model):
