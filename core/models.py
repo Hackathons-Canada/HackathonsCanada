@@ -20,6 +20,8 @@ __all__ = [
     "NotificationPolicy",
     "EDUCATION_CHOICES",
     "HACKATHON_EDUCATION_CHOICES",
+    "SOURCE_CHOICES",
+    "HYBRID_CHOICES",
     "ReviewStatus",
 ]
 
@@ -34,6 +36,24 @@ EDUCATION_CHOICES: Final = [
 HACKATHON_EDUCATION_CHOICES: List[Tuple[int, str]] = EDUCATION_CHOICES + [
     (5, "Any/All")
 ]
+
+SOURCE_CHOICES = (
+    {'admn': "Admin Added"}
+    ('mlh', "MLH"),
+    ('dev', "Devpost"),
+    ('eth', "ETHGlobal"),
+    ('hcl', "Hack Club"),
+    ('taik', "Taikai"),
+    ('dora', "DoraHacks"),
+    ('user', "User Submitted"),
+    ('othr', "Other"),
+)
+
+HYBRID_CHOICES = (
+    ('I', "In-Person"),
+    ('O', "Online"),
+    ('H', "Hybrid"),
+)
 
 
 class MetaDataMixin(models.Model):
@@ -248,6 +268,9 @@ class ReviewStatus(models.TextChoices):
 
 class Hackathon(MetaDataMixin):
     objects = HackthonsManager()
+
+    # This ID is to make it easier to identify hackathons when scraping in order to avoid duplicates
+    id = models.CharField(max_length=32, primary_key=True, editable=False)
     source = models.CharField(
         max_length=3,
         choices=HackathonSource.choices,
@@ -332,8 +355,35 @@ class Hackathon(MetaDataMixin):
         blank=True, null=True, help_text="List of items in the prize pool"
     )
 
-    image = models.ImageField(upload_to="hackathon_images")
+    source = models.CharField(max_length=4, choices=SOURCE_CHOICES)
+
+    fg_image = models.ImageField(upload_to="hackathon_images")
+    bg_image = models.ImageField(upload_to="hackathon_images")
     notes = models.TextField(blank=True, default="")
+
+    hybrid = models.CharField(
+        max_length=1,
+        choices=HYBRID_CHOICES,
+        default="I",
+        help_text="Location of the hackathon, I for in-person, V for virtual, H for hybrid",
+    )
+
+    # Boolean fields for whether the hackathon is specific to certain groups
+    is_web3 = models.BooleanField(default=False) # Web 3 hackathons
+    is_diversity = models.BooleanField(default=False) # Diversity hackathons for specific marginalized groups
+    is_restricted = models.BooleanField(default=False) # Hackathons with restricrted enrollment (ex. only students of some university)
+    is_nonenglish = models.BooleanField(default=False) # Hackathons which are not in English
+    is_over18 = models.BooleanField(default=False) # Hackathons which are only for people over 18
+
+    freeze_data = models.BooleanField(
+        default=False,
+        help_text="Set to True to not update any details using scraped data. Use if you get accurate details directly from the hackathon organizers."
+    )
+
+    last_scraped = models.DateTimeField(auto_now_add=True)
+    last_updated = models.DateTimeField(auto_now_add=True)
+
+    custom_info = models.JSONField(default={}, null=True, blank=True) # Anything else that we might want to add in a structured format
 
     class Meta:
         ordering = ["start_date"]
@@ -355,6 +405,14 @@ class Hackathon(MetaDataMixin):
 
     def __str__(self):
         return self.name
+
+    def get_id(cls, name, date):
+        return f"{name.lower().replace(' ', '_')}-{date.year}"
+    
+    # TODO do something about the ID field changing: either fix all references or change the way this works
+    def save(self, **kwargs):
+        self.id = self.get_id(self.name, self.enddate)
+        super().save(**kwargs)
 
 
 class CuratorRequest(models.Model):
