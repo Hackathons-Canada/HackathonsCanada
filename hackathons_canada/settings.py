@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     "allauth.socialaccount.providers.discord",
     "allauth.socialaccount.providers.github",
     "allauth.socialaccount.providers.google",
+    "django_celery_beat",
     # 'allauth.socialaccount.providers.linkedin',
     "core",
     "dischannelsaver",
