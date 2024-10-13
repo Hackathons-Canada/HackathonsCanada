@@ -152,6 +152,7 @@ USE_TZ = True
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
 STATIC_URL = "static/"
+STATIC_ROOT = "/tmp"
 
 # Styling settings
 CRISPY_TEMPLATE_PACK = "bootstrap4"
