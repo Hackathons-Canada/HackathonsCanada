@@ -32,7 +32,7 @@
 
   <img class="hero-image-position text-center" src="{% static 'assets/homegra.png'%}" />
 
-  <div class="card-header-layout">
+  <div class="card-header-layout mt-5">
     <h5 class="header-text-black">
       More than just a
       <span class="header-text-red">website.</span>
@@ -45,25 +45,44 @@
           <img class="card-img-stack" src="{% static 'assets/hackcanadabg.png' %}" alt="Image 2" />
         </div>
       </a>
-      <a>
+      <a href="https://discord.gg/m5GPTnT5YB">
         <img class="" src="{% static 'assets/discord.png' %}" alt="Image 1" />
       </a>
     </div>
     <div class="card-row-layout">
-      <a>
+      <a src = "https://konfer.ca/">
         <img class="" src="{% static 'assets/discordcard.png' %}" alt="Image 2" />
       </a>
-      <a>
+      <a href="https://calendar.google.com/calendar/u/0?cid=M2Y0ODA2MjUxYTZjMGZhYTMwZWE3ZmE0YmI0NTdjMmE1NTI0ZWZlNGUzZjMwMDc4NmJlMmVlNWRjOGU1MTE3MEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t">
         <img class="" src="{% static 'assets/gcal.png' %}" alt="Image 1" />
       </a>
     </div>
 
-    <div class="w-full flex flex-col justify-center items-center">
-      <p class='header-text-black'>FAQ<span class='header-text-red'>s</span></p>
-      <div class='w-7/12 flex flex-col gap-y-4'>
+
+
+    <div class="card-join-layout">
+      <div class="card-join-image">
+        <img src="{%static 'assets/jointeam.png'%}" />
+      </div>
+      <div class="card-join-text">
+        <h4 class="button-discord-text1">
+          Interested In Joining
+          <span class="button-discord-blue">Our Team?</span>
+        </h4>
+        <h5 class="button-discord-text2 mt-3">
+          develop apps, web applications and software for hackathons <br />
+          and particapte in organizing our own hackathon.
+        </h5>
+        <a href="#" class="button-discord-style mt-3 py-2">Apply Here ➜</a>
+      </div>
+    </div>
+
+    <div class="w-full flex flex-col justify-center items-center mt-5">
+      <p class='header-text-black mb-5'>FAQ<span class='header-text-red'>s</span></p>
+      <div class='w-8/12 flex flex-col gap-y-4'>
           <!-- Accordion 1 -->
-        <div class="border w-full hover:border-blue-300 glow-on-hover">
-          <button class="w-full bg-gray-200 p-4 text-left hover:border-blue-300 glow-on-hover" onclick="toggleAccordion(1)">
+        <div class="border-2 w-full rounded-lg">
+          <button class="w-full bg-white-200 p-4 text-left" onclick="toggleAccordion(1)">
             <div class='flex justify-between items-center'>
               <span class="font-semibold">Accordian Item #1</span>
               <img src='/static/assets/down-arrow.svg' class='w-[20px] h-[20px]'></img>
@@ -75,8 +94,8 @@
         </div>
 
           <!-- Accordion 2 -->
-        <div class="w-full border">
-          <button class="w-full bg-gray-200 p-4 text-left" onclick="toggleAccordion(2)">
+        <div class="w-full border-2 rounded-lg">
+          <button class="w-full rounded-lg bg-white-200 p-4 text-left" onclick="toggleAccordion(2)">
             <div class='flex justify-between items-center'>
               <span class="font-semibold">Accordian Item #1</span>
               <img src='/static/assets/down-arrow.svg' class='w-[20px] h-[20px]'></img>
@@ -88,35 +107,19 @@
         </div>
 
           <!-- Accordion 3 -->
-        <div class="w-full border">
-          <button class="w-full bg-gray-200 p-4 text-left" onclick="toggleAccordion(3)">
+        <div class="w-full border-2 rounded-lg">
+          <button class="w-full rounded-lg bg-white-200 p-4 text-left" onclick="toggleAccordion(3)">
             <div class='flex justify-between items-center'>
-              <span class="font-semibold">Accordian Item #1</span>
+              <span class="font-semibold">Got more quesions ? </span>
               <img src='/static/assets/down-arrow.svg' class='w-[20px] h-[20px]'></img>
             </div>
           </button>
           <div id="accordion-content-3" class="p-4 hidden bg-white">
-            <p>This is the third item's accordion body. It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the .accordion-body, though the transition does limit overflow.</p>
+            <p>Reach out on our discord server.</p>
           </div>
         </div>
-      </div>
-    </div>
 
 
-    <div class="card-join-layout">
-      <div class="card-join-image">
-        <img src="{%static 'assets/jointeam.png'%}" />
-      </div>
-      <div class="card-join-text">
-        <h4 class="button-discord-text1">
-          Interested In Joining us as a
-          <span class="button-discord-blue">hackathon organizer?</span>
-        </h4>
-        <h5 class="button-discord-text2">
-          Join Our Discord and Answer your communities <br />
-          burning questions.
-        </h5>
-        <a href="#" class="button-discord-style">Join Our Discord ➜</a>
       </div>
     </div>
   </div>
