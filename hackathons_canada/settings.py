@@ -78,7 +78,14 @@ SOCIALACCOUNT_PROVIDERS = {
             "access_type": "online",
         },
         "OAUTH_PKCE_ENABLED": True,
-    }
+    },
+    "github": {
+        "SCOPE": [
+            "user",
+            "repo",
+            "read:org",
+        ],
+    },
 }
 
 SOCIALACCOUNT_LOGIN_ON_GET = True
