@@ -8,7 +8,7 @@
   <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-[url({% static 'assets/signinBg.jpg' %})] bg-no-repeat bg-cover" >
     <div class="max-w-md w-full space-y-8  backdrop-blur-md bg-white/30 p-10 rounded-xl shadow-md">
       <div class="flex justify-between items-center">
-        <a href="{% url "home" %}">
+        <a href="{% url 'home' %}">
           <img src="{% static 'assets/logo.png' %}" alt="Hack Canada" class="h-12 w-auto">
         </a>
         <div class="text-right">
@@ -48,7 +48,7 @@
         </div>
       </form>
 
-      {% include "snippets/provider_list.html" %}
+      <a href="{% provider_login_url 'google' %}?next=/">Google</a>
 
       <div class="text-sm text-center">
         <a href="{% url 'account_signup' %}" class="font-medium text-black-600 hover:text-white-500">

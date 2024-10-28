@@ -28,6 +28,9 @@ SECRET_KEY = "CHANGEME"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
+
+SITE_ID = 1
+
 ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
@@ -63,6 +66,21 @@ INSTALLED_APPS = [
     "crispy_forms",
     "crispy_bootstrap4",
 ]
+
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        "FETCH_USERINFO": True,
+        "SCOPE": [
+            "profile",
+            "email",
+        ],
+        "AUTH_PARAMS": {
+            "access_type": "online",
+        },
+        "OAUTH_PKCE_ENABLED": True,
+    }
+}
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

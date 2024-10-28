@@ -51,7 +51,7 @@
         </div>
       </form>
 
-      {% include "snippets/provider_list.html" %}
+      <a href="{% provider_login_url 'google' %}?next=/">Google</a>
 
       <div class="text-sm text-center">
         <a href="{% url 'account_login' %}" class="font-medium text-black hover:text-white">
