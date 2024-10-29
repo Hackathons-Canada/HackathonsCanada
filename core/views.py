@@ -68,6 +68,14 @@ class HackathonsPage(ListView):
 
 
 @login_required
+def setting(request):
+    if request.method == "POST":
+        # update user settings
+        return render(request, "../templates/account/setting.html")
+    return render(request, "../templates/account/setting.html")
+
+
+@login_required
 def save_hackathon(request: HttpRequest, hackathon_id):
     if request.method == "POST":
         hackathon = get_object_or_404(Hackathon, id=hackathon_id)

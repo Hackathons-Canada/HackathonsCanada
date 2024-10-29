@@ -201,7 +201,8 @@ COUNTRIES_FIRST = ["CA", "US"]
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://valkey:6379/1")
 CELERY_RESULT_BACKEND = os.environ.get("CELERY_BACKEND", "redis://valkey:6379/1")
 
-LOGIN_REDIRECT_URL = "/"  # todo change to profile page once created
+LOGIN_REDIRECT_URL = "/settings/"
+ACCOUNT_LOGOUT_REDIRECT_URL = "/"
 
 # Logging settings
 

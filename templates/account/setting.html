@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load i18n  account static socialaccount %}
+
+{% block title %}{% translate  "Account Settings" %}{% endblock title %}
+{% block navbar %}{% endblock navbar %}
+
+{% block content %}
+  {% block head_title %}
+    {% trans "Account Connections" %}
+  {% endblock head_title %}
+  <h1>account connections</h1>
+  <h3>{% trans "Account" %}</h3>
+  <ul class="nav nav-list">
+    <li><a href="{% url 'account_set_password' %}">{% trans "Set password" %}</a></li>
+    <li><a href="{% url 'account_change_password' %}">{% trans "Change password" %}</a></li>
+    <li><a href="{% url 'socialaccount_connections' %}">{% trans "Social Connections" %}</a></li>
+    <li><a href="{% url 'account_email' %}">{% trans "Manage Email Accounts" %}</a></li>
+  </ul>
+{% endblock content %}
