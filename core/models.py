@@ -129,6 +129,10 @@ class Hacker(AbstractUser):
         null=True,
         help_text="Name of your school or university",
     )
+    # James Added the two
+    birthday = models.DateTimeField(blank=True, null=True)
+    personal_website = models.CharField(null=True, blank=True, max_length=255)
+
     education = models.CharField(
         max_length=255,
         blank=True,

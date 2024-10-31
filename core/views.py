@@ -11,6 +11,7 @@ from django.views.generic import ListView
 
 from core.models import Hackathon, Hacker
 from .forms import HackathonForm
+from .forms import HackerSettingForm
 from .forms import CuratorRequestForm
 
 
@@ -47,7 +48,7 @@ def addHackathons(request):
             return redirect("home")
     else:
         form = HackathonForm()
-        return render(request, "hackathons/add_hackathon.html", {"form": form})
+    return render(request, "hackathons/add_hackathon.html", {"form": form})
 
 
 def calendar(request):
@@ -69,9 +70,14 @@ class HackathonsPage(ListView):
 @login_required
 def setting(request):
     if request.method == "POST":
-        # update user settings
-        return render(request, "../templates/account/setting.html")
-    return render(request, "../templates/account/setting.html")
+        form = HackerSettingForm(request.POST)
+        if form.is_valid():
+            return redirect(
+                request, "../templates/account/setting.html", {"form": form}
+            )
+    else:
+        form = HackerSettingForm()
+    return render(request, "../templates/account/setting.html", {"form": form})
 
 
 @login_required
