@@ -5,6 +5,10 @@ from crispy_forms.helper import FormHelper  # type: ignore
 from crispy_forms.layout import Layout, Field, HTML, Submit, Div, Fieldset
 
 
+# make this dynamic
+BIRTH_YEAR_CHOICES = ["2024", "2025"]
+
+
 class HackathonForm(forms.ModelForm):
     short_name = forms.CharField(max_length=255)
     name = forms.CharField(max_length=255)
@@ -12,10 +16,12 @@ class HackathonForm(forms.ModelForm):
     country = forms.CharField(max_length=255)
     city = forms.CharField(max_length=255)
     image = forms.ImageField()
-    start_date = forms.DateTimeInput()
-    end_date = forms.DateTimeInput()
-    application_start = forms.DateTimeInput()
-    application_deadline = forms.DateTimeInput()
+    start_date = forms.DateField(widget=forms.TextInput(attrs={"type": "date"}))
+    end_date = forms.DateField(widget=forms.TextInput(attrs={"type": "date"}))
+    application_start = forms.DateField(widget=forms.TextInput(attrs={"type": "date"}))
+    application_deadline = forms.DateField(
+        widget=forms.TextInput(attrs={"type": "date"})
+    )
     min_age = forms.IntegerField(min_value=0, max_value=100)
     min_education_level = forms.MultipleChoiceField()
     maximum_education_level = forms.MultipleChoiceField()
@@ -39,23 +45,30 @@ class HackathonForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             HTML(
-                "<h2 class = 'form-head-text py-2 pt-5'>Feature Your Hackathon with Us.</h2>"
+                "<h2 class = 'form-head-text py-2 mt-5 pt-5'>Feature Your Hackathon with Us.</h2>"
             ),
             HTML(
-                "<h3 class = 'form-side-text pb-2'>Let us help you promote your hackathon event.</h3>"
+                "<h3 class = 'form-side-text mt-2 pb-2'>Let us help you promote your hackathon event.</h3>"
             ),
             Fieldset(
                 "",
                 Div(
                     Field("short_name"),
                     Field("name"),
-                    css_class="form-group-style",
+                    css_class="form-group-style flex flex-rows space-x-4",
                 ),
-                Div(Field("country"), Field("city"), css_class="form-group-style"),
                 Field("website"),
+                Div(
+                    Field("country"),
+                    Field("city"),
+                    css_class="form-group-style flex flex-rows space-x-4",
+                ),
                 # To Do Make this look Better:
-                Field("start_date"),
-                Field("end_date"),
+                Div(
+                    Field("start_date"),
+                    Field("end_date"),
+                    css_class="form-group-style flex flex-rows space-x-4",
+                ),
             ),
             Div(
                 HTML("<h2 class = 'form-side-text pt-5'>Banner</h2>"),
@@ -80,11 +93,13 @@ class HackathonForm(forms.ModelForm):
             Fieldset(
                 "",  # this is for the legend
                 Field("min_age"),
-                Field("minimum_education_level"),
-                Field("maximum_education_level"),
-                Field("numerical_prize_pool"),
+                Div(Field("minimum_education_level"), Field("numerical_prize_pool")),
             ),
-            Submit("submit", "Submit", css_class="button white py-3 px-5"),
+            Submit(
+                "submit",
+                "Submit",
+                css_class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-black focus:outline-none bg-white rounded-lg border border-black hover:bg-gray-700 hover:text-white focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700",
+            ),
         )
         for visible in self.visible_fields():
             visible.field.widget.attrs["class"] = "form-button-style py-2"
