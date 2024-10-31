@@ -44,11 +44,10 @@ def addHackathons(request):
     if request.method == "POST":
         form = HackathonForm(request.POST)
         if form.is_valid():
-            return "form is valid, Nirek do smth here"
+            return redirect("home")
     else:
         form = HackathonForm()
-
-    return render(request, "hackathons/add_hackathon.html", {"form": form})
+        return render(request, "hackathons/add_hackathon.html", {"form": form})
 
 
 def calendar(request):
