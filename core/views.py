@@ -69,12 +69,9 @@ class HackathonsPage(ListView):
 
 @login_required
 def setting(request):
-    print("helloofdsakjkjfdsafhfsakhfdsa")
     if request.method == "POST":
-        print("helloofdsakjkjfdsafhfsakhfdsa")
         form = HackerSettingForm(request.POST, instance=request.user)
         if form.is_valid():
-            print(form)
             form.save()
             return redirect("setting")
     else:

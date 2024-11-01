@@ -3,6 +3,7 @@ from django import forms
 from .models import Hackathon, HACKATHON_EDUCATION_CHOICES
 from .models import Hacker
 
+from django_countries.fields import CountryField
 from crispy_forms.helper import FormHelper  # type: ignore
 from crispy_forms.layout import Layout, Field, HTML, Submit, Div, Fieldset
 
@@ -118,7 +119,7 @@ class HackathonForm(forms.ModelForm):
 
 
 class HackerSettingForm(forms.ModelForm):
-    country = forms.CharField(max_length=255)
+    country = CountryField(blank_label="(select country)").formfield()
     city = forms.CharField(max_length=255)
     school = forms.CharField(max_length=255, required=False)
     education = forms.ChoiceField(

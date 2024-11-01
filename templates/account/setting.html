@@ -8,7 +8,7 @@
 {% block content %}
 
   <div class = "flex flex-row border-t-4 border-black">
-    <div id="cta-button-sidebar" class="z-40 w-1/5 h-screen transition-transform -translate-x-full border-r-4 border-black sm:translate-x-0" aria-label="Sidebar">
+    <div id="cta-button-sidebar" class="w-1/5 border-r-4 border-black" aria-label="Sidebar">
       <div class="h-full px-3 py-4 overflow-y-auto bg-[4A5769] rounded-lg">
         <h1 class = "px-3 mt-5 text-2xl font-bold ">Setting</h1>
         <div id="dropdown-cta" class="p-4 mx-3 my-3 mt-3 border-2 border-black rounded-lg" role="alert">
@@ -58,25 +58,16 @@
       <li>
 
         <a href="{% url 'account_set_password' %}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
-          <svg class="w-5 h-5 transition duration-75 text-black-500 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
-            <path d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z"/>
-            <path d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z"/>
-          </svg>
+
           <span class="ms-3">Set Password</span>
         </a>
         <a href="{% url 'account_change_password' %}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
-          <svg class="w-5 h-5 transition duration-75 text-black-500 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
-            <path d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z"/>
-            <path d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z"/>
-          </svg>
+
           <span class="ms-3">Reset Password</span>
         </a>
         <a href="{% url 'socialaccount_connections' %}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
-          <svg class="w-5 h-5 transition duration-75 text-black-500 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
-            <path d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z"/>
-            <path d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z"/>
-          </svg>
-          <span class="ms-3">Accounts Connected</span>
+
+          <span class="ms-3">Change Email</span>
         </a>
 
       </li>
