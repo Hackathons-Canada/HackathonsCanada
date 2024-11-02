@@ -13,6 +13,7 @@ from core.tasks import send_new_hackathon_email
 
 __all__ = [
     "Hacker",
+    "School",
     "Hackathon",
     "HackathonLocation",
     "Location",
@@ -48,6 +49,13 @@ class MetaDataMixin(models.Model):
     ):
         self.updated_at = timezone.now()
         super().save(force_insert, force_update, using, update_fields)
+
+
+class School(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
 
 
 class NotificationPolicy(models.Model):
@@ -129,8 +137,7 @@ class Hacker(AbstractUser):
         null=True,
         help_text="Name of your school or university",
     )
-    # James Added the two
-    birthday = models.DateTimeField(blank=True, null=True)
+    birthday = models.DateField(blank=True, null=True)
     personal_website = models.CharField(null=True, blank=True, max_length=255)
 
     education = models.CharField(

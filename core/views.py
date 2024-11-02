@@ -10,11 +10,12 @@ from django.shortcuts import render
 from django.views.generic import ListView
 
 from core.models import Hackathon, Hacker
-from .forms import HackathonForm
-from .forms import HackerSettingForm
-from .forms import CuratorRequestForm
-
-
+from .forms import (
+    HackathonForm,
+    NotificationPolicyForm,
+    HackerSettingForm,
+    CuratorRequestForm,
+)
 from django.shortcuts import redirect
 
 
@@ -70,15 +71,21 @@ class HackathonsPage(ListView):
 @login_required
 def setting(request):
     if request.method == "POST":
-        form = HackerSettingForm(request.POST, instance=request.user)
-        if form.is_valid():
-            form.save()
+        form_setting = HackerSettingForm(request.POST, instance=request.user)
+        form_notification = NotificationPolicyForm(request.POST, instance=request.user)
+        if form_notification.is_valid() and form_setting.is_valid():
+            form_setting.save()
+            form_notification.save()
             return redirect("setting")
     else:
-        print("else printed")
-        form = HackerSettingForm(instance=request.user)
+        form_setting = HackerSettingForm(request.POST, instance=request.user)
+        form_notification = NotificationPolicyForm(request.POST, instance=request.user)
 
-    return render(request, "account/setting.html", {"form": form})
+    return render(
+        request,
+        "account/setting.html",
+        {"form_setting": form_setting, "form_notification": form_notification},
+    )
 
 
 @login_required

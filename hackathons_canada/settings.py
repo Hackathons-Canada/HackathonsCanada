@@ -91,6 +91,18 @@ SOCIALACCOUNT_PROVIDERS = {
 SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
 SOCIALACCOUNT_STORE_TOKENS = True
 
+
+# still need to figure this out
+
+# # Custom allauth settings
+# # Use username or email as the primary identifier
+# ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+# ACCOUNT_EMAIL_REQUIRED = True
+# # Make email verification mandatory to avoid junk email accounts
+# ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+# # Eliminate need to provide username, as it's a very old practice
+# ACCOUNT_USERNAME_REQUIRED = False
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -201,7 +213,7 @@ COUNTRIES_FIRST = ["CA", "US"]
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://valkey:6379/1")
 CELERY_RESULT_BACKEND = os.environ.get("CELERY_BACKEND", "redis://valkey:6379/1")
 
-LOGIN_REDIRECT_URL = "/settings/"
+LOGIN_REDIRECT_URL = "/"
 ACCOUNT_LOGOUT_REDIRECT_URL = "/"
 
 # Logging settings

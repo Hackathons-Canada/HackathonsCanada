@@ -1,8 +1,11 @@
 from django import forms
-
-from .models import Hackathon, HACKATHON_EDUCATION_CHOICES
-from .models import Hacker
-
+from .models import (
+    Hackathon,
+    HACKATHON_EDUCATION_CHOICES,
+    Hacker,
+    NotificationPolicy,
+    School,
+)
 from django_countries.fields import CountryField
 from crispy_forms.helper import FormHelper  # type: ignore
 from crispy_forms.layout import Layout, Field, HTML, Submit, Div, Fieldset
@@ -121,12 +124,17 @@ class HackathonForm(forms.ModelForm):
 class HackerSettingForm(forms.ModelForm):
     country = CountryField(blank_label="(select country)").formfield()
     city = forms.CharField(max_length=255)
-    school = forms.CharField(max_length=255, required=False)
+    school = forms.ChoiceField(
+        choices=School.objects.all(),
+        widget=forms.Select,
+        required=False,
+        help_text="Select which school you attend.",
+    )
     education = forms.ChoiceField(
         choices=HACKATHON_EDUCATION_CHOICES, widget=forms.Select
     )
     username = forms.CharField(max_length=255)
-    email = forms.CharField(max_length=255)
+    email = forms.EmailField()
     first_name = forms.CharField(max_length=255)
     last_name = forms.CharField(max_length=255)
     birthday = forms.DateField(widget=forms.TextInput(attrs={"type": "date"}))
@@ -134,12 +142,7 @@ class HackerSettingForm(forms.ModelForm):
 
     class Meta:
         model = Hacker
-        exclude = [
-            "objects",
-            "saved",
-            "saved_categories",
-            "notification_policy",
-        ]
+        exclude = ["objects", "saved", "saved_categories", "notification_policy"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -147,7 +150,7 @@ class HackerSettingForm(forms.ModelForm):
         self.helper.layout = Layout(
             HTML("<h2 class = 'py-2 pt-5 mt-5 form-head-text'>Profile.</h2>"),
             Fieldset(
-                "",
+                "NOtification Settings",
                 Div(
                     HTML("<h3 class = 'pb-2 mt-2 form-side-text'>General.</h3>"),
                     Div(
@@ -173,20 +176,56 @@ class HackerSettingForm(forms.ModelForm):
                         Field("birthday"),
                         css_class="form-group-style flex flex-rows space-x-4",
                     ),
+                    Div(
+                        HTML("<h3 class = 'form-upload-side'>Education Profile</h3>"),
+                        Field("school"),
+                        Field("education"),
+                        css_class="form-group-style",
+                    ),
                 ),
             ),
-            Div(
-                HTML("<h3 class = 'form-upload-side'>Education Profile</h3>"),
-                css_class="form-group-style",
+            Submit(
+                "save",
+                "Save",
+                css_class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-black focus:outline-none bg-white rounded-lg border border-black hover:bg-gray-700 hover:text-white focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700",
             ),
+        )
+        for visible in self.visible_fields():
+            visible.field.widget.attrs["class"] = "form-button-style py-2"
+
+
+class NotificationPolicyForm(forms.ModelForm):
+    class Meta:
+        model = NotificationPolicy
+        fields = [
+            "enabled",
+            "weekly",
+            "monthly",
+            "added",
+            "local_only",
+            "only_eligible",
+            "radius_type",
+            "radius",
+        ]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
             Fieldset(
-                "",  # this is for the legend
-                Field("school"),
-                Field("education"),
+                "Notification Settings",
+                Field("enabled"),
+                Field("weekly"),
+                Field("monthly"),
+                Field("added"),
+                Field("local_only"),
+                Field("only_eligible"),
+                Field("radius_type"),
+                Field("radius"),
             ),
             Submit(
-                "submit",
-                "Submit",
+                "save",
+                "Save",
                 css_class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-black focus:outline-none bg-white rounded-lg border border-black hover:bg-gray-700 hover:text-white focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700",
             ),
         )
