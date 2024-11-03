@@ -72,30 +72,29 @@ class HackathonsPage(ListView):
 def setting(request):
     hacker = Hacker.objects.get(id=request.user.id)
     notification_policy = hacker.notification_policy
-    print(f"Before saving: {hacker.is_active}")
 
-    print(hacker)
     if request.method == "POST":
-        print("POST")
-        form_setting = HackerSettingForm(request.POST, instance=hacker)
+        form_setting = HackerSettingForm(instance=hacker)  # Initialize with instance
         form_notification = NotificationPolicyForm(
-            request.POST, instance=notification_policy
-        )
-        print(f"Before saving: {hacker.is_active}")
-        print(form_setting.is_valid())
-        print("Form Setting Errors:", form_setting.errors)
-        if form_setting.is_valid():
-            hackerInfo = form_setting.save(commit=False)
-            hackerInfo.username = request.user.username
-            print("form_setting is valid")
-            print(f"Before saving: {hacker.is_active}")
-            hacker.save()
-            print(f"After saving: {hacker.is_active}")
-            return redirect("setting")
-        if form_notification.is_valid():
-            form_notification.save()
-            return redirect("setting")
+            instance=notification_policy
+        )  # Initialize with instance
 
+        if "form_setting_submit" in request.POST:
+            form_setting = HackerSettingForm(request.POST, instance=hacker)
+            if form_setting.is_valid():
+                form_setting.save()
+                return redirect("setting")
+            else:
+                print("Form Setting Errors:", form_setting.errors)
+        elif "form_notification_submit" in request.POST:
+            form_notification = NotificationPolicyForm(
+                request.POST, instance=notification_policy
+            )
+            if form_notification.is_valid():
+                form_notification.save()
+                return redirect("setting")
+            else:
+                print("Form Notification Errors:", form_notification.errors)
     else:
         form_setting = HackerSettingForm(instance=hacker)
         form_notification = NotificationPolicyForm(instance=notification_policy)

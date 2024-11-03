@@ -60,9 +60,11 @@
     <div class="w-4/5 bg-[#D1E9FF]">
       <form class = "w-1/2 mx-auto mb-10" action="{% url 'setting' %}" method="post">
         {% csrf_token %} {% crispy form_setting %}
+
       </form>
       <form class = "w-1/2 mx-auto mb-10" action="{% url 'setting' %}" method="post">
         {% csrf_token %} {% crispy form_notification %}
+
       </form>
       <li>
 
