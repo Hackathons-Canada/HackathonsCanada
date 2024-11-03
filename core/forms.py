@@ -1,6 +1,7 @@
 from django import forms
 from .models import (
     Hackathon,
+    EDUCATION_CHOICES,
     HACKATHON_EDUCATION_CHOICES,
     Hacker,
     NotificationPolicy,
@@ -122,8 +123,8 @@ class HackathonForm(forms.ModelForm):
 
 
 class HackerSettingForm(forms.ModelForm):
-    country = CountryField(blank_label="(select country)").formfield()
-    city = forms.CharField(max_length=255)
+    country = CountryField(blank_label="(select country)").formfield(required=False)
+    city = forms.CharField(max_length=255, required=False)
     school = forms.ChoiceField(
         choices=School.objects.all(),
         widget=forms.Select,
@@ -131,21 +132,33 @@ class HackerSettingForm(forms.ModelForm):
         help_text="Select which school you attend.",
     )
     education = forms.ChoiceField(
-        choices=HACKATHON_EDUCATION_CHOICES, widget=forms.Select
+        choices=EDUCATION_CHOICES, widget=forms.Select, required=False
     )
-    username = forms.CharField(max_length=255)
-    email = forms.EmailField()
-    first_name = forms.CharField(max_length=255)
-    last_name = forms.CharField(max_length=255)
-    birthday = forms.DateField(widget=forms.TextInput(attrs={"type": "date"}))
+
+    username = forms.CharField(max_length=255, required=False)
+    email = forms.EmailField(required=False)
+    first_name = forms.CharField(max_length=255, required=False)
+    last_name = forms.CharField(max_length=255, required=False)
+    birthday = forms.DateField(
+        widget=forms.TextInput(attrs={"type": "date"}), required=False
+    )
     personal_website = forms.CharField(max_length=255, required=False)
 
     class Meta:
         model = Hacker
-        exclude = ["objects", "saved", "saved_categories", "notification_policy"]
+        exclude = [
+            "objects",
+            "saved",
+            "is_active",
+            "saved_categories",
+            "notification_policy",
+            "password",
+            "date_joined",
+        ]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields["email"].widget.attrs["disabled"] = True
         self.helper = FormHelper()
         self.helper.layout = Layout(
             HTML("<h2 class = 'py-2 pt-5 mt-5 form-head-text'>Profile.</h2>"),

@@ -140,8 +140,7 @@ class Hacker(AbstractUser):
     birthday = models.DateField(blank=True, null=True)
     personal_website = models.CharField(null=True, blank=True, max_length=255)
 
-    education = models.CharField(
-        max_length=255,
+    education = models.SmallIntegerField(
         blank=True,
         null=True,
         help_text="Your current education level e.g. High School, University, etc.",
