@@ -165,6 +165,9 @@ class Hacker(AbstractUser):
         null=False,
     )
 
+    def __str__(self):
+        return f"Hacker(username={self.username}, email={self.email}, first_name={self.first_name}, last_name={self.last_name})"
+
     def save(
         self, force_insert=False, force_update=False, using=None, update_fields=None
     ):

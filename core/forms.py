@@ -150,7 +150,7 @@ class HackerSettingForm(forms.ModelForm):
         self.helper.layout = Layout(
             HTML("<h2 class = 'py-2 pt-5 mt-5 form-head-text'>Profile.</h2>"),
             Fieldset(
-                "NOtification Settings",
+                "",
                 Div(
                     HTML("<h3 class = 'pb-2 mt-2 form-side-text'>General.</h3>"),
                     Div(
@@ -195,6 +195,13 @@ class HackerSettingForm(forms.ModelForm):
 
 
 class NotificationPolicyForm(forms.ModelForm):
+    radius_type = forms.ChoiceField(
+        choices=[("km", "Kilometers"), ("mi", "Miles")],
+        widget=forms.Select,
+        required=False,
+    )
+    radius = forms.IntegerField(min_value=0, required=False)
+
     class Meta:
         model = NotificationPolicy
         fields = [
@@ -212,16 +219,20 @@ class NotificationPolicyForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
+            HTML("<h2 class = 'py-2 pt-5 mt-5 form-head-text'>Notifcation.</h2>"),
             Fieldset(
-                "Notification Settings",
+                "get nofited via email when there are new hackathons that you are interested in, based on your settings. (Does not work right now, comming soon)",
                 Field("enabled"),
                 Field("weekly"),
                 Field("monthly"),
                 Field("added"),
                 Field("local_only"),
                 Field("only_eligible"),
-                Field("radius_type"),
-                Field("radius"),
+                Div(
+                    Field("radius_type"),
+                    Field("radius"),
+                    css_class="form-group-style flex flex-rows space-x-4",
+                ),
             ),
             Submit(
                 "save",

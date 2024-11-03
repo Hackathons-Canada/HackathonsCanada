@@ -70,16 +70,27 @@ class HackathonsPage(ListView):
 
 @login_required
 def setting(request):
+    hacker = Hacker.objects.get(id=request.user.id)
+    notification_policy = hacker.notification_policy
+    print(hacker)
+    print(request.user)
+    print(request.user.id)
+    print(request.user.email)
+
     if request.method == "POST":
-        form_setting = HackerSettingForm(request.POST, instance=request.user)
-        form_notification = NotificationPolicyForm(request.POST, instance=request.user)
-        if form_notification.is_valid() and form_setting.is_valid():
+        form_setting = HackerSettingForm(request.POST, instance=hacker)
+        form_notification = NotificationPolicyForm(
+            request.POST, instance=notification_policy
+        )
+        if form_setting.is_valid():
             form_setting.save()
+            return redirect("setting")
+        if form_notification.is_valid():
             form_notification.save()
             return redirect("setting")
     else:
-        form_setting = HackerSettingForm(request.POST, instance=request.user)
-        form_notification = NotificationPolicyForm(request.POST, instance=request.user)
+        form_setting = HackerSettingForm(instance=hacker)
+        form_notification = NotificationPolicyForm(instance=notification_policy)
 
     return render(
         request,
