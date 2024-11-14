@@ -37,7 +37,7 @@
       <nav class="nav-container">
         <ul class="nav-bar text-secondary">
           <li class="nav-logo">
-            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis">
+            <a href="/" class="mb-3 d-flex align-items-center mb-md-0 me-md-auto link-body-emphasis">
               <img src="{% static 'assets/logo.png' %}" width="50" height="50" class="mx-3" />
               <span class="nav-head-text">Hackathons Canada</span>
             </a>
@@ -47,9 +47,6 @@
             <li class="nav-item">
               <a href="{% url 'hackathons' %}" class="nav-link nav-link-text-child"
                  aria-current="page">Hackathons</a>
-            </li>
-            <li class="nav-item">
-              <a href="{% url 'add_hackathons' %}" class="nav-link nav-link-text-child">Add Hackathon</a>
             </li>
             <li class="nav-item">
               <a href="{% url 'calendar' %}" class="nav-link nav-link-text-child">Calendar</a>

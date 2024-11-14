@@ -3,7 +3,7 @@ import random
 from functools import cache
 
 from django.conf import settings
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpRequest, JsonResponse
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
@@ -184,3 +184,14 @@ class SavedHackathonsPage(ListView):
     def get_queryset(self):
         user: Hacker = self.request.user
         return user.saved.all()
+
+
+# checks if the user is an admin
+def is_admin(user):
+    return user.is_superuser
+
+
+@user_passes_test(is_admin)
+def scrape():
+    print("scraping")
+    return "lmao"

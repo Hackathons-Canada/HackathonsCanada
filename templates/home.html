@@ -30,9 +30,9 @@
     </div>
   </div>
 
-  <img class="hero-image-position text-center" src="{% static 'assets/homegra.png'%}" />
+  <img class="text-center hero-image-position" src="{% static 'assets/homegra.png'%}" />
 
-  <div class="card-header-layout mt-5">
+  <div class="mt-5 card-header-layout">
     <h5 class="header-text-black">
       More than just a
       <span class="header-text-red">website.</span>
@@ -69,56 +69,69 @@
           Interested In Joining
           <span class="button-discord-blue">Our Team?</span>
         </h4>
-        <h5 class="button-discord-text2 mt-3">
+        <h5 class="mt-3 button-discord-text2">
           develop apps, web applications and software for hackathons <br />
           and particapte in organizing our own hackathon.
         </h5>
-        <a href="#" class="button-discord-style mt-3 py-2">Apply Here ➜</a>
+        <a href="#" class="py-2 mt-3 button-discord-style">Apply Here ➜</a>
       </div>
     </div>
 
-    <div class="w-full flex flex-col justify-center items-center mt-5">
-      <p class='header-text-black mb-5'>FAQ<span class='header-text-red'>s</span></p>
-      <div class='w-8/12 flex flex-col gap-y-4'>
+    <div class="flex flex-col items-center justify-center w-full mt-5">
+      <p class='mt-10 mb-5 header-text-black'>FAQ<span class='header-text-red'>s</span></p>
+      <div class='grid w-8/12 grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-2'>
           <!-- Accordion 1 -->
-        <div class="border-2 w-full rounded-lg">
-          <button class="w-full bg-white-200 p-4 text-left" onclick="toggleAccordion(1)">
-            <div class='flex justify-between items-center'>
-              <span class="font-semibold">Accordian Item #1</span>
-              <img src='/static/assets/down-arrow.svg' class='w-[20px] h-[20px]'></img>
+        <div class = "w-full">
+          <div class="w-full mt-3 border-2 rounded-lg">
+            <button class="w-full p-4 text-left bg-white-200" onclick="toggleAccordion(1)">
+              <div class='flex items-center justify-between'>
+                <span class="font-semibold">Who are we?</span>
+                <img src='/static/assets/down-arrow.svg' class='w-[20px] h-[20px]'></img>
+              </div>
+            </button>
+            <div id="accordion-content-1" class="hidden px-4 pb-4 bg-white">
+              <p>We’re hacker's one-stop shop for everything hackathons related in North America! Discover upcoming hackathons near YOU, find teammates, and ask questions to organizers on our lively Discord. Plus, if you're an organizer, we’ve got you covered with sponsorship support and advertising through our amazing partners. Dive in, and let's make your hackathon journey unforgettable!</p>
             </div>
-          </button>
-          <div id="accordion-content-1" class="p-4 hidden bg-white">
-            <p>This is the first item's accordion body. It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the .accordion-body, though the transition does limit overflow.</p>
           </div>
-        </div>
-
           <!-- Accordion 2 -->
-        <div class="w-full border-2 rounded-lg">
-          <button class="w-full rounded-lg bg-white-200 p-4 text-left" onclick="toggleAccordion(2)">
-            <div class='flex justify-between items-center'>
-              <span class="font-semibold">Accordian Item #1</span>
-              <img src='/static/assets/down-arrow.svg' class='w-[20px] h-[20px]'></img>
+          <div class="w-full mt-3 border-2 rounded-lg">
+            <button class="w-full p-4 text-left rounded-lg bg-white-200" onclick="toggleAccordion(2)">
+              <div class='flex items-center justify-between'>
+                <span class="font-semibold">What do Hackathons Canada Provide? </span>
+                <img src='/static/assets/down-arrow.svg' class='w-[20px] h-[20px]'></img>
+              </div>
+            </button>
+            <div id="accordion-content-2" class="hidden px-4 pb-4 bg-white">
+              <p></p>
             </div>
-          </button>
-          <div id="accordion-content-2" class="p-4 hidden bg-white">
-            <p>This is the second item's accordion body. It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the .accordion-body, though the transition does limit overflow.</p>
           </div>
         </div>
-
+        <div class = "w-full">
           <!-- Accordion 3 -->
-        <div class="w-full border-2 rounded-lg">
-          <button class="w-full rounded-lg bg-white-200 p-4 text-left" onclick="toggleAccordion(3)">
-            <div class='flex justify-between items-center'>
-              <span class="font-semibold">Got more quesions ? </span>
-              <img src='/static/assets/down-arrow.svg' class='w-[20px] h-[20px]'></img>
+          <div class="w-full mt-3 border-2 rounded-lg">
+            <button class="w-full p-4 text-left rounded-lg bg-white-200" onclick="toggleAccordion(3)">
+              <div class='flex items-center justify-between'>
+                <span class="font-semibold">How do I add a Hackathon to your website?</span>
+                <img src='/static/assets/down-arrow.svg' class='w-[20px] h-[20px]'></img>
+              </div>
+            </button>
+            <div id="accordion-content-3" class="hidden px-4 pb-4 bg-white">
+              <p>Head over to over to our hackathon form here:<a href="{% url 'add_hackathons' %}" >Add Hackathon</a> or let us know on our discord. Once the information has be verified, the hackathon will be added to our website and discord.</p>
             </div>
-          </button>
-          <div id="accordion-content-3" class="p-4 hidden bg-white">
-            <p>Reach out on our discord server.</p>
+          </div>
+        <!-- Accordion 3 -->
+          <div class="w-full mt-3 border-2 rounded-lg">
+            <button class="w-full p-4 text-left rounded-lg bg-white-200" onclick="toggleAccordion(4)">
+              <div class='flex items-center justify-between'>
+                <span class="font-semibold">Got more quesions ? </span>
+                <img src='/static/assets/down-arrow.svg' class='w-[20px] h-[20px]'></img>
+              </div>
+            </button>
+            <div id="accordion-content-4" class="hidden px-4 pb-4 bg-white">
+              <p>Reach out on our discord server.</p>
+            </div>
           </div>
         </div>
-
 
       </div>
     </div>
