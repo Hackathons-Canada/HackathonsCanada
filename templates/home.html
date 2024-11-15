@@ -32,50 +32,65 @@
 
   <img class="text-center hero-image-position" src="{% static 'assets/homegra.png'%}" />
 
-  <div class="mt-5 card-header-layout">
-    <h5 class="header-text-black">
+  <div class="mt-5 mb-10 card-header-layout">
+    <h5 class="text-4xl text-black">
       More than just a
-      <span class="header-text-red">website.</span>
+      <span class="text-4xl text-black">website.</span>
     </h5>
   </div>
-  <div class="card-box-layout">
-    <div class="card-row-layout">
-      <a>
-        <div>
-          <img class="card-img-stack" src="{% static 'assets/hackcanadabg.png' %}" alt="Image 2" />
+  <div class="w-3/4 mx-auto card-box-layout">
+    <div class="w-full card-row-layout">
+      <a class = 'w-1/2' href="https://discord.gg/m5GPTnT5YB">
+        <div class = "rounded-xl w-full
+                      h-screen
+                      max-h-[32rem]
+                      p-24
+                      relative
+                      overflow-hidden
+                      block
+                      z-10 bg-[url({% static 'assets/hackCanada.png' %})]
+                      bg-cover
+                      bg-no-repeat
+                      bg-center">
+          <h1 class = "text-black header-text-black">asdfsda</h1>
         </div>
       </a>
       <a href="https://discord.gg/m5GPTnT5YB">
-        <img class="" src="{% static 'assets/discord.png' %}" alt="Image 1" />
+        <img class="w-1/2 rounded-xl card-img-stack" src="{% static 'assets/discord.png' %}" alt="Image 1" />
       </a>
     </div>
-    <div class="card-row-layout">
-      <a src = "https://konfer.ca/">
-        <img class="" src="{% static 'assets/discordcard.png' %}" alt="Image 2" />
+    <div class="w-full card-row-layout">
+      <a src = "https://www.instagram.com/hackathonsna/">
+        <img class="w-1/2 border-2 border-black rounded-xl card-img-stack" src="{% static 'assets/instagram.png' %}" alt="Image 2" />
       </a>
       <a href="https://calendar.google.com/calendar/u/0?cid=M2Y0ODA2MjUxYTZjMGZhYTMwZWE3ZmE0YmI0NTdjMmE1NTI0ZWZlNGUzZjMwMDc4NmJlMmVlNWRjOGU1MTE3MEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t">
-        <img class="" src="{% static 'assets/gcal.png' %}" alt="Image 1" />
+        <img class="w-1/2 card-img-stack"  src="{% static 'assets/gcal.png' %}" alt="Image 1" />
       </a>
     </div>
 
-
-
-    <div class="card-join-layout">
-      <div class="card-join-image">
-        <img src="{%static 'assets/jointeam.png'%}" />
-      </div>
-      <div class="card-join-text">
-        <h4 class="button-discord-text1">
-          Interested In Joining
-          <span class="button-discord-blue">Our Team?</span>
-        </h4>
-        <h5 class="mt-3 button-discord-text2">
-          develop apps, web applications and software for hackathons <br />
-          and particapte in organizing our own hackathon.
-        </h5>
-        <a href="#" class="py-2 mt-3 button-discord-style">Apply Here ➜</a>
+    <div class="w-full card-row-layout">
+      <a src = "https://konfer.ca/">
+        <img class="w-1/2 rounded-xl card-img-stack"  src="{% static 'assets/konfer.png' %}" alt="Image 2" />
+      </a>
+      <div class="card-join-layout">
+        <div class="card-join-image">
+          <img class="w-1/2 h-full rounded-xl card-img-stack" src="{%static 'assets/jointeam.png'%}" />
+        </div>
+        <div class="card-join-text">
+          <h4 class="button-discord-text1">
+            Interested In Joining
+            <span class="button-discord-blue">Our Team?</span>
+          </h4>
+          <h5 class="mt-3 button-discord-text2">
+            develop apps, web applications and software for hackathons <br />
+            and particapte in organizing our own hackathon.
+          </h5>
+          <a href="#" class="py-2 mt-3 button-discord-style">Apply Here ➜</a>
+        </div>
       </div>
     </div>
+
+
 
     <div class="flex flex-col items-center justify-center w-full mt-5">
       <p class='mt-10 mb-5 header-text-black'>FAQ<span class='header-text-red'>s</span></p>
@@ -139,11 +154,10 @@
 
   <div class="hero">
     <h1>
-      READY TO <span class="fw-bold fst-italic"> HACK YOUR WAY </span> <br />
-      TO SUCCESS?
+      Check out our Social media for <br /> <span class="fw-bold fst-italic"> MAJOR UPDATES, </span>
+
     </h1>
-    <p>Join to discover upcoming hackathons in Canada.</p>
-    <button class="btn-start">Get Started</button>
+    <p>tips and tricks, funny memes, and more!!!</p>
     <div class="social-icons">
       <a href="#"><img class="logo-svg-img" src="{% static 'assets/insta.svg'%}" /></a>
       <a href="#"><img class="logo-svg-img" src="{% static 'assets/linkedin.svg'%}" /></a>

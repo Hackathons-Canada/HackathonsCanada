@@ -1256,7 +1256,6 @@ section {
 .card-row-layout img {
   transition: transform 0.3s ease;
   width: 100%;
-  height: auto;
 }
 
 .card-row-layout img:hover {
