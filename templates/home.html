@@ -38,30 +38,49 @@
       <span class="text-4xl text-black">website.</span>
     </h5>
   </div>
-  <div class="w-3/4 mx-auto card-box-layout">
+  <div class="w-4/5 mx-auto card-box-layout">
     <div class="w-full card-row-layout">
-      <a class = 'w-1/2' href="https://discord.gg/m5GPTnT5YB">
-        <div class = "rounded-xl w-full
+      <a class = 'w-2/5' href = "https://staging.hackcanada.org/">
+        <div class = "rounded-xl
                       h-screen
                       max-h-[32rem]
-                      p-24
+                      justify-items-center
                       relative
                       overflow-hidden
-                      block
+                      flex
+                      justify-end
+                      align-middle
+                      flex-col
+                      text-center
                       z-10 bg-[url({% static 'assets/hackCanada.png' %})]
                       bg-cover
                       bg-no-repeat
-                      bg-center">
-          <h1 class = "text-black header-text-black">asdfsda</h1>
+                      bg-center
+                      before:content-['']
+                      before:absolute
+                      before:inset-0
+                      before:block
+                      before:bg-gradient-to-t
+                      before:from-black
+                      before:z-[-5]
+                     ">
+          <h4 class="text-white button-discord-blue">
+            Our Hackathon <br>
+            <span class="font-bold text-white">Hack Canada</span>
+          </h4>
+          <h5 class="m-5 mt-3 text-white">
+            On February 21 -23, 2024 at Lazaridis School of Business and Economics, we are hosting Hack Canada, a hackathon focused  on giving students the opportunity to be the individual who solves a major issue that Canadians face.
+          </h5>
+
         </div>
       </a>
-      <a href="https://discord.gg/m5GPTnT5YB">
-        <img class="w-1/2 rounded-xl card-img-stack" src="{% static 'assets/discord.png' %}" alt="Image 1" />
+      <a class = 'w-3/5' href="https://discord.gg/m5GPTnT5YB">
+        <img class="rounded-xl card-img-stack" src="{% static 'assets/discord.png' %}" alt="Image 1" />
       </a>
     </div>
     <div class="w-full card-row-layout">
       <a src = "https://www.instagram.com/hackathonsna/">
-        <img class="w-1/2 border-2 border-black rounded-xl card-img-stack" src="{% static 'assets/instagram.png' %}" alt="Image 2" />
+        <img class="w-1/2 rounded-xl card-img-stack" src="{% static 'assets/instagram.png' %}" alt="Image 2" />
       </a>
       <a href="https://calendar.google.com/calendar/u/0?cid=M2Y0ODA2MjUxYTZjMGZhYTMwZWE3ZmE0YmI0NTdjMmE1NTI0ZWZlNGUzZjMwMDc4NmJlMmVlNWRjOGU1MTE3MEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t">
         <img class="w-1/2 card-img-stack"  src="{% static 'assets/gcal.png' %}" alt="Image 1" />
@@ -69,32 +88,81 @@
     </div>
 
     <div class="w-full card-row-layout">
-      <a src = "https://konfer.ca/">
-        <img class="w-1/2 rounded-xl card-img-stack"  src="{% static 'assets/konfer.png' %}" alt="Image 2" />
-      </a>
-      <div class="card-join-layout">
-        <div class="card-join-image">
-          <img class="w-1/2 h-full rounded-xl card-img-stack" src="{%static 'assets/jointeam.png'%}" />
-        </div>
-        <div class="card-join-text">
-          <h4 class="button-discord-text1">
-            Interested In Joining
-            <span class="button-discord-blue">Our Team?</span>
+      <a class = 'w-2/5' href = "https://konfer.ca/">
+        <div class = "rounded-xl
+                      h-screen
+                      max-h-[32rem]
+                      justify-items-center
+                      relative
+                      overflow-hidden
+                      flex
+                      justify-end
+                      align-middle
+                      flex-col
+                      text-center
+                      z-10 bg-[url({% static 'assets/konfer.png' %})]
+                      bg-cover
+                      bg-no-repeat
+                      bg-center
+                      before:content-['']
+                      before:absolute
+                      before:inset-0
+                      before:block
+                      before:bg-gradient-to-t
+                      before:from-black
+                      before: from-30%
+                      before: via-grey-500
+                      before: via-60%
+                      before:to-grey-800
+                      before: to-90%
+                      before:z-[-5]
+                     ">
+          <h4 class="text-white button-discord-blue">
+            Our Partner |
+            <span class="button-discord-blue">Konfur</span>
           </h4>
-          <h5 class="mt-3 button-discord-text2">
-            develop apps, web applications and software for hackathons <br />
-            and particapte in organizing our own hackathon.
+          <h5 class="m-5 mt-3 text-white">
+            We organize high-impact events connecting innovative businesses to ambitious students and young professionals.
           </h5>
-          <a href="#" class="py-2 mt-3 button-discord-style">Apply Here ➜</a>
+
+        </div>
+      </a>
+      <div class = "rounded-xl w-3/5
+                    h-screen
+                    max-h-[32rem]
+                    justify-items-center
+                    relative
+                    overflow-hidden
+                    flex
+                    justify-center
+                    align-middle
+                    flex-col
+                    text-center
+                    z-10 bg-[url({%static 'assets/jointeam.png'%})]
+                    bg-cover
+                    bg-no-repeat
+                    bg-center
+                   ">
+        <h4 class="button-discord-text1">
+          Interested In Joining <br>
+          <span class="button-discord-blue">Our Team?</span>
+        </h4>
+        <h5 class="mt-3 button-discord-text2">
+          develop apps, web applications and software for hackathons <br />
+          and particapte in organizing our own hackathon.
+        </h5>
+        <div class = "inline-block ">
+          <a href="#" class="inline-block py-2 mt-3 button-discord-style">Apply Here ➜</a>
         </div>
       </div>
+
     </div>
 
 
 
     <div class="flex flex-col items-center justify-center w-full mt-5">
       <p class='mt-10 mb-5 header-text-black'>FAQ<span class='header-text-red'>s</span></p>
-      <div class='grid w-8/12 grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-2'>
+      <div class='grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-2'>
           <!-- Accordion 1 -->
         <div class = "w-full">
           <div class="w-full mt-3 border-2 rounded-lg">
