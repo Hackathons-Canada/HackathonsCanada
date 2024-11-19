@@ -2,9 +2,12 @@ import os
 import random
 from functools import cache
 
+from core.scraper import scrape_all
+from django.http import HttpResponse, JsonResponse
+
 from django.conf import settings
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.http import HttpRequest, JsonResponse
+from django.http import HttpRequest
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from django.views.generic import ListView
@@ -192,6 +195,6 @@ def is_admin(user):
 
 
 @user_passes_test(is_admin)
-def scrape():
-    print("scraping")
-    return "lmao"
+def scrape(request):
+    scrape_all()
+    return HttpResponse("Scraped!")

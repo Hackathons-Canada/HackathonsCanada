@@ -34,4 +34,5 @@ urlpatterns = [
         views.unsave_hackathon,
         name="unsave_hackathon",
     ),
+    path("scrape/", views.scrape, name="scrape"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
