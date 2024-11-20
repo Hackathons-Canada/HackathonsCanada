@@ -3,12 +3,12 @@ import datetime
 import requests
 import itertools
 import cloudscraper
-
+from django.utils import timezone
 from bs4 import BeautifulSoup
 # from icalendar import Calendar, Event
 
 from hackathons_canada.settings import CUR_YEAR
-from core.models import Hackathon, HackathonSource, Location
+from core.models import Hackathon, HackathonSource, HackathonLocation
 
 
 # ract source class that can be extended to create new sources
@@ -46,7 +46,7 @@ class MLHSource(AbstractDataSource):
     def parse_event(self, ev, **kwargs):
         loc = ev.find_all("div", {"class": "event-location"})[0]
 
-        hackathonLocation_input, created = Location.objects.get_or_create(
+        hackathonLocation_input, created = HackathonLocation.objects.get_or_create(
             name=loc.find_all("span", {"itemprop": "city"})[0].contents[0]
             + ", "
             + loc.find_all("span", {"itemprop": "state"})[0].contents[0]
@@ -110,7 +110,7 @@ class DevpostSource(AbstractDataSource):
             startdate += enddate[-6:]
         startdate = datetime.datetime.strptime(startdate, "%b %d, %Y")
         enddate = datetime.datetime.strptime(enddate, "%b %d, %Y")
-        hackathonLocationInput, created = Location.objects.get_or_create(
+        hackathonLocationInput, created = HackathonLocation.objects.get_or_create(
             name=ev["displayed_location"]["location"]
         )
 
@@ -153,7 +153,7 @@ class EthGlobalSource(AbstractDataSource):
         enddate = re.sub(r"(\d+)(st|nd|rd|th)", r"\1", enddate)
         startdate = datetime.datetime.strptime(startdate, "%b %d, %Y")
         enddate = datetime.datetime.strptime(enddate, "%b %d, %Y")
-        hackathonLocationInput, created = Location.objects.get_or_create(
+        hackathonLocationInput, created = HackathonLocation.objects.get_or_create(
             name=" ".join(name.split()[1:])
         )
 
@@ -189,7 +189,9 @@ class HackClubSource(AbstractDataSource):
             loc = ev.find_all("span", {"itemprop": "address"})[0].contents[2]
         except IndexError:
             loc = ""
-        hackathonlocationinput, created = Location.objects.get_or_create(name=loc)
+        hackathonlocationinput, created = HackathonLocation.objects.get_or_create(
+            name=loc
+        )
         evinfo = {
             "name": ev.find_all("h3")[0].contents[0],
             "start_date": datetime.datetime.strptime(
@@ -236,23 +238,32 @@ def scrape_all():
 
     for ev in evs:
         if ev is not None:
-            h = Hackathon.objects.filter(
-                id=Hackathon.get_id(cls=Hackathon, name=ev["name"], date=ev["end_date"])
-            )
+            print(f"Processing event: {ev['name']}")  # Print event name for debugging
+            h = Hackathon.objects.filter(name=ev["name"], end_date=ev["end_date"])
             if len(h) == 0:
                 h1 = Hackathon()
+                print(
+                    f"Creating new Hackathon: {ev['name']}"
+                )  # Print when creating a new Hackathon
             else:
                 h1 = h[0]
                 if h1.freeze_data:
+                    print(
+                        f"Skipping frozen Hackathon: {ev['name']}"
+                    )  # Print when skipping a frozen Hackathon
                     continue
 
             for attr, value in ev.items():
+                if isinstance(value, datetime.datetime):
+                    value = timezone.make_aware(value)
                 setattr(h1, attr, value)
 
             if h1.location == "":
                 h1.location = "Online" if h1.hybrid == "O" else "Unknown"
-            h1.created_at = datetime.datetime.now()
+
+            h1.created_at = timezone.make_aware(datetime.datetime.now())
             h1.save()
+            print(f"Saved Hackathon: {h1.name}")
 
 
 def extract_text_from_url(url):
