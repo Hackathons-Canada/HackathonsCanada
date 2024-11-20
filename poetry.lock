@@ -798,6 +798,17 @@ files = [
 django = ">=4.2"
 
 [[package]]
+name = "django-ratelimit"
+version = "4.1.0"
+description = "Cache-based rate-limiting for Django."
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "django-ratelimit-4.1.0.tar.gz", hash = "sha256:555943b283045b917ad59f196829530d63be2a39adb72788d985b90c81ba808b"},
+    {file = "django_ratelimit-4.1.0-py2.py3-none-any.whl", hash = "sha256:d047a31cf94d83ef1465d7543ca66c6fc16695559b5f8d814d1b51df15110b92"},
+]
+
+[[package]]
 name = "django-stubs"
 version = "5.0.4"
 description = "Mypy stubs for Django"
@@ -2087,4 +2098,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "2b71d875db164070edad99196c3f682e7fc0dd60319e4414e7fba8e7155f8101"
+content-hash = "a53f26f972839b5d3bbb875ad06647221df54ef2f3e77b0e5b445197311b6499"

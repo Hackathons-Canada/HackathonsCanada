@@ -81,63 +81,65 @@
       </div>
     </section>
   </main>
-  <div class="album text-center">
+  <div class="text-center album">
     <div class="container-fluid">
       <div
         class="row row-cols-1 row-cols-sm-2 row-cols-md-3 d-flex justify-content-center"
       >
+
         {% for hackathon in hackathons %}
-          <div class="col flip-card lockedheight p-4">
+          <div class="p-4 col flip-card lockedheight">
             <div class="flip-card-inner">
-              <a href="{{ hackathon.url }}"
-              ><div class="flip-card-front">
-                <div class="hackathon-card">
-                  <img
-                    src="../media/{{ hackathon.image }}"
-                    class="hackathon-img-front"
-                    alt="Front Image"
-                  />
-                  <div class="hackathon-content">
-                    <h2 class="card-title py-3">{{ hackathon.name}}</h2>
-                    <h6 class="">
-                      <span>Location:</span> {{hackathon.location}}
-                    </h6>
-                    <h5 class="">
-                      <span>Date:</span> {{hackathon.startdate}} -
-                      {{hackathon.startdate}}
-                    </h5>
+              <a href="{{ hackathon.url }}">
+                <div class="flip-card-front">
+                  <div class="hackathon-card">
+                    {% if hackathon.bgimage %}
+                      <img  class="hackathon-img-front" src="{{ hackathon.bg_image }}" alt="{{ hackathon.name }}">
+                    {% else %}
+                      <img  class="hackathon-img-front" src="{{ hackathon.fg_image }}" alt="{{ hackathon.name }}">
+                    {% endif %}
+
+                    <div class="hackathon-content">
+                      <h2 class="py-3 card-title">{{ hackathon.name}}</h2>
+                      <h6 class="">
+                        <span>Location:</span> {{hackathon.location}}
+                      </h6>
+                      <h5 class="">
+                        <span>Date:</span> {{hackathon.start_date}} -
+                        {{hackathon.start_date}}
+                      </h5>
+                    </div>
+                    {% if user.is_authenticated %}
+                      <script src="../../static/js/hackathons.js"></script>
+                      <button type="button" onclick="saveHackathon(event, '{{ hackathon.id }}')">Save</button>
+                    {% else %}
+                      <p><em>Login to save</em></p>
+                    {% endif %}
                   </div>
-                  {% if user.is_authenticated %}
-                    <script src="../../static/js/hackathons.js"></script>
-                    <button type="button" onclick="saveHackathon(event, {{ hackathon.id }})">Save</button>
-                  {% else %}
-                    <p><em>Login to save</em></p>
-                  {% endif %}
-                </div>
-              </div></a
+                </div></a
                 >
-          <!-- <div class="flip-card-back">
-            <div class="hackathon-card">
-              <div class="card-image-overlay"></div>
-              <img
-                src="https://s3.amazonaws.com/assets.mlh.io/events/splashes/000/212/657/thumb/Backsplash_300.png?1688131132"
-                class="hackathon-img-back"
-                alt="Front Image"
-              />
-              <div class="hackathon-card-div">
-                <div class="hackathon-card-div-text">
-                  <h6 class="">Waterloo, ON | May 17-19, 2024</h6>
-                  <h3 class="">HawkHacks</h3>
+                <div class="flip-card-back">
+                  <div class="hackathon-card">
+                    <div class="card-image-overlay"></div>
+                    <img
+                      src="https://s3.amazonaws.com/assets.mlh.io/events/splashes/000/212/657/thumb/Backsplash_300.png?1688131132"
+                      class="hackathon-img-back"
+                      alt="Front Image"
+                    />
+                    <div class="hackathon-card-div">
+                      <div class="hackathon-card-div-text">
+                        <h6 class="">Waterloo, ON | May 17-19, 2024</h6>
+                        <h3 class="">HawkHacks</h3>
+                      </div>
+                    </div>
+                    <div class="card-body-layout">
+                      <p class="card-body-text">Application Deadline: 2345</p>
+                      <p class="card-body-text">Travel Reimbursements: 3245</p>
+                      <p class="card-body-text">Travel Reimbursements: 3245</p>
+                      <p class="card-body-text">Travel Reimbursements: 3245</p>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div class="card-body-layout">
-                <p class="card-body-text">Application Deadline: 2345</p>
-                <p class="card-body-text">Travel Reimbursements: 3245</p>
-                <p class="card-body-text">Travel Reimbursements: 3245</p>
-                <p class="card-body-text">Travel Reimbursements: 3245</p>
-              </div>
-            </div>
-          </div> -->
               </div>
             </div>
         {% endfor %}

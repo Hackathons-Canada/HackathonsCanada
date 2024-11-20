@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 # from icalendar import Calendar, Event
 
 from hackathons_canada.settings import CUR_YEAR
-from core.models import Hackathon, HackathonSource
+from core.models import Hackathon, HackathonSource, Location
 
 
 # ract source class that can be extended to create new sources
@@ -46,6 +46,12 @@ class MLHSource(AbstractDataSource):
     def parse_event(self, ev, **kwargs):
         loc = ev.find_all("div", {"class": "event-location"})[0]
 
+        hackathonLocation_input, created = Location.objects.get_or_create(
+            name=loc.find_all("span", {"itemprop": "city"})[0].contents[0]
+            + ", "
+            + loc.find_all("span", {"itemprop": "state"})[0].contents[0]
+        )
+
         evinfo = {
             "name": ev.find_all("h3", {"class": "event-name"})[0].contents[0],
             "start_date": datetime.datetime.strptime(
@@ -54,9 +60,7 @@ class MLHSource(AbstractDataSource):
             "end_date": datetime.datetime.strptime(
                 ev.find_all("meta", {"itemprop": "endDate"})[0]["content"], "%Y-%m-%d"
             ),
-            "location": loc.find_all("span", {"itemprop": "city"})[0].contents[0]
-            + ", "
-            + loc.find_all("span", {"itemprop": "state"})[0].contents[0],
+            "location": hackathonLocation_input,
             "hybrid": ev.find_all("div", {"class": "event-hybrid-notes"})[0]
             .find_all("span")[0]
             .contents[0][0],
@@ -106,12 +110,15 @@ class DevpostSource(AbstractDataSource):
             startdate += enddate[-6:]
         startdate = datetime.datetime.strptime(startdate, "%b %d, %Y")
         enddate = datetime.datetime.strptime(enddate, "%b %d, %Y")
+        hackathonLocationInput, created = Location.objects.get_or_create(
+            name=ev["displayed_location"]["location"]
+        )
 
         evinfo = {
             "name": ev["title"],
             "start_date": startdate,
             "end_date": enddate,
-            "location": ev["displayed_location"]["location"],
+            "location": hackathonLocationInput,
             "hybrid": "O" if ev["displayed_location"]["location"] == "Online" else "I",
             "is_diversity": False,
             "is_restricted": ev["open_state"] != "open",
@@ -146,12 +153,15 @@ class EthGlobalSource(AbstractDataSource):
         enddate = re.sub(r"(\d+)(st|nd|rd|th)", r"\1", enddate)
         startdate = datetime.datetime.strptime(startdate, "%b %d, %Y")
         enddate = datetime.datetime.strptime(enddate, "%b %d, %Y")
+        hackathonLocationInput, created = Location.objects.get_or_create(
+            name=" ".join(name.split()[1:])
+        )
 
         evinfo = {
             "name": name,
             "start_date": startdate,
             "end_date": enddate,
-            "location": " ".join(name.split()[1:])
+            "location": hackathonLocationInput
             if (name.split()[0].lower() == "ethglobal")
             else "",
             "is_web3": True,
@@ -179,7 +189,7 @@ class HackClubSource(AbstractDataSource):
             loc = ev.find_all("span", {"itemprop": "address"})[0].contents[2]
         except IndexError:
             loc = ""
-
+        hackathonlocationinput, created = Location.objects.get_or_create(name=loc)
         evinfo = {
             "name": ev.find_all("h3")[0].contents[0],
             "start_date": datetime.datetime.strptime(
@@ -194,7 +204,7 @@ class HackClubSource(AbstractDataSource):
                 ],
                 "%Y-%m-%d",
             ),
-            "location": loc,
+            "location": hackathonlocationinput,
             "hybrid": ev.find_all("span", {"itemtype": "VirtualLocation"})[0].contents[
                 0
             ][0],

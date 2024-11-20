@@ -4,6 +4,7 @@ from functools import cache
 
 from core.scraper import scrape_all
 from django.http import HttpResponse, JsonResponse
+from django_ratelimit.decorators import ratelimit
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -45,6 +46,7 @@ def home(request):
     return render(request, "home.html", context)
 
 
+@ratelimit(key="user_or_ip", rate="1/m", block=True)
 def addHackathons(request):
     if request.method == "POST":
         form = HackathonForm(request.POST)
@@ -156,6 +158,7 @@ def unsave_hackathon(request: HttpRequest, hackathon_id):
 
 
 @login_required
+@ratelimit(key="user_or_ip", rate="1/m", block=True)
 def request_curator_access(request):
     if request.method == "POST":
         form = CuratorRequestForm(request.POST)
@@ -195,6 +198,7 @@ def is_admin(user):
 
 
 @user_passes_test(is_admin)
+@ratelimit(key="user_or_ip", rate="1/d", block=True)
 def scrape(request):
     scrape_all()
     return HttpResponse("Scraped!")

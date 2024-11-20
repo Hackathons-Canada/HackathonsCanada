@@ -5,7 +5,7 @@ from django.contrib.auth.models import AbstractUser, UserManager
 
 # Create your models here.
 from django.db import models
-from django.db.models import DecimalField
+from django.db.models import DecimalField, F
 from django.utils import timezone
 from django_countries.fields import CountryField
 
@@ -272,7 +272,7 @@ class Hackathon(MetaDataMixin):
     objects = HackthonsManager()
 
     # This ID is to make it easier to identify hackathons when scraping in order to avoid duplicates
-    id = models.CharField(max_length=32, primary_key=True, editable=False)
+    id = models.CharField(max_length=32, primary_key=True, editable=False, unique=True)
 
     source = models.CharField(
         max_length=3,
@@ -325,9 +325,7 @@ class Hackathon(MetaDataMixin):
 
     reimbursements = models.CharField(max_length=255, blank=True, null=True)
 
-    location = models.CharField(max_length=255, blank=True, null=True)
-
-    venue = models.ForeignKey(
+    location = models.ForeignKey(
         HackathonLocation,
         on_delete=models.RESTRICT,
         related_name="hackathons",
@@ -418,7 +416,11 @@ class Hackathon(MetaDataMixin):
         return self.name
 
     def get_id(cls, name, date):
-        return f"{name.lower().replace(' ', '_')}-{date.year}"
+        return models.GeneratedField(
+            expression=F(name.lower().replace(" ", "_")) + F(date.year),
+            output_field=models.IntegerField(),
+            db_persist=True,
+        )
 
     # TODO do something about the ID field changing: either fix all references or change the way this works
     def save(self, **kwargs):
