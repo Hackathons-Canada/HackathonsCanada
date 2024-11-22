@@ -1190,6 +1190,36 @@ section {
   background-color: white;
 }
 
+.fc-daygrid-body{
+  width: 100% !important;
+}
+
+.fc-scrollgrid-sync-table{
+  width: 100% !important;
+}
+
+.fc-view-harness{
+  width: 50rem !important;
+}
+.fc-col-header {
+  border-radius: 16px !important;
+}
+
+.fc-media-screen{width: 50rem !important;
+}
+
+.fc-scrollgrid-section > td {
+  border-radius: 0px 0px 16px 16px !important;
+}
+
+.fc-scrollgrid-section > th {
+  border-radius: 0px 16px 0px 0px !important;
+}
+
+.fc-scrollgrid {
+  border-radius: 16px !important;
+}
+
 .form-button-style {
   border-radius: 10px;
   border: 0.5px solid var(--1, #000e22);

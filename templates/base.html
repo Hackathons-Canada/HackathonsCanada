@@ -48,10 +48,11 @@
               <a href="{% url 'hackathons' %}" class="nav-link nav-link-text-child"
                  aria-current="page">Hackathons</a>
             </li>
-            <li class="nav-item">
-              <a href="{% url 'calendar' %}" class="nav-link nav-link-text-child">Calendar</a>
-            </li>
+
             {% if user.is_authenticated %}
+              <li class="nav-item">
+                <a href="{% url 'add-hackathons' %}" class="nav-link nav-link-text-child">Add Hackathon</a>
+              </li>
               <li class="nav-item">
                 <a href="{% url 'saved_hackathons' %}" class="nav-link nav-link-text-child"
                    aria-current="page">Saved</a>

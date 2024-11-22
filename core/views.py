@@ -1,18 +1,17 @@
 import os
 import random
 from functools import cache
-
+import json
+from django.utils import timezone
 from core.scraper import scrape_all
 from django.http import HttpResponse, JsonResponse
 from django_ratelimit.decorators import ratelimit
-
 from django.conf import settings
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpRequest
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from django.views.generic import ListView
-
 from core.models import Hackathon, Hacker
 from .forms import (
     HackathonForm,
@@ -57,20 +56,58 @@ def addHackathons(request):
     return render(request, "hackathons/add_hackathon.html", {"form": form})
 
 
-def calendar(request):
-    context = {
-        "title": "Add a New Hackathon",
-        "content": "Use this form to add a new hackathon to the database.",
-    }
-    return render(request, "../templates/calendar.html", context)
+# def calendar(request):
+#     context = {
+#         "title": "Add a New Hackathon",
+#         "content": "Use this form to add a new hackathon to the database.",
+#     }
+#     return render(request, "../templates/calendar.html", context)
 
 
 class HackathonsPage(ListView):
     template_name = "hackathons/hackathons.html"
     context_object_name = "hackathons"
+    paginate_by = 30
 
     def get_queryset(self):
-        return Hackathon.objects.all()
+        tdy_date = timezone.now()
+        try:
+            render_type = self.kwargs["type"]
+        except KeyError:
+            render_type = "cards"
+        if render_type == "calendar":
+            data = Hackathon.objects.filter(start_date__gt=tdy_date)
+            hackathonsList = []
+            for hackathon in data:
+                hackathonsList.append(
+                    {
+                        "title": f"{hackathon.name} - {hackathon.location.name}",
+                        "start": hackathon.start_date.strftime("%Y-%m-%d"),
+                        "end": hackathon.end_date.strftime("%Y-%m-%d"),
+                        "url": hackathon.website,
+                    }
+                )
+            return hackathonsList
+        else:
+            return Hackathon.objects.filter(start_date__gt=tdy_date)
+
+    def get_context_data(
+        self,
+        **kwargs,
+    ):
+        context = super().get_context_data(**kwargs)
+        try:
+            render_type = self.kwargs["type"]
+        except KeyError:
+            render_type = "cards"
+        if render_type == "list":
+            context["type"] = "list"
+        elif render_type == "calendar":
+            context["type"] = "calendar"
+            context["hackathonCalData"] = json.dumps(self.get_queryset())
+        else:
+            context["type"] = render_type
+        return context
 
 
 @login_required
@@ -197,8 +234,8 @@ def is_admin(user):
     return user.is_superuser
 
 
-# @user_passes_test(is_admin)
-# @ratelimit(key="user_or_ip", rate="1/d", block=True)
+@user_passes_test(is_admin)
+@ratelimit(key="user_or_ip", rate="1/d", block=True)
 def scrape(request):
     scrape_all()
     return HttpResponse("Scraped!")

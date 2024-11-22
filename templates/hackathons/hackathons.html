@@ -84,65 +84,188 @@
   <div class="text-center album">
     <div class="container-fluid">
       <div
-        class="row row-cols-1 row-cols-sm-2 row-cols-md-3 d-flex justify-content-center"
+        class="mt-5 row row-cols-1 row-cols-sm-2 row-cols-md-3 d-flex justify-content-center"
       >
 
-        {% for hackathon in hackathons %}
-          <div class="p-4 col flip-card lockedheight">
-            <div class="flip-card-inner">
-              <a href="{{ hackathon.url }}">
-                <div class="flip-card-front">
-                  <div class="hackathon-card">
-                    {% if hackathon.bgimage %}
-                      <img  class="hackathon-img-front" src="{{ hackathon.bg_image }}" alt="{{ hackathon.name }}">
-                    {% else %}
-                      <img  class="hackathon-img-front" src="{{ hackathon.fg_image }}" alt="{{ hackathon.name }}">
-                    {% endif %}
-
-                    <div class="hackathon-content">
-                      <h2 class="py-3 card-title">{{ hackathon.name}}</h2>
-                      <h6 class="">
-                        <span>Location:</span> {{hackathon.location}}
-                      </h6>
-                      <h5 class="">
-                        <span>Date:</span> {{hackathon.start_date}} -
-                        {{hackathon.start_date}}
-                      </h5>
-                    </div>
-                    {% if user.is_authenticated %}
-                      <script src="../../static/js/hackathons.js"></script>
-                      <button type="button" onclick="saveHackathon(event, '{{ hackathon.id }}')">Save</button>
-                    {% else %}
-                      <p><em>Login to save</em></p>
-                    {% endif %}
+        {% if type == "list" %}
+          <table class="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <tr>
+                <th scope="col" class="p-4">
+                  <div class="flex items-center">
+                    <h1 for="checkbox-all-search" class="sr-only">Saved</label>
                   </div>
-                </div></a
-                >
-                <div class="flip-card-back">
-                  <div class="hackathon-card">
-                    <div class="card-image-overlay"></div>
-                    <img
-                      src="https://s3.amazonaws.com/assets.mlh.io/events/splashes/000/212/657/thumb/Backsplash_300.png?1688131132"
-                      class="hackathon-img-back"
-                      alt="Front Image"
-                    />
-                    <div class="hackathon-card-div">
-                      <div class="hackathon-card-div-text">
-                        <h6 class="">Waterloo, ON | May 17-19, 2024</h6>
-                        <h3 class="">HawkHacks</h3>
-                      </div>
+                </th>
+                <th scope="col" class="px-6 py-3">
+                  Logo
+                </th>
+                <th scope="col" class="px-6 py-3">
+                  Name
+                </th>
+                <th scope="col" class="px-6 py-3">
+                  Website
+                </th>
+                <th scope="col" class="px-6 py-3">
+                  Date
+                </th>
+                <th scope="col" class="px-6 py-3">
+                  Location
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for hackathon in hackathons %}
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                  <td class="w-4 p-4">
+                    <div class="flex items-center">
+                      {% if user.is_authenticated %}
+                        <script src="../../static/js/hackathons.js"></script>
+                        <button type="button" onclick="saveHackathon(event, '{{ hackathon.id }}')">Save</button>
+                      {% else %}
+                        <p class = "absolute bottom-0 right-0 m-3 text-xs"><em>Login to save</em></p>
+                      {% endif %}
                     </div>
-                    <div class="card-body-layout">
-                      <p class="card-body-text">Application Deadline: 2345</p>
-                      <p class="card-body-text">Travel Reimbursements: 3245</p>
-                      <p class="card-body-text">Travel Reimbursements: 3245</p>
-                      <p class="card-body-text">Travel Reimbursements: 3245</p>
+                  </td>
+                  <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    {% if hackathon.bgimage %}
+                      <img src="{{ hackathon.bg_image }}" alt="{{ hackathon.name }}">
+                    {% else %}
+                      <img  src="{{ hackathon.fg_image }}" alt="{{ hackathon.name }}">
+                    {% endif %}
+                  </th>
+                  <td class="px-6 py-4">
+                    {{hackathon.location.name}}
+                  </td>
+                  <td class="px-6 py-4">
+                    <a href="{{ hackathon.website }}" class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">Website</a>
+                  </td>
+                  <td class="px-6 py-4">
+                    {{hackathon.start_date |date:"N-d"}}-
+                    {{hackathon.start_date|date:"d, Y"}}
+                  </td>
+
+                  <td class="px-6 py-4">
+                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% elif type == "calendar" %}
+          <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
+          <script>
+            var hackathonData = JSON.parse('{{ hackathonCalData|escapejs }}');
+            var render_data = hackathonData.map(function(hackathon) {
+              return {
+                title: hackathon.title,
+                start: hackathon.start,
+                end: hackathon.end,
+                url: hackathon.url
+              };
+            });
+            document.addEventListener('DOMContentLoaded', function() {
+              var calendarEl = document.getElementById('calendar');
+              var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                events: render_data,
+                views: {
+                  dayGrid: {
+                  // options apply to dayGridMonth, dayGridWeek, and dayGridDay views
+                  },
+                  timeGrid: {
+                  // options apply to timeGridWeek and timeGridDay views
+                  },
+                  week: {
+                  // options apply to dayGridWeek and timeGridWeek views
+                  },
+                  day: {
+                  // options apply to dayGridDay and timeGridDay views
+                  }
+                }
+              });
+              calendar.render();
+            });
+
+          </script>
+
+          <div id='calendar' class="my-5"></div>
+        {% else %}
+          {% for hackathon in hackathons %}
+            <div class="p-4 col flip-card lockedheight">
+              <div class="flip-card-inner">
+                <a href="{{ hackathon.url }}">
+                  <div class="flip-card-front">
+                    <div class="hackathon-card">
+                      {% if hackathon.bgimage %}
+                        <img  class="hackathon-img-front" src="{{ hackathon.bg_image }}" alt="{{ hackathon.name }}">
+                      {% else %}
+                        <img  class="hackathon-img-front" src="{{ hackathon.fg_image }}" alt="{{ hackathon.name }}">
+                      {% endif %}
+
+                      <div class="flex flex-col mt-3 align-middle hackathon-content justify-items-center">
+                        <h2 class="pt-2 text-3xl">{{ hackathon.name}}</h2>
+                        <h6 class="text-base">
+                          {{hackathon.location.name}}
+                        </h6>
+                        <h5 class="text-lg">
+                          {{hackathon.start_date |date:"N-d"}}-
+                          {{hackathon.start_date|date:"d, Y"}}
+                        </h5>
+                      </div>
+                      {% if user.is_authenticated %}
+                        <script src="../../static/js/hackathons.js"></script>
+                        <button type="button" onclick="saveHackathon(event, '{{ hackathon.id }}')">Save</button>
+                      {% else %}
+                        <p class = "absolute bottom-0 right-0 m-3 text-xs"><em>Login to save</em></p>
+                      {% endif %}
+                    </div>
+                  </div></a
+                  >
+                  <div class="flip-card-back">
+                    <div class="hackathon-card">
+                      <div class="card-image-overlay"></div>
+                      <img
+                        src="https://s3.amazonaws.com/assets.mlh.io/events/splashes/000/212/657/thumb/Backsplash_300.png?1688131132"
+                        class="hackathon-img-back"
+                        alt="Front Image"
+                      />
+                      <div class="hackathon-card-div">
+                        <div class="hackathon-card-div-text">
+                          <h6 class="">Waterloo, ON | May 17-19, 2024</h6>
+                          <h3 class="">HawkHacks</h3>
+                        </div>
+                      </div>
+                      <div class="card-body-layout">
+                        <p class="card-body-text">Application Deadline: 2345</p>
+                        <p class="card-body-text">Travel Reimbursements: 3245</p>
+                        <p class="card-body-text">Travel Reimbursements: 3245</p>
+                        <p class="card-body-text">Travel Reimbursements: 3245</p>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-        {% endfor %}
+              {% if is_paginated %}
+                <div class="pagination">
+                  <span class="step-links">
+                    {% if page_obj.has_previous %}
+                      <a href="?page=1">&laquo; first</a>
+                      <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                    {% endif %}
+
+                    <span class="current">
+                      Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                    </span>
+
+                    {% if page_obj.has_next %}
+                      <a href="?page={{ page_obj.next_page_number }}">next</a>
+                      <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %}
+                  </span>
+                </div>
+              {% endif %}
+          {% endfor %}
+        {% endif %}
       </div>
     </div>
   </div>
