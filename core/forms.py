@@ -1,4 +1,6 @@
 from django import forms
+from django.db import OperationalError
+
 from .models import (
     Hackathon,
     EDUCATION_CHOICES,
@@ -126,7 +128,7 @@ class HackerSettingForm(forms.ModelForm):
     country = CountryField(blank_label="(select country)").formfield(required=False)
     city = forms.CharField(max_length=255, required=False)
     school = forms.ChoiceField(
-        choices=School.objects.filter(public=True).values_list("id", "name").all(),
+        choices=(),
         widget=forms.Select,
         required=False,
         help_text="Select which school you attend.",
@@ -156,8 +158,22 @@ class HackerSettingForm(forms.ModelForm):
             "date_joined",
         ]
 
+    def set_school_choices(self):
+        try:
+            # Attempt to set the choices for the school field
+            self.fields["school"].choices = (
+                School.objects.filter(public=True).values_list("id", "name").all()
+            )
+        except OperationalError as e:
+            self.fields["school"].choices = []  # Fallback to an empty list
+            print(
+                f"Error loading school choices: {e}, allowing empty list for this migration"
+            )
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.set_school_choices()
+
         self.fields["email"].widget.attrs["disabled"] = True
         self.helper = FormHelper()
         self.helper.layout = Layout(
