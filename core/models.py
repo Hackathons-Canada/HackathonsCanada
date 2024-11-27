@@ -16,6 +16,7 @@ __all__ = [
     "School",
     "Hackathon",
     "HackathonLocation",
+    "HackathonSource",
     "Location",
     "Category",
     "NotificationPolicy",
@@ -61,6 +62,19 @@ class MetaDataMixin(models.Model):
 
 class School(models.Model):
     name = models.CharField(max_length=255)
+    added_by = models.ForeignKey(
+        "core.Hacker",
+        on_delete=models.CASCADE,
+        related_name="schools_added",
+        null=True,
+        blank=True,
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    public = models.BooleanField(
+        default=False,
+        help_text="Is the school public (Is displayed on fields)",
+        db_index=True,
+    )
 
     def __str__(self):
         return self.name
@@ -129,7 +143,7 @@ class Notifiable(UserManager):
 
 
 class Hacker(AbstractUser):
-    objects = Notifiable()  # type: ignore
+    objects = Notifiable()
     country = CountryField(
         blank_label="(select country)",
         blank=True,

@@ -126,7 +126,7 @@ class HackerSettingForm(forms.ModelForm):
     country = CountryField(blank_label="(select country)").formfield(required=False)
     city = forms.CharField(max_length=255, required=False)
     school = forms.ChoiceField(
-        choices=School.objects.all(),
+        choices=School.objects.filter(public=True).values_list("id", "name").all(),
         widget=forms.Select,
         required=False,
         help_text="Select which school you attend.",
