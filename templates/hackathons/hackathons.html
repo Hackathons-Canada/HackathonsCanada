@@ -89,12 +89,10 @@
 
         {% if type == "list" %}
           <table class="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
               <tr>
-                <th scope="col" class="p-4">
-                  <div class="flex items-center">
-                    <h1 for="checkbox-all-search" class="sr-only">Saved</label>
-                  </div>
+                <th scope="col" class="px-6 py-3">
+                  Saved
                 </th>
                 <th scope="col" class="px-6 py-3">
                   Logo
@@ -111,22 +109,28 @@
                 <th scope="col" class="px-6 py-3">
                   Location
                 </th>
+                <th scope="col" class="px-6 py-3">
+                  Upvote
+                </th>
+                <th scope="col" class="px-6 py-3">
+                  DownVote
+                </th>
               </tr>
             </thead>
             <tbody>
               {% for hackathon in hackathons %}
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                  <td class="w-4 p-4">
-                    <div class="flex items-center">
-                      {% if user.is_authenticated %}
-                        <script src="../../static/js/hackathons.js"></script>
-                        <button type="button" onclick="saveHackathon(event, '{{ hackathon.id }}')">Save</button>
-                      {% else %}
-                        <p class = "absolute bottom-0 right-0 m-3 text-xs"><em>Login to save</em></p>
-                      {% endif %}
-                    </div>
+                  <td scope="row" class="px-6 py-4">
+
+                    {% if user.is_authenticated %}
+                      <script src="../../static/js/hackathons.js"></script>
+                      <button type="button" onclick="saveHackathon(event, '{{ hackathon.id }}')">Save</button>
+                    {% else %}
+                      <p class = "m-3 text-xs"><em>Login to save</em></p>
+                    {% endif %}
+
                   </td>
-                  <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                  <th  class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     {% if hackathon.bgimage %}
                       <img src="{{ hackathon.bg_image }}" alt="{{ hackathon.name }}">
                     {% else %}
@@ -134,10 +138,10 @@
                     {% endif %}
                   </th>
                   <td class="px-6 py-4">
-                    {{hackathon.location.name}}
+                    {{hackathon.name}}
                   </td>
                   <td class="px-6 py-4">
-                    <a href="{{ hackathon.website }}" class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">Website</a>
+                    <a href="{{ hackathon.website }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">website</a>
                   </td>
                   <td class="px-6 py-4">
                     {{hackathon.start_date |date:"N-d"}}-
@@ -145,7 +149,14 @@
                   </td>
 
                   <td class="px-6 py-4">
-                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                    {{hackathon.location.name}}
+
+                  </td>
+                  <td class="px-6 py-4">
+                    <svg fill="#000000" height="64px" width="64px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 511.95 511.95" xml:space="preserve" stroke="#000000" stroke-width="0.00511947" transform="matrix(1, 0, 0, 1, 0, 0)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M476.847,216.373L263.513,3.04c-4.267-4.053-10.88-4.053-15.04,0L35.14,216.373c-4.16,4.16-4.16,10.88-0.107,15.04 c2.027,2.027,4.8,3.2,7.573,3.2h128V501.28c0,5.867,4.8,10.667,10.667,10.667h149.333c5.867,0,10.667-4.8,10.667-10.667V234.613 h128c5.867,0,10.667-4.8,10.667-10.667C479.94,221.067,478.873,218.4,476.847,216.373z M330.607,213.28 c-5.867,0-10.667,4.8-10.667,10.667v266.667h-128V223.947c0-5.867-4.8-10.667-10.667-10.667H68.42L255.94,25.547L443.567,213.28 H330.607z"></path> </g> </g> </g></svg>
+                  </td>
+                  <td class="px-6 py-4">
+                    <svg fill="#000000" height="64px" width="64px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 511.95 511.95" xml:space="preserve" stroke="#000000" stroke-width="0.00511947" transform="matrix(1, 0, 0, -1, 0, 0)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M476.847,216.373L263.513,3.04c-4.267-4.053-10.88-4.053-15.04,0L35.14,216.373c-4.16,4.16-4.16,10.88-0.107,15.04 c2.027,2.027,4.8,3.2,7.573,3.2h128V501.28c0,5.867,4.8,10.667,10.667,10.667h149.333c5.867,0,10.667-4.8,10.667-10.667V234.613 h128c5.867,0,10.667-4.8,10.667-10.667C479.94,221.067,478.873,218.4,476.847,216.373z M330.607,213.28 c-5.867,0-10.667,4.8-10.667,10.667v266.667h-128V223.947c0-5.867-4.8-10.667-10.667-10.667H68.42L255.94,25.547L443.567,213.28 H330.607z"></path> </g> </g> </g></svg>
                   </td>
                 </tr>
               {% endfor %}
