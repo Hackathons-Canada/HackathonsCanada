@@ -36,7 +36,7 @@ class MLHSource(AbstractDataSource):
             self.URL.format(kwargs.get("year", datetime.datetime.now().year))
         )
 
-        page = BeautifulSoup(r.text)
+        page = BeautifulSoup(r.text, "html.parser")
         divs = page.find_all("div", {"class": "row"})
 
         return divs[1].find_all("a", {"class": "event-link"}) + divs[2].find_all(
