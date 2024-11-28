@@ -271,7 +271,11 @@ class HackathonLocation(models.Model):
     )
     country = CountryField(blank_label="(select country)")
     location = models.OneToOneField(
-        Location, on_delete=models.RESTRICT, related_name="location"
+        Location,
+        on_delete=models.RESTRICT,
+        related_name="location",
+        blank=True,
+        null=True,
     )
 
 
