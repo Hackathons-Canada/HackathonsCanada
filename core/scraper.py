@@ -8,10 +8,53 @@ from bs4 import BeautifulSoup
 # from icalendar import Calendar, Event
 
 from hackathons_canada.settings import CUR_YEAR
-from core.models import Hackathon, HackathonSource, HackathonLocation
+from core.models import Hackathon, HackathonSource, HackathonLocation, Location
 
 
+username = "Nirek"
 # ract source class that can be extended to create new sources
+
+
+def search_city(city_name, username):
+    url = f"http://api.geonames.org/searchJSON?q={city_name}&maxRows=10&username={username}"
+
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+
+        data = response.json()
+
+        if "geonames" not in data or not data["geonames"]:
+            print(f"{city_name}, No results found for the specified city.")
+            return
+
+        # Extract relevant information for each city
+        cities = []
+        for place in data["geonames"]:
+            city_info = {
+                "city": place.get("name"),
+                "state": place.get("adminName1"),
+                "country": place.get("countryName"),
+                "latitude": place.get("lat"),
+                "longitude": place.get("lng"),
+            }
+            cities.append(city_info)
+
+        if cities:
+            city = cities[0]
+        return {
+            "city": city["city"],
+            "state": city["state"],
+            "country": city["country"],
+            "latitude": city["latitude"],
+            "longitude": city["longitude"],
+        }
+
+    except requests.RequestException as e:
+        print("An error occurred:", e)
+        return None
+
+
 class AbstractDataSource:
     URL = ""
 
@@ -45,44 +88,70 @@ class MLHSource(AbstractDataSource):
 
     def parse_event(self, ev, **kwargs):
         loc = ev.find_all("div", {"class": "event-location"})[0]
-
-        hackathonLocation_input, created = HackathonLocation.objects.get_or_create(
-            name=loc.find_all("span", {"itemprop": "city"})[0].contents[0]
-            + ", "
+        loc_data = (
+            loc.find_all("span", {"itemprop": "city"})[0].contents[0]
+            + "+"
             + loc.find_all("span", {"itemprop": "state"})[0].contents[0]
         )
-
-        evinfo = {
-            "name": ev.find_all("h3", {"class": "event-name"})[0].contents[0],
-            "start_date": datetime.datetime.strptime(
-                ev.find_all("meta", {"itemprop": "startDate"})[0]["content"], "%Y-%m-%d"
-            ),
-            "end_date": datetime.datetime.strptime(
+        geoData = search_city(loc_data, username)
+        name = ev.find_all("h3", {"class": "event-name"})[0].contents[0]
+        end_date = timezone.make_aware(
+            datetime.datetime.strptime(
                 ev.find_all("meta", {"itemprop": "endDate"})[0]["content"], "%Y-%m-%d"
-            ),
-            "location": hackathonLocation_input,
-            "hybrid": ev.find_all("div", {"class": "event-hybrid-notes"})[0]
-            .find_all("span")[0]
-            .contents[0][0],
-            "is_diversity": len(ev.find_all("div", {"class": "diversity-event-badge"}))
-            > 0,
-            "maximum_education_level": 1
-            if len(ev.find_all("div", {"class": "ribbon"})) > 0
-            and len(ev.find_all("div", {"class": "diversity-event-badge"})) == 0
-            else 5,
-            "website": ev["href"],
-            "bg_image": ev.find_all("div", {"class": "image-wrap"})[0].find_all("img")[
-                0
-            ]["src"],
-            "fg_image": ev.find_all("div", {"class": "event-logo"})[0].find_all("img")[
-                0
-            ]["src"],
-            "metadata": {"website": "mlh"},
-            "source": HackathonSource.Scraped,
-            "is_public": True,
-        }
+            )
+        )
+        start_date = timezone.make_aware(
+            datetime.datetime.strptime(
+                ev.find_all("meta", {"itemprop": "startDate"})[0]["content"], "%Y-%m-%d"
+            )
+        )
+        if not Hackathon.objects.filter(name=name, end_date=end_date).exists():
+            if geoData is None:
+                hackathonLocation_input, created = (
+                    HackathonLocation.objects.get_or_create(name=loc_data)
+                )
+            else:
+                location_cord, created = Location.objects.get_or_create(
+                    latitude=geoData["latitude"], longitude=geoData["longitude"]
+                )
 
-        return evinfo
+                hackathonLocation_input, created = (
+                    HackathonLocation.objects.get_or_create(
+                        name=f"{geoData['city']}, {geoData['state']}",
+                        country=geoData["country"],
+                        location=location_cord,
+                    )
+                )
+
+            evinfo = {
+                "name": name,
+                "start_date": start_date,
+                "end_date": end_date,
+                "location": hackathonLocation_input,
+                "hybrid": ev.find_all("div", {"class": "event-hybrid-notes"})[0]
+                .find_all("span")[0]
+                .contents[0][0],
+                "is_diversity": len(
+                    ev.find_all("div", {"class": "diversity-event-badge"})
+                )
+                > 0,
+                "maximum_education_level": 1
+                if len(ev.find_all("div", {"class": "ribbon"})) > 0
+                and len(ev.find_all("div", {"class": "diversity-event-badge"})) == 0
+                else 5,
+                "website": ev["href"],
+                "bg_image": ev.find_all("div", {"class": "image-wrap"})[0].find_all(
+                    "img"
+                )[0]["src"],
+                "fg_image": ev.find_all("div", {"class": "event-logo"})[0].find_all(
+                    "img"
+                )[0]["src"],
+                "metadata": {"website": "mlh"},
+                "source": HackathonSource.Scraped,
+                "is_public": True,
+            }
+
+            return evinfo
 
 
 class DevpostSource(AbstractDataSource):
@@ -108,27 +177,49 @@ class DevpostSource(AbstractDataSource):
         enddate = dates[1].strip()
         if len(startdate.split(" ")) == 2:
             startdate += enddate[-6:]
-        startdate = datetime.datetime.strptime(startdate, "%b %d, %Y")
-        enddate = datetime.datetime.strptime(enddate, "%b %d, %Y")
-        hackathonLocationInput, created = HackathonLocation.objects.get_or_create(
-            name=ev["displayed_location"]["location"]
+        startdate = timezone.make_aware(
+            datetime.datetime.strptime(startdate, "%b %d, %Y")
         )
+        enddate = timezone.make_aware(datetime.datetime.strptime(enddate, "%b %d, %Y"))
+        loc = ev["displayed_location"]["location"]
+        geoData = search_city(loc, username)
 
-        evinfo = {
-            "name": ev["title"],
-            "start_date": startdate,
-            "end_date": enddate,
-            "location": hackathonLocationInput,
-            "hybrid": "O" if ev["displayed_location"]["location"] == "Online" else "I",
-            "is_diversity": False,
-            "is_restricted": ev["open_state"] != "open",
-            "website": ev["url"],
-            "fg_image": ev["thumbnail_url"],
-            "source": HackathonSource.Scraped,
-            "metadata": {"website": "devpost"},
-        }
+        if not Hackathon.objects.filter(name=ev["title"], end_date=enddate).exists():
+            if geoData is None:
+                hackathonLocation_input, created = (
+                    HackathonLocation.objects.get_or_create(name=loc)
+                )
+            else:
+                location_cord, created = Location.objects.get_or_create(
+                    latitude=geoData["latitude"], longitude=geoData["longitude"]
+                )
 
-        return evinfo
+                hackathonLocation_input, created = (
+                    HackathonLocation.objects.get_or_create(
+                        name=f"{geoData['city']}, {geoData['state']}",
+                        country=geoData["country"],
+                        location=location_cord,
+                    )
+                )
+
+            evinfo = {
+                "name": ev["title"],
+                "start_date": startdate,
+                "end_date": enddate,
+                "location": hackathonLocation_input,
+                "hybrid": "O"
+                if ev["displayed_location"]["location"] == "Online"
+                else "I",
+                "is_diversity": False,
+                "is_restricted": ev["open_state"] != "open",
+                "website": ev["url"],
+                "fg_image": ev["thumbnail_url"],
+                "source": HackathonSource.Scraped,
+                "metadata": {"website": "devpost"},
+                "is_public": True,
+            }
+
+            return evinfo
 
 
 class EthGlobalSource(AbstractDataSource):
@@ -153,26 +244,45 @@ class EthGlobalSource(AbstractDataSource):
         enddate = re.sub(r"(\d+)(st|nd|rd|th)", r"\1", enddate)
         startdate = datetime.datetime.strptime(startdate, "%b %d, %Y")
         enddate = datetime.datetime.strptime(enddate, "%b %d, %Y")
-        hackathonLocationInput, created = HackathonLocation.objects.get_or_create(
-            name=" ".join(name.split()[1:])
-        )
 
-        evinfo = {
-            "name": name,
-            "start_date": startdate,
-            "end_date": enddate,
-            "location": hackathonLocationInput
-            if (name.split()[0].lower() == "ethglobal")
-            else "",
-            "is_web3": True,
-            "is_restricted": False,
-            "website": "https://ethglobal.com" + ev.get("href"),
-            "fg_image": ev.find_all("img")[0]["src"],
-            "source": HackathonSource.Scraped,
-            "metadata": {"website": "ethglobal"},
-        }
+        loc = " ".join(name.split()[1:])
+        geoData = search_city(loc, username)
 
-        return evinfo
+        if not Hackathon.objects.filter(name=name, end_date=enddate).exists():
+            if geoData is None:
+                hackathonLocation_input, created = (
+                    HackathonLocation.objects.get_or_create(name=loc)
+                )
+            else:
+                location_cord, created = Location.objects.get_or_create(
+                    latitude=geoData["latitude"], longitude=geoData["longitude"]
+                )
+
+                hackathonLocation_input, created = (
+                    HackathonLocation.objects.get_or_create(
+                        name=f"{geoData['city']}, {geoData['state']}",
+                        country=geoData["country"],
+                        location=location_cord,
+                    )
+                )
+
+            evinfo = {
+                "name": name,
+                "start_date": startdate,
+                "end_date": enddate,
+                "location": hackathonLocation_input
+                if (name.split()[0].lower() == "ethglobal")
+                else "",
+                "is_web3": True,
+                "is_restricted": False,
+                "website": "https://ethglobal.com" + ev.get("href"),
+                "fg_image": ev.find_all("img")[0]["src"],
+                "source": HackathonSource.Scraped,
+                "metadata": {"website": "ethglobal"},
+                "is_public": True,
+            }
+
+            return evinfo
 
 
 class HackClubSource(AbstractDataSource):
@@ -181,7 +291,7 @@ class HackClubSource(AbstractDataSource):
     def scrape_page(self, **kwargs):
         r = requests.get(self.URL)
 
-        page = BeautifulSoup(r.text)
+        page = BeautifulSoup(r.text, features="html.parser")
         return page.find_all("div", {"class": "css-4jawwy"})[0].find_all("a")
 
     def parse_event(self, ev, **kwargs):
@@ -189,35 +299,57 @@ class HackClubSource(AbstractDataSource):
             loc = ev.find_all("span", {"itemprop": "address"})[0].contents[2]
         except IndexError:
             loc = ""
-        hackathonlocationinput, created = HackathonLocation.objects.get_or_create(
-            name=loc
-        )
-        evinfo = {
-            "name": ev.find_all("h3")[0].contents[0],
-            "start_date": datetime.datetime.strptime(
-                ev.find_all("span", {"itemprop": "startDate"})[0]["content"].split("T")[
-                    0
-                ],
-                "%Y-%m-%d",
-            ),
-            "end_date": datetime.datetime.strptime(
+        end_date = timezone.make_aware(
+            datetime.datetime.strptime(
                 ev.find_all("span", {"itemprop": "endDate"})[0]["content"].split("T")[
                     0
                 ],
                 "%Y-%m-%d",
-            ),
-            "location": hackathonlocationinput,
-            "hybrid": ev.find_all("span", {"itemtype": "VirtualLocation"})[0].contents[
-                0
-            ][0],
-            "maximum_education_level": 1,
-            "website": ev["href"],
-            "fg_image": ev.find_all("img")[0]["src"],
-            "source": HackathonSource.Scraped,
-            "metadata": {"website": "hackclub"},
-        }
+            )
+        )
+        name = ev.find_all("h3")[0].contents[0]
+        if not Hackathon.objects.filter(name=name, end_date=end_date).exists():
+            geoData = search_city(loc, username)
 
-        return evinfo
+            if geoData is None:
+                hackathonLocation_input, created = (
+                    HackathonLocation.objects.get_or_create(name=loc)
+                )
+            else:
+                location_cord, created = Location.objects.get_or_create(
+                    latitude=geoData["latitude"], longitude=geoData["longitude"]
+                )
+
+                hackathonLocation_input, created = (
+                    HackathonLocation.objects.get_or_create(
+                        name=f"{geoData['city']}, {geoData['state']}",
+                        country=geoData["country"],
+                        location=location_cord,
+                    )
+                )
+
+            evinfo = {
+                "name": name,
+                "start_date": datetime.datetime.strptime(
+                    ev.find_all("span", {"itemprop": "startDate"})[0]["content"].split(
+                        "T"
+                    )[0],
+                    "%Y-%m-%d",
+                ),
+                "end_date": end_date,
+                "location": hackathonLocation_input,
+                "hybrid": ev.find_all("span", {"itemtype": "VirtualLocation"})[
+                    0
+                ].contents[0][0],
+                "maximum_education_level": 1,
+                "website": ev["href"],
+                "fg_image": ev.find_all("img")[0]["src"],
+                "source": HackathonSource.Scraped,
+                "metadata": {"website": "hackclub"},
+                "is_public": True,
+            }
+
+            return evinfo
 
 
 def scrape_all():
@@ -235,35 +367,45 @@ def scrape_all():
         # EthGlobalSource().get_events(),
         HackClubSource().get_events(),
     )
-
     for ev in evs:
         if ev is not None:
-            print(f"Processing event: {ev['name']}")  # Print event name for debugging
-            h = Hackathon.objects.filter(name=ev["name"], end_date=ev["end_date"])
-            if len(h) == 0:
-                h1 = Hackathon()
-                print(
-                    f"Creating new Hackathon: {ev['name']}"
-                )  # Print when creating a new Hackathon
+            if Hackathon.objects.filter(
+                name=ev["name"], end_date=ev["end_date"]
+            ).exists():
+                print(f"Duplicate Hackathon found: {ev["name"]} on {ev["end_date"]}")
+                return None
             else:
-                h1 = h[0]
-                if h1.freeze_data:
+                end_date = ev["end_date"]
+                if isinstance(end_date, datetime.datetime) and timezone.is_naive(
+                    end_date
+                ):
+                    end_date = timezone.make_aware(end_date)
+
+                print(f"Event name: {ev['name']}, Type: {type(ev['name'])}")
+                print(f"Event end_date: {ev['end_date']}, Type: {type(ev['end_date'])}")
+
+                h = Hackathon.objects.filter(name=ev["name"], end_date=end_date)
+                if len(h) == 0:
+                    h1 = Hackathon()
                     print(
-                        f"Skipping frozen Hackathon: {ev['name']}"
-                    )  # Print when skipping a frozen Hackathon
-                    continue
+                        f"Creating new Hackathon: {ev['name']}"
+                    )  # Print when creating a new Hackathon
+                else:
+                    h1 = h[0]
+                    if h1.freeze_data:
+                        print(
+                            f"Skipping frozen Hackathon: {ev['name']}"
+                        )  # Print when skipping a frozen Hackathon
+                        continue
 
-            for attr, value in ev.items():
-                if isinstance(value, datetime.datetime):
-                    value = timezone.make_aware(value)
-                setattr(h1, attr, value)
+                for attr, value in ev.items():
+                    setattr(h1, attr, value)
 
-            if h1.location == "":
-                h1.location = "Online" if h1.hybrid == "O" else "Unknown"
+                if h1.location == "":
+                    h1.location = "Online" if h1.hybrid == "O" else "Unknown"
 
-            h1.created_at = timezone.make_aware(datetime.datetime.now())
-            h1.save()
-            print(f"Saved Hackathon: {h1.name}")
+                h1.created_at = timezone.make_aware(datetime.datetime.now())
+                h1.save()
 
 
 def extract_text_from_url(url):
@@ -278,7 +420,7 @@ def extract_text_from_url(url):
         )
 
     # Parse the webpage content
-    soup = BeautifulSoup(response.content, "html.parser")
+    soup = BeautifulSoup(response.content, features="html.parser")
 
     # Extract text from paragraphs and headings (can be adjusted based on the webpage structure)
     text = []

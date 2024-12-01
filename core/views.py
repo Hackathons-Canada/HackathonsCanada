@@ -56,27 +56,22 @@ def addHackathons(request):
     return render(request, "hackathons/add_hackathon.html", {"form": form})
 
 
-# def calendar(request):
-#     context = {
-#         "title": "Add a New Hackathon",
-#         "content": "Use this form to add a new hackathon to the database.",
-#     }
-#     return render(request, "../templates/calendar.html", context)
-
-
 class HackathonsPage(ListView):
     template_name = "hackathons/hackathons.html"
     context_object_name = "hackathons"
-    paginate_by = 30
+    tdy_date = timezone.now()
+    print(Hackathon.objects.all())
+    print(f"Current date and time: {tdy_date}")
 
     def get_queryset(self):
         tdy_date = timezone.now()
+        print(f"Current date and time: {tdy_date}")
         try:
             render_type = self.kwargs["type"]
         except KeyError:
             render_type = "cards"
         if render_type == "calendar":
-            data = Hackathon.objects.filter(start_date__gt=tdy_date)
+            data = Hackathon.objects.filter(end_date__gt=tdy_date)
             hackathonsList = []
             for hackathon in data:
                 hackathonsList.append(
@@ -89,7 +84,7 @@ class HackathonsPage(ListView):
                 )
             return hackathonsList
         else:
-            return Hackathon.objects.filter(start_date__gt=tdy_date)
+            return Hackathon.objects.all()
 
     def get_context_data(
         self,

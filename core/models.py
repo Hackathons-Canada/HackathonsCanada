@@ -3,7 +3,7 @@ from typing import Final, Tuple, List
 
 from django.contrib.auth.models import AbstractUser, UserManager
 
-# Create your models here.
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import DecimalField
 from django.utils import timezone
@@ -267,7 +267,15 @@ class Location(models.Model):
 class HackathonLocation(models.Model):
     name = models.CharField(
         max_length=255,
-        help_text="Where the hackathon is located (e.g. University of Toronto)",
+        help_text="Where the hackathon is located (e.g. Buringlont, Ontario)",
+        null=True,
+        blank=True,
+    )
+    venue = models.CharField(
+        max_length=255,
+        help_text="what venue is the hackathon renting (e.g. University of Toronto)",
+        null=True,
+        blank=True,
     )
     country = CountryField(blank_label="(select country)")
     location = models.OneToOneField(
@@ -416,14 +424,20 @@ class Hackathon(MetaDataMixin):
         default=dict, null=True, blank=True
     )  # Anything else that we might want to add in a structured format
 
+    up_vote = models.SmallIntegerField(
+        blank=True,
+        null=True,
+        default=0,
+    )
+    down_vote = models.SmallIntegerField(
+        blank=True,
+        null=True,
+        default=0,
+    )
+
     class Meta:
         ordering = ["start_date"]
-
         constraints = [
-            models.CheckConstraint(  # ensure start date is before end date
-                check=models.Q(start_date__lte=models.F("end_date")),
-                name="start_date_lte_end_date",
-            ),
             models.CheckConstraint(  # ensure application start is before deadline
                 check=models.Q(application_start__lt=models.F("application_deadline")),
                 name="application_start_lt_application_deadline",
@@ -442,7 +456,10 @@ class Hackathon(MetaDataMixin):
             self.start_date = timezone.make_aware(self.start_date)
         if self.end_date and timezone.is_naive(self.end_date):
             self.end_date = timezone.make_aware(self.end_date)
-
+        if Hackathon.objects.filter(name=self.name, end_date=self.end_date).exists():
+            raise ValidationError(
+                f"An object with the name '{self.name}' already exists."
+            )
         super().save(*args, **kwargs)
 
 
