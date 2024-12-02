@@ -8,8 +8,11 @@ from bs4 import BeautifulSoup
 # from icalendar import Calendar, Event
 
 from hackathons_canada.settings import CUR_YEAR
-from core.models import Hackathon, HackathonSource, HackathonLocation, Location
 
+from django.apps import apps
+
+if apps.ready:
+    from core.models import Hackathon, HackathonSource, HackathonLocation, Location
 
 username = "Nirek"
 # ract source class that can be extended to create new sources

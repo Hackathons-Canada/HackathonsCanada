@@ -297,12 +297,7 @@ class ReviewStatus(models.TextChoices):
 class Hackathon(MetaDataMixin):
     objects = HackthonsManager()
 
-    # This ID is to make it easier to identify hackathons when scraping in order to avoid duplicates
-    # id = models.GeneratedField(
-    #         expression=F("name") + F("date"),
-    #         output_field=models.IntegerField(),
-    #         db_persist=True,
-    #         primary_key=True, editable=False, unique=True)
+    dup = models.CharField(max_length=255, blank=True, null=True, unique=True)
 
     source = models.CharField(
         max_length=3,
@@ -424,20 +419,13 @@ class Hackathon(MetaDataMixin):
         default=dict, null=True, blank=True
     )  # Anything else that we might want to add in a structured format
 
-    up_vote = models.SmallIntegerField(
-        blank=True,
-        null=True,
-        default=0,
-    )
-    down_vote = models.SmallIntegerField(
-        blank=True,
-        null=True,
-        default=0,
-    )
-
     class Meta:
         ordering = ["start_date"]
         constraints = [
+            models.CheckConstraint(  # ensure start date is before end date
+                check=models.Q(start_date__lte=models.F("end_date")),
+                name="start_date_lte_end_date",
+            ),
             models.CheckConstraint(  # ensure application start is before deadline
                 check=models.Q(application_start__lt=models.F("application_deadline")),
                 name="application_start_lt_application_deadline",
@@ -456,6 +444,10 @@ class Hackathon(MetaDataMixin):
             self.start_date = timezone.make_aware(self.start_date)
         if self.end_date and timezone.is_naive(self.end_date):
             self.end_date = timezone.make_aware(self.end_date)
+
+        # wont use generate field because it only uses sql functions like F() and it does not have .lower etc
+        self.dup = self.name.strip().lower() + str(self.end_date)
+
         if Hackathon.objects.filter(name=self.name, end_date=self.end_date).exists():
             raise ValidationError(
                 f"An object with the name '{self.name}' already exists."

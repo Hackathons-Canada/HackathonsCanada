@@ -12,7 +12,8 @@ from django.http import HttpRequest
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from django.views.generic import ListView
-from core.models import Hackathon, Hacker
+
+#
 from .forms import (
     HackathonForm,
     NotificationPolicyForm,
@@ -20,6 +21,10 @@ from .forms import (
     CuratorRequestForm,
 )
 from django.shortcuts import redirect
+from django.apps import apps
+
+if apps.ready:
+    from core.models import Hackathon, Hacker
 
 
 @cache
@@ -60,7 +65,6 @@ class HackathonsPage(ListView):
     template_name = "hackathons/hackathons.html"
     context_object_name = "hackathons"
     tdy_date = timezone.now()
-    print(Hackathon.objects.all())
     print(f"Current date and time: {tdy_date}")
 
     def get_queryset(self):
