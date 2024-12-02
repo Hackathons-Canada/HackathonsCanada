@@ -7,13 +7,13 @@ from core.scraper import scrape_all
 from django.http import HttpResponse, JsonResponse
 from django_ratelimit.decorators import ratelimit
 from django.conf import settings
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpRequest
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from django.views.generic import ListView
 
-#
+
 from .forms import (
     HackathonForm,
     NotificationPolicyForm,
@@ -88,7 +88,7 @@ class HackathonsPage(ListView):
                 )
             return hackathonsList
         else:
-            return Hackathon.objects.all()
+            return Hackathon.objects.filter(end_date__gt=tdy_date)
 
     def get_context_data(
         self,
@@ -233,8 +233,8 @@ def is_admin(user):
     return user.is_superuser
 
 
-# @user_passes_test(is_admin)
-# @ratelimit(key="user_or_ip", rate="1/d", block=True)
+@user_passes_test(is_admin)
+@ratelimit(key="user_or_ip", rate="1/d", block=True)
 def scrape(request):
     scrape_all()
     return HttpResponse("Scraped!")

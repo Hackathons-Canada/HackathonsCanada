@@ -108,7 +108,9 @@ class MLHSource(AbstractDataSource):
                 ev.find_all("meta", {"itemprop": "startDate"})[0]["content"], "%Y-%m-%d"
             )
         )
-        if not Hackathon.objects.filter(name=name, end_date=end_date).exists():
+        if not Hackathon.objects.filter(
+            dup=name.strip().lower() + str(end_date)
+        ).exists():
             if geoData is None:
                 hackathonLocation_input, created = (
                     HackathonLocation.objects.get_or_create(name=loc_data)
@@ -187,7 +189,9 @@ class DevpostSource(AbstractDataSource):
         loc = ev["displayed_location"]["location"]
         geoData = search_city(loc, username)
 
-        if not Hackathon.objects.filter(name=ev["title"], end_date=enddate).exists():
+        if not Hackathon.objects.filter(
+            dup=ev["title"].strip().lower() + str(enddate)
+        ).exists():
             if geoData is None:
                 hackathonLocation_input, created = (
                     HackathonLocation.objects.get_or_create(name=loc)
@@ -311,7 +315,14 @@ class HackClubSource(AbstractDataSource):
             )
         )
         name = ev.find_all("h3")[0].contents[0]
-        if not Hackathon.objects.filter(name=name, end_date=end_date).exists():
+        print(f"found {end_date}")
+        print(f"found {Hackathon.objects.filter(
+                dup=name.strip().lower() + str(end_date)
+            ).end_date}")
+        if not Hackathon.objects.filter(
+            dup=name.strip().lower() + str(end_date)
+        ).exists():
+            print("does not already exist")
             geoData = search_city(loc, username)
 
             if geoData is None:
@@ -351,7 +362,7 @@ class HackClubSource(AbstractDataSource):
                 "metadata": {"website": "hackclub"},
                 "is_public": True,
             }
-
+            print(evinfo)
             return evinfo
 
 
@@ -368,25 +379,19 @@ def scrape_all():
         DevpostSource().get_events(),
         # this is broke
         # EthGlobalSource().get_events(),
-        HackClubSource().get_events(),
+        # HackClubSource().get_events(),
     )
     for ev in evs:
         if ev is not None:
+            end_date = ev["end_date"]
+            if timezone.is_naive(end_date):
+                end_date = timezone.make_aware(end_date)
             if Hackathon.objects.filter(
-                name=ev["name"], end_date=ev["end_date"]
+                dup=ev["name"].strip().lower() + str(end_date)
             ).exists():
                 print(f"Duplicate Hackathon found: {ev["name"]} on {ev["end_date"]}")
                 return None
             else:
-                end_date = ev["end_date"]
-                if isinstance(end_date, datetime.datetime) and timezone.is_naive(
-                    end_date
-                ):
-                    end_date = timezone.make_aware(end_date)
-
-                print(f"Event name: {ev['name']}, Type: {type(ev['name'])}")
-                print(f"Event end_date: {ev['end_date']}, Type: {type(ev['end_date'])}")
-
                 h = Hackathon.objects.filter(name=ev["name"], end_date=end_date)
                 if len(h) == 0:
                     h1 = Hackathon()
