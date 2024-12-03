@@ -437,7 +437,13 @@ class Hackathon(MetaDataMixin):
         ]
 
     def __str__(self):
-        return self.name
+        return self.make
+
+    def count_upvotes(self):
+        return self.upvotes.from_hacker.count()
+
+    def count_downvotes(self):
+        return self.downvotes.from_hacker.count()
 
     def save(self, *args, **kwargs):
         if self.start_date and timezone.is_naive(self.start_date):
@@ -453,6 +459,30 @@ class Hackathon(MetaDataMixin):
                 f"An object with the name '{self.name}' already exists."
             )
         super().save(*args, **kwargs)
+
+
+class UpVote(models.Model):
+    hackathon_id = models.OneToOneField(
+        Hackathon, on_delete=models.CASCADE, related_name="upvotes"
+    )
+    from_hacker = models.ManyToManyField(Hacker, related_name="hackathon_upvotes")
+    time_created = models.DateTimeField(auto_now_add=True)
+    time_updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.hackathon_id)
+
+
+class DownVote(models.Model):
+    hackathon_id = models.OneToOneField(
+        Hackathon, on_delete=models.CASCADE, related_name="downvotes"
+    )
+    from_hacker = models.ManyToManyField(Hacker, related_name="hackathon_downvotes")
+    time_created = models.DateTimeField(auto_now_add=True)
+    time_updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.hackathon_id)
 
 
 class CuratorRequest(models.Model):
