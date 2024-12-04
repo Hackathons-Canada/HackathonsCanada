@@ -18,7 +18,7 @@ function saveHackathon(event, hackathonId) {
     xhr.open('POST', `${hackathonId}/save`, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
-    xhr.send();
+    xhr.send(JSON.stringify({}));
 }
 
 function unsaveHackathon(event, hackathonId) {

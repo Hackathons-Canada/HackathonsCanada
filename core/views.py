@@ -132,45 +132,14 @@ def setting(request):
     )
 
 
-@login_required
-def add_vote(request, hackathon_id, type_vote):
-    if request.method == "POST":
-        hackathon = get_object_or_404(Hackathon, id=hackathon_id)
-        hacker = get_object_or_404(Hacker, id=request.user.id)
-
-        downvote, created = Vote.objects.get_or_create(hackathon_id=hackathon)
-        downvote.from_hacker.add(hacker)
-        hackathon.count_downvotes = downvote.from_hacker.count()
-
-        if downvote.filter(from_hacker=hacker).exists():
-            return JsonResponse(
-                {"status": "fail", "error": "Invalid request"}, status=400
-            )
-
-        hackathon.save()
-
-        hacker.saved.add(hackathon)
-        return JsonResponse(
-            {
-                "status": "success",
-                "hackathon": {
-                    "id": hackathon.id,
-                    "name": hackathon.name,
-                },
-            }
-        )
-
-
 def save_hackathon(request: HttpRequest, hackathon_id):
-    print(request.body)
     if request.method == "POST":
         hackathon = get_object_or_404(Hackathon, id=hackathon_id)
         hacker = get_object_or_404(Hacker, id=request.user.id)
 
         if hacker.saved.filter(id=hackathon_id).exists():
-            return JsonResponse(
-                {"status": "fail", "error": "Invalid request"}, status=400
-            )
+            hacker.saved.remove(hackathon)
+            return JsonResponse({"status": "sucess", "hackathon": "removed"})
 
         hacker.saved.add(hackathon)
         return JsonResponse(
@@ -184,7 +153,7 @@ def save_hackathon(request: HttpRequest, hackathon_id):
         )
 
 
-def unsave_hackathon(request: HttpRequest, hackathon_id, type_vote):
+def add_vote(request: HttpRequest, hackathon_id, type_vote):
     if request.method == "POST":
         hackathon = get_object_or_404(Hackathon, id=hackathon_id)
         hacker = get_object_or_404(Hacker, id=request.user.id)
