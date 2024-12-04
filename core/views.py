@@ -7,12 +7,18 @@ from core.scraper import scrape_all
 from django.http import HttpResponse, JsonResponse
 from django_ratelimit.decorators import ratelimit
 from django.conf import settings
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from django.views.generic import ListView
 
+
+from django.shortcuts import redirect
+from django.apps import apps
+
+if apps.ready:
+    from core.models import Hackathon, Hacker, Vote
 
 from .forms import (
     HackathonForm,
@@ -20,11 +26,6 @@ from .forms import (
     HackerSettingForm,
     CuratorRequestForm,
 )
-from django.shortcuts import redirect
-from django.apps import apps
-
-if apps.ready:
-    from core.models import Hackathon, Hacker
 
 
 @cache
@@ -148,6 +149,35 @@ def setting(request):
 
 
 @login_required
+def add_vote(request, hackathon_id, type_vote):
+    if request.method == "POST":
+        hackathon = get_object_or_404(Hackathon, id=hackathon_id)
+        hacker = get_object_or_404(Hacker, id=request.user.id)
+
+        downvote, created = Vote.objects.get_or_create(hackathon_id=hackathon)
+        downvote.from_hacker.add(hacker)
+        hackathon.count_downvotes = downvote.from_hacker.count()
+
+        if downvote.filter(from_hacker=hacker).exists():
+            return JsonResponse(
+                {"status": "fail", "error": "Invalid request"}, status=400
+            )
+
+        hackathon.save()
+
+        hacker.saved.add(hackathon)
+        return JsonResponse(
+            {
+                "status": "success",
+                "hackathon": {
+                    "id": hackathon.id,
+                    "name": hackathon.name,
+                },
+            }
+        )
+
+
+@login_required
 def save_hackathon(request: HttpRequest, hackathon_id):
     if request.method == "POST":
         hackathon = get_object_or_404(Hackathon, id=hackathon_id)
@@ -171,26 +201,33 @@ def save_hackathon(request: HttpRequest, hackathon_id):
 
 
 @login_required
-def unsave_hackathon(request: HttpRequest, hackathon_id):
+def unsave_hackathon(request: HttpRequest, hackathon_id, type_vote):
     if request.method == "POST":
         hackathon = get_object_or_404(Hackathon, id=hackathon_id)
         hacker = get_object_or_404(Hacker, id=request.user.id)
 
-        if not hacker.saved.filter(id=hackathon_id).exists():
-            return JsonResponse(
-                {"status": "fail", "error": "Invalid request"}, status=400
-            )
-
-        hacker.saved.remove(hackathon)
-        return JsonResponse(
-            {
-                "status": "success",
-                "hackathon": {
-                    "id": hackathon.id,
-                    "name": hackathon.name,
-                },
-            }
+        vote, created = Vote.objects.get_or_create(
+            hackathon_id=hackathon, from_hacker=hacker
         )
+
+        if not created:
+            if vote.type_vote:
+                hackathon.count_upvotes -= 1
+            else:
+                hackathon.count_downvotes -= 1
+
+            # Update the vote type
+            vote.type_vote = type_vote
+            vote.save()
+
+        if type_vote:
+            hackathon.count_upvotes = vote.from_hacker.count()
+        else:
+            hackathon.count_downvotes = vote.from_hacker.count()
+
+        return JsonResponse({"status": "success", "message": "Vote added successfully"})
+
+    return JsonResponse({"status": "fail", "error": "Invalid request"}, status=400)
 
 
 @login_required
@@ -233,8 +270,8 @@ def is_admin(user):
     return user.is_superuser
 
 
-@user_passes_test(is_admin)
-@ratelimit(key="user_or_ip", rate="1/d", block=True)
+# @user_passes_test(is_admin)
+# @ratelimit(key="user_or_ip", rate="1/d", block=True)
 def scrape(request):
     scrape_all()
     return HttpResponse("Scraped!")
