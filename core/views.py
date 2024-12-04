@@ -81,7 +81,7 @@ def hackathon_page(request):
         context = {
             "hackathons": json.dumps(hackathonsList),
             "type": view_type,
-            "filter": filter_value,
+            "filter_value": filter_value,
         }
         return render(request, "hackathons/hackathons.html", context)
     else:
@@ -89,7 +89,7 @@ def hackathon_page(request):
         context = {
             "hackathons": hackathons,
             "type": view_type,
-            "filter": filter_value,
+            "filter_value": filter_value,
         }
         if view_type == "calendar":
             context["hackathons"] = json.dumps(hackathonsList)
@@ -162,11 +162,11 @@ def save_hackathon(request: HttpRequest, hackathon_id):
             )
 
 
-def add_vote(request: HttpRequest, hackathon_id, type_vote):
+def add_vote(request: HttpRequest, hackathon_id):
     if request.method == "POST":
         hackathon = get_object_or_404(Hackathon, id=hackathon_id)
         hacker = get_object_or_404(Hacker, id=request.user.id)
-
+        type_vote = request.GET.get("type_vote")
         vote, created = Vote.objects.get_or_create(
             hackathon_id=hackathon, from_hacker=hacker
         )

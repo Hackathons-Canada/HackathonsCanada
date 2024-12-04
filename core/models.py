@@ -419,6 +419,9 @@ class Hackathon(MetaDataMixin):
         default=dict, null=True, blank=True
     )  # Anything else that we might want to add in a structured format
 
+    count_upvotes = models.PositiveIntegerField(default=0)
+    count_downvotes = models.PositiveIntegerField(default=0)
+
     class Meta:
         ordering = ["start_date"]
         constraints = [
@@ -435,9 +438,6 @@ class Hackathon(MetaDataMixin):
                 name="application_deadline_lt_start_date",
             ),
         ]
-
-    count_upvotes = models.PositiveIntegerField(default=0)
-    count_downvotes = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.name

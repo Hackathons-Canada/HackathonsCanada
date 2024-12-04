@@ -86,7 +86,7 @@
                         </span>
                       </label>
                     </div>
-                    <p class="ml-1 text-lg text-gray-700 min-w-16">1234</p>
+                    <p class="ml-1 text-lg text-gray-700 min-w-16">{{ hackathon.count_upvotes }}</p>
                     <label class="relative flex items-center">
                       <input
                         class="w-6 h-6 appearance-none peer"
@@ -99,7 +99,7 @@
                         </svg>
                       </span>
                     </label>
-                    <p class="ml-1 text-lg text-gray-700 min-w-16">1234</p>
+                    <p class="ml-1 text-lg text-gray-700 min-w-16">{{ hackathon.count_downvotes }}</p>
                   </div>
             {% endfor %}
           </tbody>

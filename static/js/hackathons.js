@@ -21,33 +21,52 @@ function saveHackathon(event, hackathonId) {
     xhr.send(JSON.stringify({}));
 }
 
-function unsaveHackathon(event, hackathonId) {
+function upvoteHackathon(event, hackathonId) {
     event.preventDefault();
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', `/hackathons/${hackathonId}/unsave`, true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
+
 
     xhr.onreadystatechange = function() {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 var response = JSON.parse(xhr.responseText);
-
-                var hackathon = document.getElementById(`hackathon-${hackathonId}`);
-                if (hackathon) {
-                    hackathon.remove();
-                }
-
-                console.log(`${response.hackathon.id} Hackathon ${response.hackathon.name} removed successfully`);
+                console.log(`${response.hackathon.id} Hackathon ${response.hackathon.name} saved successfully`);
             }
             else {
-                console.log(`ERROR: ${response.hackathon.id} Hackathon ${response.hackathon.name} removed unsuccessfully`);
+                console.log(`ERROR: ${response.hackathon.id} Hackathon ${response.hackathon.name} saved unsuccessfully`);
             }
         }
     };
 
+    xhr.open('POST', `/hackathons/${hackathonId}/save`, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
     xhr.send(JSON.stringify({}));
 }
+
+function downvoteHackathon(event, hackathonId) {
+    event.preventDefault();
+    var xhr = new XMLHttpRequest();
+
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                console.log(`${response.hackathon.id} Hackathon ${response.hackathon.name} saved successfully`);
+            }
+            else {
+                console.log(`ERROR: ${response.hackathon.id} Hackathon ${response.hackathon.name} saved unsuccessfully`);
+            }
+        }
+    };
+
+    xhr.open('POST', `/hackathons/${hackathonId}/save`, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
+    xhr.send(JSON.stringify({}));
+}
+
 
 function getCookie(name) {
     var cookieValue = null;

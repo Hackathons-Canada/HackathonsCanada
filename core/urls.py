@@ -28,5 +28,10 @@ urlpatterns = [
         views.save_hackathon,
         name="save_hackathon",
     ),
+    path(
+        "hackathons/<str:vote_state>/vote",
+        views.add_vote,
+        name="save_hackathon",
+    ),
     path("scrape/", views.scrape, name="scrape"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
