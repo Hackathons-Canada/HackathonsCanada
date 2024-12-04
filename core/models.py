@@ -440,7 +440,7 @@ class Hackathon(MetaDataMixin):
     count_downvotes = models.PositiveIntegerField(default=0)
 
     def __str__(self):
-        return self.make
+        return self.name
 
     def save(self, *args, **kwargs):
         if self.start_date and timezone.is_naive(self.start_date):

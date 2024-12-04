@@ -1,7 +1,6 @@
 {% extends 'base.html' %} {% load static %} {% load crispy_forms_tags %}
 {% block title %} Saved Hackathons {% endblock title %} {% block content %}
-  <h1>{{saved_hackathon}}</h1>
-  {% if saved_hackathon %}
+  {% if saved_hackathons %}
     <div class="w-full px-24">
       <table class="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
         <thead class="text-xs text-gray-700 border-b-2 bo">
@@ -25,16 +24,13 @@
               Rating
             </tr>
           </thead>
-          <tbody class="">
-            {% for hackathon in saved_hackathon %}
+          <tbody class="h-screen">
+            {% for hackathon in saved_hackathons %}
               <tr class="bg-white border-b-2 dark:bg-gray-800 dark:border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
                 <td scope="row" class="py-2 pr-6">
-                  {% if user.is_authenticated %}
-                    <script src="../../static/js/hackathons.js"></script>
-                    <button type="button" onclick="saveHackathon(event, '{{ hackathon.id }}')">Save</button>
-                  {% else %}
-                    {#<p class="m-3 text-xs"><em>Login to save</em></p>#}
-                    <label class="relative flex items-center justify-center">
+                  <form action="{% url 'save_hackathon' hackathon_id=hackathon.id %}?page_type=saved" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="relative flex items-center justify-center">
                       <input
                         class="peer appearance-none w-6 h-6 border-2 border-gray-400 rounded duration-200 ease-in-out checked:bg-[#e5462e] checked:border-[#e5462e] cursor-pointer active:scale-75"
                         type="checkbox">
@@ -45,8 +41,9 @@
                                 d="M9.765 3.205a.75.75 0 0 1 .03 1.06l-4.25 4.5a.75.75 0 0 1-1.075.015L2.22 6.53a.75.75 0 0 1 1.06-1.06l1.705 1.704l3.72-3.939a.75.75 0 0 1 1.06-.03"></path>
                         </svg>
                       </span>
-                    </label>
-                  {% endif %}
+                    </button>
+                  </form>
+
 
                 </td>
                 <th class="px-6 py-2 font-medium whitespace-nowrap">

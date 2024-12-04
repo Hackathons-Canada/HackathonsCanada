@@ -63,13 +63,10 @@ def addHackathons(request):
 
 def hackathon_page(request):
     tdy_date = timezone.now()
-    render_type = "NONE"  # Default to 'cards' if 'type' is not provided
-    filter_value = "NONE"  # Default to 'none' if 'filter' is not provided
+    view_type = request.GET.get("view_type")
+    filter_value = request.GET.get("filter_value")
 
-    if request.method == "POST":
-        print(request.body)
-
-    if render_type == "calendar":
+    if view_type == "calendar":
         data = Hackathon.objects.filter(end_date__gt=tdy_date)
         hackathonsList = []
         for hackathon in data:
@@ -81,16 +78,21 @@ def hackathon_page(request):
                     "url": hackathon.website,
                 }
             )
-        return JsonResponse(hackathonsList, safe=False)
+        context = {
+            "hackathons": json.dumps(hackathonsList),
+            "type": view_type,
+            "filter": filter_value,
+        }
+        return render(request, "hackathons/hackathons.html", context)
     else:
         hackathons = Hackathon.objects.filter(end_date__gt=tdy_date)
         context = {
             "hackathons": hackathons,
-            "type": render_type,
+            "type": view_type,
             "filter": filter_value,
         }
-        if render_type == "calendar":
-            context["hackathonCalData"] = json.dumps(hackathonsList)
+        if view_type == "calendar":
+            context["hackathons"] = json.dumps(hackathonsList)
         return render(request, "hackathons/hackathons.html", context)
 
 
@@ -136,21 +138,28 @@ def save_hackathon(request: HttpRequest, hackathon_id):
     if request.method == "POST":
         hackathon = get_object_or_404(Hackathon, id=hackathon_id)
         hacker = get_object_or_404(Hacker, id=request.user.id)
+        page_type = request.GET.get("page_type")
 
         if hacker.saved.filter(id=hackathon_id).exists():
             hacker.saved.remove(hackathon)
-            return JsonResponse({"status": "sucess", "hackathon": "removed"})
+            if page_type == "saved":
+                return redirect("saved_hackathons")
+            else:
+                return JsonResponse({"status": "sucess", "hackathon": "removed"})
 
         hacker.saved.add(hackathon)
-        return JsonResponse(
-            {
-                "status": "success",
-                "hackathon": {
-                    "id": hackathon.id,
-                    "name": hackathon.name,
-                },
-            }
-        )
+        if page_type == "saved":
+            return redirect("saved_hackathons")
+        else:
+            return JsonResponse(
+                {
+                    "status": "success",
+                    "hackathon": {
+                        "id": hackathon.id,
+                        "name": hackathon.name,
+                    },
+                }
+            )
 
 
 def add_vote(request: HttpRequest, hackathon_id, type_vote):
@@ -214,7 +223,9 @@ class SavedHackathonsPage(ListView):
 
     def get_queryset(self):
         user: Hacker = self.request.user
-        return user.saved.all()
+        saved_hackathons = user.saved.all()
+        print(saved_hackathons)  # Print the saved hackathons for debugging
+        return saved_hackathons
 
 
 # checks if the user is an admin
