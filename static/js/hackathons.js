@@ -1,9 +1,7 @@
 function saveHackathon(event, hackathonId) {
     event.preventDefault();
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', `${hackathonId}/save`, true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
+
 
     xhr.onreadystatechange = function() {
         if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -17,7 +15,10 @@ function saveHackathon(event, hackathonId) {
         }
     };
 
-    xhr.send(JSON.stringify({}));
+    xhr.open('POST', `${hackathonId}/save`, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
+    xhr.send();
 }
 
 function unsaveHackathon(event, hackathonId) {

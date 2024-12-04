@@ -13,7 +13,6 @@ from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from django.views.generic import ListView
 
-
 from django.shortcuts import redirect
 from django.apps import apps
 
@@ -62,52 +61,37 @@ def addHackathons(request):
     return render(request, "hackathons/add_hackathon.html", {"form": form})
 
 
-class HackathonsPage(ListView):
-    template_name = "hackathons/hackathons.html"
-    context_object_name = "hackathons"
+def hackathon_page(request):
     tdy_date = timezone.now()
-    print(f"Current date and time: {tdy_date}")
+    render_type = "NONE"  # Default to 'cards' if 'type' is not provided
+    filter_value = "NONE"  # Default to 'none' if 'filter' is not provided
 
-    def get_queryset(self):
-        tdy_date = timezone.now()
-        print(f"Current date and time: {tdy_date}")
-        try:
-            render_type = self.kwargs["type"]
-        except KeyError:
-            render_type = "cards"
+    if request.method == "POST":
+        print(request.body)
+
+    if render_type == "calendar":
+        data = Hackathon.objects.filter(end_date__gt=tdy_date)
+        hackathonsList = []
+        for hackathon in data:
+            hackathonsList.append(
+                {
+                    "title": f"{hackathon.name} - {hackathon.location.name}",
+                    "start": hackathon.start_date.strftime("%Y-%m-%d"),
+                    "end": hackathon.end_date.strftime("%Y-%m-%d"),
+                    "url": hackathon.website,
+                }
+            )
+        return JsonResponse(hackathonsList, safe=False)
+    else:
+        hackathons = Hackathon.objects.filter(end_date__gt=tdy_date)
+        context = {
+            "hackathons": hackathons,
+            "type": render_type,
+            "filter": filter_value,
+        }
         if render_type == "calendar":
-            data = Hackathon.objects.filter(end_date__gt=tdy_date)
-            hackathonsList = []
-            for hackathon in data:
-                hackathonsList.append(
-                    {
-                        "title": f"{hackathon.name} - {hackathon.location.name}",
-                        "start": hackathon.start_date.strftime("%Y-%m-%d"),
-                        "end": hackathon.end_date.strftime("%Y-%m-%d"),
-                        "url": hackathon.website,
-                    }
-                )
-            return hackathonsList
-        else:
-            return Hackathon.objects.filter(end_date__gt=tdy_date)
-
-    def get_context_data(
-        self,
-        **kwargs,
-    ):
-        context = super().get_context_data(**kwargs)
-        try:
-            render_type = self.kwargs["type"]
-        except KeyError:
-            render_type = "cards"
-        if render_type == "list":
-            context["type"] = "list"
-        elif render_type == "calendar":
-            context["type"] = "calendar"
-            context["hackathonCalData"] = json.dumps(self.get_queryset())
-        else:
-            context["type"] = render_type
-        return context
+            context["hackathonCalData"] = json.dumps(hackathonsList)
+        return render(request, "hackathons/hackathons.html", context)
 
 
 @login_required
@@ -177,8 +161,8 @@ def add_vote(request, hackathon_id, type_vote):
         )
 
 
-@login_required
 def save_hackathon(request: HttpRequest, hackathon_id):
+    print(request.body)
     if request.method == "POST":
         hackathon = get_object_or_404(Hackathon, id=hackathon_id)
         hacker = get_object_or_404(Hacker, id=request.user.id)
@@ -200,7 +184,6 @@ def save_hackathon(request: HttpRequest, hackathon_id):
         )
 
 
-@login_required
 def unsave_hackathon(request: HttpRequest, hackathon_id, type_vote):
     if request.method == "POST":
         hackathon = get_object_or_404(Hackathon, id=hackathon_id)
