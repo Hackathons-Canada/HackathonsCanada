@@ -8,6 +8,7 @@ from .models import (
     Hacker,
     NotificationPolicy,
     School,
+    CuratorRequest,
 )
 from django_countries.fields import CountryField
 from crispy_forms.helper import FormHelper  # type: ignore
@@ -20,7 +21,7 @@ class HackathonForm(forms.ModelForm):
     website = forms.URLField()
     country = forms.CharField(max_length=255)
     city = forms.CharField(max_length=255)
-    image = forms.ImageField()
+    # image = forms.ImageField()
     start_date = forms.DateField(widget=forms.TextInput(attrs={"type": "date"}))
     end_date = forms.DateField(widget=forms.TextInput(attrs={"type": "date"}))
     application_start = forms.DateField(widget=forms.TextInput(attrs={"type": "date"}))
@@ -53,6 +54,13 @@ class HackathonForm(forms.ModelForm):
             "is_public",
             "notes",
             "metadata",
+            "categories",
+            "created_by",
+            "hybrid",
+            "count_upvotes",
+            "notification_policy",
+            "count_downvotes",
+            "image",
         ]
 
     def __init__(self, *args, **kwargs):
@@ -85,17 +93,17 @@ class HackathonForm(forms.ModelForm):
                     css_class="form-group-style flex flex-rows space-x-4",
                 ),
             ),
-            Div(
-                HTML("<h2 class = 'pt-5 form-side-text'>Banner</h2>"),
-                HTML(
-                    "<h2 class = 'form-upload-head'>Click to upload or drag and drop</h2>"
-                ),
-                HTML("<h3 class = 'form-upload-side'>PNG or JPG (max. 800x400px)</h3>"),
-                css_class="form-group-style",
-            ),
+            # Div(
+            #     HTML("<h2 class = 'pt-5 form-side-text'>Banner</h2>"),
+            #     HTML(
+            #         "<h2 class = 'form-upload-head'>Click to upload or drag and drop</h2>"
+            #     ),
+            #     HTML("<h3 class = 'form-upload-side'>PNG or JPG (max. 800x400px)</h3>"),
+            #     css_class="form-group-style",
+            # ),
             Fieldset(
                 "",  # this is for the legend
-                Field("image", css_class="form-control"),
+                # Field("image", css_class="form-control"),
                 Field("application_start"),
                 Field("application_deadline"),
             ),
@@ -282,9 +290,29 @@ class CuratorRequestForm(forms.Form):
         widget=forms.Textarea,
     )
 
+    class Meta:
+        model = CuratorRequest
+        fields = ["hackathon", "team_name", "team_description", "reason"]
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["hackathon"].widget.attrs.update({"class": "form-control"})
-        self.fields["team_name"].widget.attrs.update({"class": "form-control"})
-        self.fields["team_description"].widget.attrs.update({"class": "form-control"})
-        self.fields["reason"].widget.attrs.update({"class": "form-control"})
+        self.fields["hackathon"].widget.attrs.update(
+            {
+                "class": "form-control form-group-style flex flex-rows space-x-4 mt-2 mb-3"
+            }
+        )
+        self.fields["team_name"].widget.attrs.update(
+            {
+                "class": "form-control form-group-style flex flex-rows space-x-4 mt-2 mb-3"
+            }
+        )
+        self.fields["team_description"].widget.attrs.update(
+            {
+                "class": "form-control form-group-style flex flex-rows space-x-4 mt-2 mb-3"
+            }
+        )
+        self.fields["reason"].widget.attrs.update(
+            {
+                "class": "form-control form-group-style flex flex-rows space-x-4 mt-2 mb-3"
+            }
+        )

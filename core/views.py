@@ -5,7 +5,6 @@ import json
 from django.utils import timezone
 from core.scraper import scrape_all
 from django.http import HttpResponse, JsonResponse
-from django_ratelimit.decorators import ratelimit
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest
@@ -17,7 +16,7 @@ from django.shortcuts import redirect
 from django.apps import apps
 
 if apps.ready:
-    from core.models import Hackathon, Hacker, Vote
+    from core.models import Hackathon, Hacker, Vote, ReviewStatus
 
 from .forms import (
     HackathonForm,
@@ -50,12 +49,21 @@ def home(request):
     return render(request, "home.html", context)
 
 
-@ratelimit(key="user_or_ip", rate="1/m", block=True)
+# @ratelimit(key="user_or_ip", rate="1/m", block=True)
 def addHackathons(request):
+    print(request.method)
     if request.method == "POST":
         form = HackathonForm(request.POST)
+        print("got the post requets")
         if form.is_valid():
+            print("sending the form")
+            hackathon = form.save(commit=False)
+            hackathon.review_status = ReviewStatus.Pending
+            hackathon.created_by = Hacker.objects.get(id=request.user.id)
+            hackathon.save()
             return redirect("home")
+        else:
+            print(form.errors)
     else:
         form = HackathonForm()
     return render(request, "hackathons/add_hackathon.html", {"form": form})
@@ -162,11 +170,16 @@ def save_hackathon(request: HttpRequest, hackathon_id):
             )
 
 
+def str_to_bool(s):
+    return s.lower() in ["true", "1", "yes"]
+
+
 def add_vote(request: HttpRequest, hackathon_id):
     if request.method == "POST":
         hackathon = get_object_or_404(Hackathon, id=hackathon_id)
         hacker = get_object_or_404(Hacker, id=request.user.id)
-        type_vote = request.GET.get("type_vote")
+        type_vote = request.GET.get("vote_state")
+        state = str_to_bool(type_vote)
         vote, created = Vote.objects.get_or_create(
             hackathon_id=hackathon, from_hacker=hacker
         )
@@ -178,8 +191,11 @@ def add_vote(request: HttpRequest, hackathon_id):
                 hackathon.count_downvotes -= 1
 
             # Update the vote type
-            vote.type_vote = type_vote
+            vote.type_vote = state
             vote.save()
+        else:
+            vote.type_vote = state
+            vote.from_hacker.add(vote)
 
         if type_vote:
             hackathon.count_upvotes = vote.from_hacker.count()
@@ -192,7 +208,7 @@ def add_vote(request: HttpRequest, hackathon_id):
 
 
 @login_required
-@ratelimit(key="user_or_ip", rate="1/m", block=True)
+# @ratelimit(key="user_or_ip", rate="1/m", block=True)
 def request_curator_access(request):
     if request.method == "POST":
         form = CuratorRequestForm(request.POST)

@@ -29,7 +29,7 @@ urlpatterns = [
         name="save_hackathon",
     ),
     path(
-        "hackathons/<str:vote_state>/vote",
+        "hackathons/<int:hackathon_id>/vote",
         views.add_vote,
         name="save_hackathon",
     ),

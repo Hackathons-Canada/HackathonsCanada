@@ -448,6 +448,11 @@ class Hackathon(MetaDataMixin):
         if self.end_date and timezone.is_naive(self.end_date):
             self.end_date = timezone.make_aware(self.end_date)
 
+        if self.review_status == ReviewStatus.Approved:
+            self.is_public = True
+        if self.review_status == ReviewStatus.Rejected:
+            self.is_public = False
+
         # wont use generate field because it only uses sql functions like F() and it does not have .lower etc
         self.dup = self.name.strip().lower() + str(self.end_date)
 
