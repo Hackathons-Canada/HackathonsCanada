@@ -482,6 +482,15 @@ class CuratorRequest(models.Model):
     team_description = models.TextField()
     reason = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    created_by = models.ManyToManyField(Hacker, related_name="curator_requests")
+    review_status = models.CharField(
+        max_length=255,
+        blank=True,
+        null=False,
+        default=ReviewStatus.Pending,
+        help_text="Status of the review process",
+        choices=ReviewStatus.choices,
+    )
 
     def __str__(self):
         return f"Curator request from {self.team_name} for {self.hackathon}"

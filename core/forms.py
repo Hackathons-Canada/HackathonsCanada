@@ -1,5 +1,6 @@
 from django import forms
 from django.db import OperationalError
+from django.utils import timezone
 
 from .models import (
     Hackathon,
@@ -279,8 +280,12 @@ class NotificationPolicyForm(forms.ModelForm):
         )
 
 
-class CuratorRequestForm(forms.Form):
-    hackathon = forms.CharField(label="Hackathon")
+class CuratorRequestForm(forms.ModelForm):
+    tdy_date = timezone.now()
+    hackathon = forms.ModelChoiceField(
+        queryset=Hackathon.objects.filter(end_date__gt=tdy_date, is_public=True),
+        empty_label=None,
+    )
     team_name = forms.CharField(label="Team/Organization Name")
     team_description = forms.CharField(
         label="Team/Organization Description", widget=forms.Textarea
@@ -292,7 +297,10 @@ class CuratorRequestForm(forms.Form):
 
     class Meta:
         model = CuratorRequest
-        fields = ["hackathon", "team_name", "team_description", "reason"]
+        exclude = [
+            "created_by",
+            "review_status",
+        ]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

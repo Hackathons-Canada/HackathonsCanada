@@ -57,10 +57,10 @@ def addHackathons(request):
         print("got the post requets")
         if form.is_valid():
             print("sending the form")
-            hackathon = form.save(commit=False)
-            hackathon.review_status = ReviewStatus.Pending
-            hackathon.created_by = Hacker.objects.get(id=request.user.id)
-            hackathon.save()
+            form.save(commit=False)
+            form.review_status = ReviewStatus.Pending
+            form.created_by = Hacker.objects.get(id=request.user.id)
+            form.save()
             return redirect("home")
         else:
             print(form.errors)
@@ -75,7 +75,7 @@ def hackathon_page(request):
     filter_value = request.GET.get("filter_value")
 
     if view_type == "calendar":
-        data = Hackathon.objects.filter(end_date__gt=tdy_date)
+        data = Hackathon.objects.filter(end_date__gt=tdy_date, is_public=True)
         hackathonsList = []
         for hackathon in data:
             hackathonsList.append(
@@ -213,16 +213,17 @@ def request_curator_access(request):
     if request.method == "POST":
         form = CuratorRequestForm(request.POST)
         if form.is_valid():
-            hackathon = form.cleaned_data["hackathon"]
-            team_name = form.cleaned_data["team_name"]
-            team_description = form.cleaned_data["team_description"]
-            reason = form.cleaned_data["reason"]
-            # Send an email to the hackathon organizers with the request
-            # Django's email system?
-            # just print the request to the console
-            print(
-                f"Request from {team_name} to be a curator for {hackathon}: {reason}. {team_name} description: {team_description}"
-            )
+            # hackathon = form.cleaned_data["hackathon"]
+            # team_name = form.cleaned_data["team_name"]
+            # team_description = form.cleaned_data["team_description"]
+            # reason = form.cleaned_data["reason"]
+            form.save(commit=False)
+            form.review_status = ReviewStatus.Pending
+            form.created_by = Hacker.objects.get(id=request.user.id)
+            form.save()
+            # print(
+            #     f"Request from {team_name} to be a curator for {hackathon}: {reason}. {team_name} description: {team_description}"
+            # )
             return redirect("curator_request_success")
     else:
         form = CuratorRequestForm()
