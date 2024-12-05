@@ -1,8 +1,6 @@
 import random
 from typing import Final, Tuple, List
-
 from django.contrib.auth.models import AbstractUser, UserManager
-
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import DecimalField
@@ -312,6 +310,7 @@ class Hackathon(MetaDataMixin):
     is_public = models.BooleanField(
         help_text="Is the hackathon visible to all users", default=False
     )
+
     review_status = models.CharField(
         max_length=255,
         blank=True,
@@ -322,6 +321,7 @@ class Hackathon(MetaDataMixin):
     )
 
     categories = models.ManyToManyField(Category, related_name="hackathons")
+
     created_by = models.ForeignKey(
         Hacker,
         on_delete=models.SET_NULL,
@@ -329,6 +329,7 @@ class Hackathon(MetaDataMixin):
         related_name="hackathons",
         blank=False,
     )
+
     curators = models.ManyToManyField(Hacker, related_name="curated_hackathons")
 
     short_name = models.CharField(
@@ -337,9 +338,11 @@ class Hackathon(MetaDataMixin):
         null=True,
         help_text="Short name for the hackathon e.g. HTV",
     )
+
     name = models.CharField(
         max_length=255, help_text="Full name of the hackathon e.g. Hack the Valley"
     )
+
     website = models.URLField()
 
     start_date = models.DateTimeField(blank=True, null=True)
@@ -348,7 +351,7 @@ class Hackathon(MetaDataMixin):
     application_start = models.DateTimeField(blank=True, null=True)
     application_deadline = models.DateTimeField(blank=True, null=True)
 
-    reimbursements = models.CharField(max_length=255, blank=True, null=True)
+    reimbursements = models.BooleanField(default=True)
 
     location = models.ForeignKey(
         HackathonLocation,
@@ -364,6 +367,7 @@ class Hackathon(MetaDataMixin):
         default=0,
         help_text="Minimum age to participate, set to 0 if there is no minimum age and don't set if unknown",
     )
+
     minimum_education_level = models.SmallIntegerField(
         choices=HACKATHON_EDUCATION_CHOICES,
         blank=True,
@@ -380,13 +384,13 @@ class Hackathon(MetaDataMixin):
     numerical_prize_pool = models.IntegerField(
         blank=True, null=True, default=0
     )  # if blank, then Unknown
+
     prize_pool_items = models.TextField(
         blank=True, null=True, help_text="List of items in the prize pool"
     )
 
     fg_image = models.ImageField(upload_to="hackathon_images", null=True, blank=True)
     bg_image = models.ImageField(upload_to="hackathon_images", null=True, blank=True)
-    notes = models.TextField(blank=True, default="")
 
     hybrid = models.CharField(
         max_length=1,
@@ -394,21 +398,6 @@ class Hackathon(MetaDataMixin):
         default="I",
         help_text="Location of the hackathon, I for in-person, V for virtual, H for hybrid",
     )
-
-    # Boolean fields for whether the hackathon is specific to certain groups
-    is_web3 = models.BooleanField(default=False)  # Web 3 hackathons
-    is_diversity = models.BooleanField(
-        default=False
-    )  # Diversity hackathons for specific marginalized groups
-    is_restricted = models.BooleanField(
-        default=False
-    )  # Hackathons with restricrted enrollment (ex. only students of some university)
-    is_nonenglish = models.BooleanField(
-        default=False
-    )  # Hackathons which are not in English
-    is_over18 = models.BooleanField(
-        default=False
-    )  # Hackathons which are only for people over 18
 
     freeze_data = models.BooleanField(
         default=False,

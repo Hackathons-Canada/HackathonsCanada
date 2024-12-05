@@ -136,10 +136,6 @@ class MLHSource(AbstractDataSource):
                 "hybrid": ev.find_all("div", {"class": "event-hybrid-notes"})[0]
                 .find_all("span")[0]
                 .contents[0][0],
-                "is_diversity": len(
-                    ev.find_all("div", {"class": "diversity-event-badge"})
-                )
-                > 0,
                 "maximum_education_level": 1
                 if len(ev.find_all("div", {"class": "ribbon"})) > 0
                 and len(ev.find_all("div", {"class": "diversity-event-badge"})) == 0
@@ -217,8 +213,6 @@ class DevpostSource(AbstractDataSource):
                 "hybrid": "O"
                 if ev["displayed_location"]["location"] == "Online"
                 else "I",
-                "is_diversity": False,
-                "is_restricted": ev["open_state"] != "open",
                 "website": ev["url"],
                 "fg_image": ev["thumbnail_url"],
                 "source": HackathonSource.Scraped,
@@ -280,8 +274,6 @@ class EthGlobalSource(AbstractDataSource):
                 "location": hackathonLocation_input
                 if (name.split()[0].lower() == "ethglobal")
                 else "",
-                "is_web3": True,
-                "is_restricted": False,
                 "website": "https://ethglobal.com" + ev.get("href"),
                 "fg_image": ev.find_all("img")[0]["src"],
                 "source": HackathonSource.Scraped,
