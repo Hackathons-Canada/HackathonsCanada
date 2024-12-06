@@ -11,9 +11,10 @@ from django.http import HttpRequest
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from django.views.generic import ListView
-
 from django.shortcuts import redirect
 from django.apps import apps
+from django.db.models import Q
+
 
 if apps.ready:
     from core.models import Hackathon, Hacker, Vote, ReviewStatus
@@ -72,12 +73,26 @@ def addHackathons(request):
 def hackathon_page(request):
     tdy_date = timezone.now()
     view_type = request.GET.get("view_type")
-    filter_value = request.GET.get("filter_value")
+    country = request.GET.get("country")
+    if country and country != "none" and country != "World":
+        print(country)
+        upcoming_hackathons = Hackathon.objects.filter(
+            end_date__gt=tdy_date, is_public=True, location__country=country
+        )
+    elif country == "World":
+        upcoming_hackathons = Hackathon.objects.exclude(
+            Q(end_date__lt=tdy_date)
+            | Q(is_public=False)
+            | Q(location__country="Online")
+        )
+    else:
+        upcoming_hackathons = Hackathon.objects.filter(
+            end_date__gt=tdy_date, is_public=True
+        )
 
     if view_type == "calendar":
-        data = Hackathon.objects.filter(end_date__gt=tdy_date, is_public=True)
         hackathonsList = []
-        for hackathon in data:
+        for hackathon in upcoming_hackathons:
             hackathonsList.append(
                 {
                     "title": f"{hackathon.name} - {hackathon.location.name}",
@@ -89,18 +104,16 @@ def hackathon_page(request):
         context = {
             "hackathons": json.dumps(hackathonsList),
             "type": view_type,
-            "filter_value": filter_value,
+            "country": country,
         }
         return render(request, "hackathons/hackathons.html", context)
     else:
-        hackathons = Hackathon.objects.filter(end_date__gt=tdy_date)
         context = {
-            "hackathons": hackathons,
+            "hackathons": upcoming_hackathons,
             "type": view_type,
-            "filter_value": filter_value,
+            "country": country,
         }
-        if view_type == "calendar":
-            context["hackathons"] = json.dumps(hackathonsList)
+
         return render(request, "hackathons/hackathons.html", context)
 
 

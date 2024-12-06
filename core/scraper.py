@@ -20,7 +20,12 @@ username = "Nirek"
 
 def search_city(city_name, username):
     url = f"http://api.geonames.org/searchJSON?q={city_name}&maxRows=10&username={username}"
-
+    if (
+        "online" in city_name.lower()
+        or "virtual" in city_name.lower()
+        or "everywhere" in city_name.lower()
+    ):
+        return "Online"
     try:
         response = requests.get(url)
         response.raise_for_status()
@@ -115,6 +120,12 @@ class MLHSource(AbstractDataSource):
                 hackathonLocation_input, created = (
                     HackathonLocation.objects.get_or_create(name=loc_data)
                 )
+            elif geoData == "Online":
+                hackathonLocation_input, created = (
+                    HackathonLocation.objects.get_or_create(
+                        name="Online", country="Online"
+                    )
+                )
             else:
                 location_cord, created = Location.objects.get_or_create(
                     latitude=geoData["latitude"], longitude=geoData["longitude"]
@@ -192,6 +203,12 @@ class DevpostSource(AbstractDataSource):
                 hackathonLocation_input, created = (
                     HackathonLocation.objects.get_or_create(name=loc)
                 )
+            elif geoData == "Online":
+                hackathonLocation_input, created = (
+                    HackathonLocation.objects.get_or_create(
+                        name="Online", country="Online"
+                    )
+                )
             else:
                 location_cord, created = Location.objects.get_or_create(
                     latitude=geoData["latitude"], longitude=geoData["longitude"]
@@ -253,6 +270,12 @@ class EthGlobalSource(AbstractDataSource):
             if geoData is None:
                 hackathonLocation_input, created = (
                     HackathonLocation.objects.get_or_create(name=loc)
+                )
+            elif geoData == "Online":
+                hackathonLocation_input, created = (
+                    HackathonLocation.objects.get_or_create(
+                        name="Online", country="Online"
+                    )
                 )
             else:
                 location_cord, created = Location.objects.get_or_create(
@@ -320,6 +343,12 @@ class HackClubSource(AbstractDataSource):
             if geoData is None:
                 hackathonLocation_input, created = (
                     HackathonLocation.objects.get_or_create(name=loc)
+                )
+            elif geoData == "Online":
+                hackathonLocation_input, created = (
+                    HackathonLocation.objects.get_or_create(
+                        name="Online", country="Online"
+                    )
                 )
             else:
                 location_cord, created = Location.objects.get_or_create(
