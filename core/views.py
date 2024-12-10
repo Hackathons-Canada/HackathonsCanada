@@ -74,22 +74,27 @@ def hackathon_page(request):
     tdy_date = timezone.now()
     view_type = request.GET.get("view_type")
     country = request.GET.get("country")
+    city = request.GET.get("city")
+    start = request.GET.get("start")
+    end = request.GET.get("end")
 
+    query_base = Q(end_date__gte=tdy_date, is_public=True)
     if country and country != "none" and country != "World":
-        print(country)
-        upcoming_hackathons = Hackathon.objects.filter(
-            end_date__gt=tdy_date, is_public=True, location__country=country
-        )
+        query_base &= Q(location__country=country)
     elif country == "World":
-        upcoming_hackathons = Hackathon.objects.exclude(
-            Q(end_date__lt=tdy_date)
-            | Q(is_public=False)
-            | Q(location__country="Online")
-        )
-    else:
-        upcoming_hackathons = Hackathon.objects.filter(
-            end_date__gt=tdy_date, is_public=True
-        )
+        query_base &= ~Q(location__country="Online")
+
+    if city and city != "None":
+        print(city)
+        query_base &= Q(location__name__icontains=city)
+
+    if start and start != "None":
+        query_base &= Q(start_date__gte=start)
+
+    if end and end != "None":
+        query_base &= Q(end_date__lte=end)
+
+    upcoming_hackathons = Hackathon.objects.filter(query_base)
 
     if view_type == "calendar":
         hackathonsList = []
@@ -106,6 +111,9 @@ def hackathon_page(request):
             "hackathons": json.dumps(hackathonsList),
             "type": view_type,
             "country": country,
+            "city": city,
+            "start": start,
+            "end": end,
         }
         return render(request, "hackathons/hackathons.html", context)
     else:
@@ -113,6 +121,9 @@ def hackathon_page(request):
             "hackathons": upcoming_hackathons,
             "type": view_type,
             "country": country,
+            "city": city,
+            "start": start,
+            "end": end,
         }
 
         return render(request, "hackathons/hackathons.html", context)
