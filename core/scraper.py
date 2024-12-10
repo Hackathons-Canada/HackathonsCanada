@@ -189,6 +189,8 @@ class DevpostSource(AbstractDataSource):
         enddate = dates[1].strip()
         if len(startdate.split(" ")) == 2:
             startdate += enddate[-6:]
+        if len(enddate.split(" ")) == 2:
+            enddate = startdate.split(" ")[0] + " " + enddate
         startdate = timezone.make_aware(
             datetime.datetime.strptime(startdate, "%b %d, %Y")
         )

@@ -74,6 +74,7 @@ def hackathon_page(request):
     tdy_date = timezone.now()
     view_type = request.GET.get("view_type")
     country = request.GET.get("country")
+
     if country and country != "none" and country != "World":
         print(country)
         upcoming_hackathons = Hackathon.objects.filter(

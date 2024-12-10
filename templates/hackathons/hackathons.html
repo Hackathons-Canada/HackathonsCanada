@@ -7,7 +7,7 @@
 
       <!-- Search Form -->
       <form
-        action=""
+        action="{% url 'hackathons' %}"
         method="GET"
         class="flex items-center w-full max-w-4xl px-6 py-4 space-x-4 bg-white rounded-md shadow-lg"
       >
@@ -18,7 +18,7 @@
             type="text"
             id="where"
             name="where"
-            placeholder="Search countries"
+            placeholder="Search  cites/state/region"
             class="w-full text-sm bg-gray-100 border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
           />
         </div>
@@ -45,9 +45,19 @@
           />
         </div>
 
+        <!-- End Date -->
+        <div class="flex-1">
+          <label class="block text-sm font-medium text-gray-600" for="end">Near Me</label>
+          <input
+            id="distance"
+            name="distance"
+            class="w-full text-sm bg-gray-100 border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          />
+        </div>
+
         <!-- Age -->
         <div class="flex-1">
-          <label class="block text-sm font-medium text-gray-600" for="age">Age</label>
+          <label class="block text-sm font-medium text-gray-600" for="age">Near ME</label>
           <select
             id="age"
             name="age"
@@ -68,6 +78,8 @@
             Search
           </button>
         </div>
+        <input type="hidden" name="view_type" value="{{ request.GET.view_type|default:'' }}">
+        <input type="hidden" name="country" value="{{ request.GET.country|default:'' }}">
       </form>
     </div>
   </main>
