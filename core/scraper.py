@@ -235,7 +235,7 @@ class EthGlobalSource(AbstractDataSource):
 
     def scrape_page(self, **kwargs):
         r = requests.get(self.URL)
-        page = BeautifulSoup(r.text)
+        page = BeautifulSoup(r.text, features="html.parser")
         return page.select('a[href^="/events/"]')
 
     def parse_event(self, ev, **kwargs):

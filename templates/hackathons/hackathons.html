@@ -98,62 +98,65 @@
       >
 
         {% if type == "cards" %}
-          <div class="p-4 col flip-card lockedheight">
-            <div class="flip-card-inner">
-              <a href="{{ hackathon.url }}">
-                <div class="flip-card-front">
-                  <div class="hackathon-card">
-                    {% if hackathon.bgimage %}
-                      <img class="hackathon-img-front" src="{{ hackathon.bg_image }}" alt="{{ hackathon.name }}">
-                    {% else %}
-                      <img class="hackathon-img-front" src="{{ hackathon.fg_image }}" alt="{{ hackathon.name }}">
-                    {% endif %}
+          {% for hackathon in hackathons %}
+            <div class="p-4 col flip-card lockedheight">
+              <div class="flip-card-inner">
+                <a href="{{ hackathon.url }}">
+                  <div class="flip-card-front">
+                    <div class="hackathon-card">
+                      {% if hackathon.bgimage %}
+                        <img class="hackathon-img-front" src="{{ hackathon.bg_image }}" alt="{{ hackathon.name }}">
+                      {% else %}
+                        <img class="hackathon-img-front" src="{{ hackathon.fg_image }}" alt="{{ hackathon.name }}">
+                      {% endif %}
 
-                    <div class="flex flex-col mt-3 align-middle hackathon-content justify-items-center">
-                      <h2 class="pt-2 overflow-x-scroll text-3xl max-h-10">{{ hackathon.name }}</h2>
-                      <h6 class="text-base">
-                        {{ hackathon.location.name }}
-                      </h6>
-                      <h5 class="text-lg">
-                        {{ hackathon.start_date |date:"N-d"}}-
-                        {{ hackathon.start_date|date:"d, Y"}}
-                      </h5>
-                    </div>
-                    {% if user.is_authenticated %}
-                      <script src="../../static/js/hackathons.js"></script>
-                      <button type="button" onclick="saveHackathon(event, '{{ hackathon.id }}')">Save</button>
-                    {% else %}
-                      <p class="absolute bottom-0 right-0 m-3 text-xs"><em>Login to save</em></p>
-                    {% endif %}
-                  </div>
-                </div>
-                </a
-                >
-                <div class="flip-card-back">
-                  <div class="hackathon-card">
-                    <div class="card-image-overlay"></div>
-                    <img
-                      src="https://s3.amazonaws.com/assets.mlh.io/events/splashes/000/212/657/thumb/Backsplash_300.png?1688131132"
-                      class="hackathon-img-back"
-                      alt="Front Image"
-                    />
-                    <div class="hackathon-card-div">
-                      <div class="hackathon-card-div-text">
-                        <h6 class="">Waterloo, ON | May 17-19, 2024</h6>
-                        <h3 class="">HawkHacks</h3>
+                      <div class="flex flex-col mt-3 align-middle hackathon-content justify-items-center">
+                        <h2 class="pt-2 overflow-x-scroll text-3xl max-h-10">{{ hackathon.name }}</h2>
+                        <h6 class="text-base">
+                          {{ hackathon.location.name }}
+                        </h6>
+                        <h5 class="text-lg">
+                          {{ hackathon.start_date |date:"N-d"}}-
+                          {{ hackathon.start_date|date:"d, Y"}}
+                        </h5>
                       </div>
+                      {% if user.is_authenticated %}
+                        <script src="../../static/js/hackathons.js"></script>
+                        <button type="button" onclick="saveHackathon(event, '{{ hackathon.id }}')">Save</button>
+                      {% else %}
+                        <p class="absolute bottom-0 right-0 m-3 text-xs"><em>Login to save</em></p>
+                      {% endif %}
                     </div>
-                    <div class="card-body-layout">
-                      <p class="card-body-text">Application Deadline: 2345</p>
-                      <p class="card-body-text">Travel Reimbursements: 3245</p>
-                      <p class="card-body-text">Travel Reimbursements: 3245</p>
-                      <p class="card-body-text">Travel Reimbursements: 3245</p>
+                  </div>
+                  </a
+                  >
+                  <div class="flip-card-back">
+                    <div class="hackathon-card">
+                      <div class="card-image-overlay"></div>
+                      <img
+                        src="https://s3.amazonaws.com/assets.mlh.io/events/splashes/000/212/657/thumb/Backsplash_300.png?1688131132"
+                        class="hackathon-img-back"
+                        alt="Front Image"
+                      />
+                      <div class="hackathon-card-div">
+                        <div class="hackathon-card-div-text">
+                          <h6 class="">Waterloo, ON | May 17-19, 2024</h6>
+                          <h3 class="">HawkHacks</h3>
+                        </div>
+                      </div>
+                      <div class="card-body-layout">
+                        <p class="card-body-text">Application Deadline: 2345</p>
+                        <p class="card-body-text">Travel Reimbursements: 3245</p>
+                        <p class="card-body-text">Travel Reimbursements: 3245</p>
+                        <p class="card-body-text">Travel Reimbursements: 3245</p>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
+          {% endfor %}
         {% elif type == "calendar" %}
+          <a href="{% url 'calednar_genator' %}"> export to calendar</a>
           <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
           <script>
             var hackathonData = JSON.parse('{{ hackathons|escapejs }}');
@@ -191,138 +194,120 @@
           </script>
           <div id='calendar' class="my-5"></div>
         {% else %}
-          {% for hackathon in hackathons %}
-            <div class="w-full px-24">
-              <table class="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
-                <thead class="text-xs text-gray-700 border-b-2 bo">
-                  <tr class="">
-                    <th scope="col" class="py-3 pr-6 text-lg font-semibold text-center text-gray-700">
-                      Saved
-                    </th>
-                    <th scope="col" class="px-6 py-3 text-lg font-semibold text-gray-700">
-                      Name
-                    </th>
-                    <th scope="col" class="px-6 py-3 text-lg font-semibold text-gray-700">
-                      Website
-                    </th>
-                    <th scope="col" class="px-6 py-3 text-lg font-semibold text-gray-700">
-                      Date
-                    </th>
-                    <th scope="col" class="px-6 py-3 text-lg font-semibold text-gray-700">
-                      Location
-                    </th>
-                    <th scope="col" class="px-6 py-3 text-lg font-semibold text-gray-700">
-                      Rating
-                    </tr>
-                  </thead>
-                  <tbody class="">
-                    {% for hackathon in hackathons %}
-                      <tr class="bg-white border-b-2 dark:bg-gray-800 dark:border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <td scope="row" class="py-2 pr-6">
-                          {% if user.is_authenticated %}
-                            <script src="../../static/js/hackathons.js"></script>
-                            <button type="button" onclick="saveHackathon(event, '{{ hackathon.id }}')">Save</button>
-                          {% else %}
+
+          <div class="w-full px-24">
+            <table class="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
+              <thead class="text-xs text-gray-700 border-b-2 bo">
+                <tr class="">
+                  <th scope="col" class="py-3 pr-6 text-lg font-semibold text-center text-gray-700">
+                    Saved
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-lg font-semibold text-gray-700">
+                    Name
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-lg font-semibold text-gray-700">
+                    Website
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-lg font-semibold text-gray-700">
+                    Date
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-lg font-semibold text-gray-700">
+                    Location
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-lg font-semibold text-gray-700">
+                    Rating
+                  </tr>
+                </thead>
+                <tbody class="">
+                  {% for hackathon in hackathons %}
+                    <tr class="bg-white border-b-2 dark:bg-gray-800 dark:border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
+                      <td scope="row" class="py-2 pr-6">
+                        {% if user.is_authenticated %}
+                          <script src="../../static/js/hackathons.js"></script>
+                          <button type="button" onclick="saveHackathon(event, '{{ hackathon.id }}')">Save</button>
+                        {% else %}
                     {#<p class="m-3 text-xs"><em>Login to save</em></p>#}
-                            <label class="relative flex items-center justify-center">
-                              <input
-                                class="peer appearance-none w-6 h-6 border-2 border-gray-400 rounded mdration-200 ease-in-out checked:bg-[#e5462e] checked:border-[#e5462e] cursor-pointer active:scale-75"
-                                type="checkbox">
-                              <span class="absolute flex items-center justify-center w-6 h-6 font-bold text-white duration-200 ease-in-out scale-0 peer-checked:scale-125">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
-                                     viewBox="0 0 12 12">
-                                  <path fill="#FFFFFF"
-                                        d="M9.765 3.205a.75.75 0 0 1 .03 1.06l-4.25 4.5a.75.75 0 0 1-1.075.015L2.22 6.53a.75.75 0 0 1 1.06-1.06l1.705 1.704l3.72-3.939a.75.75 0 0 1 1.06-.03"></path>
-                                </svg>
-                              </span>
-                            </label>
+                          <label class="relative flex items-center justify-center">
+                            <input
+                              class="peer appearance-none w-6 h-6 border-2 border-gray-400 rounded mdration-200 ease-in-out checked:bg-[#e5462e] checked:border-[#e5462e] cursor-pointer active:scale-75"
+                              type="checkbox">
+                            <span class="absolute flex items-center justify-center w-6 h-6 font-bold text-white duration-200 ease-in-out scale-0 peer-checked:scale-125">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
+                                   viewBox="0 0 12 12">
+                                <path fill="#FFFFFF"
+                                      d="M9.765 3.205a.75.75 0 0 1 .03 1.06l-4.25 4.5a.75.75 0 0 1-1.075.015L2.22 6.53a.75.75 0 0 1 1.06-1.06l1.705 1.704l3.72-3.939a.75.75 0 0 1 1.06-.03"></path>
+                              </svg>
+                            </span>
+                          </label>
+                        {% endif %}
+
+                      </td>
+                      <th class="px-6 py-2 font-medium whitespace-nowrap">
+                        <div class="flex items-center gap-2 overflow-scroll text-gray-700 max-w-1/6">
+                          {% if hackathon.bgimage %}
+                            <img src="{{ hackathon.bg_image }}" alt="{{ hackathon.name }}" class="w-auto h-10">
+                          {% else %}
+                            <img src="{{ hackathon.fg_image }}" alt="{{ hackathon.name }}" class="w-auto h-10 rounded-md">
                           {% endif %}
-
-                        </td>
-                        <th class="px-6 py-2 font-medium whitespace-nowrap">
-                          <div class="flex items-center gap-2 overflow-scroll text-gray-700 max-w-1/6">
-                            {% if hackathon.bgimage %}
-                              <img src="{{ hackathon.bg_image }}" alt="{{ hackathon.name }}" class="w-auto h-10">
-                            {% else %}
-                              <img src="{{ hackathon.fg_image }}" alt="{{ hackathon.name }}" class="w-auto h-10 rounded-md">
-                            {% endif %}
-                            {{ hackathon.name }}
-                          </div>
-                        </th>
-                        <td class="px-6 py-2">
-                          <a href="{{ hackathon.website }}" target="_blank"
-                             class="text-xs text-white bg-[#e5462e] px-1 py-2 rounded-md duration-200 ease-in-out hover:scale-105 hover:bg-[#c43c27] inline-block rotate-[0.01deg]">
-                            Website
-                          </a>
-                        </td>
-                        <td class="px-6 py-2 text-gray-700 pres">
-                          {{ hackathon.start_date|date:"M d, Y" }}
-                  <pre class="inline">-</pre>
-                          {{ hackathon.end_date|date:"M d, Y" }}
-                        </td>
-                        <div class="overflow-scroll">
-                          <td class="py-2 text-sm text-gray-700">
-                            {{ hackathon.location.name }}
-                          </td>
+                          {{ hackathon.name }}
                         </div>
-                        <td class="px-6 py-2">
-                          <div class="flex items-center">
-                            <div>
-                              <script src="../../static/js/hackathons.js"></script>
+                      </th>
+                      <td class="px-6 py-2">
+                        <a href="{{ hackathon.website }}" target="_blank"
+                           class="text-xs text-white bg-[#e5462e] px-1 py-2 rounded-md duration-200 ease-in-out hover:scale-105 hover:bg-[#c43c27] inline-block rotate-[0.01deg]">
+                          Website
+                        </a>
+                      </td>
+                      <td class="px-6 py-2 text-gray-700 pres">
+                        {{ hackathon.start_date|date:"M d, Y" }}
+                  <pre class="inline">-</pre>
+                        {{ hackathon.end_date|date:"M d, Y" }}
+                      </td>
+                      <div class="overflow-scroll">
+                        <td class="py-2 text-sm text-gray-700">
+                          {{ hackathon.location.name }}
+                        </td>
+                      </div>
+                      <td class="px-6 py-2">
+                        <div class="flex items-center">
+                          <div>
+                            <script src="../../static/js/hackathons.js"></script>
 
-                              <button type="button" class="relative flex items-center" onclick="voteHackathon(event, '{{ hackathon.id }}', 'true')">
-                                <input
-                                  class="w-6 h-6 appearance-none peer"
-                                  type="checkbox">
-                                <span class="absolute cursor-pointer w-6 h-6 flex items-center justify-center text-white font-bold duration-200 ease-in-out peer-checked:*:fill-[#e5462e] *:stroke-gray-500 peer-checked:*:stroke-[#e5462e] active:scale-75">
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"
-                                       class="w-6 h-6 duration-200 fill-gray-300">
-                                    <path class="stroke-2"
-                                          d="M4 14h4v7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7h4a1.001 1.001 0 0 0 .781-1.625l-8-10c-.381-.475-1.181-.475-1.562 0l-8 10A1.001 1.001 0 0 0 4 14"></path>
-                                  </svg>
-                                </span>
-                              </button>
-                            </div>
-                            <p class="ml-1 text-lg text-gray-700 min-w-16">{{ hackathon.count_upvotes }}</p>
-                            <a class="relative flex items-center">
+                            <button type="button" class="relative flex items-center" onclick="voteHackathon(event, '{{ hackathon.id }}', 'true')">
                               <input
                                 class="w-6 h-6 appearance-none peer"
                                 type="checkbox">
-                              <span class="absolute cursor-pointer w-6 h-6 flex items-center justify-center text-white font-bold duration-200 ease-in-out peer-checked:*:fill-[#9393ff] *:stroke-gray-500 peer-checked:*:stroke-[#9393ff] active:scale-75">
+                              <span class="absolute cursor-pointer w-6 h-6 flex items-center justify-center text-white font-bold duration-200 ease-in-out peer-checked:*:fill-[#e5462e] *:stroke-gray-500 peer-checked:*:stroke-[#e5462e] active:scale-75">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"
                                      class="w-6 h-6 duration-200 fill-gray-300">
                                   <path class="stroke-2"
-                                        d="M20.901 10.566A1 1 0 0 0 20 10h-4V3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v7H4a1.001 1.001 0 0 0-.781 1.625l8 10a1 1 0 0 0 1.562 0l8-10c.24-.301.286-.712.12-1.059"></path>
+                                        d="M4 14h4v7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7h4a1.001 1.001 0 0 0 .781-1.625l-8-10c-.381-.475-1.181-.475-1.562 0l-8 10A1.001 1.001 0 0 0 4 14"></path>
                                 </svg>
                               </span>
-                            </a>
-                            <p class="ml-1 text-lg text-gray-700 min-w-16">{{ hackathon.count_downvotes }}</p>
+                            </button>
                           </div>
-                    {% endfor %}
-                  </tbody>
-                </table>
-              </div>
-
-          {% endfor %}
-          {% if is_paginated %}
-            <div class="pagination">
-              <span class="step-links">
-                {% if page_obj.has_previous %}
-                  <a href="?page=1">&laquo; first</a>
-                  <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-                {% endif %}
-
-                <span class="current">
-                  Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-                </span>
-
-                {% if page_obj.has_next %}
-                  <a href="?page={{ page_obj.next_page_number }}">next</a>
-                  <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-                {% endif %}
-              </span>
+                          <p class="ml-1 text-lg text-gray-700 min-w-16">{{ hackathon.count_upvotes }}</p>
+                          <a class="relative flex items-center">
+                            <input
+                              class="w-6 h-6 appearance-none peer"
+                              type="checkbox">
+                            <span class="absolute cursor-pointer w-6 h-6 flex items-center justify-center text-white font-bold duration-200 ease-in-out peer-checked:*:fill-[#9393ff] *:stroke-gray-500 peer-checked:*:stroke-[#9393ff] active:scale-75">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"
+                                   class="w-6 h-6 duration-200 fill-gray-300">
+                                <path class="stroke-2"
+                                      d="M20.901 10.566A1 1 0 0 0 20 10h-4V3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v7H4a1.001 1.001 0 0 0-.781 1.625l8 10a1 1 0 0 0 1.562 0l8-10c.24-.301.286-.712.12-1.059"></path>
+                              </svg>
+                            </span>
+                          </a>
+                          <p class="ml-1 text-lg text-gray-700 min-w-16">{{ hackathon.count_downvotes }}</p>
+                        </div>
+                  {% endfor %}
+                </tbody>
+              </table>
             </div>
-          {% endif %}
+
+
+
         {% endif %}
       </div>
     </div>

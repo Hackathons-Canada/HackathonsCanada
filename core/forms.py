@@ -17,7 +17,7 @@ from crispy_forms.layout import Layout, Field, HTML, Submit, Div, Fieldset
 
 
 class HackathonForm(forms.ModelForm):
-    short_name = forms.CharField(max_length=255)
+    short_name = forms.CharField(max_length=255, required=False)
     name = forms.CharField(max_length=255)
     website = forms.URLField()
     country = forms.CharField(max_length=255)
@@ -25,11 +25,13 @@ class HackathonForm(forms.ModelForm):
     # image = forms.ImageField()
     start_date = forms.DateField(widget=forms.TextInput(attrs={"type": "date"}))
     end_date = forms.DateField(widget=forms.TextInput(attrs={"type": "date"}))
-    application_start = forms.DateField(widget=forms.TextInput(attrs={"type": "date"}))
-    application_deadline = forms.DateField(
-        widget=forms.TextInput(attrs={"type": "date"})
+    application_start = forms.DateField(
+        widget=forms.TextInput(attrs={"type": "date"}), required=False
     )
-    min_age = forms.IntegerField(min_value=0, max_value=100)
+    application_deadline = forms.DateField(
+        widget=forms.TextInput(attrs={"type": "date"}), required=False
+    )
+    min_age = forms.IntegerField(min_value=0, max_value=100, required=False)
     minimum_education_level = forms.ChoiceField(
         choices=HACKATHON_EDUCATION_CHOICES,
         widget=forms.Select,
@@ -42,7 +44,7 @@ class HackathonForm(forms.ModelForm):
         required=False,
         help_text="Select the maximum education level required to participate.",
     )
-    numerical_prize_pool = forms.IntegerField(min_value=0)
+    numerical_prize_pool = forms.IntegerField(min_value=0, required=False)
     category = forms.MultipleChoiceField(required=False)
 
     class Meta:

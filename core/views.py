@@ -14,7 +14,7 @@ from django.views.generic import ListView
 from django.shortcuts import redirect
 from django.apps import apps
 from django.db.models import Q
-
+from icalendar import Calendar, Event
 
 if apps.ready:
     from core.models import Hackathon, Hacker, Vote, ReviewStatus
@@ -280,3 +280,41 @@ def is_admin(user):
 def scrape(request):
     scrape_all()
     return HttpResponse("Scraped!")
+
+
+def calednar_genator(request):
+    tdy_date = timezone.now()
+    country = request.GET.get("country")
+    city = request.GET.get("city")
+    start = request.GET.get("start")
+    end = request.GET.get("end")
+
+    query_base = Q(end_date__gte=tdy_date, is_public=True)
+    if country and country != "none" and country != "World":
+        query_base &= Q(location__country=country)
+    elif country == "World":
+        query_base &= ~Q(location__country="Online")
+
+    if city and city != "None":
+        print(city)
+        query_base &= Q(location__name__icontains=city)
+
+    if start and start != "None":
+        query_base &= Q(start_date__gte=start)
+
+    if end and end != "None":
+        query_base &= Q(end_date__lte=end)
+
+    upcoming_hackathons = Hackathon.objects.filter(query_base)
+    cal = Calendar()
+    for hackathon in upcoming_hackathons:
+        ical_event = Event()
+        ical_event.add("summary", hackathon.name)
+        ical_event.add("dtstart", hackathon.start_date)
+        ical_event.add("dtend", hackathon.end_date)
+        ical_event.add("location", hackathon.location.name)
+        ical_event.add("uid", hackathon.dup)
+        cal.add_component(ical_event)
+    response = HttpResponse(cal.to_ical(), content_type="text/calendar")
+    response["Content-Disposition"] = "attachment; filename=hackathons.ics"
+    return response

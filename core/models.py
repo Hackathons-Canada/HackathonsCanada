@@ -267,8 +267,8 @@ class Location(models.Model):
 
     """
 
-    latitude = DecimalField(max_digits=22, decimal_places=16)
-    longitude = DecimalField(max_digits=22, decimal_places=16)
+    latitude = DecimalField(max_digits=22, decimal_places=16, blank=True, null=True)
+    longitude = DecimalField(max_digits=22, decimal_places=16, blank=True, null=True)
 
 
 class HackathonLocation(models.Model):
