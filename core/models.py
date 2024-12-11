@@ -44,6 +44,15 @@ HYBRID_CHOICES = (
 )
 
 
+SCRAPE_SOURCES = (
+    ("mlh", "MLH"),
+    ("dev", "Devpost"),
+    ("eth", "ETHGlobal"),
+    ("hcl", "Hack Club"),
+    ("na", "Not Applicable"),
+)
+
+
 class MetaDataMixin(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -216,7 +225,7 @@ class Category(models.Model):
 
 
 class HackathonSource(models.TextChoices):
-    Scraped = "SCR", "Scrapped"
+    Scraped = "SCR", "Scraped"
     UserSubmitted = "USR", "User Submitted"
     Partner = "PRT", "Partner"
 
@@ -302,6 +311,7 @@ class Hackathon(MetaDataMixin):
         choices=HackathonSource.choices,
         default=HackathonSource.UserSubmitted,
     )
+    scrape_source = models.CharField(max_length=3, choices=SCRAPE_SOURCES, default="na")
 
     metadata = models.JSONField(
         blank=True, null=True, help_text="Metadata about the source of the hackathon"
@@ -402,6 +412,20 @@ class Hackathon(MetaDataMixin):
     freeze_data = models.BooleanField(
         default=False,
         help_text="Set to True to not update any details using scraped data. Use if you get accurate details directly from the hackathon organizers.",
+    )
+
+    is_web3 = models.BooleanField(
+        default=False, help_text="Is the hackathon Web3 themed"
+    )
+    is_diversity = models.BooleanField(
+        default=False, help_text="Is the hackathon only for underrepresented groups"
+    )
+    is_restricted = models.BooleanField(
+        default=False,
+        help_text="Is enrollment in this hackathon restricted to only some group of people (like those enrolled in one specific school or unoversity)",
+    )
+    is_nonenglish = models.BooleanField(
+        default=False, help_text="Is the primary language of this hackathon not English"
     )
 
     custom_info = models.JSONField(
