@@ -12,13 +12,16 @@ from django_countries.fields import CountryField
 
 __all__ = [
     "Hacker",
+    "School",
     "Hackathon",
     "HackathonLocation",
+    "HackathonSource",
     "Location",
     "Category",
     "NotificationPolicy",
     "EDUCATION_CHOICES",
     "HACKATHON_EDUCATION_CHOICES",
+    "HYBRID_CHOICES",
     "ReviewStatus",
 ]
 
@@ -35,6 +38,13 @@ HACKATHON_EDUCATION_CHOICES: List[Tuple[int, str]] = EDUCATION_CHOICES + [
 ]
 
 
+HYBRID_CHOICES = (
+    ("I", "In-Person"),
+    ("O", "Online"),
+    ("H", "Hybrid"),
+)
+
+
 class MetaDataMixin(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -47,6 +57,26 @@ class MetaDataMixin(models.Model):
     ):
         self.updated_at = timezone.now()
         super().save(force_insert, force_update, using, update_fields)
+
+
+class School(models.Model):
+    name = models.CharField(max_length=255)
+    added_by = models.ForeignKey(
+        "core.Hacker",
+        on_delete=models.CASCADE,
+        related_name="schools_added",
+        null=True,
+        blank=True,
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    public = models.BooleanField(
+        default=False,
+        help_text="Is the school public (Is displayed on fields)",
+        db_index=True,
+    )
+
+    def __str__(self):
+        return self.name
 
 
 class NotificationPolicy(models.Model):
@@ -112,7 +142,7 @@ class Notifiable(UserManager):
 
 
 class Hacker(AbstractUser):
-    objects = Notifiable()  # type: ignore
+    objects = Notifiable()
     country = CountryField(
         blank_label="(select country)",
         blank=True,
@@ -128,8 +158,10 @@ class Hacker(AbstractUser):
         null=True,
         help_text="Name of your school or university",
     )
-    education = models.CharField(
-        max_length=255,
+    birthday = models.DateField(blank=True, null=True)
+    personal_website = models.CharField(null=True, blank=True, max_length=255)
+
+    education = models.SmallIntegerField(
         blank=True,
         null=True,
         help_text="Your current education level e.g. High School, University, etc.",
@@ -152,6 +184,9 @@ class Hacker(AbstractUser):
         blank=False,
         null=False,
     )
+
+    def __str__(self):
+        return f"Hacker(username={self.username}, email={self.email}, first_name={self.first_name}, last_name={self.last_name})"
 
     def save(
         self, force_insert=False, force_update=False, using=None, update_fields=None
@@ -184,6 +219,7 @@ class Category(models.Model):
 class HackathonSource(models.TextChoices):
     Scraped = "SCR", "Scrapped"
     UserSubmitted = "USR", "User Submitted"
+    Partner = "PRT", "Partner"
 
 
 class HackthonsManager(models.Manager):
@@ -247,15 +283,22 @@ class ReviewStatus(models.TextChoices):
 
 class Hackathon(MetaDataMixin):
     objects = HackthonsManager()
+
+    # This ID is to make it easier to identify hackathons when scraping in order to avoid duplicates
+    # id = models.GeneratedField(
+    #         expression=F("name") + F("date"),
+    #         output_field=models.IntegerField(),
+    #         db_persist=True,
+    #         primary_key=True, editable=False, unique=True)
+
     source = models.CharField(
         max_length=3,
         choices=HackathonSource.choices,
         default=HackathonSource.UserSubmitted,
     )
+
     metadata = models.JSONField(
-        blank=True,
-        null=True,
-        help_text="Metadata about the source of the hackathon",
+        blank=True, null=True, help_text="Metadata about the source of the hackathon"
     )
 
     is_public = models.BooleanField(
@@ -303,6 +346,8 @@ class Hackathon(MetaDataMixin):
         HackathonLocation,
         on_delete=models.RESTRICT,
         related_name="hackathons",
+        blank=True,
+        null=True,
     )
 
     min_age = models.SmallIntegerField(
@@ -331,16 +376,48 @@ class Hackathon(MetaDataMixin):
         blank=True, null=True, help_text="List of items in the prize pool"
     )
 
-    image = models.ImageField(upload_to="hackathon_images")
+    fg_image = models.ImageField(upload_to="hackathon_images", null=True, blank=True)
+    bg_image = models.ImageField(upload_to="hackathon_images", null=True, blank=True)
     notes = models.TextField(blank=True, default="")
+
+    hybrid = models.CharField(
+        max_length=1,
+        choices=HYBRID_CHOICES,
+        default="I",
+        help_text="Location of the hackathon, I for in-person, V for virtual, H for hybrid",
+    )
+
+    # Boolean fields for whether the hackathon is specific to certain groups
+    is_web3 = models.BooleanField(default=False)  # Web 3 hackathons
+    is_diversity = models.BooleanField(
+        default=False
+    )  # Diversity hackathons for specific marginalized groups
+    is_restricted = models.BooleanField(
+        default=False
+    )  # Hackathons with restricrted enrollment (ex. only students of some university)
+    is_nonenglish = models.BooleanField(
+        default=False
+    )  # Hackathons which are not in English
+    is_over18 = models.BooleanField(
+        default=False
+    )  # Hackathons which are only for people over 18
+
+    freeze_data = models.BooleanField(
+        default=False,
+        help_text="Set to True to not update any details using scraped data. Use if you get accurate details directly from the hackathon organizers.",
+    )
+
+    custom_info = models.JSONField(
+        default=dict, null=True, blank=True
+    )  # Anything else that we might want to add in a structured format
 
     class Meta:
         ordering = ["start_date"]
 
         constraints = [
             models.CheckConstraint(  # ensure start date is before end date
-                check=models.Q(start_date__lt=models.F("end_date")),
-                name="start_date_lt_end_date",
+                check=models.Q(start_date__lte=models.F("end_date")),
+                name="start_date_lte_end_date",
             ),
             models.CheckConstraint(  # ensure application start is before deadline
                 check=models.Q(application_start__lt=models.F("application_deadline")),
@@ -354,6 +431,14 @@ class Hackathon(MetaDataMixin):
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if self.start_date and timezone.is_naive(self.start_date):
+            self.start_date = timezone.make_aware(self.start_date)
+        if self.end_date and timezone.is_naive(self.end_date):
+            self.end_date = timezone.make_aware(self.end_date)
+
+        super().save(*args, **kwargs)
 
 
 class CuratorRequest(models.Model):

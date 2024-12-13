@@ -1,19 +1,24 @@
 import os
 import random
 from functools import cache
-
+import json
+from django.utils import timezone
+from core.scraper import scrape_all
+from django.http import HttpResponse, JsonResponse
+from django_ratelimit.decorators import ratelimit
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from django.http import HttpRequest, JsonResponse
+from django.http import HttpRequest
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from django.views.generic import ListView
-
 from core.models import Hackathon, Hacker
-from .forms import HackathonForm
-from .forms import CuratorRequestForm
-
-
+from .forms import (
+    HackathonForm,
+    NotificationPolicyForm,
+    HackerSettingForm,
+    CuratorRequestForm,
+)
 from django.shortcuts import redirect
 
 
@@ -40,31 +45,107 @@ def home(request):
     return render(request, "home.html", context)
 
 
+@ratelimit(key="user_or_ip", rate="1/m", block=True)
 def addHackathons(request):
     if request.method == "POST":
         form = HackathonForm(request.POST)
         if form.is_valid():
-            return "form is valid, Nirek do smth here"
+            return redirect("home")
     else:
         form = HackathonForm()
-
     return render(request, "hackathons/add_hackathon.html", {"form": form})
 
 
-def calendar(request):
-    context = {
-        "title": "Add a New Hackathon",
-        "content": "Use this form to add a new hackathon to the database.",
-    }
-    return render(request, "../templates/calendar.html", context)
+# def calendar(request):
+#     context = {
+#         "title": "Add a New Hackathon",
+#         "content": "Use this form to add a new hackathon to the database.",
+#     }
+#     return render(request, "../templates/calendar.html", context)
 
 
 class HackathonsPage(ListView):
     template_name = "hackathons/hackathons.html"
     context_object_name = "hackathons"
+    paginate_by = 30
 
     def get_queryset(self):
-        return Hackathon.objects.all()
+        tdy_date = timezone.now()
+        try:
+            render_type = self.kwargs["type"]
+        except KeyError:
+            render_type = "cards"
+        if render_type == "calendar":
+            data = Hackathon.objects.filter(start_date__gt=tdy_date)
+            hackathonsList = []
+            for hackathon in data:
+                hackathonsList.append(
+                    {
+                        "title": f"{hackathon.name} - {hackathon.location.name}",
+                        "start": hackathon.start_date.strftime("%Y-%m-%d"),
+                        "end": hackathon.end_date.strftime("%Y-%m-%d"),
+                        "url": hackathon.website,
+                    }
+                )
+            return hackathonsList
+        else:
+            return Hackathon.objects.filter(start_date__gt=tdy_date)
+
+    def get_context_data(
+        self,
+        **kwargs,
+    ):
+        context = super().get_context_data(**kwargs)
+        try:
+            render_type = self.kwargs["type"]
+        except KeyError:
+            render_type = "cards"
+        if render_type == "list":
+            context["type"] = "list"
+        elif render_type == "calendar":
+            context["type"] = "calendar"
+            context["hackathonCalData"] = json.dumps(self.get_queryset())
+        else:
+            context["type"] = render_type
+        return context
+
+
+@login_required
+def setting(request):
+    hacker = Hacker.objects.get(id=request.user.id)
+    notification_policy = hacker.notification_policy
+
+    if request.method == "POST":
+        form_setting = HackerSettingForm(instance=hacker)  # Initialize with instance
+        form_notification = NotificationPolicyForm(
+            instance=notification_policy
+        )  # Initialize with instance
+
+        if "form_setting_submit" in request.POST:
+            form_setting = HackerSettingForm(request.POST, instance=hacker)
+            if form_setting.is_valid():
+                form_setting.save()
+                return redirect("setting")
+            else:
+                print("Form Setting Errors:", form_setting.errors)
+        elif "form_notification_submit" in request.POST:
+            form_notification = NotificationPolicyForm(
+                request.POST, instance=notification_policy
+            )
+            if form_notification.is_valid():
+                form_notification.save()
+                return redirect("setting")
+            else:
+                print("Form Notification Errors:", form_notification.errors)
+    else:
+        form_setting = HackerSettingForm(instance=hacker)
+        form_notification = NotificationPolicyForm(instance=notification_policy)
+
+    return render(
+        request,
+        "account/setting.html",
+        {"form_setting": form_setting, "form_notification": form_notification},
+    )
 
 
 @login_required
@@ -114,6 +195,7 @@ def unsave_hackathon(request: HttpRequest, hackathon_id):
 
 
 @login_required
+@ratelimit(key="user_or_ip", rate="1/m", block=True)
 def request_curator_access(request):
     if request.method == "POST":
         form = CuratorRequestForm(request.POST)
@@ -145,3 +227,15 @@ class SavedHackathonsPage(ListView):
     def get_queryset(self):
         user: Hacker = self.request.user
         return user.saved.all()
+
+
+# checks if the user is an admin
+def is_admin(user):
+    return user.is_superuser
+
+
+# @user_passes_test(is_admin)
+# @ratelimit(key="user_or_ip", rate="1/d", block=True)
+def scrape(request):
+    scrape_all()
+    return HttpResponse("Scraped!")

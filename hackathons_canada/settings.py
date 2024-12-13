@@ -28,6 +28,10 @@ SECRET_KEY = "CHANGEME"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
+
+CUR_YEAR = [2025, 2024]
+SITE_ID = 1
+
 ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
@@ -63,6 +67,42 @@ INSTALLED_APPS = [
     "crispy_forms",
     "crispy_bootstrap4",
 ]
+
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        "FETCH_USERINFO": True,
+        "SCOPE": [
+            "profile",
+            "email",
+        ],
+        "AUTH_PARAMS": {
+            "access_type": "online",
+        },
+        "OAUTH_PKCE_ENABLED": True,
+    },
+    "github": {
+        "SCOPE": [
+            "user",
+            "repo",
+            "read:org",
+        ],
+    },
+}
+
+SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
+SOCIALACCOUNT_STORE_TOKENS = True
+
+
+# still need to figure this out
+
+# # Custom allauth settings
+# # Use username or email as the primary identifier
+# ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+# ACCOUNT_EMAIL_REQUIRED = True
+# # Make email verification mandatory to avoid junk email accounts
+# ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+# # Eliminate need to provide username, as it's a very old practice
+# ACCOUNT_USERNAME_REQUIRED = False
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -175,7 +215,8 @@ COUNTRIES_FIRST = ["CA", "US"]
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://valkey:6379/1")
 CELERY_RESULT_BACKEND = os.environ.get("CELERY_BACKEND", "redis://valkey:6379/1")
 
-LOGIN_REDIRECT_URL = "/"  # todo change to profile page once created
+LOGIN_REDIRECT_URL = "/"
+ACCOUNT_LOGOUT_REDIRECT_URL = "/"
 
 # Logging settings
 

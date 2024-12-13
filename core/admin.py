@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.contrib.auth.models import Group
 from unfold.contrib.forms.widgets import WysiwygWidget
 
-from .models import Category, Hacker, Hackathon
+from .models import Category, Hacker, Hackathon, School
 from django.contrib.auth.admin import (
     UserAdmin as DjangoUserAdmin,
     GroupAdmin as BaseGroupAdmin,
@@ -116,6 +116,17 @@ class CategoryAdmin(ModelAdmin):
     search_fields = ("name",)
 
 
+class SchoolAdmin(ModelAdmin):
+    list_display = (
+        "name",
+        "added_by",
+        "public",
+        "created_at",
+    )
+    search_fields = ("name", "added_by__username")
+    list_filter = ("public",)
+
+
 admin.site.site_header = "Hackathons Canada Admin"  # set header
 admin.site.site_title = "Admin - Hackathons Canada"  # set title
 admin.site.index_title = "Welcome to Hackathons Canada Admin Dashboard"
@@ -123,6 +134,7 @@ admin.site.index_title = "Welcome to Hackathons Canada Admin Dashboard"
 admin.site.register(Hacker, HackerAdmin)
 admin.site.register(Hackathon, HackathonAdmin)
 admin.site.register(Category, CategoryAdmin)
+admin.site.register(School, SchoolAdmin)
 
 admin.site.unregister(Group)
 admin.site.register(Group, GroupAdmin)
