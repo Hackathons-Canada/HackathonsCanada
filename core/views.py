@@ -15,6 +15,8 @@ from django.shortcuts import redirect
 from django.apps import apps
 from django.db.models import Q
 from icalendar import Calendar, Event
+from django.contrib.auth.decorators import user_passes_test
+from django_ratelimit.decorators import ratelimit
 
 if apps.ready:
     from core.models import Hackathon, Hacker, Vote, ReviewStatus
@@ -233,7 +235,7 @@ def add_vote(request: HttpRequest, hackathon_id):
 
 
 @login_required
-# @ratelimit(key="user_or_ip", rate="1/m", block=True)
+@ratelimit(key="user_or_ip", rate="1/m", block=True)
 def request_curator_access(request):
     if request.method == "POST":
         form = CuratorRequestForm(request.POST)
@@ -275,8 +277,8 @@ def is_admin(user):
     return user.is_superuser
 
 
-# @user_passes_test(is_admin)
-# @ratelimit(key="user_or_ip", rate="1/d", block=True)
+@user_passes_test(is_admin)
+@ratelimit(key="user_or_ip", rate="1/d", block=True)
 def scrape(request):
     scrape_all()
     return HttpResponse("Scraped!")
