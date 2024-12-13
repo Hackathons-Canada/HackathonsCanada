@@ -76,77 +76,41 @@
     </div>
   </main>
 
+
+
   <div class = "flex flex-row justify-between pb-3 mx-12 mt-3 text-black border-b-2 border-gray-500 w-ful">
     <div class="inline-flex p-1 mx-5 bg-gray-100 border border-gray-100 rounded-lg">
       <a href="{% url 'hackathons' %}?view_type=calendar&country={{ request.GET.country|default:'none' }}&start={{ request.GET.start }}&end={{ request.GET.end }}&city={{ request.GET.city }}"
          class="inline-flex items-center gap-2 px-4 py-2 text-sm text-gray-500 rounded-md hover:text-gray-700 focus:relative"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          class="size-4"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
-          />
-        </svg>
+
 
         Calendar
       </a>
 
       <a
-        href="{% url 'hackathons' %}?view_type=list&country={{ request.GET.country|default:'none' }}&start={{ request.GET.start }}&end={{ request.GET.end }}&city={{ request.GET.city }}" class="{% if type == 'list' %}text-blue-500 bg-white{% endif %} inline-flex items-center gap-2 px-4 py-2 text-sm text-gray-500 rounded-md hover:text-gray-700 focus:relative"
+        href="{% url 'hackathons' %}?view_type=cards&country={{ request.GET.country|default:'none' }}&start={{ request.GET.start }}&end={{ request.GET.end }}&city={{ request.GET.city }}"
+        class="{% if type == 'cards' %}text-blue-500 bg-white{% endif %} inline-flex items-center gap-2 px-4 py-2 text-sm text-gray-500 rounded-md hover:text-gray-700 focus:relative"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          class="size-4"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"
-          />
-          <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-        </svg>
+
+
+        Cards
+      </a>
+
+      <a
+        href ="{% url 'hackathons' %}?view_type=list&country={{ request.GET.country|default:'none' }}&start={{ request.GET.start }}&end={{ request.GET.end }}&city={{ request.GET.city }}"
+        class="{% if type == 'list' %}text-blue-500 bg-white{% endif %} inline-flex items-center gap-2 px-4 py-2 text-sm  rounded-md focus:relative"
+      >
+
 
         List
       </a>
-
-      <a
-        href ="{% url 'hackathons' %}?view_type=cards&country={{ request.GET.country|default:'none' }}&start={{ request.GET.start }}&end={{ request.GET.end }}&city={{ request.GET.city }}"
-        class="{% if type == 'list' %}text-blue-500 bg-white{% endif %} inline-flex items-center gap-2 px-4 py-2 text-sm  rounded-md shadow-sm focus:relative"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          class="size-4"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
-          />
-        </svg>
-
-        Delete
-      </a>
     </div>
+
     <div class="inline-flex p-1 mx-5 bg-gray-100 border border-gray-100 rounded-lg">
       <a
         href ="{% url 'hackathons' %}?view_type={{ request.GET.view_type|default:'none' }}&country=Canada&start={{ request.GET.start }}&end={{ request.GET.end }}&city={{ request.GET.city }}"
-        class="inline-flex items-center gap-2 px-4 py-2 text-sm text-gray-500 rounded-md hover:text-gray-700 focus:relative"
+        class="{% if country == 'Canada' %}text-blue-500 bg-white{% endif %} inline-flex items-center gap-2 px-4 py-2 text-sm text-gray-500 rounded-md hover:text-gray-700 focus:relative"
       >
 
 
@@ -155,28 +119,26 @@
 
       <a
         href="{% url 'hackathons' %}?view_type={{ request.GET.view_type|default:'none' }}&country=United States&start={{ request.GET.start }}&end={{ request.GET.end }}&city={{ request.GET.city }}"
-        class="inline-flex items-center gap-2 px-4 py-2 text-sm text-gray-500 rounded-md hover:text-gray-700 focus:relative"
+        class="{% if country == 'United States' %} text-blue-500 bg-white {% endif %} inline-flex items-center gap-2 px-4 py-2 text-sm text-gray-500 rounded-md hover:text-gray-700 focus:relative"
       >
         United States
       </a>
 
       <a
         href="{% url 'hackathons' %}?view_type={{ request.GET.view_type|default:'none' }}&country=Online&start={{ request.GET.start }}&end={{ request.GET.end }}&city={{ request.GET.city }}"
-        class="inline-flex items-center gap-2 px-4 py-2 text-sm text-blue-500 bg-white rounded-md shadow-sm focus:relative"
+        class="{% if country == 'Online' %} text-blue-500 bg-white {% endif %} inline-flex items-center gap-2 px-4 py-2 text-sm focus:relative text-gray-500 rounded-md hover:text-gray-700 "
       >
         Online
       </a>
       <a
         href="{% url 'hackathons' %}?view_type={{ request.GET.view_type|default:'none' }}&country=World&start={{ request.GET.start }}&end={{ request.GET.end }}&city={{ request.GET.city }}"
-        class="inline-flex items-center gap-2 px-4 py-2 text-sm text-blue-500 bg-white rounded-md shadow-sm focus:relative"
+        class="{% if type == 'World' %} text-blue-500 bg-white {% endif %} inline-flex items-center gap-2 px-4 py-2 text-sm focus:relative text-gray-500 rounded-md hover:text-gray-700 "
       >
 
 
         Wrold Wide
       </a>
     </div>
-
-
 
   </div>
 
@@ -185,129 +147,9 @@
       <div
         class="mt-2 row row-cols-1 row-cols-sm-2 row-cols-md-3 d-flex justify-content-center"
       >
-
-        {% if type == "cards" %}
-          {% for hackathon in hackathons %}
-            <div class="p-4 col flip-card lockedheight">
-              <div class="flip-card-inner">
-                <a href="{{ hackathon.url }}">
-                  <div class="flip-card-front">
-                    <div class="hackathon-card">
-                      {% if hackathon.bgimage %}
-                        <img class="hackathon-img-front" src="{{ hackathon.bg_image }}" alt="{{ hackathon.name }}">
-                      {% else %}
-                        <img class="hackathon-img-front" src="{{ hackathon.fg_image }}" alt="{{ hackathon.name }}">
-                      {% endif %}
-
-                      <div class="flex flex-col mt-3 align-middle hackathon-content justify-items-center">
-                        <h2 class="pt-2 overflow-x-scroll text-3xl max-h-10">{{ hackathon.name }}</h2>
-                        <h6 class="text-base">
-                          {{ hackathon.location.name }}
-                        </h6>
-                        <h5 class="text-lg">
-                          {{ hackathon.start_date |date:"N-d"}}-
-                          {{ hackathon.start_date|date:"d, Y"}}
-                        </h5>
-                      </div>
-                      {% if user.is_authenticated %}
-                        <script src="../../static/js/hackathons.js"></script>
-                        <button type="button" onclick="saveHackathon(event, '{{ hackathon.id }}')">Save</button>
-                      {% else %}
-                        <p class="absolute bottom-0 right-0 m-3 text-xs"><em>Login to save</em></p>
-                      {% endif %}
-                    </div>
-                  </div>
-                  </a
-                  >
-                  <div class="flip-card-back">
-                    <div class="hackathon-card">
-                      <div class="card-image-overlay"></div>
-                      <img
-                        src="https://s3.amazonaws.com/assets.mlh.io/events/splashes/000/212/657/thumb/Backsplash_300.png?1688131132"
-                        class="hackathon-img-back"
-                        alt="Front Image"
-                      />
-                      <div class="hackathon-card-div">
-                        <div class="hackathon-card-div-text">
-                          <h6 class="">Waterloo, ON | May 17-19, 2024</h6>
-                          <h3 class="">HawkHacks</h3>
-                        </div>
-                      </div>
-                      <div class="card-body-layout">
-                        <p class="card-body-text">Application Deadline: 2345</p>
-                        <p class="card-body-text">Travel Reimbursements: 3245</p>
-                        <p class="card-body-text">Travel Reimbursements: 3245</p>
-                        <p class="card-body-text">Travel Reimbursements: 3245</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-          {% endfor %}
-        {% elif type == "calendar" %}
+        {% if type == "calendar" %}
 
 
-          <fieldset>
-            <legend class="sr-only">Checkboxes</legend>
-
-            <div class="space-y-2">
-              <label
-                for="Option1"
-                class="flex cursor-pointer items-start gap-4 rounded-lg border border-gray-200 p-4 transition hover:bg-gray-50 has-[:checked]:bg-blue-50"
-              >
-                <div class="flex items-center">
-                  &#8203;
-                  <input type="checkbox" class="border-gray-300 rounded size-4" id="Option1" />
-                </div>
-
-                <div>
-                  <strong class="font-medium text-gray-900"> John Clapton </strong>
-
-                  <p class="mt-1 text-sm text-gray-700 text-pretty">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  </p>
-                </div>
-              </label>
-
-              <label
-                for="Option2"
-                class="flex cursor-pointer items-start gap-4 rounded-lg border border-gray-200 p-4 transition hover:bg-gray-50 has-[:checked]:bg-blue-50"
-              >
-                <div class="flex items-center">
-                  &#8203;
-                  <input type="checkbox" class="border-gray-300 rounded size-4" id="Option2" />
-                </div>
-
-                <div>
-                  <strong class="font-medium text-gray-900"> Peter Mayer </strong>
-
-                  <p class="mt-1 text-sm text-gray-700 text-pretty">
-                    Lorem ipsum dolor sit amet consectetur.
-                  </p>
-                </div>
-              </label>
-
-              <label
-                for="Option3"
-                class="flex cursor-pointer items-start gap-4 rounded-lg border border-gray-200 p-4 transition hover:bg-gray-50 has-[:checked]:bg-blue-50"
-              >
-                <div class="flex items-center">
-                  &#8203;
-                  <input type="checkbox" class="border-gray-300 rounded size-4" id="Option3" />
-                </div>
-
-                <div>
-                  <strong class="font-medium text-gray-900 text-pretty"> Eric King </strong>
-
-                  <p class="mt-1 text-sm text-gray-700 text-pretty">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  </p>
-                </div>
-              </label>
-            </div>
-          </fieldset>
-
-          <a href="{% url 'calednar_genator' %}?country={{ request.GET.country }}&start={{ request.GET.start }}&end={{ request.GET.end }}&city={{ request.GET.city }}"> export to calendar</a>
           <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
           <script>
             var hackathonData = JSON.parse('{{ hackathons|escapejs }}');
@@ -344,8 +186,14 @@
 
           </script>
           <div id='calendar' class="my-5"></div>
-        {% else %}
 
+
+
+
+          <a href="{% url 'calednar_genator' %}?country={{ request.GET.country }}&start={{ request.GET.start }}&end={{ request.GET.end }}&city={{ request.GET.city }}"> export to calendar</a>
+          <a href=""></a>
+          <a href=""></a>
+        {% elif type == "list" %}
           <div class="w-full px-24">
             <table class="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
               <thead class="text-xs text-gray-700 border-b-2 bo">
@@ -424,7 +272,8 @@
                           <div>
                             <script src="../../static/js/hackathons.js"></script>
 
-                            <button type="button" class="relative flex items-center" onclick="voteHackathon(event, '{{ hackathon.id }}', 'true')">
+                            <button type="button" class="relative flex items-center"
+                                    onclick="voteHackathon(event, '{{ hackathon.id }}', 'true')">
                               <input
                                 class="w-6 h-6 appearance-none peer"
                                 type="checkbox">
@@ -456,11 +305,69 @@
                 </tbody>
               </table>
             </div>
+        {% else %}
+          {% for hackathon in hackathons %}
+            <div class="p-4 col flip-card lockedheight relative preserve-3d rotate-0">
+              <div class="flip-card-inner cursor-pointer ease-in-out">
+                {# Set default rotation to 0 deg to fix weird firefox bug#}
+                <div class="flip-card-front duration-[0.4s] [transform:rotateY(0deg)]"
+                     onclick="this.classList.toggle('flipped'); this.nextElementSibling.classList.toggle('flipped')">
+                  <div class="hackathon-card">
+                    {% if hackathon.bgimage %}
+                      <img class="hackathon-img-front" src="{{ hackathon.bg_image }}" alt="{{ hackathon.name }}">
+                    {% else %}
+                      <img class="hackathon-img-front" src="{{ hackathon.fg_image }}" alt="{{ hackathon.name }}">
+                    {% endif %}
 
-
-
+                    <div class="flex flex-col mt-3 align-middle hackathon-content justify-items-center">
+                      <h2 class="pt-2 overflow-auto text-3xl h-12">{{ hackathon.name }}</h2>
+                      <h6 class="text-base">
+                        {{ hackathon.location.name }}
+                      </h6>
+                      <h5 class="text-lg">
+                        {{ hackathon.start_date |date:"N-d"}}-
+                        {{ hackathon.start_date|date:"d, Y"}}
+                      </h5>
+                    </div>
+                    {% if user.is_authenticated %}
+                      <script src="../../static/js/hackathons.js"></script>
+                      <button type="button" onclick="saveHackathon(event, '{{ hackathon.id }}')">Save</button>
+                    {% else %}
+                      <p class="absolute bottom-0 right-0 m-3 text-xs"><em>Login to save</em></p>
+                    {% endif %}
+                  </div>
+                </div>
+                {# Set default rotation to 0 deg to fix weird firefox bug#}
+                <div class="flip-card-back duration-[0.4s] flipped [transform:rotateY(0deg)]"
+                     onclick="this.classList.toggle('flipped'); this.previousElementSibling.classList.toggle('flipped')">
+                  <div class="hackathon-card">
+                    <div class="card-image-overlay"></div>
+                    {% if hackathon.bgimage %}
+                      <img class="hackathon-img-back" src="{{ hackathon.bg_image }}" alt="{{ hackathon.name }}">
+                    {% else %}
+                      <img class="hackathon-img-back" src="{{ hackathon.fg_image }}" alt="{{ hackathon.name }}">
+                    {% endif %}
+                    <div class="hackathon-card-div">
+                      <div class="relative top-[65%] text-start px-3">
+                        <h6 class="text-gray-200 text-lg">Waterloo, ON | May 17-19, 2024</h6>
+                        <h3 class="text-white text-3xl font-semibold">HawkHacks</h3>
+                      </div>
+                    </div>
+                    <div class="card-body-layout align-items-start">
+                      <p class="card-body-text">Application: <span class="font-semibold text-red-600">2024-01-01 to 2025-01-01</span></p>
+                      <p class="card-body-text">Education: High School, University</p>
+                      <p class="card-body-text">Age Requirement: 14+</p>
+                      <p class="card-body-text">Travel Reimbursements: Yes</p>
+                      <p class="card-body-text">Prize Pool: $999,999</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
         {% endif %}
       </div>
     </div>
   </div>
+
 {% endblock %}
