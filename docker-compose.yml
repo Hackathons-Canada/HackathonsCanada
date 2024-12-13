@@ -8,8 +8,8 @@ services:
       - "22300:22300"
     volumes:
       - ${PWD}/hackathons_canada/local_settings.py:/app/hackathons_canada/local_settings.py:ro
-      - /srv/static:/app/static2
-      - /srv/media:/app/media
+      - static_volume:/static
+      - media_volume:/media
       - ./logs/:/logs/
     depends_on:
       - postgres

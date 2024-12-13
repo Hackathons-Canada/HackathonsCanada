@@ -5,3 +5,4 @@
 .gitattributes
 celerybeat-schedule
 *.log
+README*
