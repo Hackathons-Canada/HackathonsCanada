@@ -28,21 +28,8 @@
             {% for hackathon in saved_hackathons %}
               <tr class="bg-white border-b-2 dark:bg-gray-800 dark:border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
                 <td scope="row" class="py-2 pr-6">
-                  <form action="{% url 'save_hackathon' hackathon_id=hackathon.id %}?page_type=saved" method="POST">
-                    {% csrf_token %}
-                    <button type="submit" class="relative flex items-center justify-center">
-                      <input
-                        class="peer appearance-none w-6 h-6 border-2 border-gray-400 rounded duration-200 ease-in-out checked:bg-[#e5462e] checked:border-[#e5462e] cursor-pointer active:scale-75"
-                        type="checkbox">
-                      <span class="absolute flex items-center justify-center w-6 h-6 font-bold text-white duration-200 ease-in-out scale-0 peer-checked:scale-125">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
-                             viewBox="0 0 12 12">
-                          <path fill="#FFFFFF"
-                                d="M9.765 3.205a.75.75 0 0 1 .03 1.06l-4.25 4.5a.75.75 0 0 1-1.075.015L2.22 6.53a.75.75 0 0 1 1.06-1.06l1.705 1.704l3.72-3.939a.75.75 0 0 1 1.06-.03"></path>
-                        </svg>
-                      </span>
-                    </button>
-                  </form>
+                  <script src="../../static/js/hackathons.js"></script>
+                  <button type="button" onclick="saveHackathon(event, '{{ hackathon.id }}')">Save</button>
 
 
                 </td>
@@ -72,34 +59,39 @@
                 </td>
                 <td class="px-6 py-2">
                   <div class="flex items-center">
-                    <div>
-                      <label class="relative flex items-center">
-                        <input
-                          class="w-6 h-6 appearance-none peer"
-                          type="checkbox">
-                        <span class="absolute cursor-pointer w-6 h-6 flex items-center justify-center text-white font-bold duration-200 ease-in-out peer-checked:*:fill-[#e5462e] *:stroke-gray-500 peer-checked:*:stroke-[#e5462e] active:scale-75">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"
-                               class="w-6 h-6 duration-200 fill-gray-300">
-                            <path class="stroke-2"
-                                  d="M4 14h4v7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7h4a1.001 1.001 0 0 0 .781-1.625l-8-10c-.381-.475-1.181-.475-1.562 0l-8 10A1.001 1.001 0 0 0 4 14"></path>
-                          </svg>
-                        </span>
-                      </label>
-                    </div>
-                    <p class="ml-1 text-lg text-gray-700 min-w-16">{{ hackathon.count_upvotes }}</p>
-                    <label class="relative flex items-center">
+                    <script src="../../static/js/hackathons.js"></script>
+
+
+                    <button type="button" class="relative flex items-center"
+                            onclick="voteHackathon(event, '{{ hackathon.id }}', 'true')">
                       <input
                         class="w-6 h-6 appearance-none peer"
                         type="checkbox">
-                      <span class="absolute cursor-pointer w-6 h-6 flex items-center justify-center text-white font-bold duration-200 ease-in-out peer-checked:*:fill-[#9393ff] *:stroke-gray-500 peer-checked:*:stroke-[#9393ff] active:scale-75">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"
-                             class="w-6 h-6 duration-200 fill-gray-300">
+                      <span class="absolute cursor-pointer w-6 h-6 flex items-center justify-center text-white font-bold duration-200 ease-in-out peer-checked:*:fill-[#e5462e] *:stroke-gray-500 peer-checked:*:stroke-[#e5462e] active:scale-75">
+                        <svg  id = "{{hackathon.id }}-up" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"
+                             class="w-6 h-6 duration-200 {% if user_vote.hackathon.idj == True %} fill-black{% else %}fill-white {% endif %}">
                           <path class="stroke-2"
-                                d="M20.901 10.566A1 1 0 0 0 20 10h-4V3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v7H4a1.001 1.001 0 0 0-.781 1.625l8 10a1 1 0 0 0 1.562 0l8-10c.24-.301.286-.712.12-1.059"></path>
+                                d="M4 14h4v7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7h4a1.001 1.001 0 0 0 .781-1.625l-8-10c-.381-.475-1.181-.475-1.562 0l-8 10A1.001 1.001 0 0 0 4 14"></path>
                         </svg>
                       </span>
-                    </label>
-                    <p class="ml-1 text-lg text-gray-700 min-w-16">{{ hackathon.count_downvotes }}</p>
+                    </button>
+
+                    <p id = "{{hackathon.id }}-up-text" class="ml-1 text-lg text-gray-700 min-w-16">{{ hackathon.count_upvotes }}</p>
+                    <button type="button" class="relative flex items-center"
+                            onclick="voteHackathon(event, '{{ hackathon.id }}', 'false')">
+                      <input
+                        class="w-6 h-6 appearance-none peer"
+                        type="checkbox">
+                      <span class="absolute cursor-pointer w-6 h-6 flex items-center justify-center text-white font-bold duration-200 ease-in-out peer-checked:*:fill-[#e5462e] *:stroke-gray-500 peer-checked:*:stroke-[#e5462e] active:scale-75">
+                        <svg  id = "{{hackathon.id }}-down" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"
+                             class="rotate-180 w-6 h-6 duration-200 {% if user_vote.hackathon.idj == False %}fill-black{% else %}fill-white {% endif %}">
+                          <path class="stroke-2"
+                                d="M4 14h4v7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7h4a1.001 1.001 0 0 0 .781-1.625l-8-10c-.381-.475-1.181-.475-1.562 0l-8 10A1.001 1.001 0 0 0 4 14"></path>
+                        </svg>
+                      </span>
+                    </button>
+                    <p id = "{{hackathon.id }}-down-text" class="ml-1 text-lg text-gray-700 min-w-16">{{ hackathon.count_downvotes }}</p>
+
                   </div>
             {% endfor %}
           </tbody>

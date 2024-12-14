@@ -1,7 +1,6 @@
 import random
 from typing import Final, Tuple, List
 from django.contrib.auth.models import AbstractUser, UserManager
-from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import DecimalField
 from django.utils import timezone
@@ -469,10 +468,6 @@ class Hackathon(MetaDataMixin):
         # wont use generate field because it only uses sql functions like F() and it does not have .lower etc
         self.dup = self.name.strip().lower() + str(self.end_date)
 
-        if Hackathon.objects.filter(name=self.name, end_date=self.end_date).exists():
-            raise ValidationError(
-                f"An object with the name '{self.name}' already exists."
-            )
         super().save(*args, **kwargs)
 
 
@@ -486,7 +481,7 @@ class Vote(models.Model):
     time_updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return str(self.hackathon_id)
+        return f"Hacker(type_vote={self.type_vote}, hackathon_id={self.hackathon_id}, from_hacker={self.from_hacker}, time_created={self.time_created})"
 
 
 class CuratorRequest(models.Model):

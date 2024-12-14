@@ -80,6 +80,9 @@ def hackathon_page(request):
     start = request.GET.get("start")
     end = request.GET.get("end")
 
+    user_votes = Vote.objects.filter(from_hacker=request.user)
+    user_votes_dict = {vote.hackathon_id.dup: vote.type_vote for vote in user_votes}
+    print(user_votes_dict)
     query_base = Q(end_date__gte=tdy_date, is_public=True)
     if country and country != "none" and country != "World":
         query_base &= Q(location__country=country)
@@ -116,6 +119,7 @@ def hackathon_page(request):
             "city": city,
             "start": start,
             "end": end,
+            "user_votes": user_votes_dict,
         }
         return render(request, "hackathons/hackathons.html", context)
     else:
@@ -126,6 +130,7 @@ def hackathon_page(request):
             "city": city,
             "start": start,
             "end": end,
+            "user_votes": user_votes_dict,
         }
 
         return render(request, "hackathons/hackathons.html", context)
@@ -207,27 +212,35 @@ def add_vote(request: HttpRequest, hackathon_id):
         hacker = get_object_or_404(Hacker, id=request.user.id)
         type_vote = request.GET.get("vote_state")
         state = str_to_bool(type_vote)
-        vote, created = Vote.objects.get_or_create(
-            hackathon_id=hackathon, from_hacker=hacker
-        )
+        vote = Vote.objects.filter(hackathon_id=hackathon, from_hacker=hacker)
 
-        if not created:
+        if vote.exists():
+            vote = vote.first()
             if vote.type_vote:
                 hackathon.count_upvotes -= 1
+                hackathon.count_downvotes += 1
             else:
                 hackathon.count_downvotes -= 1
+                hackathon.count_upvotes += 1
 
             # Update the vote type
             vote.type_vote = state
             vote.save()
         else:
-            vote.type_vote = state
-            vote.from_hacker.add(vote)
+            vote = Vote.objects.create(hackathon_id=hackathon, type_vote=state)
 
-        if type_vote:
-            hackathon.count_upvotes = vote.from_hacker.count()
-        else:
-            hackathon.count_downvotes = vote.from_hacker.count()
+            vote.from_hacker.add(hacker)
+
+        hackathon.count_upvotes = Vote.objects.filter(
+            hackathon_id=hackathon, type_vote=True
+        ).count()
+
+        hackathon.count_downvotes = Vote.objects.filter(
+            hackathon_id=hackathon, type_vote=False
+        ).count()
+
+        # Save the updated hackathon object
+        hackathon.save()
 
         return JsonResponse({"status": "success", "message": "Vote added successfully"})
 
