@@ -82,7 +82,9 @@ def hackathon_page(request):
     end = request.GET.get("end")
 
     user_votes = Vote.objects.filter(from_hacker=request.user)
-    user_votes_dict = {vote.hackathon_id.dup: vote.type_vote for vote in user_votes}
+    user_votes_dict = {
+        vote.hackathon_id.duplication_id: vote.type_vote for vote in user_votes
+    }
     print(user_votes_dict)
     query_base = Q(end_date__gte=tdy_date, is_public=True)
     if country and country != "none" and country != "World":
