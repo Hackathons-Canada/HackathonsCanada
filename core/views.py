@@ -7,6 +7,8 @@ import json
 
 from django.contrib.auth.models import AbstractUser, AnonymousUser
 from django.utils import timezone
+from django.views.decorators.cache import cache_page
+
 from core.scraper import scrape_all
 from django.http import HttpResponse, JsonResponse
 from django.conf import settings
@@ -305,6 +307,7 @@ def scrape(request):
     return HttpResponse("Scraped!")
 
 
+@cache_page(60 * 60)  # 1 hour cache
 def calednar_genator(request):
     tdy_date = timezone.now()
     country = request.GET.get("country")
