@@ -303,7 +303,13 @@ class ReviewStatus(models.TextChoices):
 class Hackathon(MetaDataMixin):
     objects = HackthonsManager()
 
-    dup = models.CharField(max_length=255, blank=True, null=True, unique=True)
+    duplication_id = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        unique=True,
+        help_text="Duplication ID for the Hackathon",
+    )
 
     source = models.CharField(
         max_length=3,
@@ -466,7 +472,7 @@ class Hackathon(MetaDataMixin):
             self.is_public = False
 
         # wont use generate field because it only uses sql functions like F() and it does not have .lower etc
-        self.dup = self.name.strip().lower() + str(self.end_date)
+        self.duplication_id = self.name.strip().lower() + str(self.end_date)
 
         super().save(*args, **kwargs)
 

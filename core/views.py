@@ -33,6 +33,7 @@ from .forms import (
 def get_images() -> list[str]:
     IMAGE_DIR = f"{settings.BASE_DIR}/static/assets/hackbanners"
     #  get all the image names in the directory
+    # todo: reimpl using static()
     return [f"assets/hackbanners/{img}" for img in os.listdir(IMAGE_DIR)]
 
 
@@ -328,7 +329,7 @@ def calednar_genator(request):
         ical_event.add("dtstart", hackathon.start_date)
         ical_event.add("dtend", hackathon.end_date)
         ical_event.add("location", hackathon.location.name)
-        ical_event.add("uid", hackathon.dup)
+        ical_event.add("uid", hackathon.duplication_id)
         cal.add_component(ical_event)
     response = HttpResponse(cal.to_ical(), content_type="text/calendar")
     response["Content-Disposition"] = "attachment; filename=hackathons.ics"

@@ -382,7 +382,7 @@ def scrape_all():
             if timezone.is_naive(end_date):
                 end_date = timezone.make_aware(end_date)
             if Hackathon.objects.filter(
-                dup=ev["name"].strip().lower() + str(end_date)
+                duplication_id=ev["name"].strip().lower() + str(end_date)
             ).exists():
                 # print(f"Duplicate Hackathon found: {ev["name"]} on {ev["end_date"]}")
                 return None
