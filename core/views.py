@@ -1,7 +1,11 @@
+from __future__ import annotations
+
 import os
 import random
 from functools import cache
 import json
+
+from django.contrib.auth.models import AbstractUser, AnonymousUser
 from django.utils import timezone
 from core.scraper import scrape_all
 from django.http import HttpResponse, JsonResponse
@@ -81,7 +85,7 @@ def hackathon_page(request):
     start = request.GET.get("start")
     end = request.GET.get("end")
 
-    user_votes = Vote.objects.filter(from_hacker=request.user)
+    user_votes = Vote.objects.filter(from_hacker=request.user.id)
     user_votes_dict = {
         vote.hackathon_id.duplication_id: vote.type_vote for vote in user_votes
     }
@@ -289,10 +293,11 @@ class SavedHackathonsPage(ListView):
 
 
 # checks if the user is an admin
-def is_admin(user):
+def is_admin(user: AbstractUser | AnonymousUser):
     return user.is_superuser
 
 
+@login_required
 @user_passes_test(is_admin)
 @ratelimit(key="user_or_ip", rate="1/d", block=True)
 def scrape(request):
