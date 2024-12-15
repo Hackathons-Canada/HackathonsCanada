@@ -4,6 +4,7 @@ from django.contrib.auth.models import AbstractUser, UserManager
 from django.db import models
 from django.db.models import DecimalField
 from django.utils import timezone
+from django.core.exceptions import ValidationError
 from django_countries.fields import CountryField
 
 from core.tasks import send_new_hackathon_email
@@ -302,6 +303,14 @@ class ReviewStatus(models.TextChoices):
 
 class Hackathon(MetaDataMixin):
     objects = HackthonsManager()
+
+    duplication_id = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        unique=True,
+        help_text="Duplication ID for the Hackathon",
+    )
 
     source = models.CharField(
         max_length=3,

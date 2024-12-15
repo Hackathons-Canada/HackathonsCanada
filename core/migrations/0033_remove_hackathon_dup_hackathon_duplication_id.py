@@ -9,10 +9,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RemoveField(
-            model_name="hackathon",
-            name="dup",
-        ),
         migrations.AddField(
             model_name="hackathon",
             name="duplication_id",
