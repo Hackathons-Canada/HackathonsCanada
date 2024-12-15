@@ -303,14 +303,6 @@ class ReviewStatus(models.TextChoices):
 class Hackathon(MetaDataMixin):
     objects = HackthonsManager()
 
-    duplication_id = models.CharField(
-        max_length=255,
-        blank=True,
-        null=True,
-        unique=True,
-        help_text="Duplication ID for the Hackathon",
-    )
-
     source = models.CharField(
         max_length=3,
         choices=HackathonSource.choices,
@@ -366,7 +358,7 @@ class Hackathon(MetaDataMixin):
     application_start = models.DateTimeField(blank=True, null=True)
     application_deadline = models.DateTimeField(blank=True, null=True)
 
-    reimbursements = models.BooleanField(default=True)
+    reimbursements = models.BooleanField(default=False)
 
     location = models.ForeignKey(
         HackathonLocation,
@@ -471,9 +463,15 @@ class Hackathon(MetaDataMixin):
         if self.review_status == ReviewStatus.Rejected:
             self.is_public = False
 
-        # wont use generate field because it only uses sql functions like F() and it does not have .lower etc
-        self.duplication_id = self.name.strip().lower() + str(self.end_date)
-
+        h = Hackathon.objects.filter(
+            name=self.name,
+            end_date__year=self.end_date.year,
+            end_date__month=self.end_date.month,
+        )
+        if len(h) > 0 and h[0].id != self.id:
+            raise ValidationError(
+                f"An object with the name '{self.name}' already exists."
+            )
         super().save(*args, **kwargs)
 
 

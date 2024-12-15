@@ -134,7 +134,7 @@ class MLHSource(AbstractDataSource):
             )
 
         evinfo = {
-            "name": name,
+            "name": name.rstrip(),
             "start_date": start_date,
             "end_date": end_date,
             "location": hackathonLocation_input,
@@ -214,7 +214,7 @@ class DevpostSource(AbstractDataSource):
             )
 
         evinfo = {
-            "name": ev["title"],
+            "name": ev["title"].rstrip(),
             "start_date": startdate,
             "end_date": enddate,
             "location": hackathonLocation_input,
@@ -275,7 +275,7 @@ class EthGlobalSource(AbstractDataSource):
             )
 
         evinfo = {
-            "name": name,
+            "name": name.rstrip(),
             "start_date": startdate,
             "end_date": enddate,
             "location": hackathonLocation_input
@@ -337,7 +337,7 @@ class HackClubSource(AbstractDataSource):
             )
 
         evinfo = {
-            "name": name,
+            "name": name.rstrip(),
             "start_date": datetime.datetime.strptime(
                 ev.find_all("span", {"itemprop": "startDate"})[0]["content"].split("T")[
                     0
@@ -353,7 +353,7 @@ class HackClubSource(AbstractDataSource):
             "website": ev["href"],
             "fg_image": ev.find_all("img")[0]["src"],
             "source": HackathonSource.Scraped,
-            "metadata": {"website": "hackclub"},
+            "scrape_source": "hcl",
             "is_public": True,
         }
 
@@ -381,38 +381,37 @@ def scrape_all():
             end_date = ev["end_date"]
             if timezone.is_naive(end_date):
                 end_date = timezone.make_aware(end_date)
-            if Hackathon.objects.filter(
-                duplication_id=ev["name"].strip().lower() + str(end_date)
-            ).exists():
-                # print(f"Duplicate Hackathon found: {ev["name"]} on {ev["end_date"]}")
-                return None
+
+            h = Hackathon.objects.filter(
+                name=ev["name"],
+                end_date__year=end_date.year,
+                end_date__month=end_date.month,
+            )
+            if len(h) == 0:
+                h1 = Hackathon()
+                print(
+                    f"Creating new Hackathon: {ev['name']} from {ev['scrape_source']}"
+                )  # Print when creating a new Hackathon
             else:
-                h = Hackathon.objects.filter(name=ev["name"], end_date=end_date)
-                if len(h) == 0:
-                    h1 = Hackathon()
+                h1 = h[0]
+                if h1.freeze_data:
                     print(
-                        f"Creating new Hackathon: {ev['name']}"
-                    )  # Print when creating a new Hackathon
-                else:
-                    h1 = h[0]
-                    if h1.freeze_data:
-                        print(
-                            f"Skipping frozen Hackathon: {ev['name']}"
-                        )  # Print when skipping a frozen Hackathon
-                        continue
+                        f"Skipping frozen Hackathon: {ev['name']}"
+                    )  # Print when skipping a frozen Hackathon
+                    continue
 
+            for attr, value in ev.items():
                 try:
-                    for attr, value in ev.items():
-                        setattr(h1, attr, value)
+                    setattr(h1, attr, value)
                 except ValueError:
-                    continue  # Some hackathons with improper location data error out
-                    # THIS IS A TEMPORARY FIX
+                    if attr == "location":
+                        pass
 
-                if h1.location == "":
-                    h1.location = "Online" if h1.hybrid == "O" else "Unknown"
+            if h1.location == "":
+                h1.location = "Online" if h1.hybrid == "O" else "Unknown"
 
-                h1.created_at = timezone.make_aware(datetime.datetime.now())
-                h1.save()
+            h1.created_at = timezone.make_aware(datetime.datetime.now())
+            h1.save()
 
 
 def extract_text_from_url(url):
