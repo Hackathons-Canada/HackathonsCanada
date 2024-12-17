@@ -5,7 +5,9 @@ import itertools
 import cloudscraper
 from django.utils import timezone
 from bs4 import BeautifulSoup
+
 # from icalendar import Calendar, Event
+from django.db import transaction
 
 from hackathons_canada.settings import CUR_YEAR
 
@@ -22,6 +24,9 @@ def search_city(city_name, username):
     url = f"http://api.geonames.org/searchJSON?q={city_name}&maxRows=10&username={username}"
     if (
         "online" in city_name.lower()
+        or "" in city_name.lower()
+        or " " in city_name
+        or "remote" in city_name.lower()
         or "virtual" in city_name.lower()
         or "everywhere" in city_name.lower()
     ):
@@ -33,8 +38,7 @@ def search_city(city_name, username):
         data = response.json()
 
         if "geonames" not in data or not data["geonames"]:
-            print(f"{city_name}, No results found for the specified city.")
-            return
+            return None
 
         # Extract relevant information for each city
         cities = []
@@ -108,17 +112,14 @@ class MLHSource(AbstractDataSource):
                 ev.find_all("meta", {"itemprop": "endDate"})[0]["content"], "%Y-%m-%d"
             )
         )
+        print(end_date)
         start_date = timezone.make_aware(
             datetime.datetime.strptime(
                 ev.find_all("meta", {"itemprop": "startDate"})[0]["content"], "%Y-%m-%d"
             )
         )
 
-        if geoData is None:
-            hackathonLocation_input, created = HackathonLocation.objects.get_or_create(
-                name=loc_data
-            )
-        elif geoData == "Online":
+        if geoData is None or geoData == "Online":
             hackathonLocation_input, created = HackathonLocation.objects.get_or_create(
                 name="Online", country="Online"
             )
@@ -194,11 +195,7 @@ class DevpostSource(AbstractDataSource):
         loc = ev["displayed_location"]["location"]
         geoData = search_city(loc, username)
 
-        if geoData is None:
-            hackathonLocation_input, created = HackathonLocation.objects.get_or_create(
-                name=loc
-            )
-        elif geoData == "Online":
+        if geoData == "Online" or geoData is None:
             hackathonLocation_input, created = HackathonLocation.objects.get_or_create(
                 name="Online", country="Online"
             )
@@ -259,7 +256,7 @@ class EthGlobalSource(AbstractDataSource):
         loc = " ".join(name.split()[1:])
         geoData = search_city(loc, username)
 
-        if loc == "" or loc is None or geoData == "Online" or geoData is None:
+        if geoData == "Online" or geoData is None:
             hackathonLocation_input, created = HackathonLocation.objects.get_or_create(
                 name="Online", country="Online"
             )
@@ -317,11 +314,7 @@ class HackClubSource(AbstractDataSource):
 
         geoData = search_city(loc, username)
 
-        if geoData is None:
-            hackathonLocation_input, created = HackathonLocation.objects.get_or_create(
-                name=loc
-            )
-        elif geoData == "Online":
+        if geoData is None or geoData == "Online":
             hackathonLocation_input, created = HackathonLocation.objects.get_or_create(
                 name="Online", country="Online"
             )
@@ -374,6 +367,9 @@ def scrape_all():
         EthGlobalSource().get_events(),
         HackClubSource().get_events(),
     )
+    events_to_create = []
+    events_to_update = []
+
     for ev in evs:
         if ev == {}:
             continue
@@ -382,36 +378,38 @@ def scrape_all():
             if timezone.is_naive(end_date):
                 end_date = timezone.make_aware(end_date)
 
-            h = Hackathon.objects.filter(
-                name=ev["name"],
-                end_date__year=end_date.year,
-                end_date__month=end_date.month,
+            hackathon, created = Hackathon.objects.get_or_create(
+                duplication_id=ev["name"].lower().replace(" ", "-")
+                + end_date.strftime("-%Y")
             )
-            if len(h) == 0:
-                h1 = Hackathon()
-                print(
-                    f"Creating new Hackathon: {ev['name']} from {ev['scrape_source']}"
-                )  # Print when creating a new Hackathon
+
+            if not created:
+                # Update the existing hackathon if necessary
+                hackathon.start_date = ev["start_date"]
+                hackathon.end_date = end_date
+                hackathon.location = ev["location"]
+                hackathon.source = HackathonSource.Scraped
+                hackathon.scrape_source = "hcl"
+                hackathon.is_public = True
+                events_to_update.append(hackathon)
             else:
-                h1 = h[0]
-                if h1.freeze_data:
-                    print(
-                        f"Skipping frozen Hackathon: {ev['name']}"
-                    )  # Print when skipping a frozen Hackathon
-                    continue
+                events_to_create.append(hackathon)
 
-            for attr, value in ev.items():
-                try:
-                    setattr(h1, attr, value)
-                except ValueError:
-                    if attr == "location":
-                        pass
-
-            if h1.location == "":
-                h1.location = "Online" if h1.hybrid == "O" else "Unknown"
-
-            h1.created_at = timezone.make_aware(datetime.datetime.now())
-            h1.save()
+        with transaction.atomic():
+            if events_to_create:
+                Hackathon.objects.bulk_create(events_to_create)
+            if events_to_update:
+                Hackathon.objects.bulk_update(
+                    events_to_update,
+                    [
+                        "start_date",
+                        "end_date",
+                        "location",
+                        "source",
+                        "scrape_source",
+                        "is_public",
+                    ],
+                )
 
 
 def extract_text_from_url(url):

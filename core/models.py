@@ -4,7 +4,6 @@ from django.contrib.auth.models import AbstractUser, UserManager
 from django.db import models
 from django.db.models import DecimalField
 from django.utils import timezone
-from django.core.exceptions import ValidationError
 from django_countries.fields import CountryField
 
 from core.tasks import send_new_hackathon_email
@@ -293,6 +292,9 @@ class HackathonLocation(models.Model):
         null=True,
     )
 
+    def __str__(self):
+        return self.name
+
 
 class ReviewStatus(models.TextChoices):
     Approved = "approved", "Approved"
@@ -464,37 +466,44 @@ class Hackathon(MetaDataMixin):
     def save(self, *args, **kwargs):
         if self.start_date and timezone.is_naive(self.start_date):
             self.start_date = timezone.make_aware(self.start_date)
-        if self.end_date and timezone.is_naive(self.end_date):
+        elif self.end_date and timezone.is_naive(self.end_date):
             self.end_date = timezone.make_aware(self.end_date)
 
         if self.review_status == ReviewStatus.Approved:
             self.is_public = True
-        if self.review_status == ReviewStatus.Rejected:
+        elif self.review_status == ReviewStatus.Rejected:
             self.is_public = False
 
-        h = Hackathon.objects.filter(
-            name=self.name,
-            end_date__year=self.end_date.year,
-            end_date__month=self.end_date.month,
-        )
-        if len(h) > 0 and h[0].id != self.id:
-            raise ValidationError(
-                f"An object with the name '{self.name}' already exists."
-            )
+        if self.end_date:
+            self.duplication_id = self.name.lower().replace(
+                " ", "-"
+            ) + self.end_date.strftime("-%Y")
+        else:
+            pass
+
+        # h = Hackathon.objects.filter(
+        #     name=self.name,
+        #     end_date__year=self.end_date.year,
+        #     end_date__month=self.end_date.month,
+        # )
+        # if len(h) > 0 and h[0].id != self.id:
+        #     raise ValidationError(
+        #         f"An object with the name '{self.name}' already exists."
+        #     )
         super().save(*args, **kwargs)
 
 
 class Vote(models.Model):
-    type_vote = models.BooleanField(default=True)
-    hackathon_id = models.OneToOneField(
+    vote_type = models.BooleanField(default=True)
+    hackathon = models.OneToOneField(
         Hackathon, on_delete=models.CASCADE, related_name="votes"
     )
-    from_hacker = models.ManyToManyField(Hacker, related_name="hackathon_votes")
+    hacker = models.ManyToManyField(Hacker, related_name="hackathon_votes")
     time_created = models.DateTimeField(auto_now_add=True)
     time_updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Hacker(type_vote={self.type_vote}, hackathon_id={self.hackathon_id}, from_hacker={self.from_hacker}, time_created={self.time_created})"
+        return f"Hacker(type_vote={self.vote_type}, hackathon_id={self.hackathon_id}, from_hacker={self.hacker}, time_created={self.time_created})"
 
 
 class CuratorRequest(models.Model):
@@ -503,7 +512,7 @@ class CuratorRequest(models.Model):
     team_description = models.TextField()
     reason = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    created_by = models.ManyToManyField(Hacker, related_name="curator_requests")
+    created_by = models.ManyToManyField(Hacker, related_name="curation_requests")
     review_status = models.CharField(
         max_length=255,
         blank=True,

@@ -308,12 +308,8 @@ a {
   position: relative;
   text-align: center;
   transition: transform 0.6s;
-  /*transform-style: preserve-3d;*/
 }
 
-/*.flip-card-inner.is-flipped {*/
-/*  transform: rotateY(180deg);*/
-/*}*/
 
 .flip-card-front,
 .flip-card-back {
@@ -321,9 +317,6 @@ a {
   backface-visibility: hidden;
 }
 
-/*.flip-card-back {*/
-/*  transform: rotateY(180deg);*/
-/*}*/
 
 .flipped {
   transform: rotateY(180deg) !important;

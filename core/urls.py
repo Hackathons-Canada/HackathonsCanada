@@ -34,5 +34,5 @@ urlpatterns = [
         name="save_hackathon",
     ),
     path("scrape/", views.scrape, name="scrape"),
-    path("export_cal/", views.calednar_genator, name="calednar_genator"),
+    path("export_cal/", views.calendar_generator, name="calednar_genator"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

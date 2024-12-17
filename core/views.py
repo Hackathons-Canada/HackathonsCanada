@@ -61,10 +61,8 @@ def home(request):
 
 # @ratelimit(key="user_or_ip", rate="1/m", block=True)
 def addHackathons(request):
-    print(request.method)
     if request.method == "POST":
         form = HackathonForm(request.POST)
-        print("got the post requets")
         if form.is_valid():
             print("sending the form")
             form.save(commit=False)
@@ -87,11 +85,10 @@ def hackathon_page(request):
     start = request.GET.get("start")
     end = request.GET.get("end")
 
-    user_votes = Vote.objects.filter(from_hacker=request.user.id)
+    user_votes = Vote.objects.filter(hacker=request.user.id)
     user_votes_dict = {
-        vote.hackathon_id.duplication_id: vote.type_vote for vote in user_votes
+        vote.hackathon.duplication_id: vote.vote_type for vote in user_votes
     }
-    print(user_votes_dict)
     query_base = Q(end_date__gte=tdy_date, is_public=True)
     if country and country != "none" and country != "World":
         query_base &= Q(location__country=country)
@@ -183,6 +180,7 @@ def setting(request):
     )
 
 
+@login_required
 def save_hackathon(request: HttpRequest, hackathon_id):
     if request.method == "POST":
         hackathon = get_object_or_404(Hackathon, id=hackathon_id)
@@ -215,16 +213,16 @@ def str_to_bool(s):
     return s.lower() in ["true", "1", "yes"]
 
 
+@login_required
 def add_vote(request: HttpRequest, hackathon_id):
     if request.method == "POST":
         hackathon = get_object_or_404(Hackathon, id=hackathon_id)
         hacker = get_object_or_404(Hacker, id=request.user.id)
         type_vote = request.GET.get("vote_state")
         state = str_to_bool(type_vote)
-        vote = Vote.objects.filter(hackathon_id=hackathon, from_hacker=hacker)
+        vote = Vote.objects.filter(hackathon_id=hackathon, hacker=hacker)
 
-        if vote.exists():
-            vote = vote.first()
+        if vote.first():
             if vote.type_vote:
                 hackathon.count_upvotes -= 1
                 hackathon.count_downvotes += 1
@@ -232,21 +230,19 @@ def add_vote(request: HttpRequest, hackathon_id):
                 hackathon.count_downvotes -= 1
                 hackathon.count_upvotes += 1
 
-            # Update the vote type
-            vote.type_vote = state
-            vote.save()
+            vote.update(type_vote=state)
         else:
-            vote = Vote.objects.create(hackathon_id=hackathon, type_vote=state)
+            vote = Vote.objects.create(hackathon=hackathon, vote_type=state)
 
             vote.from_hacker.add(hacker)
 
-        hackathon.count_upvotes = Vote.objects.filter(
-            hackathon_id=hackathon, type_vote=True
-        ).count()
+        # hackathon.count_upvotes = Vote.objects.filter(
+        #     hackathon=hackathon, vote_type=True
+        # ).count()
 
-        hackathon.count_downvotes = Vote.objects.filter(
-            hackathon_id=hackathon, type_vote=False
-        ).count()
+        # hackathon.count_downvotes = Vote.objects.filter(
+        #     hackathon=hackathon, vote_type=False
+        # ).count()
 
         # Save the updated hackathon object
         hackathon.save()
@@ -308,7 +304,7 @@ def scrape(request):
 
 
 @cache_page(60 * 60)  # 1 hour cache
-def calednar_genator(request):
+def calendar_generator(request):
     tdy_date = timezone.now()
     country = request.GET.get("country")
     city = request.GET.get("city")
