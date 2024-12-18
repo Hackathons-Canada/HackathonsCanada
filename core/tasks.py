@@ -29,9 +29,9 @@ def send_hackathon_emails(frequency):
     subject = ""
     emailFrom = "hello@example.com"
     emailTo = []
-    
-    plaintext_template = get_template("hackathons/new_hackathon_notification.txt")
-    html_template = get_template("hackathons/new_hackathon_notification.html")
+
+    plaintext_template = get_template("hackathons/email/new_hackathon_notification.txt")
+    html_template = get_template("hackathons/email/new_hackathon_notification.html")
 
     context = {
         "hackathons": hackathons,
