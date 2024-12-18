@@ -3,8 +3,9 @@ from typing import TYPE_CHECKING
 from celery import shared_task
 from celery.utils.log import get_task_logger
 
-from django.core.mail import send_mail
 from django.apps import apps
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import get_template
 from django.utils import timezone
 
 if TYPE_CHECKING:
@@ -28,13 +29,16 @@ def send_hackathon_emails(frequency):
     subject = ""
     emailFrom = "hello@example.com"
     emailTo = []
-    message = "New hackathons found:\n"
-    message += "<ul>\n"
-    for hackathon in hackathons:
-        message += "  <li>"
-        message += hackathon.name
-        message += "</li>\n"
-    message += "</ul>\n"
+    
+    plaintext_template = get_template("hackathons/new_hackathon_notification.txt")
+    html_template = get_template("hackathons/new_hackathon_notification.html")
+
+    context = {
+        "hackathons": hackathons,
+    }
+
+    text_content = plaintext_template.render(context=context)
+    html_content = html_template.render(context=context)
 
     if frequency == "weekly":
         emailTo = [
@@ -55,4 +59,6 @@ def send_hackathon_emails(frequency):
         ]
         subject = "your monthly email"
 
-    send_mail(subject, message, emailFrom, emailTo)
+    msg = EmailMultiAlternatives(subject, text_content, emailFrom, emailTo)
+    msg.attach_alternative(html_content, "text/html")
+    msg.send()
