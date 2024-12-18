@@ -4,6 +4,8 @@ from django.contrib.auth.models import AbstractUser, UserManager
 from django.db import models
 from django.db.models import DecimalField
 from django.utils import timezone
+
+# from django.core.exceptions import ValidationError
 from django_countries.fields import CountryField
 
 from core.tasks import send_new_hackathon_email
@@ -440,8 +442,7 @@ class Hackathon(MetaDataMixin):
         default=dict, null=True, blank=True
     )  # Anything else that we might want to add in a structured format
 
-    count_upvotes = models.PositiveIntegerField(default=0)
-    count_downvotes = models.PositiveIntegerField(default=0)
+    count_votes = models.PositiveIntegerField(default=0)
 
     class Meta:
         ordering = ["start_date"]
@@ -474,22 +475,13 @@ class Hackathon(MetaDataMixin):
         elif self.review_status == ReviewStatus.Rejected:
             self.is_public = False
 
-        if self.end_date:
+        if self.duplication_id is None:
             self.duplication_id = self.name.lower().replace(
-                " ", "-"
+                " ", ""
             ) + self.end_date.strftime("-%Y")
         else:
             pass
 
-        # h = Hackathon.objects.filter(
-        #     name=self.name,
-        #     end_date__year=self.end_date.year,
-        #     end_date__month=self.end_date.month,
-        # )
-        # if len(h) > 0 and h[0].id != self.id:
-        #     raise ValidationError(
-        #         f"An object with the name '{self.name}' already exists."
-        #     )
         super().save(*args, **kwargs)
 
 

@@ -236,15 +236,6 @@ def add_vote(request: HttpRequest, hackathon_id):
 
             vote.from_hacker.add(hacker)
 
-        # hackathon.count_upvotes = Vote.objects.filter(
-        #     hackathon=hackathon, vote_type=True
-        # ).count()
-
-        # hackathon.count_downvotes = Vote.objects.filter(
-        #     hackathon=hackathon, vote_type=False
-        # ).count()
-
-        # Save the updated hackathon object
         hackathon.save()
 
         return JsonResponse({"status": "success", "message": "Vote added successfully"})
@@ -258,17 +249,11 @@ def request_curator_access(request):
     if request.method == "POST":
         form = CuratorRequestForm(request.POST)
         if form.is_valid():
-            # hackathon = form.cleaned_data["hackathon"]
-            # team_name = form.cleaned_data["team_name"]
-            # team_description = form.cleaned_data["team_description"]
-            # reason = form.cleaned_data["reason"]
             form.save(commit=False)
             form.review_status = ReviewStatus.Pending
             form.created_by = Hacker.objects.get(id=request.user.id)
             form.save()
-            # print(
-            #     f"Request from {team_name} to be a curator for {hackathon}: {reason}. {team_name} description: {team_description}"
-            # )
+
             return redirect("curator_request_success")
     else:
         form = CuratorRequestForm()
@@ -286,7 +271,6 @@ class SavedHackathonsPage(ListView):
     def get_queryset(self):
         user: Hacker = self.request.user
         saved_hackathons = user.saved.all()
-        print(saved_hackathons)  # Print the saved hackathons for debugging
         return saved_hackathons
 
 

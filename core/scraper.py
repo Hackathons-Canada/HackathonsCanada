@@ -7,30 +7,38 @@ from django.utils import timezone
 from bs4 import BeautifulSoup
 
 # from icalendar import Calendar, Event
-from django.db import transaction
 
 from hackathons_canada.settings import CUR_YEAR
 
 from django.apps import apps
 
 if apps.ready:
-    from core.models import Hackathon, HackathonSource, HackathonLocation, Location
+    from core.models import (
+        Hackathon,
+        HackathonSource,
+        HackathonLocation,
+        Location,
+        ReviewStatus,
+    )
 
 username = "Nirek"
-# ract source class that can be extended to create new sources
 
 
 def search_city(city_name, username):
-    url = f"http://api.geonames.org/searchJSON?q={city_name}&maxRows=10&username={username}"
+    url = f"http://api.geonames.org/searchJSON?q={city_name}&maxRows=10&username={username}&maxRows=1&style=MEDIUM"
     if (
         "online" in city_name.lower()
-        or "" in city_name.lower()
-        or " " in city_name
         or "remote" in city_name.lower()
         or "virtual" in city_name.lower()
         or "everywhere" in city_name.lower()
     ):
-        return "Online"
+        return {
+            "city": "Online",
+            "state": "Online",
+            "country": "Online",
+            "latitude": None,
+            "longitude": None,
+        }
     try:
         response = requests.get(url)
         response.raise_for_status()
@@ -38,30 +46,33 @@ def search_city(city_name, username):
         data = response.json()
 
         if "geonames" not in data or not data["geonames"]:
-            return None
+            return {
+                "city": "Online",
+                "state": "Online",
+                "country": "Online",
+                "latitude": None,
+                "longitude": None,
+            }
 
         # Extract relevant information for each city
-        cities = []
-        for place in data["geonames"]:
-            city_info = {
-                "city": place.get("name"),
-                "state": place.get("adminName1"),
-                "country": place.get("countryName"),
-                "latitude": place.get("lat"),
-                "longitude": place.get("lng"),
+        city_data = data["geonames"][0]
+        if city_data:
+            city = {
+                "city": city_data.get("name"),
+                "state": city_data.get("adminName1"),
+                "country": city_data.get("countryName"),
+                "latitude": city_data.get("lat"),
+                "longitude": city_data.get("lng"),
             }
-            cities.append(city_info)
-
-        if cities:
-            city = cities[0]
-        return {
-            "city": city["city"],
-            "state": city["state"],
-            "country": city["country"],
-            "latitude": city["latitude"],
-            "longitude": city["longitude"],
-        }
-
+            return city
+        else:
+            return {
+                "city": "Online",
+                "state": "Online",
+                "country": "Online",
+                "latitude": None,
+                "longitude": None,
+            }
     except requests.RequestException as e:
         print("An error occurred:", e)
         return None
@@ -112,27 +123,23 @@ class MLHSource(AbstractDataSource):
                 ev.find_all("meta", {"itemprop": "endDate"})[0]["content"], "%Y-%m-%d"
             )
         )
-        print(end_date)
         start_date = timezone.make_aware(
             datetime.datetime.strptime(
                 ev.find_all("meta", {"itemprop": "startDate"})[0]["content"], "%Y-%m-%d"
             )
         )
 
-        if geoData is None or geoData == "Online":
-            hackathonLocation_input, created = HackathonLocation.objects.get_or_create(
-                name="Online", country="Online"
-            )
+        if geoData["latitude"] is None:
+            location_cord = None
         else:
             location_cord, created = Location.objects.get_or_create(
                 latitude=geoData["latitude"], longitude=geoData["longitude"]
             )
-
-            hackathonLocation_input, created = HackathonLocation.objects.get_or_create(
-                name=f"{geoData['city']}, {geoData['state']}",
-                country=geoData["country"],
-                location=location_cord,
-            )
+        hackathonLocation_input, created = HackathonLocation.objects.get_or_create(
+            name=f"{geoData['city']}, {geoData['state']}",
+            country=geoData["country"],
+            location=location_cord,
+        )
 
         evinfo = {
             "name": name.rstrip(),
@@ -195,20 +202,17 @@ class DevpostSource(AbstractDataSource):
         loc = ev["displayed_location"]["location"]
         geoData = search_city(loc, username)
 
-        if geoData == "Online" or geoData is None:
-            hackathonLocation_input, created = HackathonLocation.objects.get_or_create(
-                name="Online", country="Online"
-            )
+        if geoData["latitude"] is None:
+            location_cord = None
         else:
             location_cord, created = Location.objects.get_or_create(
                 latitude=geoData["latitude"], longitude=geoData["longitude"]
             )
-
-            hackathonLocation_input, created = HackathonLocation.objects.get_or_create(
-                name=f"{geoData['city']}, {geoData['state']}",
-                country=geoData["country"],
-                location=location_cord,
-            )
+        hackathonLocation_input, created = HackathonLocation.objects.get_or_create(
+            name=f"{geoData['city']}, {geoData['state']}",
+            country=geoData["country"],
+            location=location_cord,
+        )
 
         evinfo = {
             "name": ev["title"].rstrip(),
@@ -256,28 +260,23 @@ class EthGlobalSource(AbstractDataSource):
         loc = " ".join(name.split()[1:])
         geoData = search_city(loc, username)
 
-        if geoData == "Online" or geoData is None:
-            hackathonLocation_input, created = HackathonLocation.objects.get_or_create(
-                name="Online", country="Online"
-            )
+        if geoData["latitude"] is None:
+            location_cord = None
         else:
             location_cord, created = Location.objects.get_or_create(
                 latitude=geoData["latitude"], longitude=geoData["longitude"]
             )
-
-            hackathonLocation_input, created = HackathonLocation.objects.get_or_create(
-                name=f"{geoData['city']}, {geoData['state']}",
-                country=geoData["country"],
-                location=location_cord,
-            )
+        hackathonLocation_input, created = HackathonLocation.objects.get_or_create(
+            name=f"{geoData['city']}, {geoData['state']}",
+            country=geoData["country"],
+            location=location_cord,
+        )
 
         evinfo = {
             "name": name.rstrip(),
             "start_date": startdate,
             "end_date": enddate,
-            "location": hackathonLocation_input
-            if (name.split()[0].lower() == "ethglobal")
-            else "",
+            "location": hackathonLocation_input,
             "website": "https://ethglobal.com" + ev.get("href"),
             "fg_image": ev.find_all("img")[0]["src"],
             "source": HackathonSource.Scraped,
@@ -314,20 +313,17 @@ class HackClubSource(AbstractDataSource):
 
         geoData = search_city(loc, username)
 
-        if geoData is None or geoData == "Online":
-            hackathonLocation_input, created = HackathonLocation.objects.get_or_create(
-                name="Online", country="Online"
-            )
+        if geoData["latitude"] is None:
+            location_cord = None
         else:
             location_cord, created = Location.objects.get_or_create(
                 latitude=geoData["latitude"], longitude=geoData["longitude"]
             )
-
-            hackathonLocation_input, created = HackathonLocation.objects.get_or_create(
-                name=f"{geoData['city']}, {geoData['state']}",
-                country=geoData["country"],
-                location=location_cord,
-            )
+        hackathonLocation_input, created = HackathonLocation.objects.get_or_create(
+            name=f"{geoData['city']}, {geoData['state']}",
+            country=geoData["country"],
+            location=location_cord,
+        )
 
         evinfo = {
             "name": name.rstrip(),
@@ -367,8 +363,6 @@ def scrape_all():
         EthGlobalSource().get_events(),
         HackClubSource().get_events(),
     )
-    events_to_create = []
-    events_to_update = []
 
     for ev in evs:
         if ev == {}:
@@ -378,38 +372,32 @@ def scrape_all():
             if timezone.is_naive(end_date):
                 end_date = timezone.make_aware(end_date)
 
-            hackathon, created = Hackathon.objects.get_or_create(
-                duplication_id=ev["name"].lower().replace(" ", "-")
-                + end_date.strftime("-%Y")
-            )
+            ev["duplication_id"] = ev["name"].lower().replace(
+                " ", ""
+            ) + end_date.strftime("-%Y")
 
-            if not created:
-                # Update the existing hackathon if necessary
+            hackathon = Hackathon.objects.filter(
+                duplication_id=ev["duplication_id"]
+            ).first()
+
+            if hackathon is not None:
                 hackathon.start_date = ev["start_date"]
                 hackathon.end_date = end_date
                 hackathon.location = ev["location"]
                 hackathon.source = HackathonSource.Scraped
-                hackathon.scrape_source = "hcl"
+                hackathon.scrape_source = ev["scrape_source"]
+                hackathon.review_status = ReviewStatus.Approved
                 hackathon.is_public = True
-                events_to_update.append(hackathon)
+                hackathon.duplication_id = ev["duplication_id"]
+                hackathon.save()
             else:
-                events_to_create.append(hackathon)
+                hackathon = Hackathon()
+                for attr, value in ev.items():
+                    setattr(hackathon, attr, value)
+                hackathon.review_status = ReviewStatus.Approved
+                hackathon.duplication_id = ev["duplication_id"]
 
-        with transaction.atomic():
-            if events_to_create:
-                Hackathon.objects.bulk_create(events_to_create)
-            if events_to_update:
-                Hackathon.objects.bulk_update(
-                    events_to_update,
-                    [
-                        "start_date",
-                        "end_date",
-                        "location",
-                        "source",
-                        "scrape_source",
-                        "is_public",
-                    ],
-                )
+                hackathon.save()
 
 
 def extract_text_from_url(url):
