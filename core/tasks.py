@@ -1,64 +1,97 @@
-from typing import TYPE_CHECKING
-
 from celery import shared_task
 from celery.utils.log import get_task_logger
 
-from django.apps import apps
-from django.core.mail import EmailMultiAlternatives
-from django.template.loader import get_template
+from django.conf import settings
+from django.core.mail import send_mass_mail
+from django.template.loader import render_to_string
 from django.utils import timezone
-
-if TYPE_CHECKING:
-    from core.models import Hacker as HackerType, Hackathon as HackathonType
+from django.utils.html import strip_tags
 
 logger = get_task_logger(__name__)
 
 
 @shared_task
-def send_hackathon_emails(frequency):
-    if frequency not in ["weekly", "monthly"]:
-        raise ValueError("Frequency must either be 'weekly' or 'monthly'.")
+def send_hackathon_digest():
+    """Send digest emails to users based on their preferences"""
+    from .models import EmailPreferences
 
-    Hacker: "HackerType" = apps.get_model("core", "Hacker")
-    hackers = Hacker.objects.all()
+    # Get all users due for an email
+    preferences = EmailPreferences.objects.select_related("user").filter(
+        user__is_active=True, frequency__in=["daily", "weekly", "monthly"]
+    )
 
-    tdy_date = timezone.now()
-    Hackathon: "HackathonType" = apps.get_model("core", "Hackathon")
-    hackathons = Hackathon.objects.filter(start_date__gt=tdy_date)
+    email_batch = []
 
-    subject = ""
-    emailFrom = "hello@example.com"
-    emailTo = []
+    for pref in preferences:
+        if not pref.is_due_for_email():
+            continue
 
-    plaintext_template = get_template("hackathons/email/new_hackathon_notification.txt")
-    html_template = get_template("hackathons/email/new_hackathon_notification.html")
+        hackathons = pref.get_relevant_hackathons()
 
-    context = {
-        "hackathons": hackathons,
-    }
+        if not hackathons:
+            continue
 
-    text_content = plaintext_template.render(context=context)
-    html_content = html_template.render(context=context)
+        context = {
+            "user": pref.user,
+            "hackathons": hackathons,
+            "frequency": pref.frequency,
+            "unsubscribe_url": f"{settings.SITE_URL}/preferences/email/",
+        }
 
-    if frequency == "weekly":
-        emailTo = [
-            hacker.email
-            for hacker in hackers
-            if hacker.email
-            and hacker.notification_policy.enabled
-            and hacker.notification_policy.weekly
-        ]
-        subject = "your weekly email"
-    elif frequency == "monthly":
-        emailTo = [
-            hacker.email
-            for hacker in hackers
-            if hacker.email
-            and hacker.notification_policy.enabled
-            and hacker.notification_policy.monthly
-        ]
-        subject = "your monthly email"
+        html_content = render_to_string("email/hackathon_digest.html", context)
+        plain_content = strip_tags(html_content)
 
-    msg = EmailMultiAlternatives(subject, text_content, emailFrom, emailTo)
-    msg.attach_alternative(html_content, "text/html")
-    msg.send()
+        subject = f"Your {pref.frequency} Hackathon Digest"
+
+        email_batch.append(
+            (subject, plain_content, settings.DEFAULT_FROM_EMAIL, [pref.user.email])
+        )
+
+        # Update last_email_sent timestamp
+        pref.last_email_sent = timezone.now()
+        pref.save()
+
+    # Send emails in batch
+    if email_batch:
+        send_mass_mail(email_batch, fail_silently=False)
+
+
+@shared_task
+def send_instant_notification(hackathon_id):
+    """Send instant notifications for new hackathons"""
+    from .models import Hackathon, EmailPreferences
+
+    try:
+        hackathon = Hackathon.objects.get(id=hackathon_id)
+    except Hackathon.DoesNotExist:
+        return
+
+    preferences = EmailPreferences.objects.select_related("user").filter(
+        frequency="instant", user__is_active=True
+    )
+
+    email_batch = []
+
+    for pref in preferences:
+        # Check if hackathon matches user preferences
+        relevant_hackathons = pref.get_relevant_hackathons()
+        if hackathon not in relevant_hackathons:
+            continue
+
+        context = {
+            "user": pref.user,
+            "hackathon": hackathon,
+            "unsubscribe_url": f"{settings.SITE_URL}/preferences/email/",
+        }
+
+        html_content = render_to_string("email/instant_notification.html", context)
+        plain_content = strip_tags(html_content)
+
+        subject = f"New Hackathon Alert: {hackathon.name}"
+
+        email_batch.append(
+            (subject, plain_content, settings.DEFAULT_FROM_EMAIL, [pref.user.email])
+        )
+
+    if email_batch:
+        send_mass_mail(email_batch, fail_silently=False)
