@@ -37,7 +37,7 @@ def get_coordinates(city: str, country: str) -> Optional[Tuple[float, float]]:
         url = "https://nominatim.openstreetmap.org/search"
         params = {"city": city, "country": country, "format": "json", "limit": 1}
         headers = {
-            "User-Agent": f"Hackthon's Canada: a hackathon Platform ({settings.SITE_URL})"
+            "User-Agent": f"Hackathon's Canada: a hackathon Platform ({settings.SITE_URL})"
         }
         # todo: redo with a async request
         response = requests.get(url, params=params, headers=headers, timeout=5)
