@@ -18,7 +18,7 @@ services:
     restart: unless-stopped
 
   valkey:
-    image: "valkey/valkey:7.2-alpine"
+    image: "valkey/valkey:8-alpine"
     restart: always
   celery_worker:
     build:
