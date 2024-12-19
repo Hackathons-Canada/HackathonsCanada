@@ -48,16 +48,7 @@
           />
         </div>
 
-        <!-- Distance -->
-        <div class="flex-1">
-          <label class="block text-sm font-medium text-gray-600" for="end">Near ME</label>
-          <input
-            id="near"
-            name="near"
-            value="{{ request.GET.end }}"
-            class="w-full text-sm bg-gray-100 border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
-          />
-        </div>
+
 
         <input type="hidden" name="view_type" value="{{ request.GET.view_type|default:'' }}">
         <input type="hidden" name="country" value="{{ request.GET.country|default:'' }}">
@@ -284,7 +275,7 @@
                               type="checkbox">
                             <span class="absolute cursor-pointer w-6 h-6 flex items-center justify-center text-white font-bold duration-200 ease-in-out peer-checked:*:fill-[#e5462e] *:stroke-gray-500 peer-checked:*:stroke-[#e5462e] active:scale-75">
                               <svg  id = "{{hackathon.id }}-up" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"
-                                   class="w-6 h-6 duration-200 {% if user_vote.hackathon.idj == True %} fill-black{% else %}fill-white {% endif %}">
+                                   class="w-6 h-6 duration-200 {% if hackathon.hackathon.idj == True %} fill-black{% else %}fill-white {% endif %}">
                                 <path class="stroke-2"
                                       d="M4 14h4v7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7h4a1.001 1.001 0 0 0 .781-1.625l-8-10c-.381-.475-1.181-.475-1.562 0l-8 10A1.001 1.001 0 0 0 4 14"></path>
                               </svg>
@@ -299,7 +290,7 @@
                               type="checkbox">
                             <span class="absolute cursor-pointer w-6 h-6 flex items-center justify-center text-white font-bold duration-200 ease-in-out peer-checked:*:fill-[#e5462e] *:stroke-gray-500 peer-checked:*:stroke-[#e5462e] active:scale-75">
                               <svg  id = "{{hackathon.id }}-down" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"
-                                   class="rotate-180 w-6 h-6 duration-200 {% if user_vote.hackathon.idj == False %}fill-black{% else %}fill-white {% endif %}">
+                                   class="rotate-180 w-6 h-6 duration-200 {% if hackathon.hackathon.idj == False %}fill-black{% else %}fill-white {% endif %}">
                                 <path class="stroke-2"
                                       d="M4 14h4v7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7h4a1.001 1.001 0 0 0 .781-1.625l-8-10c-.381-.475-1.181-.475-1.562 0l-8 10A1.001 1.001 0 0 0 4 14"></path>
                               </svg>
@@ -317,8 +308,7 @@
             <div class="relative p-4 rotate-0 col flip-card lockedheight preserve-3d">
               <div class="ease-in-out cursor-pointer flip-card-inner">
                 {# Set default rotation to 0 deg to fix weird firefox bug#}
-                <div class="flip-card-front duration-[0.4s] [transform:rotateY(0deg)]"
-                     onclick="this.classList.toggle('flipped'); this.nextElementSibling.classList.toggle('flipped')">
+                <div class="flip-card-front duration-[0.4s] [transform:rotateY(0deg)]">
                   <div class="hackathon-card">
                     {% if hackathon.bgimage %}
                       <img class="hackathon-img-front" src="{{ hackathon.bg_image }}" alt="{{ hackathon.name }}">
@@ -337,6 +327,9 @@
                       </h5>
                     </div>
                     <div class="relative flex flex-row items-center justify-center my-2">
+
+                      <button onclick="this.classList.toggle('flipped'); this.nextElementSibling.classList.toggle('flipped')"> More Info</button>
+
                       <script src="../../static/js/hackathons.js"></script>
 
                       {% if user.is_authenticated %}
@@ -345,7 +338,7 @@
                       {% else %}
                         <p class="absolute bottom-0 right-0 m-3 text-xs"><em>Login to save</em></p>
                       {% endif %}
-
+                      <h1>{{ hackathon.vote_state }}</h1>
                       <button type="button" class="relative flex items-center ml-3"
                               onclick="voteHackathon(event, '{{ hackathon.id }}', 'true')">
                         <input
@@ -353,14 +346,13 @@
                           type="checkbox">
                         <span class="absolute cursor-pointer w-6 h-6 flex items-center justify-center text-white font-bold duration-200 ease-in-out peer-checked:*:fill-[#e5462e] *:stroke-gray-500 peer-checked:*:stroke-[#e5462e] active:scale-75">
                           <svg  id = "{{hackathon.id }}-up" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"
-                               class="w-6 h-6 duration-200 {% if user_vote.hackathon.idj == True %} fill-black{% else %}fill-white {% endif %}">
+                               class="w-6 h-6 duration-200 {% if hackathon.vote_state == True %} fill-black{% else %}fill-white {% endif %}">
                             <path class="stroke-2"
                                   d="M4 14h4v7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7h4a1.001 1.001 0 0 0 .781-1.625l-8-10c-.381-.475-1.181-.475-1.562 0l-8 10A1.001 1.001 0 0 0 4 14"></path>
                           </svg>
                         </span>
                       </button>
-
-                      <p id = "{{hackathon.id }}-up-text" class="mx-1 ml-1 text-lg text-gray-700">{{ hackathon.count_upvotes }}</p>
+                      <p id = "{{hackathon.id }}-vote-text" class="mx-1 ml-1 text-lg text-gray-700">{{ hackathon.vote_count }}</p>
                       <button type="button" class="relative flex items-center ml-3"
                               onclick="voteHackathon(event, '{{ hackathon.id }}', 'false')">
                         <input
@@ -368,13 +360,12 @@
                           type="checkbox">
                         <span class="absolute cursor-pointer w-6 h-6 flex items-center justify-center text-white font-bold duration-200 ease-in-out peer-checked:*:fill-[#e5462e] *:stroke-gray-500 peer-checked:*:stroke-[#e5462e] active:scale-75">
                           <svg  id = "{{hackathon.id }}-down" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"
-                               class="rotate-180 w-6 h-6 duration-200 {% if user_vote.hackathon.idj == False %}fill-black{% else %}fill-white {% endif %}">
+                               class="rotate-180 w-6 h-6 duration-200 {% if hackathon.vote_state == False %}fill-black{% else %}fill-white {% endif %}">
                             <path class="stroke-2"
                                   d="M4 14h4v7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7h4a1.001 1.001 0 0 0 .781-1.625l-8-10c-.381-.475-1.181-.475-1.562 0l-8 10A1.001 1.001 0 0 0 4 14"></path>
                           </svg>
                         </span>
                       </button>
-                      <p id = "{{hackathon.id }}-down-text" class="mx-1 ml-1 text-lg text-gray-700">{{ hackathon.count_downvotes }}</p>
 
                     </div>
 

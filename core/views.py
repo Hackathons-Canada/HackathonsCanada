@@ -71,6 +71,7 @@ def addHackathons(request):
             form.save()
             return redirect("home")
         else:
+            return redirect("home")
             print(form.errors)
     else:
         form = HackathonForm()
@@ -79,16 +80,19 @@ def addHackathons(request):
 
 def hackathon_page(request):
     tdy_date = timezone.now()
+
+    hacker = Hacker.objects.get(id=request.user.id)
+
     view_type = request.GET.get("view_type")
     country = request.GET.get("country")
     city = request.GET.get("city")
     start = request.GET.get("start")
     end = request.GET.get("end")
 
-    user_votes = Vote.objects.filter(hacker=request.user.id)
-    user_votes_dict = {
-        vote.hackathon.duplication_id: vote.vote_type for vote in user_votes
-    }
+    user_votes = Vote.objects.filter(hacker=request.user.id).values("id", "vote_type")
+    saved = hacker.saved.values_list("id", flat=True).values_list("id", flat=True)
+    print("this is the saved list")
+    print(saved)
     query_base = Q(end_date__gte=tdy_date, is_public=True)
     if country and country != "none" and country != "World":
         query_base &= Q(location__country=country)
@@ -125,18 +129,33 @@ def hackathon_page(request):
             "city": city,
             "start": start,
             "end": end,
-            "user_votes": user_votes_dict,
         }
         return render(request, "hackathons/hackathons.html", context)
     else:
+        hackathon_with_user_info = []
+        for hackathon in upcoming_hackathons:
+            vote_data = user_votes.filter(id=hackathon.id).first()
+            setattr(
+                hackathon,
+                "vote_state",
+                vote_data["vote_type"] if vote_data is not None else None,
+            )
+            setattr(
+                hackathon,
+                "user_saved",
+                True if saved.filter(id=hackathon.id).exists() else False,
+            )
+            print(hackathon.vote_state)
+
+            hackathon_with_user_info.append(hackathon)
+
         context = {
-            "hackathons": upcoming_hackathons,
+            "hackathons": hackathon_with_user_info,
             "type": view_type,
             "country": country,
             "city": city,
             "start": start,
             "end": end,
-            "user_votes": user_votes_dict,
         }
 
         return render(request, "hackathons/hackathons.html", context)
@@ -220,22 +239,30 @@ def add_vote(request: HttpRequest, hackathon_id):
         hacker = get_object_or_404(Hacker, id=request.user.id)
         type_vote = request.GET.get("vote_state")
         state = str_to_bool(type_vote)
-        vote = Vote.objects.filter(hackathon_id=hackathon, hacker=hacker)
+        vote = Vote.objects.filter(hackathon=hackathon, hacker=hacker).first()
 
-        if vote.first():
-            if vote.type_vote:
-                hackathon.count_upvotes -= 1
-                hackathon.count_downvotes += 1
+        if vote is not None:
+            if state == vote.vote_type:
+                hackathon.vote_count -= 1
+                vote.vote_type = False if state else True
+                vote.save()
             else:
-                hackathon.count_downvotes -= 1
-                hackathon.count_upvotes += 1
+                if state:
+                    hackathon.vote_count += 2
+                else:
+                    hackathon.vote_count -= 2
 
-            vote.update(type_vote=state)
+                vote.vote_type = state
+                vote.save()
         else:
+            if state:
+                hackathon.vote_count += 1
+            else:
+                hackathon.vote_count -= 1
             vote = Vote.objects.create(hackathon=hackathon, vote_type=state)
 
-            vote.from_hacker.add(hacker)
-
+            vote.hacker.add(hacker)
+            vote.save()
         hackathon.save()
 
         return JsonResponse({"status": "success", "message": "Vote added successfully"})

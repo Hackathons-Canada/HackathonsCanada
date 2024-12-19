@@ -15,34 +15,58 @@ function voteHackathon(event, hackathonId, vote_state) {
 
     const upButton = document.getElementById(`${hackathonId}-up`);
     const downButton = document.getElementById(`${hackathonId}-down`);
-    const upText = document.getElementById(`${hackathonId}-up-text`);
-    const downText = document.getElementById(`${hackathonId}-down-text`);
+    const voteText = document.getElementById(`${hackathonId}-vote-text`);
 
-
+    console.log(vote_state)
     if (vote_state === 'true') {
-        // Check if the down button is active
+
         if (downButton.classList.contains('fill-black')) {
             downButton.classList.remove('fill-black');
             downButton.classList.add('fill-white');
-            downText.textContent = parseInt(downText.textContent) - 1;
+            upButton.classList.remove('fill-white');
+            upButton.classList.add('fill-black');
+            console.log('1')
+            voteText.textContent = parseInt(voteText.textContent) + 2;
         }
+        else if (upButton.classList.contains('fill-black')) {
+            upButton.classList.add('fill-white');
+            upButton.classList.remove('fill-black');
+            console.log('2')
+            voteText.textContent = parseInt(voteText.textContent) - 1;
+        }
+        else {
+            upButton.classList.remove('fill-white');
+            upButton.classList.add('fill-black');
+            voteText.textContent = parseInt(voteText.textContent) + 1;
+            console.log('3')
+        }
+        console.log('running')
 
-        // Activate the up button
-        upButton.classList.add('fill-black');
-        upButton.classList.remove('fill-white');
-        upText.textContent = parseInt(upText.textContent) + 1;
+
+
     } else {
-        // Check if the up button is active
+        console.log('false')
         if (upButton.classList.contains('fill-black')) {
             upButton.classList.remove('fill-black');
             upButton.classList.add('fill-white');
-            upText.textContent = parseInt(upText.textContent) - 1;
+            downButton.classList.remove('fill-black');
+            downButton.classList.remove('fill-white');
+            downButton.classList.add('fill-black');
+            voteText.textContent = parseInt(voteText.textContent) - 2;
+
+        }
+        else if (downButton.classList.contains('fill-black')) {
+            downButton.classList.remove('fill-black');
+            downButton.classList.add('fill-white');
+            voteText.textContent = parseInt(voteText.textContent) + 1;
+        }
+        else {
+            downButton.classList.remove('fill-white');
+            downButton.classList.add('fill-black');
+            voteText.textContent = parseInt(voteText.textContent) - 1;
         }
 
-        // Activate the down button
-        downButton.classList.add('fill-black');
-        downButton.classList.remove('fill-white');
-        downText.textContent = parseInt(downText.textContent) + 1;
+
     }
 
     xhr.onreadystatechange = function() {

@@ -442,7 +442,7 @@ class Hackathon(MetaDataMixin):
         default=dict, null=True, blank=True
     )  # Anything else that we might want to add in a structured format
 
-    count_votes = models.PositiveIntegerField(default=0)
+    vote_count = models.BigIntegerField(default=0)
 
     class Meta:
         ordering = ["start_date"]
