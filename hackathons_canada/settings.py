@@ -352,20 +352,20 @@ UNFOLD = {
                     }
                 ],
             },
-            # {       todo: add celery in admin
-            #     "title": _("Celery Tasks"),
-            #     "collapsible": True,
-            #     "items": [
-            #         {
-            #             "title": _("Clocked"),
-            #             "icon": "hourglass_bottom",
-            #             "link": reverse_lazy(
-            #                 "admin:django_celery_beat_clockedschedule_changelist"
-            #             ),
-            #             },
-            #     ],
-            #        
-            # },
+            { #      todo: add celery in admin
+                "title": _("Celery Tasks"),
+                "collapsible": True,
+                "items": [
+                    {
+                        "title": _("Clocked"),
+                        "icon": "hourglass_bottom",
+                        "link": reverse_lazy(
+                            "admin:django_celery_beat_clockedschedule_changelist"
+                        ),
+                        },
+                ],
+                   
+            },
         ],
     },
 }

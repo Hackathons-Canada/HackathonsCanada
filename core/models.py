@@ -9,7 +9,6 @@ from django.db.models import DecimalField
 from django.utils import timezone
 from django_countries.fields import CountryField
 
-from core.tasks import send_new_hackathon_email
 
 __all__ = [
     "Hacker",
@@ -139,7 +138,16 @@ class NotificationPolicy(models.Model):
 class Notifiable(UserManager):
     async def anotify(self):
         async for user in self.iterator():
-            send_new_hackathon_email.delay(user)
+            pass
+            """
+            At the moment, we cannot call `core.tasks.send_hackathon_emails.delay()`
+            as its parameter is `frequency` which is a string
+            that can either be the values "monthly" or "weekly".
+            
+            Originally, the email-sending task/function
+            would iterate through each `user` as its argument,
+            and it is no longer dependent on `user` now.
+            """
 
 
 class Hacker(AbstractUser):
