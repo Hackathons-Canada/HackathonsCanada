@@ -8,7 +8,6 @@ DISCORD_TOKEN = ""
 
 CSRF_TRUSTED_ORIGINS = ["https://hackathonscanada.com/"]
 
-SITE_URL = "http://localhost:8000"
 
 # Needed if you want to use the map widgets
 # MAP_WIDGETS["GoogleMap"]["apiKey"] = "CHANGE_ME"  # noqa

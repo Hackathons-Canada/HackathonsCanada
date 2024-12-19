@@ -15,7 +15,7 @@ from django.views.generic import ListView
 from core.models import Hackathon, Hacker
 from .forms import (
     HackathonForm,
-    EmailPreferencesForm,
+    NotificationPolicyForm,
     HackerSettingForm,
     CuratorRequestForm,
 )
@@ -112,14 +112,13 @@ class HackathonsPage(ListView):
 
 @login_required
 def setting(request):
-    # Todo: check in @jamesC
     hacker = Hacker.objects.get(id=request.user.id)
-    email_preferences = hacker.email_preferences
+    notification_policy = hacker.notification_policy
 
     if request.method == "POST":
         form_setting = HackerSettingForm(instance=hacker)  # Initialize with instance
-        form_notification = EmailPreferencesForm(
-            instance=email_preferences
+        form_notification = NotificationPolicyForm(
+            instance=notification_policy
         )  # Initialize with instance
 
         if "form_setting_submit" in request.POST:
@@ -130,8 +129,8 @@ def setting(request):
             else:
                 print("Form Setting Errors:", form_setting.errors)
         elif "form_notification_submit" in request.POST:
-            form_notification = EmailPreferencesForm(
-                request.POST, instance=email_preferences
+            form_notification = NotificationPolicyForm(
+                request.POST, instance=notification_policy
             )
             if form_notification.is_valid():
                 form_notification.save()
@@ -140,7 +139,7 @@ def setting(request):
                 print("Form Notification Errors:", form_notification.errors)
     else:
         form_setting = HackerSettingForm(instance=hacker)
-        form_notification = EmailPreferencesForm(instance=email_preferences)
+        form_notification = NotificationPolicyForm(instance=notification_policy)
 
     return render(
         request,

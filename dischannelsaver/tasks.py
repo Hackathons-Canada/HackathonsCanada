@@ -1,4 +1,3 @@
-from datetime import timedelta
 from typing import TYPE_CHECKING
 
 from celery.schedules import crontab
@@ -45,7 +44,8 @@ async def archive_channels():
     achievable_channels = Hackathon.objects.prefetch_related("channel").exclude(
         channel__is_archived=False,
         start_date__lte=timezone.now(),
-        start_date__gte=timezone.now() - timedelta(days=settings.DISCORD_ARCHIVE_AFTER),
+        start_date__gte=timezone.now()
+        - timezone.timedelta(days=settings.DISCORD_ARCHIVE_AFTER),
     )
 
     if not await achievable_channels.aexists():

@@ -7,7 +7,7 @@ from django.dispatch import receiver
 from core.models import Hackathon
 
 if TYPE_CHECKING:
-    pass
+    from core.models import Hacker
 
 logger = get_task_logger(__name__)
 
@@ -16,5 +16,7 @@ logger = get_task_logger(__name__)
 async def new_hackathon_notif(sender, instance, created, **kwargs):
     if not created:
         return  # only notify on creation
-    # todo run a task to notify hackers who signed up for this hackathon and are their preferences are set to receive notifications within the radius of the hackathon
     logger.debug(f"New hackathon created: {instance}")
+    await Hacker.objects.filter(
+        saved_categories__in=instance.categories.all()  # redo this once u setup the GIS db
+    ).anotify()

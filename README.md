@@ -29,7 +29,3 @@
 10. You're all set!
 
 
-
-
-For local development, use `docker compose -f .\compose.yml -f .\compose.local.yml up --watch`
-

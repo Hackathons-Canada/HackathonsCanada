@@ -12,6 +12,5 @@ venv
 /media/hackathon_images
 
 *.log
-.idea/dataSources.xml
 
 celerybeat-*

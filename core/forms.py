@@ -6,8 +6,8 @@ from .models import (
     EDUCATION_CHOICES,
     HACKATHON_EDUCATION_CHOICES,
     Hacker,
+    NotificationPolicy,
     School,
-    EmailPreferences,
 )
 from django_countries.fields import CountryField
 from crispy_forms.helper import FormHelper  # type: ignore
@@ -223,8 +223,7 @@ class HackerSettingForm(forms.ModelForm):
             visible.field.widget.attrs["class"] = "form-button-style py-2"
 
 
-class EmailPreferencesForm(forms.ModelForm):
-    # TODO: @JamesC fix up.
+class NotificationPolicyForm(forms.ModelForm):
     radius_type = forms.ChoiceField(
         choices=[("km", "Kilometers"), ("mi", "Miles")],
         widget=forms.Select,
@@ -233,8 +232,17 @@ class EmailPreferencesForm(forms.ModelForm):
     radius = forms.IntegerField(min_value=0, required=False)
 
     class Meta:
-        model = EmailPreferences
-        fields = "__all__"
+        model = NotificationPolicy
+        fields = [
+            "enabled",
+            "weekly",
+            "monthly",
+            "added",
+            "local_only",
+            "only_eligible",
+            "radius_type",
+            "radius",
+        ]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

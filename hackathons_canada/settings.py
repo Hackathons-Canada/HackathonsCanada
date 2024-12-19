@@ -12,16 +12,12 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 import os
 from pathlib import Path
-
-from celery.schedules import crontab
 from django.templatetags.static import static
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-print(BASE_DIR)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -32,7 +28,7 @@ SECRET_KEY = "CHANGEME"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-SITE_URL = "https://hackathonscanada.com"
+
 CUR_YEAR = [2025, 2024]
 SITE_ID = 1
 
@@ -150,17 +146,10 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-assert os.environ.get("POSTGRES_DB"), "POSTGRES_DB is not set in .env"
-assert os.environ.get("POSTGRES_USER"), "POSTGRES_USER is not set in .env"
-assert os.environ.get("POSTGRES_PASSWORD"), "POSTGRES_PASSWORD is not set in .env"
-assert os.environ.get(
-    "POSTGRES_HOST"
-), "POSTGRES_HOST is not set in .env. You must use a postgres database with PostGIS installed"
-
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ.get("POSTGRES_DB"),
+        "ENGINE": os.environ.get("DB_ENGINE", "django.db.backends.sqlite3"),
+        "NAME": os.environ.get("POSTGRES_DB", os.path.join(BASE_DIR, "db.sqlite3")),
         "USER": os.environ.get("POSTGRES_USER", "user"),
         "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "password"),
         "HOST": os.environ.get("POSTGRES_HOST", "postgres"),
@@ -266,11 +255,6 @@ DISCORD_GUILD_ID: int = 0  # The discord guild ID that you want to archive chann
 DISCORD_TOKEN: str = (
     "CHANGEME"  # The discord bot token that you want to use to archive channels
 )
-
-DEFAULT_FROM_EMAIL = "hello@hackathonscanada.com"
-
-EMAIL_BATCH_SIZE = 50  # Number of emails to send in a batch
-
 # fmt: off
 
 
@@ -284,7 +268,7 @@ UNFOLD = {
     "ENVIRONMENT": "hackathons_canada.callbacks.environment_callback",
     # "DASHBOARD_CALLBACK": "hackathons_canada.views.dashboard_callback",
     "SITE_ICON": lambda request: static("assets/logo.png"),
-    #
+    # 
     "SITE_FAVICONS": [
         {
             "rel": "icon",
@@ -344,7 +328,7 @@ UNFOLD = {
                         "icon": "category",
                         "link": reverse_lazy("admin:core_category_changelist"),
                     },
-
+            
                 ],
             },
             {
@@ -380,23 +364,9 @@ UNFOLD = {
                         ),
                         },
                 ],
-
+                   
             },
         ],
-    },
-}
-
-
-CELERY_BEAT_SCHEDULE = {
-    'weekly-digest': {
-        'task': 'hackathons.tasks.send_hackathon_digest',
-        'schedule': crontab(day_of_week=1, hour=9, minute=0),  # Monday 9 AM UTC
-        'kwargs': {'frequency': 'weekly'}
-    },
-    'monthly-digest': {
-        'task': 'hackathons.tasks.send_hackathon_digest',
-        'schedule': crontab(day_of_month=1, hour=9, minute=0),  # 1st of month 9 AM UTC
-        'kwargs': {'frequency': 'monthly'}
     },
 }
 
