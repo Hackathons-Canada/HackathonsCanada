@@ -3,16 +3,16 @@ from typing import Optional, Tuple
 
 import requests
 from django.conf import settings
-from django.contrib.sites.models import Site
 from django.core.cache import cache
 from requests import RequestException
 
-from core.models import Hackathon, ReviewStatus
 
 logger = logging.getLogger(__name__)
 
 
 def unreviewed_hackathons(request) -> str:
+    from core.models import Hackathon, ReviewStatus
+
     """Returns count of all hackathons that haven't yet been reviewed."""
     unreviewed_hackathons_count: int = Hackathon.objects.filter(
         review_status=ReviewStatus.Pending
@@ -30,14 +30,15 @@ def get_coordinates(city: str, country: str) -> Optional[Tuple[float, float]]:
     """
     cache_key = f"geocode_{city}_{country}"
     cached_result = cache.get(cache_key)
-    site = Site.objects.get(pk=settings.SITE_ID)
     if cached_result:
         return cached_result
 
     try:
         url = "https://nominatim.openstreetmap.org/search"
         params = {"city": city, "country": country, "format": "json", "limit": 1}
-        headers = {"User-Agent": f"{site.domain}: a hackathon Platform"}
+        headers = {
+            "User-Agent": f"Hackthon's Canada: a hackathon Platform ({settings.SITE_URL})"
+        }
         # todo: redo with a async request
         response = requests.get(url, params=params, headers=headers, timeout=5)
         response.raise_for_status()
