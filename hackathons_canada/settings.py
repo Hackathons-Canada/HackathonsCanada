@@ -30,7 +30,7 @@ SECRET_KEY = "CHANGEME"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-
+SITE_URL = "https://hackathonscanada.com"
 CUR_YEAR = [2025, 2024]
 SITE_ID = 1
 
