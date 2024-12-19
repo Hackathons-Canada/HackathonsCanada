@@ -139,6 +139,15 @@ class Notifiable(UserManager):
     async def anotify(self):
         async for user in self.iterator():
             pass
+            """
+            At the moment, we cannot call `core.tasks.send_hackathon_emails.delay()`
+            as its parameter is `frequency` which is a string
+            that can either be the values "monthly" or "weekly".
+            
+            Originally, the email-sending task/function
+            would iterate through each `user` as its argument,
+            and it is no longer dependent on `user` now.
+            """
 
 
 class Hacker(AbstractUser):
