@@ -1,31 +1,45 @@
+from __future__ import annotations
+
 import os
 import random
 from functools import cache
 import json
+
+from django.contrib.auth.models import AbstractUser, AnonymousUser
 from django.utils import timezone
+from django.views.decorators.cache import cache_page
+
 from core.scraper import scrape_all
 from django.http import HttpResponse, JsonResponse
-from django_ratelimit.decorators import ratelimit
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from django.views.generic import ListView
-from core.models import Hackathon, Hacker
+from django.shortcuts import redirect
+from django.apps import apps
+from django.db.models import Q
+from icalendar import Calendar, Event
+from django.contrib.auth.decorators import user_passes_test
+from django_ratelimit.decorators import ratelimit
+
+if apps.ready:
+    from core.models import Hackathon, Hacker, Vote, ReviewStatus
+
 from .forms import (
     HackathonForm,
     NotificationPolicyForm,
     HackerSettingForm,
     CuratorRequestForm,
 )
-from django.shortcuts import redirect
 
 
 @cache
 def get_images() -> list[str]:
     IMAGE_DIR = f"{settings.BASE_DIR}/static/assets/hackbanners"
     #  get all the image names in the directory
+    # todo: reimpl using static()
     return [f"assets/hackbanners/{img}" for img in os.listdir(IMAGE_DIR)]
 
 
@@ -45,69 +59,87 @@ def home(request):
     return render(request, "home.html", context)
 
 
-@ratelimit(key="user_or_ip", rate="1/m", block=True)
+# @ratelimit(key="user_or_ip", rate="1/m", block=True)
 def addHackathons(request):
     if request.method == "POST":
         form = HackathonForm(request.POST)
         if form.is_valid():
+            print("sending the form")
+            form.save(commit=False)
+            form.review_status = ReviewStatus.Pending
+            form.created_by = Hacker.objects.get(id=request.user.id)
+            form.save()
             return redirect("home")
+        else:
+            print(form.errors)
     else:
         form = HackathonForm()
     return render(request, "hackathons/add_hackathon.html", {"form": form})
 
 
-# def calendar(request):
-#     context = {
-#         "title": "Add a New Hackathon",
-#         "content": "Use this form to add a new hackathon to the database.",
-#     }
-#     return render(request, "../templates/calendar.html", context)
+def hackathon_page(request):
+    tdy_date = timezone.now()
+    view_type = request.GET.get("view_type")
+    country = request.GET.get("country")
+    city = request.GET.get("city")
+    start = request.GET.get("start")
+    end = request.GET.get("end")
 
+    user_votes = Vote.objects.filter(hacker=request.user.id)
+    user_votes_dict = {
+        vote.hackathon.duplication_id: vote.vote_type for vote in user_votes
+    }
+    query_base = Q(end_date__gte=tdy_date, is_public=True)
+    if country and country != "none" and country != "World":
+        query_base &= Q(location__country=country)
+    elif country == "World":
+        query_base &= ~Q(location__country="Online")
 
-class HackathonsPage(ListView):
-    template_name = "hackathons/hackathons.html"
-    context_object_name = "hackathons"
-    paginate_by = 30
+    if city and city != "None":
+        print(city)
+        query_base &= Q(location__name__icontains=city)
 
-    def get_queryset(self):
-        tdy_date = timezone.now()
-        try:
-            render_type = self.kwargs["type"]
-        except KeyError:
-            render_type = "cards"
-        if render_type == "calendar":
-            data = Hackathon.objects.filter(start_date__gt=tdy_date)
-            hackathonsList = []
-            for hackathon in data:
-                hackathonsList.append(
-                    {
-                        "title": f"{hackathon.name} - {hackathon.location.name}",
-                        "start": hackathon.start_date.strftime("%Y-%m-%d"),
-                        "end": hackathon.end_date.strftime("%Y-%m-%d"),
-                        "url": hackathon.website,
-                    }
-                )
-            return hackathonsList
-        else:
-            return Hackathon.objects.filter(start_date__gt=tdy_date)
+    if start and start != "None":
+        query_base &= Q(start_date__gte=start)
 
-    def get_context_data(
-        self,
-        **kwargs,
-    ):
-        context = super().get_context_data(**kwargs)
-        try:
-            render_type = self.kwargs["type"]
-        except KeyError:
-            render_type = "cards"
-        if render_type == "list":
-            context["type"] = "list"
-        elif render_type == "calendar":
-            context["type"] = "calendar"
-            context["hackathonCalData"] = json.dumps(self.get_queryset())
-        else:
-            context["type"] = render_type
-        return context
+    if end and end != "None":
+        query_base &= Q(end_date__lte=end)
+
+    upcoming_hackathons = Hackathon.objects.filter(query_base)
+
+    if view_type == "calendar":
+        hackathonsList = []
+        for hackathon in upcoming_hackathons:
+            hackathonsList.append(
+                {
+                    "title": f"{hackathon.name} - {hackathon.location.name}",
+                    "start": hackathon.start_date.strftime("%Y-%m-%d"),
+                    "end": hackathon.end_date.strftime("%Y-%m-%d"),
+                    "url": hackathon.website,
+                }
+            )
+        context = {
+            "hackathons": json.dumps(hackathonsList),
+            "type": view_type,
+            "country": country,
+            "city": city,
+            "start": start,
+            "end": end,
+            "user_votes": user_votes_dict,
+        }
+        return render(request, "hackathons/hackathons.html", context)
+    else:
+        context = {
+            "hackathons": upcoming_hackathons,
+            "type": view_type,
+            "country": country,
+            "city": city,
+            "start": start,
+            "end": end,
+            "user_votes": user_votes_dict,
+        }
+
+        return render(request, "hackathons/hackathons.html", context)
 
 
 @login_required
@@ -153,45 +185,71 @@ def save_hackathon(request: HttpRequest, hackathon_id):
     if request.method == "POST":
         hackathon = get_object_or_404(Hackathon, id=hackathon_id)
         hacker = get_object_or_404(Hacker, id=request.user.id)
+        page_type = request.GET.get("page_type")
 
         if hacker.saved.filter(id=hackathon_id).exists():
-            return JsonResponse(
-                {"status": "fail", "error": "Invalid request"}, status=400
-            )
+            hacker.saved.remove(hackathon)
+            if page_type == "saved":
+                return redirect("saved_hackathons")
+            else:
+                return JsonResponse({"status": "sucess", "hackathon": "removed"})
 
         hacker.saved.add(hackathon)
-        return JsonResponse(
-            {
-                "status": "success",
-                "hackathon": {
-                    "id": hackathon.id,
-                    "name": hackathon.name,
-                },
-            }
-        )
+        if page_type == "saved":
+            return redirect("saved_hackathons")
+        else:
+            return JsonResponse(
+                {
+                    "status": "success",
+                    "hackathon": {
+                        "id": hackathon.id,
+                        "name": hackathon.name,
+                    },
+                }
+            )
+
+
+def str_to_bool(s):
+    return s.lower() in ["true", "1", "yes"]
 
 
 @login_required
-def unsave_hackathon(request: HttpRequest, hackathon_id):
+def add_vote(request: HttpRequest, hackathon_id):
     if request.method == "POST":
         hackathon = get_object_or_404(Hackathon, id=hackathon_id)
         hacker = get_object_or_404(Hacker, id=request.user.id)
+        type_vote = request.GET.get("vote_state")
+        state = str_to_bool(type_vote)
+        vote = Vote.objects.filter(hackathon_id=hackathon, hacker=hacker)
 
-        if not hacker.saved.filter(id=hackathon_id).exists():
-            return JsonResponse(
-                {"status": "fail", "error": "Invalid request"}, status=400
-            )
+        if vote.first():
+            if vote.type_vote:
+                hackathon.count_upvotes -= 1
+                hackathon.count_downvotes += 1
+            else:
+                hackathon.count_downvotes -= 1
+                hackathon.count_upvotes += 1
 
-        hacker.saved.remove(hackathon)
-        return JsonResponse(
-            {
-                "status": "success",
-                "hackathon": {
-                    "id": hackathon.id,
-                    "name": hackathon.name,
-                },
-            }
-        )
+            vote.update(type_vote=state)
+        else:
+            vote = Vote.objects.create(hackathon=hackathon, vote_type=state)
+
+            vote.from_hacker.add(hacker)
+
+        # hackathon.count_upvotes = Vote.objects.filter(
+        #     hackathon=hackathon, vote_type=True
+        # ).count()
+
+        # hackathon.count_downvotes = Vote.objects.filter(
+        #     hackathon=hackathon, vote_type=False
+        # ).count()
+
+        # Save the updated hackathon object
+        hackathon.save()
+
+        return JsonResponse({"status": "success", "message": "Vote added successfully"})
+
+    return JsonResponse({"status": "fail", "error": "Invalid request"}, status=400)
 
 
 @login_required
@@ -200,16 +258,17 @@ def request_curator_access(request):
     if request.method == "POST":
         form = CuratorRequestForm(request.POST)
         if form.is_valid():
-            hackathon = form.cleaned_data["hackathon"]
-            team_name = form.cleaned_data["team_name"]
-            team_description = form.cleaned_data["team_description"]
-            reason = form.cleaned_data["reason"]
-            # Send an email to the hackathon organizers with the request
-            # Django's email system?
-            # just print the request to the console
-            print(
-                f"Request from {team_name} to be a curator for {hackathon}: {reason}. {team_name} description: {team_description}"
-            )
+            # hackathon = form.cleaned_data["hackathon"]
+            # team_name = form.cleaned_data["team_name"]
+            # team_description = form.cleaned_data["team_description"]
+            # reason = form.cleaned_data["reason"]
+            form.save(commit=False)
+            form.review_status = ReviewStatus.Pending
+            form.created_by = Hacker.objects.get(id=request.user.id)
+            form.save()
+            # print(
+            #     f"Request from {team_name} to be a curator for {hackathon}: {reason}. {team_name} description: {team_description}"
+            # )
             return redirect("curator_request_success")
     else:
         form = CuratorRequestForm()
@@ -226,16 +285,58 @@ class SavedHackathonsPage(ListView):
 
     def get_queryset(self):
         user: Hacker = self.request.user
-        return user.saved.all()
+        saved_hackathons = user.saved.all()
+        print(saved_hackathons)  # Print the saved hackathons for debugging
+        return saved_hackathons
 
 
 # checks if the user is an admin
-def is_admin(user):
+def is_admin(user: AbstractUser | AnonymousUser):
     return user.is_superuser
 
 
-# @user_passes_test(is_admin)
-# @ratelimit(key="user_or_ip", rate="1/d", block=True)
+@login_required
+@user_passes_test(is_admin)
+@ratelimit(key="user_or_ip", rate="1/d", block=True)
 def scrape(request):
     scrape_all()
     return HttpResponse("Scraped!")
+
+
+@cache_page(60 * 60)  # 1 hour cache
+def calendar_generator(request):
+    tdy_date = timezone.now()
+    country = request.GET.get("country")
+    city = request.GET.get("city")
+    start = request.GET.get("start")
+    end = request.GET.get("end")
+
+    query_base = Q(end_date__gte=tdy_date, is_public=True)
+    if country and country != "none" and country != "World":
+        query_base &= Q(location__country=country)
+    elif country == "World":
+        query_base &= ~Q(location__country="Online")
+
+    if city and city != "None":
+        print(city)
+        query_base &= Q(location__name__icontains=city)
+
+    if start and start != "None":
+        query_base &= Q(start_date__gte=start)
+
+    if end and end != "None":
+        query_base &= Q(end_date__lte=end)
+
+    upcoming_hackathons = Hackathon.objects.filter(query_base)
+    cal = Calendar()
+    for hackathon in upcoming_hackathons:
+        ical_event = Event()
+        ical_event.add("summary", hackathon.name)
+        ical_event.add("dtstart", hackathon.start_date)
+        ical_event.add("dtend", hackathon.end_date)
+        ical_event.add("location", hackathon.location.name)
+        ical_event.add("uid", hackathon.duplication_id)
+        cal.add_component(ical_event)
+    response = HttpResponse(cal.to_ical(), content_type="text/calendar")
+    response["Content-Disposition"] = "attachment; filename=hackathons.ics"
+    return response

@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     "dischannelsaver",
     "crispy_forms",
     "crispy_bootstrap4",
+    "django_filters",
 ]
 
 SOCIALACCOUNT_PROVIDERS = {
