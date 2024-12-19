@@ -31,5 +31,5 @@
 
 
 
-### For local development, use `docker compose -f .\compose.yml -f .\compose.local.yml up --watch`
+For local development, use `docker compose -f .\compose.yml -f .\compose.local.yml up --watch`
 
