@@ -257,6 +257,11 @@ DISCORD_GUILD_ID: int = 0  # The discord guild ID that you want to archive chann
 DISCORD_TOKEN: str = (
     "CHANGEME"  # The discord bot token that you want to use to archive channels
 )
+
+DEFAULT_FROM_EMAIL = "hello@hackathonscanada.com"
+
+EMAIL_BATCH_SIZE = 50  # Number of emails to send in a batch
+
 # fmt: off
 
 
@@ -270,7 +275,7 @@ UNFOLD = {
     "ENVIRONMENT": "hackathons_canada.callbacks.environment_callback",
     # "DASHBOARD_CALLBACK": "hackathons_canada.views.dashboard_callback",
     "SITE_ICON": lambda request: static("assets/logo.png"),
-    # 
+    #
     "SITE_FAVICONS": [
         {
             "rel": "icon",
@@ -330,7 +335,7 @@ UNFOLD = {
                         "icon": "category",
                         "link": reverse_lazy("admin:core_category_changelist"),
                     },
-            
+
                 ],
             },
             {
@@ -366,7 +371,7 @@ UNFOLD = {
                         ),
                         },
                 ],
-                   
+
             },
         ],
     },
