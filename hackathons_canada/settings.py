@@ -148,10 +148,17 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+assert os.environ.get("POSTGRES_DB"), "POSTGRES_DB is not set in .env"
+assert os.environ.get("POSTGRES_USER"), "POSTGRES_USER is not set in .env"
+assert os.environ.get("POSTGRES_PASSWORD"), "POSTGRES_PASSWORD is not set in .env"
+assert os.environ.get(
+    "POSTGRES_HOST"
+), "POSTGRES_HOST is not set in .env. You must use a postgres database with PostGIS installed"
+
 DATABASES = {
     "default": {
-        "ENGINE": os.environ.get("DB_ENGINE", "django.db.backends.sqlite3"),
-        "NAME": os.environ.get("POSTGRES_DB", os.path.join(BASE_DIR, "db.sqlite3")),
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ.get("POSTGRES_DB"),
         "USER": os.environ.get("POSTGRES_USER", "user"),
         "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "password"),
         "HOST": os.environ.get("POSTGRES_HOST", "postgres"),
