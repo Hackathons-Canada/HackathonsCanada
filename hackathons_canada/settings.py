@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 import os
 from pathlib import Path
+
+from celery.schedules import crontab
 from django.templatetags.static import static
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
@@ -367,6 +369,20 @@ UNFOLD = {
                    
             },
         ],
+    },
+}
+
+
+CELERY_BEAT_SCHEDULE = {
+    'weekly-digest': {
+        'task': 'hackathons.tasks.send_hackathon_digest',
+        'schedule': crontab(day_of_week=1, hour=9, minute=0),  # Monday 9 AM UTC
+        'kwargs': {'frequency': 'weekly'}
+    },
+    'monthly-digest': {
+        'task': 'hackathons.tasks.send_hackathon_digest',
+        'schedule': crontab(day_of_month=1, hour=9, minute=0),  # 1st of month 9 AM UTC
+        'kwargs': {'frequency': 'monthly'}
     },
 }
 
