@@ -12,7 +12,6 @@ services:
       - /srv/media:/app/media
       - ./logs/:/logs/
     depends_on:
-      - postgres
       - valkey
     env_file:
       - .env
@@ -21,25 +20,6 @@ services:
   valkey:
     image: "valkey/valkey:7.2-alpine"
     restart: always
-
-  postgres:
-    image: postgres:16-alpine
-    shm_size: 128mb
-    volumes:
-      - ../postgres:/var/lib/postgresql/data/
-      - ${PWD}/scripts/postgres-init-db.sh:/docker-entrypoint-initdb.d/postgres-init-db.sh
-    env_file: .env
-    environment:
-      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
-      POSTGRES_USER: "hackathons_canada_superuser"
-      POSTGRES_DB: "hackathons"
-    restart: always
-    healthcheck:
-      test: ["CMD", "pg_isready -U ${POSTGRES_USER}", "-d", "${POSTGRES_DB}"]
-      interval: 5s
-      timeout: 20s
-      retries: 5
-
   celery_worker:
     build:
       context: .
@@ -53,7 +33,6 @@ services:
       - .env
     depends_on:
       - valkey
-      - postgres
     healthcheck:
       test: ["CMD", "/opt/pysetup/.venv/bin/celery", "worker", "-A", "dischannelsaver", "--loglevel=info"]
       interval: 10s
@@ -72,7 +51,6 @@ services:
       - .env
     depends_on:
       - valkey
-      - postgres
     healthcheck:
       test: ["CMD", "/opt/pysetup/.venv/bin/celery", "beat", "-A", "dischannelsaver", "--loglevel=info"]
       interval: 10s
@@ -93,7 +71,6 @@ services:
       - 5557:5555
     depends_on:
       - valkey
-      - postgres
 
 volumes:
   static_volume:
