@@ -18,7 +18,7 @@ async def call_archiver(channel_id: int) -> float:
     :return: time taken to archive the channel in seconds
     """
     COMMAND = f'export -t {settings.DISCORD_TOKEN} -c {channel_id} --include-threads all -o " / out / % C" -p 15mb --media --reuse-media --media-dir /media '
-    VOLUMES = ["/media:/media", "/out:/out"]  # see docker-compose.yml section celery
+    VOLUMES = ["/media:/media", "/out:/out"]  # see compose.yml section celery
     client = docker.from_env()
     start = time.perf_counter()
     container = client.containers.run(

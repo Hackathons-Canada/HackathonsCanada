@@ -1,7 +1,11 @@
+import math
+import operator
 import random
+from functools import reduce
 from typing import Final, Tuple, List
 
-from django.contrib.auth.models import AbstractUser, UserManager
+from django.contrib.auth.models import AbstractUser
+from core.utils import get_coordinates
 
 # Create your models here.
 from django.db import models
@@ -18,12 +22,13 @@ __all__ = [
     "HackathonSource",
     "Location",
     "Category",
-    "NotificationPolicy",
+    "EmailPreferences",
     "EDUCATION_CHOICES",
     "HACKATHON_EDUCATION_CHOICES",
     "HYBRID_CHOICES",
     "ReviewStatus",
 ]
+
 
 EDUCATION_CHOICES: Final = [
     (0, "Middle School"),
@@ -31,6 +36,13 @@ EDUCATION_CHOICES: Final = [
     (2, "University/College"),
     (3, "Graduated University/College"),
     (4, "Other"),
+]
+
+FREQUENCY_CHOICES = [
+    ("never", "Never"),
+    ("weekly", "Weekly Digest"),
+    ("monthly", "Monthly Digest"),
+    ("instant", "Instant Updates"),
 ]
 
 HACKATHON_EDUCATION_CHOICES: List[Tuple[int, str]] = EDUCATION_CHOICES + [
@@ -79,79 +91,124 @@ class School(models.Model):
         return self.name
 
 
-class NotificationPolicy(models.Model):
-    enabled = models.BooleanField(
-        default=False, help_text="Enable or disable notifications"
+class EmailPreferences(models.Model):
+    user = models.OneToOneField(
+        "Hacker", on_delete=models.CASCADE, related_name="email_preferences"
     )
-    weekly = models.BooleanField(default=False, help_text="Send weekly notifications")
-    monthly = models.BooleanField(default=False, help_text="Send monthly notifications")
-    added = models.BooleanField(
-        default=False,
-        help_text="Send notifications when a new hackathon is added",
+    frequency = models.CharField(
+        max_length=10, choices=FREQUENCY_CHOICES, default="weekly"
     )
-    local_only = models.BooleanField(
-        default=False,
-        help_text="Only send notifications for hackathons in your local area (as defined by radius) - Changes the behavior of all other notification settings",
+    last_email_sent = models.DateTimeField(null=True, blank=True)
+    radius_km = models.PositiveIntegerField(
+        default=150, help_text="Search radius in kilometers"
     )
-    only_eligible = models.BooleanField(
-        default=True,
-        help_text="Only send notifications for hackathons you are eligible for (based on age and education level)",
+    categories_of_interest = models.ManyToManyField(
+        "core.Category", blank=True, related_name="interested_users"
     )
-    # todo: fields abt travel reimbursement?
-
-    radius_type = models.CharField(
-        max_length=255,
-        choices=[
-            ("km", "Kilometers"),
-            ("mi", "Miles"),
-        ],
-        default="km",
-        help_text="Unit of radius",
+    min_prize_pool = models.IntegerField(
+        null=True, blank=True, help_text="Minimum prize pool to notify about"
     )
-    radius = models.PositiveIntegerField(
-        default=150,
-        help_text="Radius in which a hackathon must be in to be considered local",
-    )
+    include_virtual = models.BooleanField(default=True)
+    include_in_person = models.BooleanField(default=True)
+    include_hybrid = models.BooleanField(default=True)
+    only_with_travel_reimbursement = models.BooleanField(default=False)
 
-    @property
-    def standard_radius(self) -> float | int:
-        """
-        Get the radius in kilometers
-        :return: radius in kilometers
-        """
-        if self.radius_type == "km":
-            return self.radius
+    def is_due_for_email(self):
+        if not self.last_email_sent:
+            return True
 
-        MILES_TO_KM = 1.60934
-        return self.radius * MILES_TO_KM
+        now = timezone.now()
+        time_diff = now - self.last_email_sent
 
-    class Meta:
-        verbose_name_plural = "Notification Policies"
-        # constraints = [
-        #     models.CheckConstraint(
-        #         check=models.Q(weekly=True)&  models.Q(monthly=True),
-        #         name="weekly_or_monthly_not_both",
-        #     ),
-        # ]
+        if self.frequency == "daily":
+            return time_diff.days >= 1
+        elif self.frequency == "weekly":
+            return time_diff.days >= 7
+        elif self.frequency == "monthly":
+            return time_diff.days >= 30
+        return False
 
+    def get_relevant_hackathons(self):
+        base_query = Hackathon.objects.filter(
+            is_public=True,
+            review_status="approved",
+            application_deadline__gt=timezone.now(),
+        )
 
-class Notifiable(UserManager):
-    async def anotify(self):
-        async for user in self.iterator():
-            pass
-            """
-            At the moment, we cannot call `core.tasks.send_hackathon_emails.delay()`
-            as its parameter is `frequency` which is a string
-            that can either be the values "monthly" or "weekly".
-            
-            Originally, the email-sending task/function
-            would iterate through each `user` as its argument,
-            and it is no longer dependent on `user` now.
-            """
+        # Location filtering
+        if not all([self.include_virtual, self.include_in_person, self.include_hybrid]):
+            location_filters = []
+            if self.include_virtual:
+                location_filters.append(models.Q(hybrid="V"))
+            if self.include_in_person:
+                location_filters.append(models.Q(hybrid="I"))
+            if self.include_hybrid:
+                location_filters.append(models.Q(hybrid="H"))
+            base_query = base_query.filter(reduce(operator.or_, location_filters))
+
+        # Category filtering
+        if self.categories_of_interest.exists():
+            base_query = base_query.filter(
+                categories__in=self.categories_of_interest.all()
+            )
+
+        # Prize pool filtering
+        if self.min_prize_pool:
+            base_query = base_query.filter(
+                numerical_prize_pool__gte=self.min_prize_pool
+            )
+
+        # Travel reimbursement filtering
+        if self.only_with_travel_reimbursement:
+            base_query = base_query.exclude(reimbursements__isnull=True).exclude(
+                reimbursements=""
+            )
+
+        # Location-based filtering for in-person events
+        if self.user.city and self.user.country:
+            in_person_hackathons = base_query.filter(
+                models.Q(hybrid="I") | models.Q(hybrid="H"), location__isnull=False
+            )
+
+            nearby_hackathons = [
+                h
+                for h in in_person_hackathons
+                if self._calculate_distance(h.location) <= self.radius_km
+            ]
+
+            virtual_hackathons = base_query.filter(hybrid="V")
+            return list(virtual_hackathons) + nearby_hackathons
+
+        return base_query
+
+    def _calculate_distance(self, hackathon_location):
+        """Calculate distance between user and hackathon location using Haversine formula"""
+        # TODO: redo in geodjango
+        if not (self.user.city and self.user.country and hackathon_location):
+            return float("inf")
+
+        user_lat, user_lon = get_coordinates(self.user.city, self.user.country)
+        hack_lat, hack_lon = get_coordinates(
+            hackathon_location.city, hackathon_location.country
+        )
+
+        R = 6371  # Earth's radius in km
+
+        lat1, lon1 = math.radians(user_lat), math.radians(user_lon)
+        lat2, lon2 = math.radians(hack_lat), math.radians(hack_lon)
+
+        dlat = lat2 - lat1
+        dlon = lon2 - lon1
+
+        a = (
+            math.sin(dlat / 2) ** 2
+            + math.cos(lat1) * math.cos(lat2) * math.sin(dlon / 2) ** 2
+        )
+        c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+        return R * c
 
 
 class Hacker(AbstractUser):
-    objects = Notifiable()
     country = CountryField(
         blank_label="(select country)",
         blank=True,
@@ -181,28 +238,9 @@ class Hacker(AbstractUser):
         related_name="interested_users",
         help_text="Hackathons the user is interested in and wants updates about.",
     )
-    saved_categories = models.ManyToManyField(
-        "core.Category",
-        related_name="interested_users",
-        help_text="Categories the user is interested in and wants updates when new hackathons meeting this critera are created.",
-    )
-    notification_policy = models.OneToOneField(
-        NotificationPolicy,
-        on_delete=models.CASCADE,
-        related_name="user",
-        blank=False,
-        null=False,
-    )
 
     def __str__(self):
         return f"Hacker(username={self.username}, email={self.email}, first_name={self.first_name}, last_name={self.last_name})"
-
-    def save(
-        self, force_insert=False, force_update=False, using=None, update_fields=None
-    ):
-        if self.notification_policy_id is None:
-            self.notification_policy = NotificationPolicy.objects.create()
-        super().save(force_insert, force_update, using, update_fields)
 
 
 def get_random_color() -> str:

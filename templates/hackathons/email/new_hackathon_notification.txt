@@ -1,4 +1,0 @@
-New hackathons have been released:
-{% for hackathon in hackathons %}
-  {{hackathon.name}} : {{hackathon.start_date |date:"N d"}} - {{hackathon.end_date|date:"d, Y"}}
-{% endfor %}
