@@ -315,9 +315,9 @@
                   <div id="{{hackathon.id}}-card-front" class="flip-card-front duration-[0.4s] [transform:rotateY(0deg)]">
                     <div class="hackathon-card">
                       {% if hackathon.bgimage %}
-                        <img class="hackathon-img-front" src="{{ hackathon.bg_image }}" alt="{{ hackathon.name }}">
+                        <img class="hackathon-img-front border-b-4 border-black" src="{{ hackathon.bg_image }}" alt="{{ hackathon.name }}">
                       {% else %}
-                        <img class="hackathon-img-front" src="{{ hackathon.fg_image }}" alt="{{ hackathon.name }}">
+                        <img class="hackathon-img-front border-b-4 border-black" src="{{ hackathon.fg_image }}" alt="{{ hackathon.name }}">
                       {% endif %}
 
                       <div class="flex flex-col mt-3 align-middle hackathon-content justify-items-center">
@@ -326,7 +326,7 @@
                           {{ hackathon.location.name }}
                         </h6>
                         <h5 class="text-lg">
-                          {{ hackathon.start_date |date:"N-d"}}-
+                          {{ hackathon.start_date |date:"N d"}}-
                           {{ hackathon.end_date|date:"d, Y"}}
                         </h5>
                       </div>
@@ -377,19 +377,55 @@
                         <img class="hackathon-img-back" src="{{ hackathon.fg_image }}" alt="{{ hackathon.name }}">
                       {% endif %}
                       <div class="hackathon-card-div">
-                        <div class="relative top-[65%] text-start px-3">
+                        <div class="relative top-[65%] text-start px-3 max-h-16 overflow-scroll">
                           <h6 class="text-lg text-gray-200">{{ hackathon.location.name }} | {{ hackathon.start_date |date:"N-d"}}-
-                            {{ hackathon.start_date|date:"d, Y"}}</h6>
+                            {{ hackathon.application_deadline|date:"d, Y"}}</h6>
                           <h3 class="text-3xl font-semibold text-white">{{ hackathon.name }}</h3>
                         </div>
                       </div>
-                      <div class="card-body-layout align-items-start">
-                        <p class="card-body-text">Application: <span class="font-semibold text-red-600">{{ hackathon.start_date |date:"N-d"}}-
+                      <div class="card-body-layout align-items-start my-auto">
+                        <p class="card-body-text">Application: <span class="font-semibold text-red-600">{{ hackathon.application_start |date:"N-d"}}-
                           {{ hackathon.start_date|date:"d, Y"}}</span></p>
-                        <p class="card-body-text">Education: High School, University</p>
-                        <p class="card-body-text">Age Requirement: 14+</p>
-                        <p class="card-body-text">Travel Reimbursements: Yes</p>
-                        <a href="{{ hackathon.website }}" class="card-body-text">Website</a>
+                        <p class="card-body-text">Minimum Education: {{ hackathon.minimum_education_level }}</p>
+                        <p class="card-body-text">Travel Reimbursements: {{ hackathon.reimbursements }}</p>
+                        <a href="{{ hackathon.website }}" class="card-body-text">Website</a><div class="relative flex flex-row items-center justify-center my-2">
+
+                          <div class="relative flex flex-row items-center justify-center">
+                            <button class="px-3 py-1 rounded-md duration-200 ease-in-out hover:bg-gray-200 hover:text-black hover:scale-105 " onclick="flipCard('{{ hackathon.id }}')"> Less</button>
+
+                            <button id="{{hackathon.id}}-save" class="mx-3 px-3 py-1 rounded-md duration-200 ease-in-out hover:bg-gray-200 hover:text-black hover:scale-105 {% if hackathon.user_saved == True %} bg-[#e5462e] text-white {% else %}bg-white {% endif %}" type="button" onclick="{% if user.is_authenticated %}saveHackathon(event, '{{ hackathon.id }}'){% else %}addLoginPop(){% endif %}">Save</button>
+
+                            <button type="button" class="relative flex items-center mx-2"
+                                    onclick="voteHackathon(event, '{{ hackathon.id }}', 'true')">
+                              <input
+                                class="w-6 h-6 appearance-none peer"
+                                type="checkbox">
+                              <span class="absolute cursor-pointer w-6 h-6 flex items-center justify-center text-white font-bold duration-200 ease-in-out peer-checked:*:fill-[#e5462e] *:stroke-gray-500 peer-checked:*:stroke-[#e5462e] active:scale-75">
+                                <svg  id = "{{hackathon.id }}-up" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"
+                                     class="w-6 h-6 duration-200 {% if hackathon.vote_state == True %} fill-black{% else %}fill-white {% endif %}">
+                                  <path class="stroke-2"
+                                        d="M4 14h4v7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7h4a1.001 1.001 0 0 0 .781-1.625l-8-10c-.381-.475-1.181-.475-1.562 0l-8 10A1.001 1.001 0 0 0 4 14"></path>
+                                </svg>
+                              </span>
+                            </button>
+                            <p id = "{{hackathon.id }}-vote-text" class="mx-1 ml-1 text-lg text-gray-700">{{ hackathon.vote_count }}</p>
+                            <button type="button" class="relative flex items-center center mx-2"
+                                    onclick="voteHackathon(event, '{{ hackathon.id }}', 'false')">
+                              <input
+                                class="w-6 h-6 appearance-none peer"
+                                type="checkbox">
+                              <span class="absolute cursor-pointer w-6 h-6 flex items-center justify-center text-white font-bold duration-200 ease-in-out peer-checked:*:fill-[#e5462e] *:stroke-gray-500 peer-checked:*:stroke-[#e5462e] active:scale-75">
+                                <svg  id = "{{hackathon.id }}-down" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"
+                                     class="rotate-180 w-6 h-6 duration-200 {% if hackathon.vote_state == False %}fill-black{% else %}fill-white {% endif %}">
+                                  <path class="stroke-2"
+                                        d="M4 14h4v7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7h4a1.001 1.001 0 0 0 .781-1.625l-8-10c-.381-.475-1.181-.475-1.562 0l-8 10A1.001 1.001 0 0 0 4 14"></path>
+                                </svg>
+                              </span>
+                            </button>
+
+                          </div>
+
+                        </div>
                       </div>
                     </div>
                   </div>

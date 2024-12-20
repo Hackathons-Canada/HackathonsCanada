@@ -1157,7 +1157,6 @@ section {
 .card-body-layout {
   display: flex;
   flex-direction: column;
-  margin: 20px;
 }
 
 .card-body-text {
