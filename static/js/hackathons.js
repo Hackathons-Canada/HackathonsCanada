@@ -1,3 +1,6 @@
+
+
+
 function saveHackathon(event, hackathonId) {
     event.preventDefault();
     var xhr = new XMLHttpRequest();
