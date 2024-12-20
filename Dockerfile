@@ -1,7 +1,7 @@
 # `python-base` sets up all our shared environment variables
 FROM python:3.12-slim AS python-base
 LABEL maintainer="Jason Cameron <hackathonscanada+docker@jasoncameron.dev>"
-LABEL org.opencontainers.image.source = "https://github.com/Hackathons-Canada/HackathonsCanada"
+LABEL org.opencontainers.image.source="https://github.com/Hackathons-Canada/HackathonsCanada"
 
     # python
 ENV PYTHONUNBUFFERED=1 \
