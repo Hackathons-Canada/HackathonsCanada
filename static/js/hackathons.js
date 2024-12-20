@@ -4,13 +4,35 @@
 function saveHackathon(event, hackathonId) {
     event.preventDefault();
     var xhr = new XMLHttpRequest();
-
-
+    const saveButton = document.getElementById(`${hackathonId}-save`);
+    if (saveButton.classList.contains('bg-[#e5462e]')) {
+        saveButton.classList.remove('bg-[#e5462e]');
+        saveButton.classList.remove('text-white');
+        saveButton.classList.add('bg-white');
+    }
+    else {
+        saveButton.classList.add('bg-[#e5462e]');
+        saveButton.classList.add('text-white');
+        saveButton.classList.remove('bg-white');
+    }
     xhr.open('POST', `/hackathons/${hackathonId}/save`, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
     xhr.send(JSON.stringify({}));
 }
+
+function cancelLoginPop(){
+    const popup = document.getElementById('login-popup');
+    popup.classList.add('hidden');
+    popup.classList.remove('flex');
+}
+
+function addLoginPop(){
+    const popup = document.getElementById('login-popup');
+    popup.classList.remove('hidden');
+    popup.classList.add('flex');
+}
+
 
 function voteHackathon(event, hackathonId, vote_state) {
     event.preventDefault();
