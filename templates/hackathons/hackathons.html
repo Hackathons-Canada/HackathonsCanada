@@ -312,7 +312,7 @@
               <div class="relative p-4 mx-3 rotate-0 col flip-card lockedheight preserve-3d">
                 <div class="ease-in-out cursor-pointer flip-card-inner">
                 {# Set default rotation to 0 deg to fix weird firefox bug#}
-                  <div class="flip-card-front duration-[0.4s] [transform:rotateY(0deg)]">
+                  <div id="{{hackathon.id}}-card-front" class="flip-card-front duration-[0.4s] [transform:rotateY(0deg)]">
                     <div class="hackathon-card">
                       {% if hackathon.bgimage %}
                         <img class="hackathon-img-front" src="{{ hackathon.bg_image }}" alt="{{ hackathon.name }}">
@@ -331,16 +331,11 @@
                         </h5>
                       </div>
                       <div class="relative flex flex-row items-center justify-center my-2">
+                        <button class="px-3 py-1 rounded-md duration-200 ease-in-out hover:bg-gray-200 hover:text-black hover:scale-105 " onclick="flipCard('{{ hackathon.id }}')"> More</button>
 
-                        <button onclick=""> More Info</button>
+                        <button id="{{hackathon.id}}-save" class="mx-3 px-3 py-1 rounded-md duration-200 ease-in-out hover:bg-gray-200 hover:text-black hover:scale-105 {% if hackathon.user_saved == True %} bg-[#e5462e] text-white {% else %}bg-white {% endif %}" type="button" onclick="{% if user.is_authenticated %}saveHackathon(event, '{{ hackathon.id }}'){% else %}addLoginPop(){% endif %}">Save</button>
 
-                        {% if user.is_authenticated %}
-
-                          <button type="button" onclick="saveHackathon(event, '{{ hackathon.id }}')">Save</button>
-                        {% else %}
-                          <p class="absolute bottom-0 right-0 m-3 text-xs"><em>Login to save</em></p>
-                        {% endif %}
-                        <button type="button" class="relative flex items-center ml-3"
+                        <button type="button" class="relative flex items-center mx-2"
                                 onclick="voteHackathon(event, '{{ hackathon.id }}', 'true')">
                           <input
                             class="w-6 h-6 appearance-none peer"
@@ -354,7 +349,7 @@
                           </span>
                         </button>
                         <p id = "{{hackathon.id }}-vote-text" class="mx-1 ml-1 text-lg text-gray-700">{{ hackathon.vote_count }}</p>
-                        <button type="button" class="relative flex items-center ml-3"
+                        <button type="button" class="relative flex items-center center mx-2"
                                 onclick="voteHackathon(event, '{{ hackathon.id }}', 'false')">
                           <input
                             class="w-6 h-6 appearance-none peer"
@@ -373,8 +368,7 @@
                     </div>
                   </div>
                 {# Set default rotation to 0 deg to fix weird firefox bug#}
-                  <div class="flip-card-back duration-[0.4s] flipped [transform:rotateY(0deg)]"
-                       onclick="this.classList.toggle('flipped'); this.previousElementSibling.classList.toggle('flipped')">
+                  <div id="{{hackathon.id}}-card-back" class="flip-card-back duration-[0.4s] flipped [transform:rotateY(0deg)]">
                     <div class="hackathon-card">
                       <div class="card-image-overlay"></div>
                       {% if hackathon.bgimage %}

@@ -1,5 +1,10 @@
 
-
+function flipCard(hackathonId) {
+    const card1 = document.getElementById(`${hackathonId}-card-front`);
+    const card2 = document.getElementById(`${hackathonId}-card-back`);
+    card1.classList.toggle("flipped")
+    card2.classList.toggle("flipped")
+}
 
 function saveHackathon(event, hackathonId) {
     event.preventDefault();
@@ -9,11 +14,13 @@ function saveHackathon(event, hackathonId) {
         saveButton.classList.remove('bg-[#e5462e]');
         saveButton.classList.remove('text-white');
         saveButton.classList.add('bg-white');
+        saveButton.textContent = "Save";
     }
     else {
         saveButton.classList.add('bg-[#e5462e]');
         saveButton.classList.add('text-white');
         saveButton.classList.remove('bg-white');
+        saveButton.textContent = "Saved";
     }
     xhr.open('POST', `/hackathons/${hackathonId}/save`, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
@@ -50,27 +57,22 @@ function voteHackathon(event, hackathonId, vote_state) {
             downButton.classList.add('fill-white');
             upButton.classList.remove('fill-white');
             upButton.classList.add('fill-black');
-            console.log('1')
             voteText.textContent = parseInt(voteText.textContent) + 2;
         }
         else if (upButton.classList.contains('fill-black')) {
             upButton.classList.add('fill-white');
             upButton.classList.remove('fill-black');
-            console.log('2')
             voteText.textContent = parseInt(voteText.textContent) - 1;
         }
         else {
             upButton.classList.remove('fill-white');
             upButton.classList.add('fill-black');
             voteText.textContent = parseInt(voteText.textContent) + 1;
-            console.log('3')
         }
-        console.log('running')
 
 
 
     } else {
-        console.log('false')
         if (upButton.classList.contains('fill-black')) {
             upButton.classList.remove('fill-black');
             upButton.classList.add('fill-white');
