@@ -8,14 +8,14 @@
 
 .main-bg-sign-layout {
   background: url("../assets/signupbg.jpg") lightgray -1496.239px 0px / 194.839%
-    100% no-repeat;
+              100% no-repeat;
   height: 100vh;
   width: 100%;
 }
 
 .main-bg-login-layout {
-  background: url("../assets/login.jpg") lightgray -1496.239px 0px / 194.839% 100%
-    no-repeat;
+  background: url("../assets/login.png") lightgray -1496.239px 0px / 194.839% 100%
+              no-repeat;
 }
 .main-section-layout {
   border-radius: 20px;
@@ -25,7 +25,7 @@
     rgba(255, 255, 255, 0.7) -6.41%,
     rgba(221, 231, 255, 0.7) 100%
   );
-  box-shadow: 0px 13px 14px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 13px 14px 0 rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(14.75px);
 }
 
@@ -42,7 +42,7 @@
   border-radius: 10px;
   border: 0.5px solid #000;
   background: linear-gradient(180deg, #e4ebbe 0%, #f7fcda 100%);
-  box-shadow: 1px 2px 3px 0px rgba(0, 0, 0, 0.5);
+  box-shadow: 1px 2px 3px 0 rgba(0, 0, 0, 0.5);
   width: 49px;
   height: 36px;
   flex-shrink: 0;
@@ -52,5 +52,5 @@
 .main-button-layout {
   border-radius: 10px;
   background: linear-gradient(90deg, #ff5a50 0%, #ef233c 100%);
-  box-shadow: 0px 0px 12px -1px #eb5757;
+  box-shadow: 0 0 12px -1px #eb5757;
 }
