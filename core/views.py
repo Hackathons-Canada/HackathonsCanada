@@ -130,27 +130,22 @@ def hackathon_page(request):
         hackathon_with_user_info = []
 
         if hacker is not None:
-            user_votes = Vote.objects.filter(hacker=request.user.id).values(
-                "id", "vote_type"
-            )
+            user_votes = Vote.objects.filter(hacker=request.user.id)
             saved = hacker.saved.values_list("id", flat=True).values_list(
                 "id", flat=True
             )
             for hackathon in upcoming_hackathons:
-                print(hackathon)
-                vote_data = user_votes.filter(id=hackathon.id).first()
-                print(vote_data)
+                vote_data = user_votes.filter(hackathon=hackathon).first()
                 setattr(
                     hackathon,
                     "vote_state",
-                    vote_data["vote_type"] if vote_data is not None else None,
+                    vote_data.vote_type if vote_data is not None else None,
                 )
                 setattr(
                     hackathon,
                     "user_saved",
                     True if saved.filter(id=hackathon.id).exists() else False,
                 )
-                print(hackathon.vote_state)
 
                 hackathon_with_user_info.append(hackathon)
         else:
