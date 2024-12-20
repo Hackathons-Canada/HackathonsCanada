@@ -23,6 +23,7 @@ django-celery-beat = "^2.7.0"
 cloudscraper = "^1.2.71"
 bs4 = "^0.0.2"
 django-ratelimit = "^4.1.0"
+django-redis = {extras = ["hiredis"], version = "^5.4.0"}
 
 
 [tool.poetry.group.dev]
