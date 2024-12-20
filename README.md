@@ -27,9 +27,3 @@
 8. Run the server using `python manage.py runserver`
 9. Visit `http://localhost:8000` in your browser
 10. You're all set!
-
-
-
-
-For local development, use `docker compose -f .\compose.yml -f .\compose.local.yml up --watch`
-
