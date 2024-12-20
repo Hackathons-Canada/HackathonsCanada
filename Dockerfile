@@ -24,14 +24,11 @@ ENV PYTHONUNBUFFERED=1 \
     # do not ask any interactive question
     POETRY_NO_INTERACTION=1 \
     \
-    # paths
     # this is where our requirements + virtual environment will live
     PYSETUP_PATH="/opt/pysetup" \
     VENV_PATH="/opt/pysetup/.venv"
 
-
 # prepend poetry and venv to path
-
 
 # `builder-base` stage is used to build deps + create our virtual environment
 FROM python-base AS builder-base

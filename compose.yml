@@ -37,7 +37,7 @@ services:
       - valkey
     healthcheck:
       test:
-        ["CMD", "/opt/pysetup/.venv/bin/celery", "worker", "--loglevel=info"]
+        ["CMD", "/opt/pysetup/.venv/bin/celery", "worker", "-A", "hackathons_canada", "--loglevel=info"]
       interval: 10s
       retries: 5
 
@@ -52,7 +52,7 @@ services:
     depends_on:
       - valkey
     healthcheck:
-      test: ["CMD", "/opt/pysetup/.venv/bin/celery", "beat", "--loglevel=info"]
+      test: ["CMD", "/opt/pysetup/.venv/bin/celery", "beat", "-A", "hackathons_canada", "--loglevel=info"]
       interval: 10s
       retries: 5
 

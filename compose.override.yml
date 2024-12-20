@@ -1,5 +1,3 @@
-
-
 services:
   web: &sync
     develop:
@@ -12,10 +10,18 @@ services:
         - action: rebuild
           path: ./poetry.lock
 
+
+    image: hackathonscanada:latest
+    container_name: web
+
   celery_worker:
     <<: *sync
+    image: hackathonscanada:latest
+    container_name: celery_worker
 
   celery_beat:
     <<: *sync
+    image: hackathonscanada:latest
+    container_name: celery_beat
 
 
