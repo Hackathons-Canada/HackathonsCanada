@@ -68,7 +68,7 @@ services:
     command:
       [
         "celery",
-        "--broker=redis://valkey:6379",
+        "--broker=redis://valkey:6379/0",
         "flower",
         "--port=5557",
         "--persisten=True",
