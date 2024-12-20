@@ -63,13 +63,11 @@ RUN mv ./scripts /scripts
 RUN sed -i 's/\r$//g' /scripts/django/start &&  \
     sed -i 's/\r$//g' /scripts/celery/worker/start &&  \
     sed -i 's/\r$//g' /scripts/celery/beat/start &&  \
-    sed -i 's/\r$//g' /scripts/flower/start &&  \
     sed -i 's/\r$//g' /scripts/entrypoint.sh
 
 RUN chmod +x /scripts/django/start && \
     chmod +x /scripts/celery/worker/start &&  \
     chmod +x /scripts/celery/beat/start && \
-    chmod +x /scripts/flower/start && \
     chmod +x /scripts/entrypoint.sh
 
 ENTRYPOINT ["/scripts/entrypoint.sh"]
