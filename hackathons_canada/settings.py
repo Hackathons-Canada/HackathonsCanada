@@ -67,7 +67,6 @@ INSTALLED_APPS = [
     "core",
     "dischannelsaver",
     "crispy_forms",
-    "crispy_bootstrap4",
 ]
 
 SOCIALACCOUNT_PROVIDERS = {

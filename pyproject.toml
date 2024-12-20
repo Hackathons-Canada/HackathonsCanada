@@ -8,11 +8,10 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.12"
-django = "^5.0.7"
+django = "5.1.4"
 docker = "^7.1.0"
 "discord.py" = "^2.4.0"
 django-crispy-forms = "^2.2"
-crispy-bootstrap4 = "^2024.1"
 flower = "^2.0.1"
 celery = { extras = ["redis"], version = "^5.4.0" }
 django-allauth = { extras = ["socialaccount"], version = "0.63.5" }
