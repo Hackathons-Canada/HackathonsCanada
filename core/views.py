@@ -21,7 +21,6 @@ from django.shortcuts import redirect
 from django.apps import apps
 from django.db.models import Q
 from icalendar import Calendar, Event
-from django.contrib.auth.decorators import user_passes_test
 from django_ratelimit.decorators import ratelimit
 
 if apps.ready:
@@ -81,7 +80,7 @@ def addHackathons(request):
 def hackathon_page(request):
     tdy_date = timezone.now()
 
-    hacker = Hacker.objects.get(id=request.user.id)
+    hacker = Hacker.objects.filter(id=request.user.id).first()
 
     view_type = request.GET.get("view_type")
     country = request.GET.get("country")
@@ -89,10 +88,6 @@ def hackathon_page(request):
     start = request.GET.get("start")
     end = request.GET.get("end")
 
-    user_votes = Vote.objects.filter(hacker=request.user.id).values("id", "vote_type")
-    saved = hacker.saved.values_list("id", flat=True).values_list("id", flat=True)
-    print("this is the saved list")
-    print(saved)
     query_base = Q(end_date__gte=tdy_date, is_public=True)
     if country and country != "none" and country != "World":
         query_base &= Q(location__country=country)
@@ -133,21 +128,33 @@ def hackathon_page(request):
         return render(request, "hackathons/hackathons.html", context)
     else:
         hackathon_with_user_info = []
-        for hackathon in upcoming_hackathons:
-            vote_data = user_votes.filter(id=hackathon.id).first()
-            setattr(
-                hackathon,
-                "vote_state",
-                vote_data["vote_type"] if vote_data is not None else None,
-            )
-            setattr(
-                hackathon,
-                "user_saved",
-                True if saved.filter(id=hackathon.id).exists() else False,
-            )
-            print(hackathon.vote_state)
 
-            hackathon_with_user_info.append(hackathon)
+        if hacker is not None:
+            user_votes = Vote.objects.filter(hacker=request.user.id).values(
+                "id", "vote_type"
+            )
+            saved = hacker.saved.values_list("id", flat=True).values_list(
+                "id", flat=True
+            )
+            for hackathon in upcoming_hackathons:
+                print(hackathon)
+                vote_data = user_votes.filter(id=hackathon.id).first()
+                print(vote_data)
+                setattr(
+                    hackathon,
+                    "vote_state",
+                    vote_data["vote_type"] if vote_data is not None else None,
+                )
+                setattr(
+                    hackathon,
+                    "user_saved",
+                    True if saved.filter(id=hackathon.id).exists() else False,
+                )
+                print(hackathon.vote_state)
+
+                hackathon_with_user_info.append(hackathon)
+        else:
+            hackathon_with_user_info = upcoming_hackathons
 
         context = {
             "hackathons": hackathon_with_user_info,
@@ -242,29 +249,42 @@ def add_vote(request: HttpRequest, hackathon_id):
         vote = Vote.objects.filter(hackathon=hackathon, hacker=hacker).first()
 
         if vote is not None:
+            print(vote.vote_type)
             if state == vote.vote_type:
-                hackathon.vote_count -= 1
-                vote.vote_type = False if state else True
-                vote.save()
+                print("1")
+                if state:
+                    hackathon.vote_count -= 1
+                else:
+                    hackathon.vote_count += 1
+                vote.delete()
             else:
                 if state:
+                    print("2")
                     hackathon.vote_count += 2
                 else:
+                    print("3")
                     hackathon.vote_count -= 2
-
-                vote.vote_type = state
+                vote.vote_type = True if state else False
                 vote.save()
-        else:
-            if state:
-                hackathon.vote_count += 1
-            else:
-                hackathon.vote_count -= 1
-            vote = Vote.objects.create(hackathon=hackathon, vote_type=state)
 
-            vote.hacker.add(hacker)
+        else:
+            vote = Vote.objects.create(hackathon=hackathon, vote_type=state)
             vote.save()
+            vote.hacker.add(hacker)
+            vote.vote_type = True if state else False
+
+            if state:
+                print("4")
+                hackathon.vote_count += 1
+
+            else:
+                print("5")
+                hackathon.vote_count -= 1
+            vote.save()
+
         hackathon.save()
 
+        print(hackathon.vote_count)
         return JsonResponse({"status": "success", "message": "Vote added successfully"})
 
     return JsonResponse({"status": "fail", "error": "Invalid request"}, status=400)
@@ -306,9 +326,9 @@ def is_admin(user: AbstractUser | AnonymousUser):
     return user.is_superuser
 
 
-@login_required
-@user_passes_test(is_admin)
-@ratelimit(key="user_or_ip", rate="1/d", block=True)
+# @login_required
+# @user_passes_test(is_admin)
+# @ratelimit(key="user_or_ip", rate="1/d", block=True)
 def scrape(request):
     scrape_all()
     return HttpResponse("Scraped!")
