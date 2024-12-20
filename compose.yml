@@ -57,21 +57,18 @@ services:
       retries: 5
 
   flower:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: flower
-    command: /scripts/flower/start
+    image: mher/flower
+    command: [ 'celery', '--broker=redis://valkey:6379', 'flower',  '--port=5557', '--persisten=True'  ]
     volumes:
-      - .:/app
-      - ./logs/:/logs/
+      - flower-data:/data
     env_file:
       - .env
     ports:
-      - 5557:5555
+      - "5557:5557"
     depends_on:
       - valkey
 
 volumes:
   static_volume:
   media_volume:
+  flower-data:
