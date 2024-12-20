@@ -3,6 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    image: ghcr.io/hackathons-canada/hackathons_canada:latest
     command: /scripts/django/start
     ports:
       - "22300:22300"
@@ -20,11 +21,16 @@ services:
   valkey:
     image: "valkey/valkey:8-alpine"
     restart: always
+    environment:
+      - VALKEY_EXTRA_FLAGS='--save 60 1 --loglevel warning'
+    volumes:
+      - cache-data:/data
+
   celery_worker:
     build:
       context: .
       dockerfile: Dockerfile
-    image: celery_worker
+    image: ghcr.io/hackathons-canada/hackathons_canada:latest
     command: /scripts/celery/worker/start
     volumes:
       - .:/app
@@ -34,7 +40,8 @@ services:
     depends_on:
       - valkey
     healthcheck:
-      test: ["CMD", "/opt/pysetup/.venv/bin/celery", "worker", "-A", "dischannelsaver", "--loglevel=info"]
+      test:
+        ["CMD", "/opt/pysetup/.venv/bin/celery", "worker", "--loglevel=info"]
       interval: 10s
       retries: 5
 
@@ -42,7 +49,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: celery_beat
+    image: ghcr.io/hackathons-canada/hackathons_canada:latest
     command: /scripts/celery/beat/start
     volumes:
       - .:/app
@@ -52,13 +59,20 @@ services:
     depends_on:
       - valkey
     healthcheck:
-      test: ["CMD", "/opt/pysetup/.venv/bin/celery", "beat", "-A", "dischannelsaver", "--loglevel=info"]
+      test: ["CMD", "/opt/pysetup/.venv/bin/celery", "beat", "--loglevel=info"]
       interval: 10s
       retries: 5
 
   flower:
-    image: mher/flower
-    command: [ 'celery', '--broker=redis://valkey:6379', 'flower',  '--port=5557', '--persisten=True'  ]
+    image: ghcr.io/hackathons-canada/hackathons_canada:latest
+    command:
+      [
+        "celery",
+        "--broker=redis://valkey:6379",
+        "flower",
+        "--port=5557",
+        "--persisten=True",
+      ]
     volumes:
       - flower-data:/data
     env_file:
@@ -72,3 +86,4 @@ volumes:
   static_volume:
   media_volume:
   flower-data:
+  cache-data:
