@@ -1,5 +1,5 @@
 # `python-base` sets up all our shared environment variables
-FROM python:3.12-slim as python-base
+FROM python:3.12-slim AS python-base
 
     # python
 ENV PYTHONUNBUFFERED=1 \
@@ -32,7 +32,7 @@ ENV PYTHONUNBUFFERED=1 \
 
 
 # `builder-base` stage is used to build deps + create our virtual environment
-FROM python-base as builder-base
+FROM python-base AS builder-base
 RUN apt-get update \
     && apt-get install --no-install-recommends -y \
         # deps for installing poetry
@@ -54,7 +54,7 @@ RUN poetry install --with prod --no-root
 
 
 # `production` image used for runtime
-FROM python-base as production
+FROM python-base AS production
 COPY --from=builder-base $PYSETUP_PATH $PYSETUP_PATH
 COPY . /app/
 WORKDIR /app
