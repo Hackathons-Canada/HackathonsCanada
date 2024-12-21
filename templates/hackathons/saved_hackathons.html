@@ -74,7 +74,7 @@
                         </svg>
                       </span>
                     </button>
-                    <p id = "{{hackathon.id }}-vote-text" class="mx-1 ml-1 text-lg text-gray-700">{{ hackathon.vote_count }}</p>
+                    <p id = "{{hackathon.id }}-vote-text" class="mx-1 ml-1 text-lg text-gray-700">{{ hackathon.net_vote }}</p>
                     <button type="button" class="relative flex items-center center mx-2"
                             onclick="voteHackathon(event, '{{ hackathon.id }}', 'false')">
                       <input

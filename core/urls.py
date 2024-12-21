@@ -31,8 +31,8 @@ urlpatterns = [
     path(
         "hackathons/<int:hackathon_id>/vote",
         views.add_vote,
-        name="save_hackathon",
+        name="vote_hackathon",
     ),
     path("scrape/", views.scrape, name="scrape"),
-    path("export_cal/", views.calendar_generator, name="calednar_genator"),
+    path("export_cal/", views.calendar_generator, name="calendar_generator"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

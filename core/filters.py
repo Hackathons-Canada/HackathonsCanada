@@ -4,7 +4,6 @@ from django.db.models import Q
 from django.utils import timezone
 
 
-# filters
 class HackathonFilter(django_filters.FilterSet):
     next_week = django_filters.DateFilter(
         field_name="created_at", method="filter_next_week"

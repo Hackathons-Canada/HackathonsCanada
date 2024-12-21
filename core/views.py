@@ -1,14 +1,13 @@
 from __future__ import annotations
-
+from django.db.models import F
 import os
 import random
 from functools import cache
 import json
-
 from django.contrib.auth.models import AbstractUser, AnonymousUser
 from django.utils import timezone
 from django.views.decorators.cache import cache_page
-
+from django.contrib.auth.decorators import user_passes_test
 from core.scraper import scrape_all
 from django.http import HttpResponse, JsonResponse
 from django.conf import settings
@@ -18,13 +17,12 @@ from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from django.views.generic import ListView
 from django.shortcuts import redirect
-from django.apps import apps
 from django.db.models import Q
 from icalendar import Calendar, Event
 from django_ratelimit.decorators import ratelimit
 
-if apps.ready:
-    from core.models import Hackathon, Hacker, Vote, ReviewStatus
+
+from core.models import Hackathon, Hacker, Vote, ReviewStatus
 
 from .forms import (
     HackathonForm,
@@ -69,9 +67,6 @@ def addHackathons(request):
             form.created_by = Hacker.objects.get(id=request.user.id)
             form.save()
             return redirect("home")
-        else:
-            return redirect("home")
-            print(form.errors)
     else:
         form = HackathonForm()
     return render(request, "hackathons/add_hackathon.html", {"form": form})
@@ -139,7 +134,7 @@ def hackathon_page(request):
                 setattr(
                     hackathon,
                     "vote_state",
-                    vote_data.vote_type if vote_data is not None else None,
+                    vote_data.is_upvote if vote_data is not None else None,
                 )
                 setattr(
                     hackathon,
@@ -244,42 +239,51 @@ def add_vote(request: HttpRequest, hackathon_id):
         vote = Vote.objects.filter(hackathon=hackathon, hacker=hacker).first()
 
         if vote is not None:
-            print(vote.vote_type)
-            if state == vote.vote_type:
-                print("1")
+            if state == vote.is_upvote:
                 if state:
-                    hackathon.vote_count -= 1
+                    print("1")
+                    Hackathon.objects.filter(id=hackathon_id).update(
+                        net_vote=F("net_vote") - 1
+                    )
                 else:
-                    hackathon.vote_count += 1
+                    print("11")
+
+                    Hackathon.objects.filter(id=hackathon_id).update(
+                        net_vote=F("net_vote") + 1
+                    )
                 vote.delete()
             else:
                 if state:
-                    print("2")
-                    hackathon.vote_count += 2
+                    print("111")
+                    Hackathon.objects.filter(id=hackathon_id).update(
+                        net_vote=F("net_vote") + 2
+                    )
                 else:
-                    print("3")
-                    hackathon.vote_count -= 2
-                vote.vote_type = True if state else False
+                    print("1111")
+                    Hackathon.objects.filter(id=hackathon_id).update(
+                        net_vote=F("net_vote") - 2
+                    )
+                vote.is_upvote = True if state else False
                 vote.save()
-
         else:
-            vote = Vote.objects.create(hackathon=hackathon, vote_type=state)
+            vote = Vote.objects.create(hackathon=hackathon, is_upvote=state)
             vote.save()
             vote.hacker.add(hacker)
-            vote.vote_type = True if state else False
+            vote.is_upvote = True if state else False
 
             if state:
-                print("4")
-                hackathon.vote_count += 1
-
+                Hackathon.objects.filter(id=hackathon_id).update(
+                    net_vote=F("net_vote") + 1
+                )
             else:
-                print("5")
-                hackathon.vote_count -= 1
+                Hackathon.objects.filter(id=hackathon_id).update(
+                    net_vote=F("net_vote") - 1
+                )
             vote.save()
 
+        print(hackathon.net_vote)
         hackathon.save()
 
-        print(hackathon.vote_count)
         return JsonResponse({"status": "success", "message": "Vote added successfully"})
 
     return JsonResponse({"status": "fail", "error": "Invalid request"}, status=400)
@@ -312,8 +316,7 @@ class SavedHackathonsPage(ListView):
 
     def get_queryset(self):
         user: Hacker = self.request.user
-        saved_hackathons = user.saved.all()
-        return saved_hackathons
+        return user.saved.all()
 
 
 # checks if the user is an admin
@@ -321,9 +324,8 @@ def is_admin(user: AbstractUser | AnonymousUser):
     return user.is_superuser
 
 
-# @login_required
-# @user_passes_test(is_admin)
-# @ratelimit(key="user_or_ip", rate="1/d", block=True)
+@login_required
+@user_passes_test(is_admin)
 def scrape(request):
     scrape_all()
     return HttpResponse("Scraped!")

@@ -442,7 +442,7 @@ class Hackathon(MetaDataMixin):
         default=dict, null=True, blank=True
     )  # Anything else that we might want to add in a structured format
 
-    vote_count = models.BigIntegerField(default=0)
+    net_vote = models.BigIntegerField(default=0)
 
     class Meta:
         ordering = ["start_date"]
@@ -486,7 +486,7 @@ class Hackathon(MetaDataMixin):
 
 
 class Vote(models.Model):
-    vote_type = models.BooleanField(default=True)
+    is_upvote = models.BooleanField(default=True)
     hackathon = models.OneToOneField(
         Hackathon, on_delete=models.CASCADE, related_name="votes"
     )

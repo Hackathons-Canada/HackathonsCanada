@@ -20,9 +20,9 @@ class HackathonForm(forms.ModelForm):
     short_name = forms.CharField(max_length=255, required=False)
     name = forms.CharField(max_length=255)
     website = forms.URLField()
-    country = forms.CharField(max_length=255)
+    country = CountryField(blank_label="(select country)").formfield(required=False)
     city = forms.CharField(max_length=255)
-    # image = forms.ImageField()
+    image = forms.ImageField()
     start_date = forms.DateField(widget=forms.TextInput(attrs={"type": "date"}))
     end_date = forms.DateField(widget=forms.TextInput(attrs={"type": "date"}))
     application_start = forms.DateField(
@@ -60,10 +60,8 @@ class HackathonForm(forms.ModelForm):
             "categories",
             "created_by",
             "hybrid",
-            "count_upvotes",
+            "net_vote",
             "notification_policy",
-            "count_downvotes",
-            "image",
         ]
 
     def __init__(self, *args, **kwargs):
@@ -96,17 +94,17 @@ class HackathonForm(forms.ModelForm):
                     css_class="form-group-style flex flex-rows space-x-4",
                 ),
             ),
-            # Div(
-            #     HTML("<h2 class = 'pt-5 form-side-text'>Banner</h2>"),
-            #     HTML(
-            #         "<h2 class = 'form-upload-head'>Click to upload or drag and drop</h2>"
-            #     ),
-            #     HTML("<h3 class = 'form-upload-side'>PNG or JPG (max. 800x400px)</h3>"),
-            #     css_class="form-group-style",
-            # ),
+            Div(
+                HTML("<h2 class = 'pt-5 form-side-text'>Banner</h2>"),
+                HTML(
+                    "<h2 class = 'form-upload-head'>Click to upload or drag and drop</h2>"
+                ),
+                HTML("<h3 class = 'form-upload-side'>PNG or JPG (max. 800x400px)</h3>"),
+                css_class="form-group-style",
+            ),
             Fieldset(
                 "",  # this is for the legend
-                # Field("image", css_class="form-control"),
+                Field("image", css_class="form-control"),
                 Field("application_start"),
                 Field("application_deadline"),
             ),
@@ -299,10 +297,7 @@ class CuratorRequestForm(forms.ModelForm):
 
     class Meta:
         model = CuratorRequest
-        exclude = [
-            "created_by",
-            "review_status",
-        ]
+        exclude = ["created_by", "review_status", "reviewed_by"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

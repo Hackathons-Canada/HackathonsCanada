@@ -294,7 +294,7 @@ UNFOLD = {
         }
     },
     "LOGIN": {
-        "image": lambda request: static("images/login-bg.jpg"), # TODO ADD AN IMG (see https://demo.unfoldadmin.com/admin/login/?next=/admin/)
+        "image": lambda request: static("images/signinBg.jpg"), # TODO ADD AN IMG (see https://demo.unfoldadmin.com/admin/login/?next=/admin/)
     },
     # "TABS": [
     #     {
