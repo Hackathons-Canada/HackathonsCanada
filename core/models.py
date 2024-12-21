@@ -251,13 +251,13 @@ class HackthonsManager(models.Manager):
 
     def local(self, user: Hacker): ...  # todo: implement this
 
-    def eligible(self, user: Hacker):
-        # todo rewrite
-        return self.filter(
-            application_deadline__gte=timezone.now(),
-            # min_age__lte=user.age,
-            maximum_education_level__gte=user.education,
-        )
+    # def eligible(self, user: Hacker):
+    #     # todo rewrite
+    #     return self.filter(
+    #         application_deadline__gte=timezone.now(),
+    #         # min_age__lte=user.age,
+    #         maximum_education_level__gte=user.education,
+    #     )
 
 
 class Location(models.Model):
