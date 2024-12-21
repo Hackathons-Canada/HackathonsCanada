@@ -269,7 +269,6 @@ UNFOLD = {
     "ENVIRONMENT": "hackathons_canada.callbacks.environment_callback",
     # "DASHBOARD_CALLBACK": "hackathons_canada.views.dashboard_callback",
     "SITE_ICON": lambda request: static("assets/logo.png"),
-    # 
     "SITE_FAVICONS": [
         {
             "rel": "icon",
@@ -329,7 +328,7 @@ UNFOLD = {
                         "icon": "category",
                         "link": reverse_lazy("admin:core_category_changelist"),
                     },
-            
+
                 ],
             },
             {
@@ -365,7 +364,7 @@ UNFOLD = {
             #             ),
             #             },
             #     ],
-            #        
+            #
             # },
         ],
     },
@@ -388,3 +387,9 @@ except IOError:
 
 if SECRET_KEY == "CHANGEME" and DEBUG is False:
     raise ValueError("Please set SECRET_KEY in local_settings.py")
+
+
+if DEBUG:
+    MIDDLEWARE.insert(0, "silk.middleware.SilkyMiddleware")
+    INSTALLED_APPS.append("silk")
+    SILKY_PYTHON_PROFILER = True
