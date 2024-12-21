@@ -1,4 +1,7 @@
 from __future__ import annotations
+
+from django.core.exceptions import ValidationError
+from django.db import transaction
 from django.db.models import F
 import os
 import random
@@ -8,6 +11,8 @@ from django.contrib.auth.models import AbstractUser, AnonymousUser
 from django.utils import timezone
 from django.views.decorators.cache import cache_page
 from django.contrib.auth.decorators import user_passes_test
+from django.views.decorators.http import require_http_methods
+
 from core.scraper import scrape_all
 from django.http import HttpResponse, JsonResponse
 from django.conf import settings
@@ -230,66 +235,6 @@ def str_to_bool(s):
 
 
 @login_required
-def add_vote(request: HttpRequest, hackathon_id):
-    if request.method == "POST":
-        hackathon = get_object_or_404(Hackathon, id=hackathon_id)
-        hacker = get_object_or_404(Hacker, id=request.user.id)
-        type_vote = request.GET.get("vote_state")
-        state = str_to_bool(type_vote)
-        vote = Vote.objects.filter(hackathon=hackathon, hacker=hacker).first()
-
-        if vote is not None:
-            if state == vote.is_upvote:
-                if state:
-                    print("1")
-                    Hackathon.objects.filter(id=hackathon_id).update(
-                        net_vote=F("net_vote") - 1
-                    )
-                else:
-                    print("11")
-
-                    Hackathon.objects.filter(id=hackathon_id).update(
-                        net_vote=F("net_vote") + 1
-                    )
-                vote.delete()
-            else:
-                if state:
-                    print("111")
-                    Hackathon.objects.filter(id=hackathon_id).update(
-                        net_vote=F("net_vote") + 2
-                    )
-                else:
-                    print("1111")
-                    Hackathon.objects.filter(id=hackathon_id).update(
-                        net_vote=F("net_vote") - 2
-                    )
-                vote.is_upvote = True if state else False
-                vote.save()
-        else:
-            vote = Vote.objects.create(hackathon=hackathon, is_upvote=state)
-            vote.save()
-            vote.hacker.add(hacker)
-            vote.is_upvote = True if state else False
-
-            if state:
-                Hackathon.objects.filter(id=hackathon_id).update(
-                    net_vote=F("net_vote") + 1
-                )
-            else:
-                Hackathon.objects.filter(id=hackathon_id).update(
-                    net_vote=F("net_vote") - 1
-                )
-            vote.save()
-
-        print(hackathon.net_vote)
-        hackathon.save()
-
-        return JsonResponse({"status": "success", "message": "Vote added successfully"})
-
-    return JsonResponse({"status": "fail", "error": "Invalid request"}, status=400)
-
-
-@login_required
 @ratelimit(key="user_or_ip", rate="1/m", block=True)
 def request_curator_access(request):
     if request.method == "POST":
@@ -368,3 +313,100 @@ def calendar_generator(request):
     response = HttpResponse(cal.to_ical(), content_type="text/calendar")
     response["Content-Disposition"] = "attachment; filename=hackathons.ics"
     return response
+
+
+@login_required
+@require_http_methods(["POST", "DELETE"])
+@ratelimit(key="user_or_ip", rate="30/m", block=True)
+def handle_vote(request, hackathon_id):
+    """
+    Handle voting for hackathons.
+    POST: Create or update vote
+    DELETE: Remove vote
+    """
+    try:
+        with transaction.atomic():
+            hackathon = get_object_or_404(Hackathon, id=hackathon_id)
+            hacker = get_object_or_404(Hacker, id=request.user.id)
+
+            if request.method == "POST":
+                # Get vote type from request
+                is_upvote = request.GET.get("vote_type") == "upvote"
+
+                # Check for existing vote
+                existing_vote = (
+                    Vote.objects.filter(hackathon=hackathon, hacker=hacker)
+                    .select_for_update()
+                    .first()
+                )
+
+                if existing_vote:
+                    if existing_vote.is_upvote == is_upvote:
+                        return JsonResponse(
+                            {
+                                "message": "Vote already exists",
+                            }
+                        )
+
+                    # Update existing vote
+                    vote_diff = (
+                        2 if is_upvote else -2
+                    )  # Switching from down to up or vice versa
+                    existing_vote.is_upvote = is_upvote
+                    existing_vote.save()
+
+                else:
+                    Vote.objects.create(
+                        hackathon=hackathon, hacker=hacker, is_upvote=is_upvote
+                    )
+                    vote_diff = 1 if is_upvote else -1
+
+                hackathon = (
+                    Hackathon.objects.filter(id=hackathon_id).select_for_update().get()
+                )
+                hackathon.net_vote = F("net_vote") + vote_diff
+                hackathon.save()
+
+                return JsonResponse(
+                    {
+                        "message": "Vote recorded successfully",
+                    }
+                )
+
+            elif request.method == "DELETE":
+                # Remove vote if exists
+                vote = (
+                    Vote.objects.filter(hackathon=hackathon, hacker=hacker)
+                    .select_for_update()
+                    .first()
+                )
+
+                if vote:
+                    vote_diff = -1 if vote.is_upvote else 1
+                    vote.delete()
+
+                    # Update net_vote atomically
+                    hackathon = (
+                        Hackathon.objects.filter(id=hackathon_id)
+                        .select_for_update()
+                        .update(net_vote=F("net_vote") + vote_diff)
+                    )
+                    hackathon.save()
+                    return JsonResponse(
+                        {
+                            "message": "Vote removed successfully",
+                        }
+                    )
+
+                return JsonResponse(
+                    {
+                        "message": "No vote found to remove",
+                    }
+                )
+
+    except ValidationError as e:
+        return JsonResponse({"error": str(e)}, status=400)
+    except Exception:
+        return JsonResponse(
+            {"error": "An error occurred while processing your vote"}, status=500
+        )

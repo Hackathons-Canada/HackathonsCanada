@@ -1,6 +1,7 @@
 import random
 from typing import Final, Tuple, List
 from django.contrib.auth.models import AbstractUser, UserManager
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import DecimalField
 from django.utils import timezone
@@ -22,6 +23,7 @@ __all__ = [
     "EDUCATION_CHOICES",
     "HACKATHON_EDUCATION_CHOICES",
     "HYBRID_CHOICES",
+    "Vote",
     "ReviewStatus",
 ]
 
@@ -315,6 +317,7 @@ class Hackathon(MetaDataMixin):
         unique=True,
         help_text="Duplication ID for the Hackathon",
     )
+    net_vote = models.BigIntegerField(default=0)
 
     source = models.CharField(
         max_length=3,
@@ -442,8 +445,6 @@ class Hackathon(MetaDataMixin):
         default=dict, null=True, blank=True
     )  # Anything else that we might want to add in a structured format
 
-    net_vote = models.BigIntegerField(default=0)
-
     class Meta:
         ordering = ["start_date"]
         constraints = [
@@ -487,15 +488,34 @@ class Hackathon(MetaDataMixin):
 
 class Vote(models.Model):
     is_upvote = models.BooleanField(default=True)
-    hackathon = models.OneToOneField(
+    hackathon = models.ForeignKey(
         Hackathon, on_delete=models.CASCADE, related_name="votes"
     )
-    hacker = models.ManyToManyField(Hacker, related_name="hackathon_votes")
+    hacker = models.ForeignKey(Hacker, on_delete=models.CASCADE, related_name="votes")
     time_created = models.DateTimeField(auto_now_add=True)
-    time_updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["hackathon", "hacker"], name="unique_hackathon_hacker_vote"
+            )
+        ]
+
+    @property
+    def vote_type(self):
+        return "upvote" if self.is_upvote else "downvote"
 
     def __str__(self):
-        return f"Hacker(type_vote={self.vote_type}, hackathon_id={self.hackathon_id}, from_hacker={self.hacker}, time_created={self.time_created})"
+        return f"{self.vote_type} vote for {self.hackathon} by {self.hacker}"
+
+    def save(self, *args, **kwargs):
+        if not self.pk:  # New vote
+            existing_vote = Vote.objects.filter(
+                hackathon=self.hackathon, hacker=self.hacker
+            ).first()
+            if existing_vote:
+                raise ValidationError("User has already voted for this hackathon")
+        super().save(*args, **kwargs)
 
 
 class CuratorRequest(models.Model):
