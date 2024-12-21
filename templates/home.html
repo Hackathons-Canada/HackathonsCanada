@@ -32,15 +32,16 @@
 
   <img class="text-center hero-image-position" src="{% static 'assets/homegra.png'%}" />
 
-  <div class="mt-5 mb-10 card-header-layout">
+  <div class="mt-5 mb-10 sm:mx-0 my-2 mx-3 card-header-layout">
     <h5 class="text-4xl text-black">
       More than just a
       <span class="text-4xl text-black">website.</span>
     </h5>
   </div>
-  <div class="w-4/5 mx-auto card-box-layout">
-    <div class="w-full card-row-layout">
-      <a class = 'w-2/5' href = "https://staging.hackcanada.org/">
+
+  <div class="w-full sm:w-4/5 mx-auto card-box-layout">
+    <div class="w-full flex flex-col sm:flex-row gap-6">
+      <a class = 'w-full sm:w-2/5 mx-5 sm:mx-0' href = "https://staging.hackcanada.org/">
         <div class = "rounded-xl
                       h-screen
                       max-h-[32rem]
@@ -74,21 +75,21 @@
 
         </div>
       </a>
-      <a class = 'w-3/5' href="https://discord.gg/m5GPTnT5YB">
-        <img class="rounded-xl card-img-stack" src="{% static 'assets/discord.png' %}" alt="Image 1" />
+      <a class = 'w-full sm:w-3/5 my-auto' href="https://discord.gg/m5GPTnT5YB">
+        <img class="rounded-xl card-img-stack mx-5 sm:mx-0" src="{% static 'assets/discord.png' %}" alt="Image 1" />
       </a>
     </div>
-    <div class="w-full card-row-layout">
-      <a src = "https://www.instagram.com/hackathonsna/">
-        <img class="w-1/2 rounded-xl card-img-stack" src="{% static 'assets/instagram.png' %}" alt="Image 2" />
+    <div class="w-full flex flex-col sm:flex-row gap-4 my-auto" >
+      <a class="mx-5 sm:mx-0" src = "https://www.instagram.com/hackathoncanada/">
+        <img class="w-full rounded-xl card-img-stack " src="{% static 'assets/instagram.png' %}" alt="Image 2" />
       </a>
-      <a href="https://calendar.google.com/calendar/u/0?cid=M2Y0ODA2MjUxYTZjMGZhYTMwZWE3ZmE0YmI0NTdjMmE1NTI0ZWZlNGUzZjMwMDc4NmJlMmVlNWRjOGU1MTE3MEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t">
-        <img class="w-1/2 card-img-stack"  src="{% static 'assets/gcal.png' %}" alt="Image 1" />
+      <a class="my-auto mx-5 sm:mx-0" href="https://calendar.google.com/calendar/u/0?cid=M2Y0ODA2MjUxYTZjMGZhYTMwZWE3ZmE0YmI0NTdjMmE1NTI0ZWZlNGUzZjMwMDc4NmJlMmVlNWRjOGU1MTE3MEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t">
+        <img class="w-full card-img-stack "  src="{% static 'assets/gcal.png' %}" alt="Image 1" />
       </a>
     </div>
 
-    <div class="w-full card-row-layout">
-      <a class = 'w-2/5' href = "https://konfer.ca/">
+    <div class="w-full flex flex-col sm:flex-row gap-4">
+      <a class = 'w-full sm:w-2/5 mx-5 sm:mx-0' href = "https://konfer.ca/">
         <div class = "rounded-xl
                       h-screen
                       max-h-[32rem]
@@ -127,7 +128,8 @@
 
         </div>
       </a>
-      <div class = "rounded-xl w-3/5
+      <div class = "mx-5 sm:mx-0
+                    rounded-xl w-full sm:w-3/5
                     h-screen
                     max-h-[32rem]
                     justify-items-center
