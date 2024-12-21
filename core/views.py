@@ -330,7 +330,6 @@ def handle_vote(request, hackathon_id):
             hacker = get_object_or_404(Hacker, id=request.user.id)
 
             if request.method == "POST":
-                # Get vote type from request
                 is_upvote = request.GET.get("vote_type") == "upvote"
 
                 # Check for existing vote
@@ -348,12 +347,12 @@ def handle_vote(request, hackathon_id):
                             }
                         )
 
-                    # Update existing vote
                     vote_diff = (
                         2 if is_upvote else -2
                     )  # Switching from down to up or vice versa
                     existing_vote.is_upvote = is_upvote
-                    existing_vote.save()
+                    existing_vote.time_created = timezone.now()
+                    existing_vote.save(update_fields=["is_upvote", "time_created"])
 
                 else:
                     Vote.objects.create(
@@ -365,7 +364,7 @@ def handle_vote(request, hackathon_id):
                     Hackathon.objects.filter(id=hackathon_id).select_for_update().get()
                 )
                 hackathon.net_vote = F("net_vote") + vote_diff
-                hackathon.save()
+                hackathon.save(update_fields=["net_vote"])
 
                 return JsonResponse(
                     {
@@ -391,7 +390,7 @@ def handle_vote(request, hackathon_id):
                         .select_for_update()
                         .update(net_vote=F("net_vote") + vote_diff)
                     )
-                    hackathon.save()
+                    hackathon.save(update_fields=["net_vote"])
                     return JsonResponse(
                         {
                             "message": "Vote removed successfully",
