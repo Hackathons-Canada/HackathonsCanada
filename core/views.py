@@ -11,7 +11,7 @@ from django.contrib.auth.models import AbstractUser, AnonymousUser
 from django.utils import timezone
 from django.views.decorators.cache import cache_page
 from django.views.decorators.http import require_http_methods
-from silk.profiling.profiler import silk_profile
+
 
 from core.scraper import scrape_all
 from django.http import HttpResponse, JsonResponse
@@ -267,7 +267,6 @@ def is_admin(user: AbstractUser | AnonymousUser):
 
 @login_required
 @user_passes_test(is_admin)
-@silk_profile(name="scrape_all")
 def scrape(request):
     scrape_all()  # todo: add a celery task to scrape/make async
     return HttpResponse("Scraped!")
