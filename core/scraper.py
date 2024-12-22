@@ -73,8 +73,7 @@ def search_city(city_name, username):
                 "latitude": None,
                 "longitude": None,
             }
-    except requests.RequestException as e:
-        print("An error occurred:", e)
+    except requests.RequestException:
         return None
 
 

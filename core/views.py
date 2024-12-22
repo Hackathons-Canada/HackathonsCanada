@@ -66,7 +66,6 @@ def addHackathons(request):
     if request.method == "POST":
         form = HackathonForm(request.POST)
         if form.is_valid():
-            print("sending the form")
             form.save(commit=False)
             form.review_status = ReviewStatus.Pending
             form.created_by = Hacker.objects.get(id=request.user.id)
@@ -95,7 +94,6 @@ def hackathon_page(request):
         query_base &= ~Q(location__country="Online")
 
     if city and city != "None":
-        print(city)
         query_base &= Q(location__name__icontains=city)
 
     if start and start != "None":
@@ -179,8 +177,7 @@ def setting(request):
             if form_setting.is_valid():
                 form_setting.save()
                 return redirect("setting")
-            else:
-                print("Form Setting Errors:", form_setting.errors)
+
         elif "form_notification_submit" in request.POST:
             form_notification = NotificationPolicyForm(
                 request.POST, instance=notification_policy
@@ -188,8 +185,7 @@ def setting(request):
             if form_notification.is_valid():
                 form_notification.save()
                 return redirect("setting")
-            else:
-                print("Form Notification Errors:", form_notification.errors)
+
     else:
         form_setting = HackerSettingForm(instance=hacker)
         form_notification = NotificationPolicyForm(instance=notification_policy)
@@ -291,7 +287,6 @@ def calendar_generator(request):
         query_base &= ~Q(location__country="Online")
 
     if city and city != "None":
-        print(city)
         query_base &= Q(location__name__icontains=city)
 
     if start and start != "None":

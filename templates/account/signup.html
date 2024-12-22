@@ -62,7 +62,7 @@
           </svg> Continue with Github</button>
         </form>
         <!-- discord does not work rn -->
-        <form action="{% provider_login_url 'google' %}" method="post">
+        <form action="{% provider_login_url 'discord' %}" method="post">
           {% csrf_token %}
           <button class = "flex items-center justify-center w-full h-full py-2 my-1 space-x-4 font-bold bg-white border-black rounded-lg border-1" type = "submit">
             <svg class = "pr-2" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 48 48">
