@@ -328,11 +328,13 @@ class Hackathon(MetaDataMixin):
     net_vote = models.BigIntegerField(default=0)
 
     source = models.CharField(
-        max_length=3,
+        max_length=255,
         choices=HackathonSource.choices,
         default=HackathonSource.UserSubmitted,
     )
-    scrape_source = models.CharField(max_length=3, choices=SCRAPE_SOURCES, default="na")
+    scrape_source = models.CharField(
+        max_length=255, choices=SCRAPE_SOURCES, default="na"
+    )
 
     metadata = models.JSONField(
         blank=True, null=True, help_text="Metadata about the source of the hackathon"
