@@ -11,7 +11,6 @@ package-mode = false
 python = "^3.12"
 django = "^5.0.7"
 docker = "^7.1.0"
-"discord.py" = "^2.4.0"
 django-crispy-forms = "^2.2"
 crispy-bootstrap4 = "^2024.1"
 flower = "^2.0.1"
@@ -27,6 +26,8 @@ django-ratelimit = "^4.1.0"
 django-filter = "^24.3"
 icalendar = "^6.1.0"
 django-silk = "^5.3.2"
+discord-py = "^2.4.0"
+audioop-lts = { version = "^0.2.1", python = "^3.13" }
 
 
 [tool.poetry.group.dev]
@@ -68,10 +69,6 @@ show-fixes = true
 [tool.ruff.format]
 docstring-code-format = true
 line-ending = "lf"
-
-
-
-
 
 [build-system]
 requires = ["poetry-core"]
