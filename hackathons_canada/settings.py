@@ -165,16 +165,8 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
-    {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-    },
 ]
+ACCOUNT_PASSWORD_MIN_LENGTH = 1  # Set minimum length to 1 or your desired length
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
@@ -217,6 +209,9 @@ CELERY_RESULT_BACKEND = os.environ.get("CELERY_BACKEND", "redis://valkey:6379/1"
 
 LOGIN_REDIRECT_URL = "/"
 ACCOUNT_LOGOUT_REDIRECT_URL = "/"
+
+
+ACCOUNT_SIGNUP_REDIRECT_URL = "/"
 
 # Logging settings
 
