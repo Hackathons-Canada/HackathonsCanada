@@ -26,6 +26,7 @@ bs4 = "^0.0.2"
 django-ratelimit = "^4.1.0"
 django-filter = "^24.3"
 icalendar = "^6.1.0"
+django-silk = "^5.3.2"
 
 
 [tool.poetry.group.dev]

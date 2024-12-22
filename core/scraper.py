@@ -6,26 +6,20 @@ import cloudscraper
 from django.utils import timezone
 from bs4 import BeautifulSoup
 
-# from icalendar import Calendar, Event
-
 from hackathons_canada.settings import CUR_YEAR
 
-from django.apps import apps
-
-if apps.ready:
-    from core.models import (
-        Hackathon,
-        HackathonSource,
-        HackathonLocation,
-        Location,
-        ReviewStatus,
-    )
-
-username = "Nirek"
+from core.models import (
+    Hackathon,
+    HackathonSource,
+    HackathonLocation,
+    Location,
+    ReviewStatus,
+)
 
 
-def search_city(city_name, username):
-    url = f"http://api.geonames.org/searchJSON?q={city_name}&maxRows=10&username={username}&maxRows=1&style=MEDIUM"
+def search_city(city_name):
+    USERNAME = "Nirek"
+    url = f"http://api.geonames.org/searchJSON?q={city_name}&username={USERNAME}&maxRows=1&style=MEDIUM"
     if (
         "online" in city_name.lower()
         or "remote" in city_name.lower()
@@ -115,7 +109,7 @@ class MLHSource(AbstractDataSource):
             + "+"
             + loc.find_all("span", {"itemprop": "state"})[0].contents[0]
         )
-        geoData = search_city(loc_data, username)
+        geoData = search_city(loc_data)
         name = ev.find_all("h3", {"class": "event-name"})[0].contents[0]
         end_date = timezone.make_aware(
             datetime.datetime.strptime(
@@ -127,7 +121,6 @@ class MLHSource(AbstractDataSource):
                 ev.find_all("meta", {"itemprop": "startDate"})[0]["content"], "%Y-%m-%d"
             )
         )
-
         if geoData["latitude"] is None:
             location_cord = None
         else:
@@ -199,7 +192,7 @@ class DevpostSource(AbstractDataSource):
         )
         enddate = timezone.make_aware(datetime.datetime.strptime(enddate, "%b %d, %Y"))
         loc = ev["displayed_location"]["location"]
-        geoData = search_city(loc, username)
+        geoData = search_city(loc)
 
         if geoData["latitude"] is None:
             location_cord = None
@@ -257,7 +250,7 @@ class EthGlobalSource(AbstractDataSource):
         enddate = datetime.datetime.strptime(enddate, "%b %d, %Y")
 
         loc = " ".join(name.split()[1:])
-        geoData = search_city(loc, username)
+        geoData = search_city(loc)
 
         if geoData["latitude"] is None:
             location_cord = None
@@ -310,7 +303,7 @@ class HackClubSource(AbstractDataSource):
         )
         name = ev.find_all("h3")[0].contents[0]
 
-        geoData = search_city(loc, username)
+        geoData = search_city(loc)
 
         if geoData["latitude"] is None:
             location_cord = None
