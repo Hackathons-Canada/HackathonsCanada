@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     "dischannelsaver",
     "crispy_forms",
     "crispy_bootstrap4",
+    "django_filters",
 ]
 
 SOCIALACCOUNT_PROVIDERS = {
@@ -217,6 +218,9 @@ CELERY_RESULT_BACKEND = os.environ.get("CELERY_BACKEND", "redis://valkey:6379/1"
 LOGIN_REDIRECT_URL = "/"
 ACCOUNT_LOGOUT_REDIRECT_URL = "/"
 
+
+ACCOUNT_SIGNUP_REDIRECT_URL = "/"
+
 # Logging settings
 
 LOGGING = {
@@ -268,7 +272,6 @@ UNFOLD = {
     "ENVIRONMENT": "hackathons_canada.callbacks.environment_callback",
     # "DASHBOARD_CALLBACK": "hackathons_canada.views.dashboard_callback",
     "SITE_ICON": lambda request: static("assets/logo.png"),
-    # 
     "SITE_FAVICONS": [
         {
             "rel": "icon",
@@ -293,7 +296,7 @@ UNFOLD = {
         }
     },
     "LOGIN": {
-        "image": lambda request: static("images/login-bg.jpg"), # TODO ADD AN IMG (see https://demo.unfoldadmin.com/admin/login/?next=/admin/)
+        "image": lambda request: static("images/signinBg.jpg"), # TODO ADD AN IMG (see https://demo.unfoldadmin.com/admin/login/?next=/admin/)
     },
     # "TABS": [
     #     {
@@ -328,7 +331,7 @@ UNFOLD = {
                         "icon": "category",
                         "link": reverse_lazy("admin:core_category_changelist"),
                     },
-            
+
                 ],
             },
             {
@@ -387,3 +390,9 @@ except IOError:
 
 if SECRET_KEY == "CHANGEME" and DEBUG is False:
     raise ValueError("Please set SECRET_KEY in local_settings.py")
+
+
+if DEBUG:
+    MIDDLEWARE.insert(0, "silk.middleware.SilkyMiddleware")
+    INSTALLED_APPS.append("silk")
+    SILKY_PYTHON_PROFILER = True

@@ -5,8 +5,7 @@ from . import views
 
 urlpatterns = [
     path("", views.home, name="home"),
-    path("hackathons/", views.HackathonsPage.as_view(), name="hackathons"),
-    path("hackathons/<str:type>/", views.HackathonsPage.as_view(), name="hackathons"),
+    path("hackathons/", views.hackathon_page, name="hackathons"),
     path("add-hackathons/", views.addHackathons, name="add_hackathons"),
     path("setting/", views.setting, name="setting"),
     path(
@@ -29,10 +28,7 @@ urlpatterns = [
         views.save_hackathon,
         name="save_hackathon",
     ),
-    path(
-        "hackathons/<int:hackathon_id>/unsave",
-        views.unsave_hackathon,
-        name="unsave_hackathon",
-    ),
+    path("hackathons/<int:hackathon_id>/vote/", views.handle_vote, name="handle_vote"),
     path("scrape/", views.scrape, name="scrape"),
+    path("export_cal/", views.calendar_generator, name="calendar_generator"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

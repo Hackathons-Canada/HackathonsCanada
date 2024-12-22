@@ -1,5 +1,6 @@
 from django import forms
 from django.db import OperationalError
+from django.utils import timezone
 
 from .models import (
     Hackathon,
@@ -8,6 +9,7 @@ from .models import (
     Hacker,
     NotificationPolicy,
     School,
+    CuratorRequest,
 )
 from django_countries.fields import CountryField
 from crispy_forms.helper import FormHelper  # type: ignore
@@ -15,19 +17,21 @@ from crispy_forms.layout import Layout, Field, HTML, Submit, Div, Fieldset
 
 
 class HackathonForm(forms.ModelForm):
-    short_name = forms.CharField(max_length=255)
+    short_name = forms.CharField(max_length=255, required=False)
     name = forms.CharField(max_length=255)
     website = forms.URLField()
-    country = forms.CharField(max_length=255)
+    country = CountryField(blank_label="(select country)").formfield(required=False)
     city = forms.CharField(max_length=255)
     image = forms.ImageField()
     start_date = forms.DateField(widget=forms.TextInput(attrs={"type": "date"}))
     end_date = forms.DateField(widget=forms.TextInput(attrs={"type": "date"}))
-    application_start = forms.DateField(widget=forms.TextInput(attrs={"type": "date"}))
-    application_deadline = forms.DateField(
-        widget=forms.TextInput(attrs={"type": "date"})
+    application_start = forms.DateField(
+        widget=forms.TextInput(attrs={"type": "date"}), required=False
     )
-    min_age = forms.IntegerField(min_value=0, max_value=100)
+    application_deadline = forms.DateField(
+        widget=forms.TextInput(attrs={"type": "date"}), required=False
+    )
+    min_age = forms.IntegerField(min_value=0, max_value=100, required=False)
     minimum_education_level = forms.ChoiceField(
         choices=HACKATHON_EDUCATION_CHOICES,
         widget=forms.Select,
@@ -40,7 +44,7 @@ class HackathonForm(forms.ModelForm):
         required=False,
         help_text="Select the maximum education level required to participate.",
     )
-    numerical_prize_pool = forms.IntegerField(min_value=0)
+    numerical_prize_pool = forms.IntegerField(min_value=0, required=False)
     category = forms.MultipleChoiceField(required=False)
 
     class Meta:
@@ -53,6 +57,11 @@ class HackathonForm(forms.ModelForm):
             "is_public",
             "notes",
             "metadata",
+            "categories",
+            "created_by",
+            "hybrid",
+            "net_vote",
+            "notification_policy",
         ]
 
     def __init__(self, *args, **kwargs):
@@ -271,8 +280,12 @@ class NotificationPolicyForm(forms.ModelForm):
         )
 
 
-class CuratorRequestForm(forms.Form):
-    hackathon = forms.CharField(label="Hackathon")
+class CuratorRequestForm(forms.ModelForm):
+    tdy_date = timezone.now()
+    hackathon = forms.ModelChoiceField(
+        queryset=Hackathon.objects.filter(end_date__gt=tdy_date, is_public=True),
+        empty_label=None,
+    )
     team_name = forms.CharField(label="Team/Organization Name")
     team_description = forms.CharField(
         label="Team/Organization Description", widget=forms.Textarea
@@ -282,9 +295,29 @@ class CuratorRequestForm(forms.Form):
         widget=forms.Textarea,
     )
 
+    class Meta:
+        model = CuratorRequest
+        exclude = ["created_by", "review_status", "reviewed_by"]
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["hackathon"].widget.attrs.update({"class": "form-control"})
-        self.fields["team_name"].widget.attrs.update({"class": "form-control"})
-        self.fields["team_description"].widget.attrs.update({"class": "form-control"})
-        self.fields["reason"].widget.attrs.update({"class": "form-control"})
+        self.fields["hackathon"].widget.attrs.update(
+            {
+                "class": "form-control form-group-style flex flex-rows space-x-4 mt-2 mb-3"
+            }
+        )
+        self.fields["team_name"].widget.attrs.update(
+            {
+                "class": "form-control form-group-style flex flex-rows space-x-4 mt-2 mb-3"
+            }
+        )
+        self.fields["team_description"].widget.attrs.update(
+            {
+                "class": "form-control form-group-style flex flex-rows space-x-4 mt-2 mb-3"
+            }
+        )
+        self.fields["reason"].widget.attrs.update(
+            {
+                "class": "form-control form-group-style flex flex-rows space-x-4 mt-2 mb-3"
+            }
+        )

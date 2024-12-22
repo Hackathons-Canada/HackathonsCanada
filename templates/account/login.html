@@ -14,17 +14,45 @@
         <div class="text-right">
           <h2 class="text-3xl font-extrabold text-gray-900">Welcome.</h2>
           <div class="flex justify-end mt-2">
-            <img src="{% static 'assets/canada.png' %}" alt="Canadian Flag" class="h-6">
+            <h1>Welcome Hacker!!</h1>
           </div>
         </div>
       </div>
       <form class="mt-8 space-y-6" method="POST" action="{% url 'account_login' %}">
         {% csrf_token %}
-        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+        <input type="hidden" name="next" value="/" />
+
+        {% if form.errors %}
+          <div class="rounded-md bg-red-50 p-4 mb-4">
+            <div class="flex">
+              <div class="ml-3">
+                <h3 class="text-sm font-medium text-red-800">
+                  Please correct the following errors:
+                </h3>
+                <div class="mt-2 text-sm text-red-700">
+                  <ul class="list-disc pl-5 space-y-1">
+                    {% for field, errors in form.errors.items %}
+                      {% for error in errors %}
+                        <li>{{ field|title }}: {{ error }}</li>
+                      {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                      <li>{{ error }}</li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+
         <div class="rounded-md shadow-sm -space-y-px">
           <div class = "pt-3">
             <label for="id_login" class="sr-only">{% translate  "Username or Email" %}</label>
             <input id="id_login" name="login" type="text" required class="appearance-none rounded-lg backdrop-blur-lg bg-white/30 relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-red-500 focus:border-red-500 focus:z-10 sm:text-sm" placeholder="{% translate  'Username or Email' %}">
+            {% if form.username.errors %}
+              <p class="mt-1 text-sm text-red-600">{{ form.username.errors|join:", " }}</p>
+            {% endif %}
           </div>
           <div class = "pt-3">
             <label for="id_password" class="sr-only">{% translate  "Password" %}</label>
@@ -63,7 +91,7 @@
           </svg> Continue with Github</button>
         </form>
         <!-- discord does not work rn -->
-        <form action="{% provider_login_url 'google' %}" method="post">
+        <form action="{% provider_login_url 'discord' %}" method="post">
           {% csrf_token %}
           <button class = "bg-white border-1 h-full w-full border-black flex space-x-4 my-1 font-bold items-center justify-center py-2 rounded-lg" type = "submit">
             <svg class = "pr-2" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 48 48">
