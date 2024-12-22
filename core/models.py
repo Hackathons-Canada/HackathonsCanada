@@ -295,7 +295,12 @@ class HackathonLocation(models.Model):
         null=True,
         blank=True,
     )
-    country = CountryField(blank_label="(select country)")
+    country = models.CharField(
+        max_length=255,
+        help_text="what country",
+        null=True,
+        blank=True,
+    )
     location = models.OneToOneField(
         Location,
         on_delete=models.RESTRICT,
