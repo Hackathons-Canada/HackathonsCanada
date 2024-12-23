@@ -5,6 +5,7 @@ description = "A platform to connect Hackers to Hackathons"
 authors = ["Jason <git@jasoncameron.dev>"]
 license = "GPLv3"
 readme = "README.md"
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.12"
@@ -42,7 +43,7 @@ optional = true
 
 [tool.poetry.group.prod.dependencies]
 gunicorn = "^20.1.0"
-psycopg2-binary = "^2.9.1"
+psycopg = {extras = ["binary"], version = "^3.2.3"}
 
 
 [tool.mypy]
