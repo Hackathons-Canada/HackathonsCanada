@@ -340,7 +340,6 @@ class Hackathon(MetaDataMixin):
     scrape_source = models.CharField(
         max_length=255, choices=SCRAPE_SOURCES, default="na"
     )
-
     metadata = models.JSONField(
         blank=True, null=True, help_text="Metadata about the source of the hackathon"
     )
