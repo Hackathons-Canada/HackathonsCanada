@@ -1,34 +1,31 @@
 from __future__ import annotations
 
-from django.core.exceptions import ValidationError
-from django.db import transaction
-from django.db.models import F
+import json
 import os
 import random
 from functools import cache
-import json
+
+from django.conf import settings
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import AbstractUser, AnonymousUser
+from django.core.exceptions import ValidationError
+from django.db import transaction
+from django.db.models import F
+from django.db.models import Q
+from django.http import HttpRequest
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import get_object_or_404
+from django.shortcuts import redirect
+from django.shortcuts import render
 from django.utils import timezone
 from django.views.decorators.cache import cache_page
 from django.views.decorators.http import require_http_methods
-
-
-from core.scraper import scrape_all
-from django.http import HttpResponse, JsonResponse
-from django.conf import settings
-from django.contrib.auth.decorators import login_required, user_passes_test
-from django.http import HttpRequest
-from django.shortcuts import get_object_or_404
-from django.shortcuts import render
 from django.views.generic import ListView
-from django.shortcuts import redirect
-from django.db.models import Q
-from icalendar import Calendar, Event
 from django_ratelimit.decorators import ratelimit
-
+from icalendar import Calendar, Event
 
 from core.models import Hackathon, Hacker, Vote, ReviewStatus
-
+from core.scraper import scrape_all
 from .forms import (
     HackathonForm,
     NotificationPolicyForm,
@@ -198,6 +195,7 @@ def setting(request):
 
 
 @login_required
+@require_http_methods(["POST"])
 def save_hackathon(request: HttpRequest, hackathon_id):
     if request.method == "POST":
         hackathon = get_object_or_404(Hackathon, id=hackathon_id)
@@ -209,7 +207,7 @@ def save_hackathon(request: HttpRequest, hackathon_id):
             if page_type == "saved":
                 return redirect("saved_hackathons")
             else:
-                return JsonResponse({"status": "sucess", "hackathon": "removed"})
+                return JsonResponse({"status": "success", "hackathon": "removed"})
 
         hacker.saved.add(hackathon)
         if page_type == "saved":
