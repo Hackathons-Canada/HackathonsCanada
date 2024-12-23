@@ -275,7 +275,7 @@
 
 
                           <button type="button" class="relative flex items-center mx-2"
-                                  onclick="voteHackathon(event, '{{ hackathon.id }}', 'true')">
+                                  onclick="{% if user.is_authenticated %}voteHackathon(event, '{{ hackathon.id }}', 'true'){% else %}addLoginPop(){% endif %}">
                             <input
                               class="w-6 h-6 appearance-none peer"
                               type="checkbox">
@@ -289,7 +289,7 @@
                           </button>
                           <p id = "{{hackathon.id }}-vote-text" class="mx-1 ml-1 text-lg text-gray-700">{{ hackathon.net_vote }}</p>
                           <button type="button" class="relative flex items-center center mx-2"
-                                  onclick="voteHackathon(event, '{{ hackathon.id }}', 'false')">
+                                  onclick="{% if user.is_authenticated %}voteHackathon(event, '{{ hackathon.id }}', 'false'){% else %}addLoginPop(){% endif %}">
                             <input
                               class="w-6 h-6 appearance-none peer"
                               type="checkbox">
@@ -336,7 +336,7 @@
                         <button id="{{hackathon.id}}-save" class="mx-3 px-3 py-1 rounded-md duration-200 ease-in-out hover:bg-gray-200 hover:text-black hover:scale-105 {% if hackathon.user_saved %} bg-[#e5462e] text-white {% else %}bg-white {% endif %}" type="button" onclick="{% if user.is_authenticated %}saveHackathon(event, '{{ hackathon.id }}'){% else %}addLoginPop(){% endif %}">Save</button>
 
                         <button type="button" class="relative flex items-center mx-2"
-                                onclick="voteHackathon(event, '{{ hackathon.id }}', 'true')">
+                                onclick="{% if user.is_authenticated %}voteHackathon(event, '{{ hackathon.id }}', 'true'){% else %}addLoginPop(){% endif %}">
                           <input
                             class="w-6 h-6 appearance-none peer"
                             type="checkbox">
@@ -350,7 +350,7 @@
                         </button>
                         <p id = "{{hackathon.id }}-vote-text" class="mx-1 ml-1 text-lg text-gray-700">{{ hackathon.net_vote }}</p>
                         <button type="button" class="relative flex items-center center mx-2"
-                                onclick="voteHackathon(event, '{{ hackathon.id }}', 'false')">
+                                onclick="{% if user.is_authenticated %}voteHackathon(event, '{{ hackathon.id }}', 'false'){% else %}addLoginPop(){% endif %}">
                           <input
                             class="w-6 h-6 appearance-none peer"
                             type="checkbox">
@@ -396,7 +396,7 @@
                             <button id="{{hackathon.id}}-save" class="mx-3 px-3 py-1 rounded-md duration-200 ease-in-out hover:bg-gray-200 hover:text-black hover:scale-105 {% if hackathon.user_saved %} bg-[#e5462e] text-white {% else %}bg-white {% endif %}" type="button" onclick="{% if user.is_authenticated %}saveHackathon(event, '{{ hackathon.id }}'){% else %}addLoginPop(){% endif %}">Save</button>
 
                             <button type="button" class="relative flex items-center mx-2"
-                                    onclick="voteHackathon(event, '{{ hackathon.id }}', 'true')">
+                                    onclick="{% if user.is_authenticated %}voteHackathon(event, '{{ hackathon.id }}', 'true'){% else %}addLoginPop(){% endif %}">
                               <input
                                 class="w-6 h-6 appearance-none peer"
                                 type="checkbox">
@@ -410,7 +410,7 @@
                             </button>
                             <p id = "{{hackathon.id }}-vote-text" class="mx-1 ml-1 text-lg text-gray-700">{{ hackathon.net_vote }}</p>
                             <button type="button" class="relative flex items-center center mx-2"
-                                    onclick="voteHackathon(event, '{{ hackathon.id }}', 'false')">
+                                    onclick="{% if user.is_authenticated %}voteHackathon(event, '{{ hackathon.id }}', 'false'){% else %}addLoginPop(){% endif %}">
                               <input
                                 class="w-6 h-6 appearance-none peer"
                                 type="checkbox">
