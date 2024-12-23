@@ -58,7 +58,7 @@ def home(request):
     return render(request, "home.html", context)
 
 
-@ratelimit(key="user_or_ip", rate="1/m", block=True)
+@ratelimit(key="user_or_ip", rate="4/m", block=True)
 @login_required
 @require_http_methods(["POST", "GET"])
 def addHackathons(request):
@@ -232,7 +232,8 @@ def str_to_bool(s):
 
 
 @login_required
-@ratelimit(key="user_or_ip", rate="1/m", block=True)
+@ratelimit(key="user_or_ip", rate="4/m", block=True)
+@require_http_methods(["POST", "GET"])
 def request_curator_access(request):
     if request.method == "POST":
         form = CuratorRequestForm(request.POST)
