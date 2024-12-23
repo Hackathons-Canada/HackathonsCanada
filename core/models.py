@@ -241,7 +241,7 @@ class HackathonSource(models.TextChoices):
     Partner = "PRT", "Partner"
 
 
-class HackthonsManager(models.Manager):
+class HackathonsManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().filter(is_public=True)
 
@@ -321,7 +321,7 @@ class ReviewStatus(models.TextChoices):
 
 
 class Hackathon(MetaDataMixin):
-    objects = HackthonsManager()
+    objects = HackathonsManager()
 
     duplication_id = models.CharField(
         max_length=255,
