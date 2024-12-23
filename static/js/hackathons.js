@@ -52,8 +52,6 @@ function voteHackathon(event, hackathonId, vote_state) {
     var state = 'POST'
 
 
-    console.log(vote_state)
-    console.log(typeof vote_state)
     if (vote_state === 'true') {
 
         if (downButton.classList.contains('fill-black')) {
@@ -106,7 +104,6 @@ function voteHackathon(event, hackathonId, vote_state) {
 
     }
 
-    console.log(state)
     xhr.open(state, `/hackathons/${hackathonId}/vote/?vote_type=${vote_state}`, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
