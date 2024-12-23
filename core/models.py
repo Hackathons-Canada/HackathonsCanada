@@ -269,7 +269,7 @@ class HackathonSource(models.TextChoices):
     Partner = "PRT", "Partner"
 
 
-class HackthonsManager(models.Manager):
+class HackathonsManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().filter(is_public=True)
 
@@ -329,7 +329,7 @@ class ReviewStatus(models.TextChoices):
 
 
 class Hackathon(MetaDataMixin):
-    objects = HackthonsManager()
+    objects = HackathonsManager()
 
     # This ID is to make it easier to identify hackathons when scraping in order to avoid duplicates
     # id = models.GeneratedField(
