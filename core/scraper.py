@@ -12,69 +12,8 @@ from core.models import (
     Hackathon,
     HackathonSource,
     HackathonLocation,
-    Location,
     ReviewStatus,
 )
-
-
-def search_city(city_name):
-    # USERNAME = "Nirek"
-    # url = f"http://api.geonames.org/searchJSON?q={city_name}&username={USERNAME}&maxRows=1&style=MEDIUM"
-    # if (
-    #     "online" in city_name.lower()
-    #     or "remote" in city_name.lower()
-    #     or "virtual" in city_name.lower()
-    #     or "everywhere" in city_name.lower()
-    # ):
-    #     return {
-    #         "city": "Online",
-    #         "state": "Online",
-    #         "country": "Online",
-    #         "latitude": None,
-    #         "longitude": None,
-    #     }
-    # try:
-    #     response = requests.get(url)
-    #     response.raise_for_status()
-
-    #     data = response.json()
-
-    #     if "geonames" not in data or not data["geonames"]:
-    #         return {
-    #             "city": "Online",
-    #             "state": "Online",
-    #             "country": "Online",
-    #             "latitude": None,
-    #             "longitude": None,
-    #         }
-
-    #     # Extract relevant information for each city
-    #     city_data = data["geonames"][0]
-    #     if city_data:
-    #         city = {
-    #             "city": city_data.get("name"),
-    #             "state": city_data.get("adminName1"),
-    #             "country": city_data.get("countryName"),
-    #             "latitude": city_data.get("lat"),
-    #             "longitude": city_data.get("lng"),
-    #         }
-    #         return city
-    #     else:
-    #         return {
-    #             "city": "Online",
-    #             "state": "Online",
-    #             "country": "Online",
-    #             "latitude": None,
-    #             "longitude": None,
-    #         }
-    # except requests.RequestException:
-    return {
-        "city": "Online",
-        "state": "Online",
-        "country": "Online",
-        "latitude": None,
-        "longitude": None,
-    }
 
 
 class AbstractDataSource:
@@ -112,10 +51,9 @@ class MLHSource(AbstractDataSource):
         loc = ev.find_all("div", {"class": "event-location"})[0]
         loc_data = (
             loc.find_all("span", {"itemprop": "city"})[0].contents[0]
-            + "+"
+            + ", "
             + loc.find_all("span", {"itemprop": "state"})[0].contents[0]
         )
-        geoData = search_city(loc_data)
         name = ev.find_all("h3", {"class": "event-name"})[0].contents[0]
         end_date = timezone.make_aware(
             datetime.datetime.strptime(
@@ -129,16 +67,11 @@ class MLHSource(AbstractDataSource):
                     "%Y-%m-%d",
                 )
             )
-            if geoData["latitude"] is None:
-                location_cord = None
-            else:
-                location_cord, created = Location.objects.get_or_create(
-                    latitude=geoData["latitude"], longitude=geoData["longitude"]
-                )
+
             hackathonLocation_input, created = HackathonLocation.objects.get_or_create(
-                name=f"{geoData['city']}, {geoData['state']}",
-                country=geoData["country"],
-                location=location_cord,
+                name=loc_data,
+                country=None,
+                location=None,
             )
 
             evinfo = {
@@ -205,18 +138,11 @@ class DevpostSource(AbstractDataSource):
 
         if enddate > timezone.now():
             loc = ev["displayed_location"]["location"]
-            geoData = search_city(loc)
 
-            if geoData["latitude"] is None:
-                location_cord = None
-            else:
-                location_cord, created = Location.objects.get_or_create(
-                    latitude=geoData["latitude"], longitude=geoData["longitude"]
-                )
             hackathonLocation_input, created = HackathonLocation.objects.get_or_create(
-                name=f"{geoData['city']}, {geoData['state']}",
-                country=geoData["country"],
-                location=location_cord,
+                name=loc,
+                country=None,
+                location=None,
             )
 
             evinfo = {
@@ -267,19 +193,12 @@ class EthGlobalSource(AbstractDataSource):
         end_date = timezone.make_aware(enddate)
 
         if end_date > timezone.now():
-            loc = " ".join(name.split()[1:])
-            geoData = search_city(loc)
+            loc = ", ".join(name.split()[1:])
 
-            if geoData["latitude"] is None:
-                location_cord = None
-            else:
-                location_cord, created = Location.objects.get_or_create(
-                    latitude=geoData["latitude"], longitude=geoData["longitude"]
-                )
             hackathonLocation_input, created = HackathonLocation.objects.get_or_create(
-                name=f"{geoData['city']}, {geoData['state']}",
-                country=geoData["country"],
-                location=location_cord,
+                name=loc,
+                country=None,
+                location=None,
             )
 
             evinfo = {
@@ -323,18 +242,10 @@ class HackClubSource(AbstractDataSource):
         if end_date > timezone.now():
             name = ev.find_all("h3")[0].contents[0]
 
-            geoData = search_city(loc)
-
-            if geoData["latitude"] is None:
-                location_cord = None
-            else:
-                location_cord, created = Location.objects.get_or_create(
-                    latitude=geoData["latitude"], longitude=geoData["longitude"]
-                )
             hackathonLocation_input, created = HackathonLocation.objects.get_or_create(
-                name=f"{geoData['city']}, {geoData['state']}",
-                country=geoData["country"],
-                location=location_cord,
+                name=loc,
+                country=None,
+                location=None,
             )
 
             evinfo = {
@@ -361,20 +272,26 @@ class HackClubSource(AbstractDataSource):
             return evinfo
 
 
-def scrape_all():
-    mlh = (
-        itertools.chain.from_iterable(
-            [MLHSource().get_events(year=i) for i in CUR_YEAR]
+def scrape_all(num):
+    if num == 1:
+        evs = (
+            itertools.chain.from_iterable(
+                [MLHSource().get_events(year=i) for i in CUR_YEAR]
+            )
+            if type(CUR_YEAR) is list
+            else MLHSource().get_events(year=CUR_YEAR)
         )
-        if type(CUR_YEAR) is list
-        else MLHSource().get_events(year=CUR_YEAR)
-    )
-    evs = itertools.chain(
-        mlh,
-        DevpostSource().get_events(),
-        EthGlobalSource().get_events(),
-        # HackClubSource().get_events(),
-    )
+    if num == 2:
+        evs = DevpostSource().get_events()
+    if num == 3:
+        evs = EthGlobalSource().get_events()
+    else:
+        pass
+    # evs = itertools.chain(
+    #     mlh,
+    #     DevpostSource().get_events(),
+    #     EthGlobalSource().get_events(),
+    # )
 
     for ev in evs:
         if ev == {}:
@@ -393,15 +310,16 @@ def scrape_all():
             ).first()
 
             if hackathon is not None:
-                hackathon.start_date = ev["start_date"]
-                hackathon.end_date = end_date
-                hackathon.location = ev["location"]
-                hackathon.source = HackathonSource.Scraped
-                hackathon.scrape_source = ev["scrape_source"]
-                hackathon.review_status = ReviewStatus.Approved
-                hackathon.is_public = True
-                hackathon.duplication_id = ev["duplication_id"]
-                hackathon.save()
+                pass
+                # hackathon.start_date = ev["start_date"]
+                # hackathon.end_date = end_date
+                # hackathon.location = ev["location"]
+                # hackathon.source = HackathonSource.Scraped
+                # hackathon.scrape_source = ev["scrape_source"]
+                # hackathon.review_status = ReviewStatus.Approved
+                # hackathon.is_public = True
+                # hackathon.duplication_id = ev["duplication_id"]
+                # hackathon.save()
             else:
                 hackathon = Hackathon()
                 for attr, value in ev.items():

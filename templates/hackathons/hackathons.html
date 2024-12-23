@@ -241,7 +241,7 @@
                   {% for hackathon in hackathons %}
                     <tr class="bg-white border-b-2 border-gray-200 ">
                       <td scope="row" class="flex py-2 justify-center items-center">
-                        <button id="{{hackathon.id}}-save" class="mx-auto px-3 py-2 rounded-md duration-200 ease-in-out hover:bg-gray-200 hover:text-black hover:scale-105 {% if hackathon.user_saved == True %} bg-[#e5462e] text-white {% else %}bg-white {% endif %}" type="button" onclick="{% if user.is_authenticated %}saveHackathon(event, '{{ hackathon.id }}'){% else %}addLoginPop(){% endif %}">Save</button>
+                        <button id="{{hackathon.id}}-save" class="mx-auto px-3 py-2 rounded-md duration-200 ease-in-out hover:bg-gray-200 hover:text-black hover:scale-105 {% if hackathon.user_saved %} bg-[#e5462e] text-white {% else %}bg-white {% endif %}" type="button" onclick="{% if user.is_authenticated %}saveHackathon(event, '{{ hackathon.id }}'){% else %}addLoginPop(){% endif %}">Save</button>
                       </td>
                       <th class="px-6 py-2 font-medium whitespace-nowrap">
                         <div class="flex items-center gap-2 overflow-scroll text-gray-700 max-w-xs lg:max-w-1/6">
@@ -281,7 +281,7 @@
                               type="checkbox">
                             <span class="absolute cursor-pointer w-6 h-6 flex items-center justify-center text-white font-bold duration-200 ease-in-out peer-checked:*:fill-[#e5462e] *:stroke-gray-500 peer-checked:*:stroke-[#e5462e] active:scale-75">
                               <svg  id = "{{hackathon.id }}-up" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"
-                                   class="w-6 h-6 duration-200 {% if hackathon.vote_state == True %} fill-black{% else %}fill-white {% endif %}">
+                                   class="w-6 h-6 duration-200 {% if hackathon.vote_state %} fill-black{% else %}fill-white {% endif %}">
                                 <path class="stroke-2"
                                       d="M4 14h4v7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7h4a1.001 1.001 0 0 0 .781-1.625l-8-10c-.381-.475-1.181-.475-1.562 0l-8 10A1.001 1.001 0 0 0 4 14"></path>
                               </svg>
@@ -333,7 +333,7 @@
                       <div class="relative flex flex-row items-center justify-center my-2">
                         <button class="px-3 py-1 rounded-md duration-200 ease-in-out hover:bg-gray-200 hover:text-black hover:scale-105 " onclick="flipCard('{{ hackathon.id }}')"> More</button>
 
-                        <button id="{{hackathon.id}}-save" class="mx-3 px-3 py-1 rounded-md duration-200 ease-in-out hover:bg-gray-200 hover:text-black hover:scale-105 {% if hackathon.user_saved == True %} bg-[#e5462e] text-white {% else %}bg-white {% endif %}" type="button" onclick="{% if user.is_authenticated %}saveHackathon(event, '{{ hackathon.id }}'){% else %}addLoginPop(){% endif %}">Save</button>
+                        <button id="{{hackathon.id}}-save" class="mx-3 px-3 py-1 rounded-md duration-200 ease-in-out hover:bg-gray-200 hover:text-black hover:scale-105 {% if hackathon.user_saved %} bg-[#e5462e] text-white {% else %}bg-white {% endif %}" type="button" onclick="{% if user.is_authenticated %}saveHackathon(event, '{{ hackathon.id }}'){% else %}addLoginPop(){% endif %}">Save</button>
 
                         <button type="button" class="relative flex items-center mx-2"
                                 onclick="voteHackathon(event, '{{ hackathon.id }}', 'true')">
@@ -342,7 +342,7 @@
                             type="checkbox">
                           <span class="absolute cursor-pointer w-6 h-6 flex items-center justify-center text-white font-bold duration-200 ease-in-out peer-checked:*:fill-[#e5462e] *:stroke-gray-500 peer-checked:*:stroke-[#e5462e] active:scale-75">
                             <svg  id = "{{hackathon.id }}-up" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"
-                                 class="w-6 h-6 duration-200 {% if hackathon.vote_state == True %} fill-black{% else %}fill-white {% endif %}">
+                                 class="w-6 h-6 duration-200 {% if hackathon.vote_state %} fill-black{% else %}fill-white {% endif %}">
                               <path class="stroke-2"
                                     d="M4 14h4v7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7h4a1.001 1.001 0 0 0 .781-1.625l-8-10c-.381-.475-1.181-.475-1.562 0l-8 10A1.001 1.001 0 0 0 4 14"></path>
                             </svg>
@@ -393,7 +393,7 @@
                           <div class="relative flex flex-row items-center justify-center">
                             <button class="px-3 py-1 rounded-md duration-200 ease-in-out hover:bg-gray-200 hover:text-black hover:scale-105 " onclick="flipCard('{{ hackathon.id }}')"> Less</button>
 
-                            <button id="{{hackathon.id}}-save" class="mx-3 px-3 py-1 rounded-md duration-200 ease-in-out hover:bg-gray-200 hover:text-black hover:scale-105 {% if hackathon.user_saved == True %} bg-[#e5462e] text-white {% else %}bg-white {% endif %}" type="button" onclick="{% if user.is_authenticated %}saveHackathon(event, '{{ hackathon.id }}'){% else %}addLoginPop(){% endif %}">Save</button>
+                            <button id="{{hackathon.id}}-save" class="mx-3 px-3 py-1 rounded-md duration-200 ease-in-out hover:bg-gray-200 hover:text-black hover:scale-105 {% if hackathon.user_saved %} bg-[#e5462e] text-white {% else %}bg-white {% endif %}" type="button" onclick="{% if user.is_authenticated %}saveHackathon(event, '{{ hackathon.id }}'){% else %}addLoginPop(){% endif %}">Save</button>
 
                             <button type="button" class="relative flex items-center mx-2"
                                     onclick="voteHackathon(event, '{{ hackathon.id }}', 'true')">
@@ -402,7 +402,7 @@
                                 type="checkbox">
                               <span class="absolute cursor-pointer w-6 h-6 flex items-center justify-center text-white font-bold duration-200 ease-in-out peer-checked:*:fill-[#e5462e] *:stroke-gray-500 peer-checked:*:stroke-[#e5462e] active:scale-75">
                                 <svg  id = "{{hackathon.id }}-up" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"
-                                     class="w-6 h-6 duration-200 {% if hackathon.vote_state == True %} fill-black{% else %}fill-white {% endif %}">
+                                     class="w-6 h-6 duration-200 {% if hackathon.vote_state %} fill-black{% else %}fill-white {% endif %}">
                                   <path class="stroke-2"
                                         d="M4 14h4v7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7h4a1.001 1.001 0 0 0 .781-1.625l-8-10c-.381-.475-1.181-.475-1.562 0l-8 10A1.001 1.001 0 0 0 4 14"></path>
                                 </svg>

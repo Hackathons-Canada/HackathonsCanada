@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.contrib.auth.models import Group
 from unfold.contrib.forms.widgets import WysiwygWidget
 
-from .models import Category, Hacker, Hackathon, School
+from .models import Category, Hacker, HackathonLocation, Hackathon, School
 from django.contrib.auth.admin import (
     UserAdmin as DjangoUserAdmin,
     GroupAdmin as BaseGroupAdmin,
@@ -108,6 +108,15 @@ class HackerAdmin(DjangoUserAdmin, ModelAdmin):
         return instance.hackathons.count()
 
 
+class HackathonLocationAdmin(ModelAdmin):
+    list_display = (
+        "name",
+        "venue",
+        "country",
+    )
+    search_fields = ("name", "venue", "country")
+
+
 class CategoryAdmin(ModelAdmin):
     list_display = (
         "name",
@@ -135,6 +144,7 @@ admin.site.register(Hacker, HackerAdmin)
 admin.site.register(Hackathon, HackathonAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(School, SchoolAdmin)
+admin.site.register(HackathonLocation, HackathonLocationAdmin)
 
 admin.site.unregister(Group)
 admin.site.register(Group, GroupAdmin)

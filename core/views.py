@@ -265,10 +265,27 @@ def is_admin(user: AbstractUser | AnonymousUser):
     return user.is_superuser
 
 
+# fix this for v2
+
+
 @login_required
 @user_passes_test(is_admin)
-def scrape(request):
-    scrape_all()  # todo: add a celery task to scrape/make async
+def scrapeMlh(request):
+    scrape_all(1)
+    return HttpResponse("Scraped!")
+
+
+@login_required
+@user_passes_test(is_admin)
+def scrapeDevpost(request):
+    scrape_all(2)
+    return HttpResponse("Scraped!")
+
+
+@login_required
+@user_passes_test(is_admin)
+def scrapeEth(request):
+    scrape_all(3)
     return HttpResponse("Scraped!")
 
 
@@ -325,8 +342,7 @@ def handle_vote(request, hackathon_id):
             hacker = get_object_or_404(Hacker, id=request.user.id)
 
             if request.method == "POST":
-                is_upvote = request.GET.get("vote_type") == "upvote"
-
+                is_upvote = request.GET.get("vote_type") == "true"
                 # Check for existing vote
                 existing_vote = (
                     Vote.objects.filter(hackathon=hackathon, hacker=hacker)
@@ -366,7 +382,6 @@ def handle_vote(request, hackathon_id):
                         "message": "Vote recorded successfully",
                     }
                 )
-
             elif request.method == "DELETE":
                 # Remove vote if exists
                 vote = (
@@ -374,18 +389,20 @@ def handle_vote(request, hackathon_id):
                     .select_for_update()
                     .first()
                 )
-
                 if vote:
                     vote_diff = -1 if vote.is_upvote else 1
                     vote.delete()
 
-                    # Update net_vote atomically
+                    # the code before was not working, it returned a 500 error
+
                     hackathon = (
                         Hackathon.objects.filter(id=hackathon_id)
                         .select_for_update()
-                        .update(net_vote=F("net_vote") + vote_diff)
+                        .get()
                     )
+                    hackathon.net_vote = F("net_vote") + vote_diff
                     hackathon.save(update_fields=["net_vote"])
+
                     return JsonResponse(
                         {
                             "message": "Vote removed successfully",
