@@ -49,7 +49,11 @@ function voteHackathon(event, hackathonId, vote_state) {
     const downButton = document.getElementById(`${hackathonId}-down`);
     const voteText = document.getElementById(`${hackathonId}-vote-text`);
 
+    var state = 'POST'
+
+
     console.log(vote_state)
+    console.log(typeof vote_state)
     if (vote_state === 'true') {
 
         if (downButton.classList.contains('fill-black')) {
@@ -58,16 +62,19 @@ function voteHackathon(event, hackathonId, vote_state) {
             upButton.classList.remove('fill-white');
             upButton.classList.add('fill-black');
             voteText.textContent = parseInt(voteText.textContent) + 2;
+
         }
         else if (upButton.classList.contains('fill-black')) {
             upButton.classList.add('fill-white');
             upButton.classList.remove('fill-black');
             voteText.textContent = parseInt(voteText.textContent) - 1;
+            state = "DELETE"
         }
         else {
             upButton.classList.remove('fill-white');
             upButton.classList.add('fill-black');
             voteText.textContent = parseInt(voteText.textContent) + 1;
+
         }
 
 
@@ -81,49 +88,40 @@ function voteHackathon(event, hackathonId, vote_state) {
             downButton.classList.add('fill-black');
             voteText.textContent = parseInt(voteText.textContent) - 2;
 
+
         }
         else if (downButton.classList.contains('fill-black')) {
             downButton.classList.remove('fill-black');
             downButton.classList.add('fill-white');
             voteText.textContent = parseInt(voteText.textContent) + 1;
+            state = "DELETE"
         }
         else {
             downButton.classList.remove('fill-white');
             downButton.classList.add('fill-black');
             voteText.textContent = parseInt(voteText.textContent) - 1;
+
         }
 
 
     }
 
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-            if (xhr.status === 200) {
-                var response = JSON.parse(xhr.responseText);
-                console.log(`${response.hackathon.id} Hackathon ${response.hackathon.name} saved successfully`);
-            }
-            else {
-                console.log(`ERROR: ${response.hackathon.id} Hackathon ${response.hackathon.name} saved unsuccessfully`);
-            }
-        }
-    };
-
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-            if (xhr.status === 200) {
-                var response = JSON.parse(xhr.responseText);
-                console.log(`saved successfully`);
-            }
-            else {
-                console.log(`saved unsuccessfully`);
-            }
-        }
-    };
-
-    xhr.open('POST', `/hackathons/${hackathonId}/vote?vote_state=${vote_state}`, true);
+    console.log(state)
+    xhr.open(state, `/hackathons/${hackathonId}/vote/?vote_type=${vote_state}`, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
     xhr.send(JSON.stringify({}));
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                console.log('successful:', response);
+            } else {
+                console.error('failed:', xhr.status);
+            }
+        }
+    };
 }
 
 
