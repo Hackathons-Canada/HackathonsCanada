@@ -162,7 +162,7 @@ class HackerSettingForm(forms.ModelForm):
             "saved",
             "is_active",
             "saved_categories",
-            "notification_policy",
+            "email_preferences",
             "password",
             "date_joined",
         ]
