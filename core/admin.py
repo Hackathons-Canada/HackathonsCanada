@@ -1,24 +1,27 @@
 # Register your models here.
 from allauth.account import app_settings
-from django.contrib import admin
-from django.contrib.auth.models import Group
-from unfold.contrib.forms.widgets import WysiwygWidget
-
-from .models import Category, Hacker, HackathonLocation, Hackathon, School
-from django.contrib.auth.admin import (
-    UserAdmin as DjangoUserAdmin,
-    GroupAdmin as BaseGroupAdmin,
-)
-from unfold.admin import ModelAdmin
-from unfold.decorators import display
-from unfold.forms import AdminPasswordChangeForm, UserChangeForm, UserCreationForm
-from django.utils.translation import gettext_lazy as _
-from django.db import models
 from allauth.account.admin import (
-    EmailConfirmationAdmin as BaseEmailConfirmation,
     EmailAddressAdmin as BaseEmailAddress,
 )
+from allauth.account.admin import (
+    EmailConfirmationAdmin as BaseEmailConfirmation,
+)
 from allauth.account.models import EmailAddress, EmailConfirmation
+from django.contrib import admin
+from django.contrib.auth.admin import (
+    GroupAdmin as BaseGroupAdmin,
+    UserAdmin as BaseUserAdmin,
+)
+from django.contrib.auth.models import Group
+from django.db import models
+from django.utils.translation import gettext_lazy as _
+from unfold.admin import ModelAdmin
+from unfold.contrib.forms.widgets import WysiwygWidget
+from unfold.decorators import display
+from unfold.forms import AdminPasswordChangeForm, UserChangeForm
+
+from .models import Category, Hackathon, Hacker, School
+from .models import HackathonLocation
 
 
 class EmailAddressAdmin(BaseEmailAddress, ModelAdmin):
@@ -54,15 +57,12 @@ class HackathonAdmin(ModelAdmin):
         "location",
     )
     list_filter = ("categories",)
-    search_fields = ("name", "location")
-
-    def get_queryset(self, request):
-        return self.model.objects.admin()
+    search_fields = ("name", "location__name")
 
 
-class HackerAdmin(DjangoUserAdmin, ModelAdmin):
+class HackerAdmin(BaseUserAdmin, ModelAdmin):
     form = UserChangeForm
-    add_form = UserCreationForm
+    # add_form = UserCreationForm
     change_password_form = AdminPasswordChangeForm
     list_display = [
         "display_header",
