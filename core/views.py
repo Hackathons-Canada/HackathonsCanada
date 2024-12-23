@@ -58,7 +58,9 @@ def home(request):
     return render(request, "home.html", context)
 
 
-# @ratelimit(key="user_or_ip", rate="1/m", block=True)
+@ratelimit(key="user_or_ip", rate="1/m", block=True)
+@login_required
+@require_http_methods(["POST", "GET"])
 def addHackathons(request):
     if request.method == "POST":
         form = HackathonForm(request.POST)
@@ -73,6 +75,7 @@ def addHackathons(request):
     return render(request, "hackathons/add_hackathon.html", {"form": form})
 
 
+@require_http_methods(["GET"])
 def hackathon_page(request):
     tdy_date = timezone.now()
 
