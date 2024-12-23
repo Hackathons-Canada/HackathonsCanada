@@ -48,7 +48,7 @@ optional = true
 
 [tool.poetry.group.prod.dependencies]
 gunicorn = "^20.1.0"
-psycopg2-binary = "^2.9.1"
+psycopg = {extras = ["binary"], version = "^3.2.3"}
 
 
 [tool.mypy]
