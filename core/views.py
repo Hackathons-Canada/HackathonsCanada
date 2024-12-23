@@ -340,12 +340,9 @@ def handle_vote(request, hackathon_id):
         with transaction.atomic():
             hackathon = get_object_or_404(Hackathon, id=hackathon_id)
             hacker = get_object_or_404(Hacker, id=request.user.id)
-            print(hackathon.net_vote)
-            print(request.method)
-            print(request.GET.get("vote_type"))
+
             if request.method == "POST":
                 is_upvote = request.GET.get("vote_type") == "true"
-                print(is_upvote)
                 # Check for existing vote
                 existing_vote = (
                     Vote.objects.filter(hackathon=hackathon, hacker=hacker)
@@ -372,7 +369,6 @@ def handle_vote(request, hackathon_id):
                     Vote.objects.create(
                         hackathon=hackathon, hacker=hacker, is_upvote=is_upvote
                     )
-                    print(is_upvote)
                     vote_diff = 1 if is_upvote else -1
 
                 hackathon = (
@@ -387,14 +383,12 @@ def handle_vote(request, hackathon_id):
                     }
                 )
             elif request.method == "DELETE":
-                print("method is delte")
                 # Remove vote if exists
                 vote = (
                     Vote.objects.filter(hackathon=hackathon, hacker=hacker)
                     .select_for_update()
                     .first()
                 )
-                print(vote)
                 if vote:
                     vote_diff = -1 if vote.is_upvote else 1
                     vote.delete()
