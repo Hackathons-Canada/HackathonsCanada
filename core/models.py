@@ -427,8 +427,12 @@ class Hackathon(MetaDataMixin):
         blank=True, null=True, help_text="List of items in the prize pool"
     )
 
-    fg_image = models.ImageField(upload_to="hackathon_images", null=True, blank=True)
-    bg_image = models.ImageField(upload_to="hackathon_images", null=True, blank=True)
+    fg_image = models.ImageField(
+        upload_to="hackathon_images", null=True, blank=True, max_length=500
+    )
+    bg_image = models.ImageField(
+        upload_to="hackathon_images", null=True, blank=True, max_length=500
+    )
 
     hybrid = models.CharField(
         max_length=1,
