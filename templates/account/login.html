@@ -4,7 +4,9 @@
 {% block title %}{% translate  "Sign In" %}{% endblock title %}
 {% block navbar %}{% endblock navbar %}
 
+
 {% block content %}
+  {{ user.is_authenticated|json_script:"user_authenticated" }}
   <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-[url({% static 'assets/signinBg.jpg' %})] bg-no-repeat bg-cover" >
     <div class="max-w-md w-full space-y-8  backdrop-blur-md bg-white/30 p-10 rounded-xl shadow-md">
       <div class="flex justify-between items-center">
@@ -31,11 +33,11 @@
                 </h3>
                 <div class="mt-2 text-sm text-red-700">
                   <ul class="list-disc pl-5 space-y-1">
-                    {% for field, errors in form.errors.items %}
-                      {% for error in errors %}
-                        <li>{{ field|title }}: {{ error }}</li>
-                      {% endfor %}
-                    {% endfor %}
+{#                    {% for field, errors in form.errors.items %}#}
+{#                      {% for error in errors %}#}
+{#                        <li>{{ field|title }}: {{ error }}</li>#}
+{#                      {% endfor %}#}
+{#                    {% endfor %}#}
                     {% for error in form.non_field_errors %}
                       <li>{{ error }}</li>
                     {% endfor %}

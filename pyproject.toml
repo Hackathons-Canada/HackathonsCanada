@@ -45,6 +45,7 @@ ruff = "^0.5.1"
 djhtml = "^3.0.6"
 celery-types = "^0.22.0"
 pre-commit = "^3.7.1"
+django-debug-toolbar = "^4.4.6"
 
 [tool.poetry.group.prod]
 optional = true

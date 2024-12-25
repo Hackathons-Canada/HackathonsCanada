@@ -1,0 +1,23 @@
+<div class="hackathon-card">
+  <div class="card-image-overlay"></div>
+  <img class="hackathon-img-back" src="{{ hackathon.bg_image|default:hackathon.fg_image }}" alt="{{ hackathon.name }}">
+  <div class="hackathon-card-div">
+    <div class="relative top-[65%] text-start px-3 max-h-16 overflow-scroll">
+      <h6 class="text-lg text-gray-200">{{ hackathon.location.name }} | {{ hackathon.start_date|date:"N-d" }}-{{ hackathon.application_deadline|date:"d, Y" }}</h6>
+      <h3 class="text-3xl font-semibold text-white">{{ hackathon.name }}</h3>
+    </div>
+  </div>
+  <div class="card-body-layout align-items-start my-auto">
+    <p class="card-body-text">Application: <span class="font-semibold text-red-600">{{ hackathon.application_start|date:"N-d" }}-{{ hackathon.start_date|date:"d, Y" }}</span></p>
+    <p class="card-body-text">Minimum Education: {{ hackathon.minimum_education_level }}</p>
+    <p class="card-body-text">Travel Reimbursements: {{ hackathon.reimbursements }}</p>
+    <a href="{{ hackathon.website }}" class="card-body-text">Website</a>
+    <div class="relative flex flex-row items-center justify-center my-2">
+      <button class="px-3 py-1 rounded-md duration-200 ease-in-out hover:bg-gray-200 hover:text-black hover:scale-105" onclick="flipCard('{{ hackathon.id }}')">Less</button>
+      <button id="{{hackathon.id}}-save" class="mx-3 px-3 py-1 rounded-md duration-200 ease-in-out hover:bg-gray-200 hover:text-black hover:scale-105 {% if hackathon.user_saved %}bg-[#e5462e] text-white{% else %}bg-white{% endif %}" type="button" onclick="{% if user.is_authenticated %}saveHackathon(event, '{{ hackathon.id }}'){% else %}addLoginPop(){% endif %}">
+        {% if hackathon.user_saved %}Saved{% else %}Save{% endif %}
+      </button>
+      {% include "components/vote_buttons.html" with hackathon=hackathon %}
+    </div>
+  </div>
+</div>
