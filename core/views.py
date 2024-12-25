@@ -11,16 +11,13 @@ from django.contrib.auth.models import AbstractUser, AnonymousUser
 from django.core.exceptions import ValidationError
 from django.db import transaction
 from django.db.models import F
-from django.db.models import Q
 from django.http import HttpRequest
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.shortcuts import render
-from django.utils import timezone
 from django.views.decorators.cache import cache_page
 from django.views.decorators.http import require_http_methods
-from django.views.generic import ListView
 from django_ratelimit.decorators import ratelimit
 from icalendar import Calendar, Event
 
@@ -32,6 +29,11 @@ from .forms import (
     HackerSettingForm,
     CuratorRequestForm,
 )
+from django.views.generic import ListView
+from django.db.models import Prefetch, Q
+from django.utils import timezone
+from django.http import JsonResponse
+from typing import Dict, Any
 
 
 @cache
@@ -75,90 +77,122 @@ def addHackathons(request):
     return render(request, "hackathons/add_hackathon.html", {"form": form})
 
 
-@require_http_methods(["GET"])
-def hackathon_page(request):
-    tdy_date = timezone.now()
+class HackathonListView(ListView):
+    """
+    A class-based view for displaying hackathons with efficient querying and filtering.
+    Supports different view types (calendar, list, cards) and various filtering options.
+    """
 
-    hacker = Hacker.objects.filter(id=request.user.id).first()
+    template_name = "hackathons/hackathons.html"
+    context_object_name = "hackathons"
 
-    view_type = request.GET.get("view_type")
-    country = request.GET.get("country")
-    city = request.GET.get("city")
-    start = request.GET.get("start")
-    end = request.GET.get("end")
+    def get_queryset(self):
+        """
+        Build the queryset with all necessary filters and prefetch related data
+        to minimize database queries.
+        """
+        # Base query with select_related to avoid n+1 queries
+        queryset = Hackathon.objects.select_related("location").filter(
+            end_date__gte=timezone.now(), is_public=True
+        )
 
-    query_base = Q(end_date__gte=tdy_date, is_public=True)
-    if country and country != "none" and country != "World":
-        query_base &= Q(location__country=country)
-    elif country == "World":
-        query_base &= ~Q(location__country="Online")
+        # Apply filters based on query parameters
+        filters = self._build_filters()
+        if filters:
+            queryset = queryset.filter(filters)
 
-    if city and city != "None":
-        query_base &= Q(location__name__icontains=city)
+        # If user is authenticated, prefetch user-specific data
+        if self.request.user.is_authenticated:
+            queryset = self._annotate_user_data(queryset)
 
-    if start and start != "None":
-        query_base &= Q(start_date__gte=start)
+        return queryset
 
-    if end and end != "None":
-        query_base &= Q(end_date__lte=end)
+    def _build_filters(self) -> Q:
+        """
+        Build query filters based on request parameters.
+        Returns a Q object combining all active filters.
+        """
+        filters = Q()
+        params = self.request.GET
 
-    upcoming_hackathons = Hackathon.objects.filter(query_base)
+        country = params.get("country")
+        if country and country != "none":
+            if country == "World":
+                filters &= ~Q(location__country="Online")
+            else:
+                filters &= Q(location__country=country)
 
-    if view_type == "calendar":
-        hackathonsList = []
-        for hackathon in upcoming_hackathons:
-            hackathonsList.append(
-                {
-                    "title": f"{hackathon.name} - {hackathon.location.name}",
-                    "start": hackathon.start_date.strftime("%Y-%m-%d"),
-                    "end": hackathon.end_date.strftime("%Y-%m-%d"),
-                    "url": hackathon.website,
-                }
-            )
-        context = {
-            "hackathons": json.dumps(hackathonsList),
-            "type": view_type,
-            "country": country,
-            "city": city,
-            "start": start,
-            "end": end,
-        }
-        return render(request, "hackathons/hackathons.html", context)
-    else:
-        hackathon_with_user_info = []
+        city = params.get("city")
+        if city and city != "None":
+            filters &= Q(location__name__icontains=city)
 
-        if hacker is not None:
-            user_votes = Vote.objects.filter(hacker=request.user.id)
-            saved = hacker.saved.values_list("id", flat=True).values_list(
-                "id", flat=True
-            )
-            for hackathon in upcoming_hackathons:
-                vote_data = user_votes.filter(hackathon=hackathon).first()
-                setattr(
-                    hackathon,
-                    "vote_state",
-                    vote_data.is_upvote if vote_data is not None else None,
-                )
-                setattr(
-                    hackathon,
-                    "user_saved",
-                    True if saved.filter(id=hackathon.id).exists() else False,
-                )
+        start = params.get("start")
+        if start and start != "None":
+            filters &= Q(start_date__gte=start)
 
-                hackathon_with_user_info.append(hackathon)
-        else:
-            hackathon_with_user_info = upcoming_hackathons
+        end = params.get("end")
+        if end and end != "None":
+            filters &= Q(end_date__lte=end)
 
-        context = {
-            "hackathons": hackathon_with_user_info,
-            "type": view_type,
-            "country": country,
-            "city": city,
-            "start": start,
-            "end": end,
-        }
+        return filters
 
-        return render(request, "hackathons/hackathons.html", context)
+    def _annotate_user_data(self, queryset):
+        """
+        Efficiently annotate queryset with user-specific data using prefetch_related.
+        """
+        hacker = self.request.user
+
+        # Prefetch votes and saved hackathons in a single query
+        votes_prefetch = Prefetch(
+            "votes", queryset=Vote.objects.filter(hacker=hacker), to_attr="user_votes"
+        )
+
+        # saved_prefetch = Prefetch(
+        #     "saved_by",
+        #     queryset=Hacker.objects.filter(id=hacker.id),
+        #     to_attr="user_saved_data",
+        # )
+
+        return queryset.prefetch_related(votes_prefetch)
+
+    def get_context_data(self, **kwargs) -> Dict[str, Any]:
+        """
+        Prepare context data for the template, including calendar data if needed.
+        """
+        context = super().get_context_data(**kwargs)
+        view_type = self.request.GET.get("view_type")
+
+        if view_type == "calendar":
+            context["hackathons"] = self._prepare_calendar_data(context["hackathons"])
+
+        # Add filter parameters to context
+        context.update(
+            {
+                "type": view_type,
+                "country": self.request.GET.get("country"),
+                "city": self.request.GET.get("city"),
+                "start": self.request.GET.get("start"),
+                "end": self.request.GET.get("end"),
+            }
+        )
+
+        return context
+
+    def _prepare_calendar_data(self, hackathons) -> str:
+        """
+        Transform hackathon data into calendar-friendly format.
+        """
+        calendar_data = [
+            {
+                "title": f"{hackathon.name} - {hackathon.location.name}",
+                "start": hackathon.start_date.strftime("%Y-%m-%d"),
+                "end": hackathon.end_date.strftime("%Y-%m-%d"),
+                "url": hackathon.website,
+            }
+            for hackathon in hackathons
+        ]
+
+        return json.dumps(calendar_data)
 
 
 @login_required
