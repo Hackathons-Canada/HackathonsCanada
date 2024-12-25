@@ -3,7 +3,7 @@ from typing import Final, Tuple, List
 from django.contrib.auth.models import AbstractUser, UserManager
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.db.models import DecimalField
+from django.db.models import DecimalField, Exists, Subquery, OuterRef
 from django.utils import timezone
 
 # from django.core.exceptions import ValidationError
@@ -245,6 +245,21 @@ class HackathonsManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().filter(is_public=True)
 
+    def with_user_data(self, user):
+        """
+        Annotate hackathons with user-specific data efficiently.
+        """
+        if not user.is_authenticated:
+            return self
+        return self.annotate(
+            user_saved=Exists(Hacker.objects.filter(saved=OuterRef("pk"), id=user.id)),
+            vote_state=Subquery(
+                Vote.objects.filter(hackathon=OuterRef("pk"), hacker=user.id).values(
+                    "is_upvote"
+                )[:1]
+            ),
+        )
+
     def admin(self):
         return super().get_queryset()
 
@@ -288,6 +303,7 @@ class HackathonLocation(models.Model):
         help_text="Where the hackathon is located (e.g. Buringlont, Ontario)",
         null=True,
         blank=True,
+        db_index=True,
     )
     venue = models.CharField(
         max_length=255,
@@ -307,6 +323,7 @@ class HackathonLocation(models.Model):
         related_name="location",
         blank=True,
         null=True,
+        db_index=True,
     )
 
     def __str__(self):
@@ -396,6 +413,7 @@ class Hackathon(MetaDataMixin):
         related_name="hackathons",
         blank=True,
         null=True,
+        db_index=True,
     )
 
     min_age = models.SmallIntegerField(
@@ -465,6 +483,13 @@ class Hackathon(MetaDataMixin):
 
     class Meta:
         ordering = ["start_date"]
+        indexes = [
+            models.Index(
+                fields=["end_date", "is_public"],
+                name="hkthn_end_date_and_public_idx",
+            ),
+        ]
+
         constraints = [
             models.CheckConstraint(  # ensure start date is before end date
                 check=models.Q(start_date__lte=models.F("end_date")),
