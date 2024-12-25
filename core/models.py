@@ -345,7 +345,7 @@ class Hackathon(MetaDataMixin):
     )
 
     is_public = models.BooleanField(
-        help_text="Is the hackathon visible to all users", default=False
+        help_text="Is the hackathon visible to all users", default=False, db_index=True
     )
 
     review_status = models.CharField(
@@ -383,7 +383,7 @@ class Hackathon(MetaDataMixin):
     website = models.URLField()
 
     start_date = models.DateTimeField(blank=True, null=True)
-    end_date = models.DateTimeField(blank=True, null=True)
+    end_date = models.DateTimeField(blank=True, null=True, db_index=True)
 
     application_start = models.DateTimeField(blank=True, null=True)
     application_deadline = models.DateTimeField(blank=True, null=True)

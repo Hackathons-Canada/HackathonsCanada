@@ -10,12 +10,15 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
-import os
 from pathlib import Path
+
+import dj_database_url
 from django.templatetags.static import static
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from dotenv import load_dotenv
+
+from settings.components import config
 
 load_dotenv()
 
@@ -151,17 +154,14 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": os.environ.get("DB_ENGINE", "django.db.backends.sqlite3"),
-        "NAME": os.environ.get("POSTGRES_DB", os.path.join(BASE_DIR, "db.sqlite3")),
-        "USER": os.environ.get("POSTGRES_USER", "user"),
-        "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "password"),
-        "HOST": os.environ.get("POSTGRES_HOST", "postgres"),
-        "PORT": os.environ.get("POSTGRES_PORT", "5432"),
-    }
-}
 
+DATABASES = {
+    "default": dj_database_url.config(
+        default=config("DATABASE_URL"),
+        conn_max_age=280,  # Just under 5 minutes as that's the Neon timeout
+        conn_health_checks=True,
+    ),
+}
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
@@ -216,8 +216,8 @@ COUNTRIES_OVERRIDE = {
 COUNTRIES_FIRST = ["CA", "US"]
 # CELERY CONF
 
-CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://valkey:6379/1")
-CELERY_RESULT_BACKEND = os.environ.get("CELERY_BACKEND", "redis://valkey:6379/1")
+CELERY_BROKER_URL = config("CELERY_BROKER", "redis://valkey:6379/1")
+CELERY_RESULT_BACKEND = CELERY_BROKER_URL
 
 LOGIN_REDIRECT_URL = "/"
 ACCOUNT_LOGOUT_REDIRECT_URL = "/"
@@ -376,27 +376,3 @@ UNFOLD = {
         ],
     },
 }
-
-
-
-
-
-
-try:
-    with open(os.path.join(os.path.dirname(__file__), "local_settings.py")) as f:
-        exec(f.read(), globals())
-except IOError:
-    raise TypeError(
-        "There is an error in the naming of local_settings.py or it doesn't exist. Please read docs for proper setup steps."
-    )
-
-# fmt: on
-
-if SECRET_KEY == "CHANGEME" and DEBUG is False:
-    raise ValueError("Please set SECRET_KEY in local_settings.py")
-
-
-if DEBUG:
-    MIDDLEWARE.insert(0, "silk.middleware.SilkyMiddleware")
-    INSTALLED_APPS.append("silk")
-    SILKY_PYTHON_PROFILER = True

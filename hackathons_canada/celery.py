@@ -4,7 +4,7 @@ from celery import Celery
 from celery.schedules import crontab
 
 # Set the default Django settings module for the 'celery' program.
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "hackathons_canada.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")
 
 app = Celery("hackathons_canada")
 

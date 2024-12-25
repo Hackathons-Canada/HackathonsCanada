@@ -3,10 +3,9 @@ import datetime
 import requests
 import itertools
 import cloudscraper
+from django.conf import settings
 from django.utils import timezone
 from bs4 import BeautifulSoup
-
-from hackathons_canada.settings import CUR_YEAR
 
 from core.models import (
     Hackathon,
@@ -276,10 +275,10 @@ def scrape_all(num):
     if num == 1:
         evs = (
             itertools.chain.from_iterable(
-                [MLHSource().get_events(year=i) for i in CUR_YEAR]
+                [MLHSource().get_events(year=i) for i in settings.CUR_YEAR]
             )
-            if type(CUR_YEAR) is list
-            else MLHSource().get_events(year=CUR_YEAR)
+            if type(settings.CUR_YEAR) is list
+            else MLHSource().get_events(year=settings.CUR_YEAR)
         )
     if num == 2:
         evs = DevpostSource().get_events()
