@@ -62,7 +62,7 @@
 
 
                     <button type="button" class="relative flex items-center mx-2"
-                            onclick="voteHackathon(event, '{{ hackathon.id }}', 'true')">
+                            onclick="handleVote(event, '{{ hackathon.id }}', 'true')">
                       <input
                         class="w-6 h-6 appearance-none peer"
                         type="checkbox">
@@ -76,7 +76,7 @@
                     </button>
                     <p id = "{{hackathon.id }}-vote-text" class="mx-1 ml-1 text-lg text-gray-700">{{ hackathon.net_vote }}</p>
                     <button type="button" class="relative flex items-center center mx-2"
-                            onclick="voteHackathon(event, '{{ hackathon.id }}', 'false')">
+                            onclick="handleVote(event, '{{ hackathon.id }}', 'false')">
                       <input
                         class="w-6 h-6 appearance-none peer"
                         type="checkbox">

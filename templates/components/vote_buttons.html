@@ -1,17 +1,31 @@
 <div class="flex items-center">
-  <button type="button" class="relative flex items-center mx-2" onclick="{% if user.is_authenticated %}voteHackathon(event, '{{ hackathon.id }}', 'true'){% else %}addLoginPop(){% endif %}">
+  <button type="button"
+          class="relative flex items-center mx-2"
+          onclick="{% if user.is_authenticated %}handleVote(event, '{{ hackathon.id }}', true, {{ hackathon.user_vote_status }}){% else %}addLoginPop(){% endif %}">
     <input class="w-6 h-6 appearance-none peer" type="checkbox">
     <span class="absolute cursor-pointer w-6 h-6 flex items-center justify-center text-white font-bold duration-200 ease-in-out peer-checked:*:fill-[#e5462e] *:stroke-gray-500 peer-checked:*:stroke-[#e5462e] active:scale-75">
-      <svg id="{{ hackathon.id }}-up" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" class="w-6 h-6 duration-200 {% if hackathon.vote_state %}fill-black{% else %}fill-white{% endif %}">
+      <svg id="{{ hackathon.id }}-up"
+           xmlns="http://www.w3.org/2000/svg"
+           width="1em"
+           height="1em"
+           viewBox="0 0 24 24"
+           class="w-6 h-6 duration-200 {% if hackathon.user_vote_status == 1 %}fill-black{% else %}fill-white{% endif %}">
         <path class="stroke-2" d="M4 14h4v7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7h4a1.001 1.001 0 0 0 .781-1.625l-8-10c-.381-.475-1.181-.475-1.562 0l-8 10A1.001 1.001 0 0 0 4 14"></path>
       </svg>
     </span>
   </button>
   <p id="{{ hackathon.id }}-vote-text" class="mx-1 ml-1 text-lg text-gray-700">{{ hackathon.net_vote }}</p>
-  <button type="button" class="relative flex items-center center mx-2" onclick="{% if user.is_authenticated %}voteHackathon(event, '{{ hackathon.id }}', 'false'){% else %}addLoginPop(){% endif %}">
+  <button type="button"
+          class="relative flex items-center center mx-2"
+          onclick="{% if user.is_authenticated %}handleVote(event, '{{ hackathon.id }}', false, {{ hackathon.user_vote_status }}){% else %}addLoginPop(){% endif %}">
     <input class="w-6 h-6 appearance-none peer" type="checkbox">
     <span class="absolute cursor-pointer w-6 h-6 flex items-center justify-center text-white font-bold duration-200 ease-in-out peer-checked:*:fill-[#e5462e] *:stroke-gray-500 peer-checked:*:stroke-[#e5462e] active:scale-75">
-      <svg id="{{ hackathon.id }}-down" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" class="rotate-180 w-6 h-6 duration-200 {% if hackathon.vote_state == False %}fill-black{% else %}fill-white{% endif %}">
+      <svg id="{{ hackathon.id }}-down"
+           xmlns="http://www.w3.org/2000/svg"
+           width="1em"
+           height="1em"
+           viewBox="0 0 24 24"
+           class="rotate-180 w-6 h-6 duration-200 {% if hackathon.user_vote_status == -1 %}fill-black{% else %}fill-white{% endif %}">
         <path class="stroke-2" d="M4 14h4v7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7h4a1.001 1.001 0 0 0 .781-1.625l-8-10c-.381-.475-1.181-.475-1.562 0l-8 10A1.001 1.001 0 0 0 4 14"></path>
       </svg>
     </span>

@@ -13,7 +13,7 @@
     <tbody>
       {% for hackathon in hackathons %}
         <tr class="bg-white border-b-2 border-gray-200">
-          <td scope="row" class="flex py-2 justify-center items-center">
+          <td class="flex py-2 justify-center items-center">
             <button id="{{hackathon.id}}-save" class="mx-auto px-3 py-2 rounded-md duration-200 ease-in-out hover:bg-gray-200 hover:text-black hover:scale-105 {% if hackathon.user_saved %} bg-[#e5462e] text-white {% else %}bg-white {% endif %}" type="button" onclick="{% if user.is_authenticated %}saveHackathon(event, '{{ hackathon.id }}'){% else %}addLoginPop(){% endif %}">
               {% if hackathon.user_saved %}Saved{% else %}Save{% endif %}
             </button>

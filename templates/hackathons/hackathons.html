@@ -51,16 +51,12 @@
         button.addEventListener('click', function(event) {
           const [hackathonId, voteType] = this.id.split('-');
           {% if user.is_authenticated %}
-            voteHackathon(event, hackathonId, voteType === 'up');
+            handleVote(event, hackathonId, voteType === 'up');
           {% else %}
             addLoginPop();
           {% endif %}
         });
       });
-
-    // Add event listener for login popup close button
-      document.getElementById('confirm-cancel-btn').addEventListener('click', cancelLoginPop);
     });
   </script>
-
 {% endblock %}

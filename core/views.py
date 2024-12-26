@@ -8,7 +8,6 @@ from functools import cache
 from django.conf import settings
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import AbstractUser, AnonymousUser
-from django.core.exceptions import ValidationError
 from django.db import transaction
 from django.db.models import F
 from django.http import HttpRequest
@@ -88,8 +87,8 @@ class HackathonListView(ListView):
 
     def get_queryset(self):
         """
-        Build the queryset with all necessary filters and prefetch related data
-        to minimize database queries.
+        Build the queryset with all necessary filters and annotate vote status
+        in a single efficient query.
         """
         # Base query with select_related to avoid n+1 queries
         queryset = Hackathon.objects.select_related("location").filter(
@@ -101,11 +100,8 @@ class HackathonListView(ListView):
         if filters:
             queryset = queryset.filter(filters)
 
-        # If user is authenticated, prefetch user-specific data
-        if self.request.user.is_authenticated:
-            queryset = self._annotate_user_data(queryset)
-
-        return queryset
+        # Annotate vote status directly in the query instead of prefetching
+        return Hackathon.annotate_vote_status(queryset, self.request.user)
 
     def _build_filters(self) -> Q:
         """
@@ -142,11 +138,13 @@ class HackathonListView(ListView):
         """
         hacker = self.request.user
 
-        # Prefetch votes and saved hackathons in a single query
-        votes_prefetch = Prefetch(
-            "votes", queryset=Vote.objects.filter(hacker=hacker), to_attr="user_votes"
-        )
+        # Prefetch votes in a single query, return True if the user has upvoted a post, null if no vote and False if downvoted
 
+        votes_prefetch = Prefetch(
+            "votes",
+            queryset=Vote.objects.filter(hacker=hacker),
+            to_attr="user_votes",
+        )
         # saved_prefetch = Prefetch(
         #     "saved_by",
         #     queryset=Hacker.objects.filter(id=hacker.id),
@@ -368,92 +366,53 @@ def calendar_generator(request):
 @ratelimit(key="user_or_ip", rate="30/m", block=True)
 def handle_vote(request, hackathon_id):
     """
-    Handle voting for hackathons.
-    POST: Create or update vote
-    DELETE: Remove vote
+    Handle voting for hackathons with improved error handling and atomic operations.
+    Uses optimistic locking pattern to handle race conditions.
     """
     try:
         with transaction.atomic():
             hackathon = get_object_or_404(Hackathon, id=hackathon_id)
-            hacker = get_object_or_404(Hacker, id=request.user.id)
+            hacker = request.user
+
+            # Get current vote status with select_for_update to prevent race conditions
+            current_vote = (
+                Vote.objects.filter(hackathon=hackathon, hacker=hacker)
+                .select_for_update()
+                .first()
+            )
+
+            is_upvote = request.GET.get("vote_type") == "true"
 
             if request.method == "POST":
-                is_upvote = request.GET.get("vote_type") == "true"
-                # Check for existing vote
-                existing_vote = (
-                    Vote.objects.filter(hackathon=hackathon, hacker=hacker)
-                    .select_for_update()
-                    .first()
-                )
+                if current_vote:
+                    if current_vote.is_upvote == is_upvote:
+                        return JsonResponse({"message": "Vote already exists"})
 
-                if existing_vote:
-                    if existing_vote.is_upvote == is_upvote:
-                        return JsonResponse(
-                            {
-                                "message": "Vote already exists",
-                            }
-                        )
-
-                    vote_diff = (
-                        2 if is_upvote else -2
-                    )  # Switching from down to up or vice versa
-                    existing_vote.is_upvote = is_upvote
-                    existing_vote.time_created = timezone.now()
-                    existing_vote.save(update_fields=["is_upvote", "time_created"])
-
+                    # Change vote direction
+                    vote_diff = 2 if is_upvote else -2
+                    current_vote.is_upvote = is_upvote
+                    current_vote.save(update_fields=["is_upvote"])
                 else:
+                    # Create new vote
                     Vote.objects.create(
                         hackathon=hackathon, hacker=hacker, is_upvote=is_upvote
                     )
                     vote_diff = 1 if is_upvote else -1
+            else:  # DELETE
+                if not current_vote:
+                    return JsonResponse({"message": "No vote found to remove"})
 
-                hackathon = (
-                    Hackathon.objects.filter(id=hackathon_id).select_for_update().get()
-                )
-                hackathon.net_vote = F("net_vote") + vote_diff
-                hackathon.save(update_fields=["net_vote"])
+                vote_diff = -1 if current_vote.is_upvote else 1
+                current_vote.delete()
 
-                return JsonResponse(
-                    {
-                        "message": "Vote recorded successfully",
-                    }
-                )
-            elif request.method == "DELETE":
-                # Remove vote if exists
-                vote = (
-                    Vote.objects.filter(hackathon=hackathon, hacker=hacker)
-                    .select_for_update()
-                    .first()
-                )
-                if vote:
-                    vote_diff = -1 if vote.is_upvote else 1
-                    vote.delete()
+            # Update net vote count
+            Hackathon.objects.filter(id=hackathon_id).update(
+                net_vote=F("net_vote") + vote_diff
+            )
 
-                    # the code before was not working, it returned a 500 error
+            return JsonResponse({"message": "Vote processed successfully"})
 
-                    hackathon = (
-                        Hackathon.objects.filter(id=hackathon_id)
-                        .select_for_update()
-                        .get()
-                    )
-                    hackathon.net_vote = F("net_vote") + vote_diff
-                    hackathon.save(update_fields=["net_vote"])
-
-                    return JsonResponse(
-                        {
-                            "message": "Vote removed successfully",
-                        }
-                    )
-
-                return JsonResponse(
-                    {
-                        "message": "No vote found to remove",
-                    }
-                )
-
-    except ValidationError as e:
-        return JsonResponse({"error": str(e)}, status=400)
-    except Exception:
+    except Exception as e:
         return JsonResponse(
-            {"error": "An error occurred while processing your vote"}, status=500
+            {"error": str(e) if settings.DEBUG else "An error occurred"}, status=500
         )

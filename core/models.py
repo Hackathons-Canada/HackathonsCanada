@@ -3,7 +3,8 @@ from typing import Final, Tuple, List
 from django.contrib.auth.models import AbstractUser, UserManager
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.db.models import DecimalField, Exists, Subquery, OuterRef
+from django.db.models import DecimalField, Exists, Subquery, OuterRef, Value, When, Case
+from django.db.models.fields import IntegerField
 from django.utils import timezone
 
 # from django.core.exceptions import ValidationError
@@ -508,6 +509,29 @@ class Hackathon(MetaDataMixin):
     def __str__(self):
         return self.name
 
+    @classmethod
+    def annotate_vote_status(cls, queryset, user):
+        """
+        Annotates the queryset with user's vote status using a single efficient query.
+        Returns:
+         - 1 for upvote
+         - -1 for downvote
+         - 0 for no vote
+        """
+        if not user.is_authenticated:
+            return queryset.annotate(
+                user_vote_status=Value(0, output_field=IntegerField())
+            )
+
+        return queryset.annotate(
+            user_vote_status=Case(
+                When(votes__hacker=user, votes__is_upvote=True, then=Value(1)),
+                When(votes__hacker=user, votes__is_upvote=False, then=Value(-1)),
+                default=Value(0),
+                output_field=IntegerField(),
+            )
+        )
+
     def save(self, *args, **kwargs):
         if self.start_date and timezone.is_naive(self.start_date):
             self.start_date = timezone.make_aware(self.start_date)
@@ -530,7 +554,7 @@ class Hackathon(MetaDataMixin):
 
 
 class Vote(models.Model):
-    is_upvote = models.BooleanField(default=True)
+    is_upvote = models.BooleanField(blank=False)
     hackathon = models.ForeignKey(
         Hackathon, on_delete=models.CASCADE, related_name="votes"
     )
@@ -553,10 +577,9 @@ class Vote(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.pk:  # New vote
-            existing_vote = Vote.objects.filter(
+            if Vote.objects.filter(
                 hackathon=self.hackathon, hacker=self.hacker
-            ).first()
-            if existing_vote:
+            ).exists():
                 raise ValidationError("User has already voted for this hackathon")
         super().save(*args, **kwargs)
 

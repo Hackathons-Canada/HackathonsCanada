@@ -32,46 +32,96 @@ function cancelLoginPop() {
 function addLoginPop() {
     document.getElementById('login-popup').classList.replace('hidden', 'flex');
 }
+// First, let's add a debounce utility function
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
 
-function voteHackathon(event, hackathonId, voteState) {
+// Keep track of ongoing votes to prevent concurrent requests
+const pendingVotes = new Set();
+
+function handleVote(event, hackathonId, isUpvote) {
     event.preventDefault();
+
+    // If there's already a pending vote for this hackathon, ignore the click
+    if (pendingVotes.has(hackathonId)) {
+        console.log('Vote in progress, please wait...');
+        return;
+    }
+
+    // Get UI elements
     const upButton = document.getElementById(`${hackathonId}-up`);
     const downButton = document.getElementById(`${hackathonId}-down`);
     const voteText = document.getElementById(`${hackathonId}-vote-text`);
-    let method = 'POST';
-    let voteChange = 0;
+    const buttonContainer = upButton.closest('div');
 
-    if (voteState === 'true') {
-        if (downButton.classList.contains('fill-black')) {
-            downButton.classList.replace('fill-black', 'fill-white');
-            upButton.classList.replace('fill-white', 'fill-black');
-            voteChange = 2;
-        } else if (upButton.classList.contains('fill-black')) {
-            upButton.classList.replace('fill-black', 'fill-white');
-            voteChange = -1;
+    // Add visual feedback that the vote is being processed
+    buttonContainer.style.opacity = '0.7';
+    buttonContainer.style.pointerEvents = 'none';
+    pendingVotes.add(hackathonId);
+
+    let method, voteChange;
+
+    // If clicking upvote button
+    if (isUpvote) {
+        if (upButton.classList.contains('fill-black')) {
             method = 'DELETE';
-        } else {
+            voteChange = -1;
+            upButton.classList.replace('fill-black', 'fill-white');
+        } else if (downButton.classList.contains('fill-black')) {
+            method = 'POST';
+            voteChange = 2;
             upButton.classList.replace('fill-white', 'fill-black');
+            downButton.classList.replace('fill-black', 'fill-white');
+        } else {
+            method = 'POST';
             voteChange = 1;
+            upButton.classList.replace('fill-white', 'fill-black');
         }
     } else {
-        if (upButton.classList.contains('fill-black')) {
-            upButton.classList.replace('fill-black', 'fill-white');
-            downButton.classList.replace('fill-white', 'fill-black');
-            voteChange = -2;
-        } else if (downButton.classList.contains('fill-black')) {
-            downButton.classList.replace('fill-black', 'fill-white');
-            voteChange = 1;
+        if (downButton.classList.contains('fill-black')) {
             method = 'DELETE';
-        } else {
+            voteChange = 1;
+            downButton.classList.replace('fill-black', 'fill-white');
+        } else if (upButton.classList.contains('fill-black')) {
+            method = 'POST';
+            voteChange = -2;
             downButton.classList.replace('fill-white', 'fill-black');
+            upButton.classList.replace('fill-black', 'fill-white');
+        } else {
+            method = 'POST';
             voteChange = -1;
+            downButton.classList.replace('fill-white', 'fill-black');
         }
     }
 
-    voteText.textContent = parseInt(voteText.textContent) + voteChange;
+    const originalUpButtonState = upButton.classList.contains('fill-black') ? 'fill-black' : 'fill-white';
+    const originalDownButtonState = downButton.classList.contains('fill-black') ? 'fill-black' : 'fill-white';
+    const originalVoteCount = parseInt(voteText.textContent);
 
-    fetch(`/hackathons/${hackathonId}/vote/?vote_type=${voteState}`, {
+    voteText.textContent = (originalVoteCount + voteChange).toString();
+
+    // Create a function to reset the UI state
+    const resetState = () => {
+        buttonContainer.style.opacity = '1';
+        buttonContainer.style.pointerEvents = 'auto';
+        pendingVotes.delete(hackathonId);
+        voteText.textContent = originalVoteCount;
+        upButton.classList.remove('fill-black', 'fill-white');
+        downButton.classList.remove('fill-black', 'fill-white');
+        upButton.classList.add(originalUpButtonState);
+        downButton.classList.add(originalDownButtonState);
+    };
+
+    fetch(`/hackathons/${hackathonId}/vote/?vote_type=${isUpvote}`, {
         method: method,
         headers: {
             'Content-Type': 'application/json',
@@ -79,10 +129,25 @@ function voteHackathon(event, hackathonId, voteState) {
         },
         body: JSON.stringify({})
     })
-        .then(response => response.json())
-        .then(data => console.log('successful:', data))
-        .catch(error => console.error('failed:', error));
+        .then(response => {
+            if (!response.ok) throw new Error('Vote failed');
+            return response.json();
+        })
+        .then(data => {
+            console.log('Vote successful:', data);
+        // Re-enable buttons after successful vote
+            buttonContainer.style.opacity = '1';
+            buttonContainer.style.pointerEvents = 'auto';
+            pendingVotes.delete(hackathonId);
+        })
+        .catch(error => {
+            console.error('Vote failed:', error);
+            resetState();
+        });
 }
+
+// Create a debounced version of handleVote
+const debouncedHandleVote = debounce(handleVote, 300);
 
 function getCookie(name) {
     let cookieValue = null;
