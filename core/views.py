@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import json
 import os
 import random
 from functools import cache
@@ -29,7 +28,7 @@ from .forms import (
     CuratorRequestForm,
 )
 from django.views.generic import ListView
-from django.db.models import Prefetch, Q
+from django.db.models import Q
 from django.utils import timezone
 from django.http import JsonResponse
 from typing import Dict, Any
@@ -132,36 +131,12 @@ class HackathonListView(ListView):
 
         return filters
 
-    def _annotate_user_data(self, queryset):
-        """
-        Efficiently annotate queryset with user-specific data using prefetch_related.
-        """
-        hacker = self.request.user
-
-        # Prefetch votes in a single query, return True if the user has upvoted a post, null if no vote and False if downvoted
-
-        votes_prefetch = Prefetch(
-            "votes",
-            queryset=Vote.objects.filter(hacker=hacker),
-            to_attr="user_votes",
-        )
-        # saved_prefetch = Prefetch(
-        #     "saved_by",
-        #     queryset=Hacker.objects.filter(id=hacker.id),
-        #     to_attr="user_saved_data",
-        # )
-
-        return queryset.prefetch_related(votes_prefetch)
-
     def get_context_data(self, **kwargs) -> Dict[str, Any]:
         """
         Prepare context data for the template, including calendar data if needed.
         """
         context = super().get_context_data(**kwargs)
         view_type = self.request.GET.get("view_type")
-
-        if view_type == "calendar":
-            context["hackathons"] = self._prepare_calendar_data(context["hackathons"])
 
         # Add filter parameters to context
         context.update(
@@ -175,22 +150,6 @@ class HackathonListView(ListView):
         )
 
         return context
-
-    def _prepare_calendar_data(self, hackathons) -> str:
-        """
-        Transform hackathon data into calendar-friendly format.
-        """
-        calendar_data = [
-            {
-                "title": f"{hackathon.name} - {hackathon.location.name}",
-                "start": hackathon.start_date.strftime("%Y-%m-%d"),
-                "end": hackathon.end_date.strftime("%Y-%m-%d"),
-                "url": hackathon.website,
-            }
-            for hackathon in hackathons
-        ]
-
-        return json.dumps(calendar_data)
 
 
 class HackathonListView_C(ListView):
