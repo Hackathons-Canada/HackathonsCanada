@@ -39,85 +39,87 @@
     </h5>
   </div>
 
-  <div class="w-full sm:w-4/5 mx-auto card-box-layout">
+  <div class="w-full sm:w-4/5 mx-auto px-4 sm:px-0 card-box-layout">
     <div class="w-full flex flex-col sm:flex-row gap-6">
-      <a class = 'w-full sm:w-2/5 mx-5 sm:mx-0' href = "https://staging.hackcanada.org/">
-        <div class = "rounded-xl
-                      h-screen
-                      max-h-[32rem]
-                      justify-items-center
-                      relative
-                      overflow-hidden
-                      flex
-                      justify-end
-                      align-middle
-                      flex-col
-                      text-center
-                      z-10 bg-[url({% static 'assets/hackCanada.png' %})]
-                      bg-cover
-                      bg-no-repeat
-                      bg-center
-                      before:content-['']
-                      before:absolute
-                      before:inset-0
-                      before:block
-                      before:bg-gradient-to-t
-                      before:from-black
-                      before:z-[-5]
-                     ">
+      <a class='w-full sm:w-2/5 hover:scale-105 hover:shadow-lg transition-all duration-300' href="https://staging.hackcanada.org/">
+        <div class="rounded-xl
+                    w-full
+                    h-[30vw]
+                    min-h-[28rem]
+                    justify-items-center
+                    relative
+                    overflow-hidden
+                    flex
+                    justify-end
+                    align-middle
+                    flex-col
+                    text-center
+                    z-10 bg-[url({% static 'assets/hackCanada.png' %})]
+                    bg-cover
+                    bg-no-repeat
+                    bg-center
+                    before:content-['']
+                    before:absolute
+                    before:inset-0
+                    before:block
+                    before:bg-gradient-to-t
+                    before:from-black
+                    before:z-[-5]
+                   ">
           <h4 class="text-white button-discord-blue">
             Our Hackathon <br>
             <span class="font-bold text-white">Hack Canada</span>
           </h4>
           <h5 class="m-5 mt-3 text-white">
-            On February 21 -23, 2024 at Lazaridis School of Business and Economics, we are hosting Hack Canada, a hackathon focused  on giving students the opportunity to be the individual who solves a major issue that Canadians face.
+            On February 21 -23, 2024 at Lazaridis School of Business and Economics, we are hosting Hack Canada, a hackathon focused on giving students the opportunity to be the individual who solves a major issue that Canadians face.
           </h5>
-
         </div>
       </a>
-      <a class = 'w-full sm:w-3/5 my-auto' href="https://discord.gg/m5GPTnT5YB">
-        <img class="rounded-xl card-img-stack mx-5 sm:mx-0" src="{% static 'assets/discord.png' %}" alt="Image 1" />
-      </a>
-    </div>
-    <div class="w-full flex flex-col sm:flex-row gap-4 my-auto" >
-      <a class="mx-5 sm:mx-0" src = "https://www.instagram.com/hackathoncanada/">
-        <img class="w-full rounded-xl card-img-stack " src="{% static 'assets/instagram.png' %}" alt="Image 2" />
-      </a>
-      <a class="my-auto mx-5 sm:mx-0" href="https://calendar.google.com/calendar/u/0?cid=M2Y0ODA2MjUxYTZjMGZhYTMwZWE3ZmE0YmI0NTdjMmE1NTI0ZWZlNGUzZjMwMDc4NmJlMmVlNWRjOGU1MTE3MEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t">
-        <img class="w-full card-img-stack "  src="{% static 'assets/gcal.png' %}" alt="Image 1" />
+      <a class='w-full sm:w-3/5 hover:scale-105 hover:shadow-lg transition-all duration-300' href="https://discord.gg/m5GPTnT5YB">
+        <img class="rounded-xl card-img-stack mx-0 sm:mx-0 h-full w-full" src="{% static 'assets/discord.png' %}" alt="Image 1" />
       </a>
     </div>
 
-    <div class="w-full flex flex-col sm:flex-row gap-4">
-      <a class = 'w-full sm:w-2/5 mx-5 sm:mx-0' href = "https://konfer.ca/">
-        <div class = "rounded-xl
-                      h-screen
-                      max-h-[32rem]
-                      justify-items-center
-                      relative
-                      overflow-hidden
-                      flex
-                      justify-end
-                      align-middle
-                      flex-col
-                      text-center
-                      z-10 bg-[url({% static 'assets/konfer.png' %})]
-                      bg-cover
-                      bg-no-repeat
-                      bg-center
-                      before:content-['']
-                      before:absolute
-                      before:inset-0
-                      before:block
-                      before:bg-gradient-to-t
-                      before:from-black
-                      before: from-30%
-                      before: via-grey-500
-                      before: via-60%
-                      before:to-grey-800
-                      before: to-90%
-                      before:z-[-5]
-                     ">
+    <div class="w-full flex flex-col sm:flex-row gap-6 my-auto">
+      <a class="w-full sm:w-2/5 hover:scale-105 hover:shadow-lg transition-all duration-300" href="https://www.instagram.com/hackathoncanada/">
+        <img class="w-full rounded-xl card-img-stack max-h-[30rem]" src="{% static 'assets/instagram.png' %}" alt="Image 2" />
+      </a>
+      <a class="w-full sm:w-3/5 my-auto hover:scale-105 hover:shadow-lg transition-all duration-300" href="https://calendar.google.com/calendar/u/0?cid=M2Y0ODA2MjUxYTZjMGZhYTMwZWE3ZmE0YmI0NTdjMmE1NTI0ZWZlNGUzZjMwMDc4NmJlMmVlNWRjOGU1MTE3MEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t">
+        <img class="w-full card-img-stack max-h-[30rem]" src="{% static 'assets/gcal.png' %}" alt="Image 1" />
+      </a>
+    </div>
+
+    <div class="w-full flex flex-col sm:flex-row gap-6">
+      <a class='w-full sm:w-2/5 hover:scale-105 hover:shadow-lg transition-all duration-300' href="https://konfer.ca/">
+        <div class="rounded-xl
+                    w-full
+                    h-[35vw]
+                    min-h-[40rem]
+                    justify-items-center
+                    relative
+                    overflow-hidden
+                    flex
+                    justify-end
+                    align-middle
+                    flex-col
+                    text-center
+                    z-10 bg-[url({% static 'assets/konfer.png' %})]
+                    bg-cover
+                    bg-no-repeat
+                    bg-center
+                    before:content-['']
+                    before:absolute
+                    before:inset-0
+                    before:block
+                    before:bg-gradient-to-t
+                    before:from-black
+                    before:from-30%
+                    before:via-grey-500
+                    before:via-60%
+                    before:to-grey-800
+                    before:to-90%
+                    before:z-[-5]
+                   ">
           <h4 class="text-white button-discord-blue">
             Our Partner |
             <span class="button-discord-blue">Konfur</span>
@@ -125,145 +127,143 @@
           <h5 class="m-5 mt-3 text-white">
             We organize high-impact events connecting innovative businesses to ambitious students and young professionals.
           </h5>
-
         </div>
       </a>
-      <div class = "mx-5 sm:mx-0
-                    rounded-xl w-full sm:w-3/5
-                    h-screen
-                    max-h-[32rem]
-                    justify-items-center
-                    relative
-                    overflow-hidden
-                    flex
-                    justify-center
-                    align-middle
-                    flex-col
-                    text-center
-                    z-10 bg-[url({%static 'assets/jointeam.png'%})]
-                    bg-cover
-                    bg-no-repeat
-                    bg-center
-                   ">
+      <div class="w-full sm:w-3/5 hover:scale-105 hover:shadow-lg transition-all duration-300
+                  rounded-xl
+                  h-[35vw]
+                  min-h-[40rem]
+                  justify-items-center
+                  relative
+                  overflow-hidden
+                  flex
+                  justify-center
+                  align-middle
+                  flex-col
+                  text-center
+                  z-10 bg-[url({% static 'assets/jointeam.png' %})]
+                  bg-cover
+                  bg-no-repeat
+                  bg-center
+                 ">
         <h4 class="button-discord-text1">
           Interested In Joining <br>
           <span class="button-discord-blue">Our Team?</span>
         </h4>
         <h5 class="mt-3 button-discord-text2">
-          develop apps, web applications and software for hackathons <br />
-          and particapte in organizing our own hackathon.
+          Develop apps, web applications, and software for hackathons <br />
+          and participate in organizing our own hackathon.
         </h5>
-        <div class = "inline-block ">
+        <div class="inline-block">
           <a href="https://docs.google.com/forms/d/e/1FAIpQLSfH8JUmOBmVrqR5qp-BZMMhvrB1uUyRcOnp-4pCM6hWaewdmQ/viewform?usp=sf_link" class="inline-block py-2 mt-3 button-discord-style">Apply Here ➜</a>
         </div>
       </div>
-
     </div>
+  </div>
 
 
-
-    <div class="flex flex-col items-center justify-center w-full mt-5">
-      <p class='mt-10 mb-5 header-text-black'>FAQ<span class='header-text-red'>s</span></p>
-      <div class='grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-2'>
-        <div class = "w-full">
-          <div class="w-full mt-3 border-2 rounded-lg">
-            <button class="w-full p-4 text-left bg-white-200" onclick="toggleAccordion(1)">
-              <div class='flex items-center justify-between'>
-                <span class="font-semibold">What is Hackathons Canada?</span>
-                <img src='/static/assets/down-arrow.svg' class='w-[20px] h-[20px]'></img>
-              </div>
-            </button>
-            <div id="accordion-content-1" class="hidden px-4 pb-4 bg-white">
-              <p>e are a group of students who have worked together to collect a large list of all hackathons that are occuring in North America. Think of MLH, except we have hackathosn that you didn't even know existed, with prizes you didn't believe was possible.</p>
+  <div class="flex flex-col items-center justify-center w-full mt-5">
+    <p class='mt-10 mb-5 header-text-black'>FAQ<span class='header-text-red'>s</span></p>
+    <div class='grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-2'>
+      <div class = "w-full">
+        <div class="w-full mt-3 border-2 rounded-lg">
+          <button class="w-full p-4 text-left bg-white-200" onclick="toggleAccordion(1)">
+            <div class='flex items-center justify-between'>
+              <span class="font-semibold">What is Hackathons Canada?</span>
+              <img src='/static/assets/down-arrow.svg' class='w-[20px] h-[20px]'></img>
             </div>
-          </div>
-          <div class="w-full mt-3 border-2 rounded-lg">
-            <button class="w-full p-4 text-left rounded-lg bg-white-200" onclick="toggleAccordion(2)">
-              <div class='flex items-center justify-between'>
-                <span class="font-semibold">What is a hackathon? </span>
-                <img src='/static/assets/down-arrow.svg' class='w-[20px] h-[20px]'></img>
-              </div>
-            </button>
-            <div id="accordion-content-2" class="hidden px-4 pb-4 bg-white">
-              <p>A hackathon is an event where people come together to build something awesome, over the course of a weekend. Teams will work together to solve a real problem faced by Canadians, and at the end, you get to show off what you've built. Think of it as a coding marathon—but with more snacks and less running.</p>
-            </div>
-          </div>
-          <div class="w-full mt-3 border-2 rounded-lg">
-            <button class="w-full p-4 text-left rounded-lg bg-white-200" onclick="toggleAccordion(3)">
-              <div class='flex items-center justify-between'>
-                <span class="font-semibold">Where can I connect?</span>
-                <img src='/static/assets/down-arrow.svg' class='w-[20px] h-[20px]'></img>
-              </div>
-            </button>
-            <div id="accordion-content-3" class="hidden px-4 pb-4 bg-white">
-              <p>Follow us on our instagram @hackathoncanada or join our discord at: https://discord.gg/j92K83nKwq</p>
-            </div>
-          </div>
-          <div class="w-full mt-3 border-2 rounded-lg">
-            <button class="w-full p-4 text-left rounded-lg bg-white-200" onclick="toggleAccordion(4)">
-              <div class='flex items-center justify-between'>
-                <span class="font-semibold">Can I join the team?</span>
-                <img src='/static/assets/down-arrow.svg' class='w-[20px] h-[20px]'></img>
-              </div>
-            </button>
-            <div id="accordion-content-4" class="hidden px-4 pb-4 bg-white">
-              <p>Great news—we're always looking for passionate individuals to join our team! Check out the form above to apply and become part of Hack Canada. Don’t forget to follow us on Instagram @hackathoncanada for updates and announcements!</p>
-            </div>
+          </button>
+          <div id="accordion-content-1" class="hidden px-4 pb-4 bg-white">
+            <p>e are a group of students who have worked together to collect a large list of all hackathons that are occuring in North America. Think of MLH, except we have hackathosn that you didn't even know existed, with prizes you didn't believe was possible.</p>
           </div>
         </div>
-
-        <div class = "w-full">
-          <div class="w-full mt-3 border-2 rounded-lg">
-            <button class="w-full p-4 text-left rounded-lg bg-white-200" onclick="toggleAccordion(5)">
-              <div class='flex items-center justify-between'>
-                <span class="font-semibold">Where can I find more hackathons?</span>
-                <img src='/static/assets/down-arrow.svg' class='w-[20px] h-[20px]'></img>
-              </div>
-            </button>
-            <div id="accordion-content-5" class="hidden px-4 pb-4 bg-white">
-              <p>Want to explore all our hackathons? Click on the 'Hackathons' tab in the navigation bar to see the full list of events we’re hosting! Got questions or want to connect with others? Join the conversation on our Discord server using this <a href="https://discord.gg/j92K83nKwq">link</a>. If you don’t see a hackathon you’re interested in, make a request on the form, and we’ll work on adding it!</p>
+        <div class="w-full mt-3 border-2 rounded-lg">
+          <button class="w-full p-4 text-left rounded-lg bg-white-200" onclick="toggleAccordion(2)">
+            <div class='flex items-center justify-between'>
+              <span class="font-semibold">What is a hackathon? </span>
+              <img src='/static/assets/down-arrow.svg' class='w-[20px] h-[20px]'></img>
             </div>
-          </div>
-
-          <div class="w-full mt-3 border-2 rounded-lg">
-            <button class="w-full p-4 text-left rounded-lg bg-white-200" onclick="toggleAccordion(6)">
-              <div class='flex items-center justify-between'>
-                <span class="font-semibold">Is this a hackathon?</span>
-                <img src='/static/assets/down-arrow.svg' class='w-[20px] h-[20px]'></img>
-              </div>
-            </button>
-            <div id="accordion-content-6" class="hidden px-4 pb-4 bg-white">
-              <p>No. Hackathons Canada is not a hackathon itself, although we are organizing our first hackathon soon, which is Hack Canada! Check it out <a href="https://hackcanada.pages.dev/">here!</a></p>
-            </div>
-          </div>
-
-          <div class="w-full mt-3 border-2 rounded-lg">
-            <button class="w-full p-4 text-left rounded-lg bg-white-200" onclick="toggleAccordion(7)">
-              <div class='flex items-center justify-between'>
-                <span class="font-semibold">What makes Hackathons NA unique?                 </span>
-                <img src='/static/assets/down-arrow.svg' class='w-[20px] h-[20px]'></img>
-              </div>
-            </button>
-            <div id="accordion-content-7" class="hidden px-4 pb-4 bg-white">
-              <p>Founded in 2023 by William Wang, we have a discord server of every single hackathon and messages going back an entire year. If there was ever anywhere you wanted to look back in a time machine, this is the ONLY place where you can do that.</p>
-            </div>
-          </div>
-
-          <div class="w-full mt-3 border-2 rounded-lg">
-            <button class="w-full p-4 text-left rounded-lg bg-white-200" onclick="toggleAccordion(8)">
-              <div class='flex items-center justify-between'>
-                <span class="font-semibold">How Can Hackathons Canada support Hackathon Organizer?                 </span>
-                <img src='/static/assets/down-arrow.svg' class='w-[20px] h-[20px]'></img>
-              </div>
-            </button>
-            <div id="accordion-content-8" class="hidden px-4 pb-4 bg-white">
-              <p>Hackathons Canada can help make your hackathon a success by providing exposure to millions of hackers through our social media, sharing the resources and strategies we used to organize Hack Canada, and offering funding support through our partner, Konfur. For more details, reach out to us on Discord!</p>
-            </div>
+          </button>
+          <div id="accordion-content-2" class="hidden px-4 pb-4 bg-white">
+            <p>A hackathon is an event where people come together to build something awesome, over the course of a weekend. Teams will work together to solve a real problem faced by Canadians, and at the end, you get to show off what you've built. Think of it as a coding marathon—but with more snacks and less running.</p>
           </div>
         </div>
-
+        <div class="w-full mt-3 border-2 rounded-lg">
+          <button class="w-full p-4 text-left rounded-lg bg-white-200" onclick="toggleAccordion(3)">
+            <div class='flex items-center justify-between'>
+              <span class="font-semibold">Where can I connect?</span>
+              <img src='/static/assets/down-arrow.svg' class='w-[20px] h-[20px]'></img>
+            </div>
+          </button>
+          <div id="accordion-content-3" class="hidden px-4 pb-4 bg-white">
+            <p>Follow us on our instagram @hackathoncanada or join our discord at: https://discord.gg/j92K83nKwq</p>
+          </div>
+        </div>
+        <div class="w-full mt-3 border-2 rounded-lg">
+          <button class="w-full p-4 text-left rounded-lg bg-white-200" onclick="toggleAccordion(4)">
+            <div class='flex items-center justify-between'>
+              <span class="font-semibold">Can I join the team?</span>
+              <img src='/static/assets/down-arrow.svg' class='w-[20px] h-[20px]'></img>
+            </div>
+          </button>
+          <div id="accordion-content-4" class="hidden px-4 pb-4 bg-white">
+            <p>Great news—we're always looking for passionate individuals to join our team! Check out the form above to apply and become part of Hack Canada. Don’t forget to follow us on Instagram @hackathoncanada for updates and announcements!</p>
+          </div>
+        </div>
       </div>
+
+      <div class = "w-full">
+        <div class="w-full mt-3 border-2 rounded-lg">
+          <button class="w-full p-4 text-left rounded-lg bg-white-200" onclick="toggleAccordion(5)">
+            <div class='flex items-center justify-between'>
+              <span class="font-semibold">Where can I find more hackathons?</span>
+              <img src='/static/assets/down-arrow.svg' class='w-[20px] h-[20px]'></img>
+            </div>
+          </button>
+          <div id="accordion-content-5" class="hidden px-4 pb-4 bg-white">
+            <p>Want to explore all our hackathons? Click on the 'Hackathons' tab in the navigation bar to see the full list of events we’re hosting! Got questions or want to connect with others? Join the conversation on our Discord server using this <a href="https://discord.gg/j92K83nKwq">link</a>. If you don’t see a hackathon you’re interested in, make a request on the form, and we’ll work on adding it!</p>
+          </div>
+        </div>
+
+        <div class="w-full mt-3 border-2 rounded-lg">
+          <button class="w-full p-4 text-left rounded-lg bg-white-200" onclick="toggleAccordion(6)">
+            <div class='flex items-center justify-between'>
+              <span class="font-semibold">Is this a hackathon?</span>
+              <img src='/static/assets/down-arrow.svg' class='w-[20px] h-[20px]'></img>
+            </div>
+          </button>
+          <div id="accordion-content-6" class="hidden px-4 pb-4 bg-white">
+            <p>No. Hackathons Canada is not a hackathon itself, although we are organizing our first hackathon soon, which is Hack Canada! Check it out <a href="https://hackcanada.pages.dev/">here!</a></p>
+          </div>
+        </div>
+
+        <div class="w-full mt-3 border-2 rounded-lg">
+          <button class="w-full p-4 text-left rounded-lg bg-white-200" onclick="toggleAccordion(7)">
+            <div class='flex items-center justify-between'>
+              <span class="font-semibold">What makes Hackathons NA unique?                 </span>
+              <img src='/static/assets/down-arrow.svg' class='w-[20px] h-[20px]'></img>
+            </div>
+          </button>
+          <div id="accordion-content-7" class="hidden px-4 pb-4 bg-white">
+            <p>Founded in 2023 by William Wang, we have a discord server of every single hackathon and messages going back an entire year. If there was ever anywhere you wanted to look back in a time machine, this is the ONLY place where you can do that.</p>
+          </div>
+        </div>
+
+        <div class="w-full mt-3 border-2 rounded-lg">
+          <button class="w-full p-4 text-left rounded-lg bg-white-200" onclick="toggleAccordion(8)">
+            <div class='flex items-center justify-between'>
+              <span class="font-semibold">How Can Hackathons Canada support Hackathon Organizer?                 </span>
+              <img src='/static/assets/down-arrow.svg' class='w-[20px] h-[20px]'></img>
+            </div>
+          </button>
+          <div id="accordion-content-8" class="hidden px-4 pb-4 bg-white">
+            <p>Hackathons Canada can help make your hackathon a success by providing exposure to millions of hackers through our social media, sharing the resources and strategies we used to organize Hack Canada, and offering funding support through our partner, Konfur. For more details, reach out to us on Discord!</p>
+          </div>
+        </div>
+      </div>
+
     </div>
+  </div>
   </div>
 
   <div class="hero">
