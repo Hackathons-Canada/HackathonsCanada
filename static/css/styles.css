@@ -1285,3 +1285,11 @@ section {
 .glow-on-hover:hover {
   box-shadow: 0 0 10px blue;
 }
+
+/* Just some code for v1*/
+.grouped-section {
+  background-color: #cac4f8 !important; /* Light purple background */
+  border-radius: 10px; /* Rounded corners */
+  padding: 20px; /* Padding inside the rectangle */
+  margin-bottom: 20px; /* Spacing below the group */
+}
