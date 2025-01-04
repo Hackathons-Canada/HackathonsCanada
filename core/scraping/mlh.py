@@ -52,7 +52,7 @@ class MLHSource(AbstractDataSource):
 if __name__ == "__main__":
     mlh_scraper = MLHSource()
 
-    events = mlh_scraper.get_events(year=2025)
+    events = mlh_scraper.get_events()
 
     for event in events:
         print(f"Event Name: {event['name']}")
