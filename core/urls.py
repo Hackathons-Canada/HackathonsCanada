@@ -32,5 +32,6 @@ urlpatterns = [
     path("scrapeMlh/", views.scrapeMlh, name="scrapeMlh"),
     path("scrapeDevpost/", views.scrapeDevpost, name="scrapeDevpost"),
     path("scrapeEth/", views.scrapeEth, name="scrapeEth"),
+    path("scrapeHackclub/", views.scrapeHackclub, name="scrapeHackclub"),
     path("export_cal/", views.calendar_generator, name="calendar_generator"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
