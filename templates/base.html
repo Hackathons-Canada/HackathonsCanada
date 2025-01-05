@@ -34,29 +34,29 @@
       <nav class="nav-container">
         <ul class="nav-bar text-secondary">
           <li class="nav-logo flex justify-center items-center">
-            <a href="/" class="mb-3 flex flex-row">
-              <img src="{% static 'assets/logo.png' %}" width="50" height="50" class="h-10 w-10mx-3" />
+            <a href="/" class="flex flex-row">
+              <img src="{% static 'assets/logo.png' %}" width="50" height="50" class="h-10 w-10"  alt="logo"/>
               <span class="my-auto nav-head-text">Hackathons Canada</span>
             </a>
           </li>
           <input type='checkbox' id='nav-check' />
           <span class="nav-menu">
             <li class="nav-item">
-              <a href="{% url 'hackathons' %}" class="nav-link nav-link-text-child"
+              <a href="{% url 'hackathons' %}" class="px-2 nav-link nav-link-text-child"
                  aria-current="page">Hackathons</a>
             </li>
 
             {% if user.is_authenticated %}
               <li class="nav-item">
-                <a href="{% url 'add_hackathons' %}" class="nav-link nav-link-text-child">Add Hackathon</a>
+                <a href="{% url 'add_hackathons' %}" class="px-2 nav-link nav-link-text-child">Add Hackathon</a>
               </li>
               <li class="nav-item">
-                <a href="{% url 'saved_hackathons' %}" class="nav-link nav-link-text-child"
+                <a href="{% url 'saved_hackathons' %}" class="px-2 nav-link nav-link-text-child"
                    aria-current="page">Saved</a>
               </li>
 
               <li class="nav-item">
-                <a href="{% url 'setting' %}" class="hidden sm:block nav-link nav-link-text-child"
+                <a href="{% url 'setting' %}" class="px-2 hidden sm:block nav-link nav-link-text-child"
                    aria-current="page">Settings</a>
               </li>
 
@@ -76,7 +76,7 @@
             {% endif %}
             <label for="nav-check" class="close-nav-menu"><i class="fas fa-times"></i></label>
           </span>
-          <label for="nav-check" class="open-nav-menu"><i class="fas fa-bars"></i></label>
+          <label for="nav-check" class="open-nav-menu h-12"><i class="fas fa-bars"></i></label>
         </ul>
       </nav>
     {% endblock header %}
