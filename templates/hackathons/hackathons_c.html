@@ -7,10 +7,9 @@
 {% endblock %}
 {% block content %}
   <main class="container mx-auto px-4">
-    {% include "components/search_form.html" %}
+    {% include "components/hackathon_c/search_form.html" %}
 
     <div class="flex flex-row justify-between pb-3 mt-3 text-black border-b-2 border-gray-500">
-      {% include "components/view_type_toggle.html" %}
       {% include "components/country_filter.html" %}
     </div>
 
@@ -21,7 +20,7 @@
         {% elif type == "list" %}
           {% include "components/list_view.html" %}
         {% else %}
-          {% include "components/card_view.html" %}
+          {% include "components/hackathon_c/card_view.html" %}
         {% endif %}
       </div>
     </div>

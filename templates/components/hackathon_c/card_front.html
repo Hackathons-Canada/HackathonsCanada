@@ -1,0 +1,10 @@
+<div class="hackathon-card_c">
+  <img class="hackathon-img-front_c border-b-4 border-black" src="{{ hackathon.bg_image|default:hackathon.fg_image }}" alt="{{ hackathon.name }}">
+  <div class="flex flex-col mt-3 align-middle hackathon-content_c justify-items-center">
+    <h2 class="h-12 pt-2 overflow-auto text-3xl">{{ hackathon.name }}</h2>  <!-- Smaller title font size, but bigger container -->
+    <h6 class="text-base">{{ hackathon.location.name }}</h6>  <!-- Smaller date/location text -->
+    <h5 class="text-lg">
+      {{ hackathon.start_date|date:"N d" }}-{{ hackathon.end_date|date:"d, Y" }}
+    </h5> <!-- Smaller date -->
+  </div>
+</div>
