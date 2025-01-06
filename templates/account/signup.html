@@ -5,7 +5,7 @@
 {% block navbar %}{% endblock navbar %}
 
 {% block content %}
-  <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-login bg-[url({% static 'assets/signupBg.png'  %})] bg-no-repeat bg-cover" >
+  <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-login bg-[url({% static 'assets/loginbg.svg'  %})] bg-no-repeat bg-cover" >
     <div class="w-full max-w-md p-10 space-y-8 shadow-md backdrop-blur-md bg-white/30 rounded-xl">
       <div class="flex items-center justify-between">
         <a href="{% url 'home' %}">
@@ -14,7 +14,7 @@
 
         <div class="text-right">
           <div class="flex justify-end mt-2">
-            <h1>Welcome Hacker!!</h1>
+            <h1>Sign Up</h1>
           </div>
           <h2 class="text-3xl font-extrabold text-gray-900">Welcome.</h2>
         </div>
@@ -24,14 +24,14 @@
         <input type="hidden" name="next" value="/" />
 
         {% if form.errors %}
-          <div class="rounded-md bg-red-50 p-4 mb-4">
+          <div class="p-4 mb-4 rounded-md bg-red-50">
             <div class="flex">
               <div class="ml-3">
                 <h3 class="text-sm font-medium text-red-800">
                   Please correct the following errors:
                 </h3>
                 <div class="mt-2 text-sm text-red-700">
-                  <ul class="list-disc pl-5 space-y-1">
+                  <ul class="pl-5 space-y-1 list-disc">
                     {% for field, errors in form.errors.items %}
                       {% for error in errors %}
                         <li>{{ field|title }}: {{ error }}</li>

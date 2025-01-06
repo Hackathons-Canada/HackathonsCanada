@@ -7,19 +7,11 @@
 
 {% block content %}
 
-  <div class = "flex flex-row border-t-4 border-black">
+  <div class = "flex flex-row">
     <div id="cta-button-sidebar" class="w-1/5 border-r-4 border-black" aria-label="Sidebar">
       <div class="h-full px-3 py-4 overflow-y-auto bg-[4A5769] rounded-lg">
         <h1 class = "px-3 mt-5 text-2xl font-bold ">Setting</h1>
-        <div id="dropdown-cta" class="p-4 mx-3 my-3 mt-3 border-2 border-black rounded-lg" role="alert">
-          <div class="flex items-center mb-3">
-            <span class="bg-orange-100 text-orange-800 text-sm font-semibold me-2 px-2.5 py-0.5 rounded dark:bg-orange-200 dark:text-orange-900">Beta</span>
 
-          </div>
-          <p class="mb-3 text-sm text-black-800 ">
-            The website is still in early development, so many of the sites might not have any css but it functions regardless.
-          </p>
-        </div>
         <ul class="p-3 space-y-2 font-medium">
           <li>
             <a href="{% url 'setting' %}" class="flex items-center p-3 text-gray-900 rounded-lg hover:bg-gray-100 group">
@@ -63,7 +55,7 @@
       </div>
     </div>
 
-    <div class="w-4/5 bg-[#D1E9FF]">
+    <div class="w-4/5 bg-[#D1E9FF] pt-24">
       <form class = "w-1/2 mx-auto mb-10" action="{% url 'setting' %}" method="post">
         {% csrf_token %} {% crispy form_setting %}
 

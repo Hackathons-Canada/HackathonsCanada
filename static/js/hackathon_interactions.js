@@ -5,6 +5,15 @@ function flipCard(hackathonId) {
     card2.classList.toggle("flipped");
 }
 
+function copyText(text) {
+
+
+
+    navigator.clipboard.writeText(text);
+
+    alert("Copied the text: " + text);
+}
+
 function saveHackathon(event, hackathonId) {
     event.preventDefault();
     const saveButton = document.getElementById(`${hackathonId}-save`);

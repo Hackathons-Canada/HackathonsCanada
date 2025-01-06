@@ -102,10 +102,10 @@ class HackathonForm(forms.ModelForm):
                     "<h2 class='mt-8 mb-4 text-xl font-semibold form-side-text'>Banner</h2>"
                 ),
                 HTML(
-                    "<h2 class='form-upload-head mb-1'>Click to upload or drag and drop</h2>"
+                    "<h2 class='mb-1 form-upload-head'>Click to upload or drag and drop</h2>"
                 ),
                 HTML(
-                    "<h3 class='form-upload-side text-sm text-gray-500'>PNG or JPG (max. 800x400px)</h3>"
+                    "<h3 class='text-sm text-gray-500 form-upload-side'>PNG or JPG (max. 800x400px)</h3>"
                 ),
                 css_class="form-group-style",
             ),
@@ -136,7 +136,7 @@ class HackathonForm(forms.ModelForm):
                 # Tweaked button styling for cleaner focus/hover states
                 css_class=(
                     "py-3 px-6 mr-2 mb-2 text-sm font-medium "
-                    "text-black bg-white border border-black rounded-lg "
+                    "text-black bg-gray-100 border border-black rounded-lg "
                     "hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-4 focus:ring-gray-200 "
                     "dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 "
                     "dark:hover:bg-gray-700 dark:hover:text-white "
@@ -204,10 +204,10 @@ class HackerSettingForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             # Main Heading
-            HTML("<h1 class='text-3xl font-bold mb-6'>Profile Settings</h1>"),
+            HTML("<h1 class='mb-6 text-3xl font-bold'>Profile Settings</h1>"),
             # General Profile Section
             Div(
-                HTML("<h2 class='text-xl font-semibold mb-4'>General Profile</h2>"),
+                HTML("<h2 class='mb-4 text-xl font-semibold'>General Profile</h2>"),
                 Div(
                     Div(
                         Field(
@@ -233,7 +233,7 @@ class HackerSettingForm(forms.ModelForm):
             ),
             # Account Profile Section
             Div(
-                HTML("<h2 class='text-xl font-semibold mb-4'>Account Profile</h2>"),
+                HTML("<h2 class='mb-4 text-xl font-semibold'>Account Profile</h2>"),
                 Div(
                     Div(
                         Field(
@@ -257,7 +257,7 @@ class HackerSettingForm(forms.ModelForm):
             ),
             # Education Profile
             Div(
-                HTML("<h2 class='text-xl font-semibold mb-4'>Education Profile</h2>"),
+                HTML("<h2 class='mb-4 text-xl font-semibold'>Education Profile</h2>"),
                 Div(
                     Field("school"),
                     Field("education"),
@@ -302,7 +302,7 @@ class NotificationPolicyForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             HTML(
-                '<h2 class="text-lg font-semibold mt-5 mb-2 form-head-text" style="font-size: 1.75rem;">Notification</h2>'
+                '<h2 class="mt-5 mb-2 text-lg font-semibold form-head-text" style="font-size: 1.75rem;">Notification</h2>'
             ),
             Fieldset(
                 "Get Notified via email for New Hackathons, based on your settings. (Does not work right now, comming soon)",

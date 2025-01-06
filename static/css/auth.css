@@ -6,16 +6,10 @@
   font-style: normal;
 }
 
-.main-bg-sign-layout {
-  background: url("../assets/signupbg.jpg") lightgray -1496.239px 0px / 194.839%
-    100% no-repeat;
-  height: 100vh;
-  width: 100%;
-}
 
 .main-bg-login-layout {
   background: url("../assets/login.jpg") lightgray -1496.239px 0px / 194.839% 100%
-    no-repeat;
+              no-repeat;
 }
 .main-section-layout {
   border-radius: 20px;

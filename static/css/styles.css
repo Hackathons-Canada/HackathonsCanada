@@ -175,7 +175,7 @@ body {
 .nav-button {
   border-radius: 11px;
   color: white !important;
-  padding: 10px 30px;
+  padding: 8px 15px;
   background: linear-gradient(90deg, #ff5a50 0%, #ef6c23 100%);
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
@@ -188,7 +188,7 @@ body {
 }
 
 .hero-container-layout {
-  padding: 5vw 0;
+  padding: 3vw 0;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -487,7 +487,7 @@ section {
 }
 
 .card-web {
-  background-color: white;
+  background-color: #F3F4F6;
   border-radius: 8px;
   padding: 20px;
   width: 350px;
@@ -498,7 +498,7 @@ section {
   perspective: 1000px;
   display: flex;
   flex-direction: column;
-  background-color: white;
+  background-color: #F9FAFB;
   color: black;
   border-radius: 25px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
@@ -612,7 +612,7 @@ section {
 }
 
 .hero {
-  background-color: #fff;
+  background-color: #F3F4F6;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -1169,7 +1169,7 @@ section {
 
 .fc .fc-next-button,
 .fc .fc-prev-button {
-  background-color: white;
+  background-color: #F3F4F6;
 }
 
 .fc-daygrid-body{
