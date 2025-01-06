@@ -1,5 +1,5 @@
-<div class="hackathon-card">
-  <img class="hackathon-img-front border-b-4 border-black" src="{{ hackathon.bg_image|default:hackathon.fg_image }}" alt="{{ hackathon.name }}">
+<div class="hackathon-card h-[350px] w-72 xl:w-[350px]">
+  <img class="hackathon-img-front border-b-4 border-black w-full" src="{{ hackathon.bg_image|default:hackathon.fg_image }}" alt="{{ hackathon.name }}">
   <div class="flex flex-col mt-3 align-middle hackathon-content justify-items-center">
     <h2 class="h-12 pt-2 overflow-auto text-3xl">{{ hackathon.name }}</h2>
     <h6 class="text-base">{{ hackathon.location.name }}</h6>
