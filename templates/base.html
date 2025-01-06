@@ -31,8 +31,8 @@
 
   <body class="bg-gray-100">
     {% block header %}
-      <nav class="fixed top-0 z-20 my-2 nav-container">
-        <ul class="mt-2 bg-gray-100 border-4 border-gray-100 shadow-sm backdrop-blur-sm px-7 nav-bar text-secondary rounded-xl">
+      <nav class="fixed top-0 z-20 mb-2 nav-container">
+        <ul class="bg-gray-100 border-4 border-gray-100 drop-shadow-md backdrop-blur-sm px-7 nav-bar text-secondary rounded-xl">
           <li class="flex items-center justify-center nav-logo">
             <a href="/" class="flex flex-row">
               <img src="{% static 'assets/logo.png' %}" width="50" height="50" class="w-10 h-10"  alt="logo"/>
@@ -41,33 +41,33 @@
           </li>
           <input type='checkbox' id='nav-check' />
           <span class="nav-menu">
-            <li class="lowercase nav-item">
-              <a href="{% url 'hackathons' %}" class="px-2 nav-link nav-link-text-child"
+            <li class="nav-item">
+              <a href="{% url 'hackathons' %}" class="px-2 font-bold nav-link nav-link-text-child"
                  aria-current="page">Hackathons</a>
             </li>
 
             {% if user.is_authenticated %}
-              <li class="lowercase nav-item">
-                <a href="{% url 'add_hackathons' %}" class="px-2 mx-2 nav-link nav-link-text-child">Add Hackathon</a>
+              <li class=" nav-item">
+                <a href="{% url 'add_hackathons' %}" class="px-2 mx-2 font-bold nav-link nav-link-text-child">Add Hackathon</a>
               </li>
-              <li class="lowercase nav-item">
-                <a href="{% url 'saved_hackathons' %}" class="px-2 mx-2 nav-link nav-link-text-child"
+              <li class=" nav-item">
+                <a href="{% url 'saved_hackathons' %}" class="px-2 mx-2 font-bold nav-link nav-link-text-child"
                    aria-current="page">Saved</a>
               </li>
 
-              <li class="lowercase nav-item">
-                <a href="{% url 'setting' %}" class="hidden px-2 mx-2 sm:block nav-link nav-link-text-child"
+              <li class=" nav-item">
+                <a href="{% url 'setting' %}" class="hidden px-2 mx-2 font-bold sm:block nav-link nav-link-text-child"
                    aria-current="page">Settings</a>
               </li>
 
               {% if user.is_staff %}
-                <li class="lowercase nav-item">
-                  <a href="{% url 'admin:index' %}" class="mx-2 nav-link nav-link-text-child" aria-current="page">Admin</a>
+                <li class=" nav-item">
+                  <a href="{% url 'admin:index' %}" class="mx-2 font-bold nav-link nav-link-text-child" aria-current="page">Admin</a>
                 </li>
               {% endif %}
             {% else %}
-              <li class="lowercase nav-item">
-                <a href="{% url 'account_login' %}" class="mx-2 nav-link nav-link-text-child"
+              <li class=" nav-item">
+                <a href="{% url 'account_login' %}" class="mx-2 font-bold nav-link nav-link-text-child"
                    aria-current="page">Login</a>
               </li>
               <li class="">
