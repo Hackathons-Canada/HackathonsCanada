@@ -58,6 +58,8 @@ INSTALLED_APPS = [
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
+    "django.contrib.sites",
+    "django.contrib.redirects",
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_countries",
@@ -112,6 +114,7 @@ SOCIALACCOUNT_STORE_TOKENS = True
 # # Eliminate need to provide username, as it's a very old practice
 # ACCOUNT_USERNAME_REQUIRED = False
 
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -121,6 +124,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
+    "django.contrib.redirects.middleware.RedirectFallbackMiddleware",
 ]
 
 ROOT_URLCONF = "hackathons_canada.urls"
