@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block header %}  <!-- Override the header block and leave it empty -->
+{% endblock %}
+
+{% block footer %}  <!-- Override the footer block and leave it empty -->
+{% endblock %}
+{% block content %}
+  <main class="container mx-auto px-4">
+    {% include "components/hackathon_c/search_form.html" %}
+
+    <div class="flex flex-row justify-between pb-3 mt-3 text-black border-b-2 border-gray-500">
+      {% include "components/view_type_toggle.html" %}
+      {% include "components/country_filter.html" %}
+    </div>
+
+    <div class="text-center">
+      <div class="container mx-auto">
+        {% if type == "calendar" %}
+          {% include "components/calendar_view.html" %}
+        {% elif type == "list" %}
+          {% include "components/list_view.html" %}
+        {% else %}
+          {% include "components/hackathon_c/card_view.html" %}
+        {% endif %}
+      </div>
+    </div>
+  </main>
+  {% if not user.is_authenticated %}
+    {% include "components/login_popup.html" %}
+  {% endif %}
+
+  <script src="{% static 'js/hackathon_interactions.js' %}"></script>
+
+  <script>
+    // Initialize event listeners when the DOM is fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+    // Add event listeners for save buttons
+      document.querySelectorAll('[id$="-save"]').forEach(button => {
+        button.addEventListener('click', function(event) {
+          const hackathonId = this.id.split('-')[0];
+          {% if user.is_authenticated %}
+            saveHackathon(event, hackathonId);
+          {% else %}
+            addLoginPop();
+          {% endif %}
+        });
+      });
+
+    // Add event listeners for vote buttons
+      document.querySelectorAll('[id$="-up"], [id$="-down"]').forEach(button => {
+        button.addEventListener('click', function(event) {
+          const [hackathonId, voteType] = this.id.split('-');
+          {% if user.is_authenticated %}
+            handleVote(event, hackathonId, voteType === 'up');
+          {% else %}
+            addLoginPop();
+          {% endif %}
+        });
+      });
+    });
+  </script>
+{% endblock %}

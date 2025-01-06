@@ -6,6 +6,7 @@ from . import views
 urlpatterns = [
     path("", views.home, name="home"),
     path("hackathons/", views.HackathonListView.as_view(), name="hackathons"),
+    path("hackathons_c/", views.HackathonListView_C.as_view(), name="hackathons_c"),
     path("add-hackathons/", views.addHackathons, name="add_hackathons"),
     path("setting/", views.setting, name="setting"),
     path(

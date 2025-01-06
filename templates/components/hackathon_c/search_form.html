@@ -1,0 +1,21 @@
+<form action="{% url 'hackathons' %}" method="GET" class="flex flex-wrap items-center justify-center max-w-3xl mx-auto my-4 p-4 bg-white rounded-md shadow-md">
+  <div class="w-full sm:w-1/4 px-2 mb-4 sm:mb-0">
+    <label class="block text-xs font-medium text-gray-600" for="city">Where</label>
+    <input type="text" id="city" name="city" value="{{ request.GET.city }}" placeholder="Search cities/state/region" class="w-full text-xs bg-gray-100 border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none">
+  </div>
+  <div class="w-full sm:w-1/4 px-2 mb-4 sm:mb-0">
+    <label class="block text-xs font-medium text-gray-600" for="start">Start</label>
+    <input type="date" id="start" name="start" value="{{ request.GET.start }}" class="w-full text-xs bg-gray-100 border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none">
+  </div>
+  <div class="w-full sm:w-1/4 px-2 mb-4 sm:mb-0">
+    <label class="block text-xs font-medium text-gray-600" for="end">End</label>
+    <input type="date" id="end" name="end" value="{{ request.GET.end }}" class="w-full text-xs bg-gray-100 border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none">
+  </div>
+  <input type="hidden" name="view_type" value="{{ request.GET.view_type|default:'' }}">
+  <input type="hidden" name="country" value="{{ request.GET.country|default:'' }}">
+  <div class="w-full sm:w-1/4 px-2">
+    <button type="submit" class="w-full px-4 py-2 text-xs font-semibold text-white bg-blue-500 rounded-md shadow-md hover:bg-blue-600 focus:ring-2 focus:ring-blue-300 focus:outline-none">
+      Search
+    </button>
+  </div>
+</form>

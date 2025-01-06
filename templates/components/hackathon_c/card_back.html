@@ -1,0 +1,16 @@
+<div class="hackathon-card_c">
+  <div class="card-image-overlay_c"></div>
+  <img class="hackathon-img-back_c" src="{{ hackathon.bg_image|default:hackathon.fg_image }}" alt="{{ hackathon.name }}">
+  <div class="hackathon-card-div_c">
+    <div class="relative top-[65%] text-start px-3 max-h-16 overflow-scroll">
+      <h6 class="text-lg text-gray-200">{{ hackathon.location.name }} | {{ hackathon.start_date|date:"N-d" }}-{{ hackathon.application_deadline|date:"d, Y" }}</h6>
+      <h3 class="text-3xl font-semibold text-white">{{ hackathon.name }}</h3>
+    </div>
+  </div>
+  <div class="card-body-layout_c align-items-start my-auto">
+    <p class="card-body-text_c">Application: <span class="font-semibold text-red-600">{{ hackathon.application_start|date:"N-d" }}-{{ hackathon.start_date|date:"d, Y" }}</span></p>
+    <p class="card-body-text_c">Minimum Education: {{ hackathon.minimum_education_level }}</p>
+    <p class="card-body-text_c">Travel Reimbursements: {{ hackathon.reimbursements }}</p>
+    <a href="{{ hackathon.website }}" class="card-body-text_c">Website</a>
+  </div>
+</div>

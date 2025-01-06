@@ -1277,3 +1277,83 @@ section {
 .glow-on-hover:hover {
   box-shadow: 0 0 10px blue;
 }
+
+.hackathon-img-front_c {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+
+.hackathon-content_c h2 {
+  font-size: 1rem; /* Smaller font size for title */
+  font-weight: 600;
+  margin: 0;  /* Remove default margin */
+  margin-top: 1px;
+  margin-bottom: 8px;
+  line-height: 1.2; /* Slightly tighter line-height */
+  max-height: 4rem;  /* Set a maximum height for the title */
+  padding-bottom: 1rem; /* Added padding to ensure enough space around title */
+  max-width: 100%;  /* Ensures the container is as wide as possible */
+}
+
+.hackathon-content_c h6, .hackathon-content_c h5 {
+  font-size: 1rem; /* Smaller font for date and location */
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.hackathon-content_c {
+  padding: 12px;
+  height: 120px; /* Ensure all content fits without scrolling */
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  margin-bottom: 12px; /* Give more space around the title */
+  margin-top: 1px; /* Give more space around the title */
+}
+
+.grid-cols-6_c {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* Defines 5 equal columns */
+  gap: 0.01rem; /* Small gap between cards in both directions */
+  row-gap: 0.005rem; /* Reduced the gap between rows even further */
+}
+
+.grid-cols-6_c > .hackathon-card_c {
+  margin-bottom: 0.1rem; /* Further reduced space between rows of cards */
+}
+
+.card-body-layout_c {
+  padding: 8px 15px;
+  font-size: 14px;
+}
+
+.card-body-text_c {
+  margin: 3px 0;
+  color: #555;
+}
+
+.card-body-text_c a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.card-body-text_c a:hover {
+  text-decoration: underline;
+}
+
+.hackathon-card_c {
+  border: 2px solid #ccc; /* Light gray border */
+  border-radius: 2px;      /* Rounded corners */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  transition: all 0.3s ease; /* Smooth transition on hover */
+}
+
+.hackathon-card_c:hover {
+  border-color: #000000; /* Darker border color on hover */
+  box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+}
+

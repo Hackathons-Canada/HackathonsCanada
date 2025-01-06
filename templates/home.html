@@ -29,8 +29,58 @@
       </div>
     </div>
   </div>
+  <div class="container mx-auto p-8">
+    <h1 class="text-4xl font-bold text-center mb-0">Hackathons Page</h1> <!-- Removed margin completely -->
 
-  <img class="text-center hero-image-position" src="{% static 'assets/homegra.png'%}" />
+    <!-- Scrollable container where hackathon.html content will be injected -->
+    <div id="hackathonContainer" class="mt-0 h-[800px] overflow-y-auto">
+        <!-- Dynamic content will appear here -->
+    </div>
+  </div>
+
+  <script>
+      // Function to load the hackathon page dynamically into the container
+    function loadHackathon() {
+      fetch('/hackathons_c')  // The URL of your hackathon.html
+        .then(response => response.text())
+        .then(data => {
+          const container = document.getElementById('hackathonContainer');
+          container.innerHTML = data;  // Inject the entire hackathon page into this div
+
+                  // Reinitialize JavaScript functionality for the newly loaded content
+          initializeHackathonScripts();
+        })
+        .catch(error => {
+          console.error('Error loading hackathon page:', error);
+        });
+    }
+
+      // Function to reinitialize JS scripts (e.g., for event listeners)
+    function initializeHackathonScripts() {
+      document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('[id$="-save"]').forEach(button => {
+          button.addEventListener('click', function(event) {
+            const hackathonId = this.id.split('-')[0];
+                      // Simulating the saveHackathon functionality
+            console.log('Saving hackathon:', hackathonId);
+          });
+        });
+
+        document.querySelectorAll('[id$="-up"], [id$="-down"]').forEach(button => {
+          button.addEventListener('click', function(event) {
+            const [hackathonId, voteType] = this.id.split('-');
+                      // Simulating the vote functionality
+            console.log(`Voting ${voteType} for hackathon ${hackathonId}`);
+          });
+        });
+      });
+    }
+
+      // Automatically load the hackathon page when the page is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      loadHackathon();
+    });
+  </script>
 
   <div class="mt-5 mb-10 sm:mx-0 my-2 mx-3 card-header-layout">
     <h5 class="text-4xl text-black">

@@ -1,0 +1,11 @@
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-1">
+  {% for hackathon in hackathons %}
+    <div class="relative p-4 mx-3 rotate-0 col flip-card lockedheight preserve-3d">
+      <div class="ease-in-out cursor-pointer flip-card-inner">
+        <div id="{{hackathon.id}}-card-front" class="hackathon-card_c duration-[0.4s] [transform:rotateY(0deg)]">
+          {% include "components/hackathon_c/card_front.html" with hackathon=hackathon %}
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
