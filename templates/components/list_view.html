@@ -1,41 +1,53 @@
-<div class="w-full px-4 lg:px-24 pt-12">
+<div class="hidden md:block w-full  px-4 xl:px-24 pt-12">
   <table class="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
     <thead class="text-xs text-gray-700 border-b-2">
       <tr>
-        <th scope="col" class="py-3 px-6 text-lg font-semibold text-center text-gray-700">Save</th>
-        <th scope="col" class="px-6 py-3 text-lg font-semibold text-gray-700">Name</th>
-        <th scope="col" class="px-6 py-3 text-lg font-semibold text-gray-700">Website</th>
-        <th scope="col" class="px-6 py-3 text-lg font-semibold text-gray-700">Date</th>
-        <th scope="col" class="px-6 py-3 text-lg font-semibold text-gray-700">Location</th>
-        <th scope="col" class="px-6 py-3 text-lg font-semibold text-gray-700 text-center">Rating</th>
+        <th scope="col" class="py-3 lg:px-6 text-lg font-semibold text-center text-gray-700">
+          <span class="hidden lg:block">Save</span>
+        </th>
+        <th scope="col" class="lg:px-6 py-3 text-lg font-semibold text-gray-700">Name</th>
+        <th scope="col" class="hidden lg:block px-6 py-3 text-lg font-semibold text-gray-700">Website</th>
+        <th scope="col" class="lg:px-6 py-3 text-lg font-semibold text-gray-700">Date</th>
+        <th scope="col" class="lg:px-6 py-3 text-lg font-semibold text-gray-700">Location</th>
+        <th scope="col" class="lg:px-6 py-3 text-lg font-semibold text-gray-700">Rating</th>
       </tr>
     </thead>
     <tbody>
       {% for hackathon in hackathons %}
         <tr class="bg-white border-b-2 border-gray-200">
           <td class="flex py-2 justify-center items-center">
-            <button id="{{hackathon.id}}-save" class="mx-auto px-3 py-2 rounded-md duration-200 ease-in-out hover:bg-gray-200 hover:text-black hover:scale-105 {% if hackathon.user_saved %} bg-[#e5462e] text-white {% else %}bg-white {% endif %}" type="button" onclick="{% if user.is_authenticated %}saveHackathon(event, '{{ hackathon.id }}'){% else %}addLoginPop(){% endif %}">
+            <button id="{{ hackathon.id }}-save"
+                    class="mx-auto px-3 py-2 rounded-md duration-200 ease-in-out hover:bg-gray-200 hover:text-black hover:scale-105 {% if hackathon.user_saved %} bg-[#e5462e] text-white {% else %}bg-white {% endif %}"
+                    type="button"
+                    onclick="{% if user.is_authenticated %}saveHackathon(event, '{{ hackathon.id }}'){% else %}addLoginPop(){% endif %}">
               {% if hackathon.user_saved %}Saved{% else %}Save{% endif %}
             </button>
           </td>
-          <th class="px-6 py-2 font-medium whitespace-nowrap">
+          <th class="lg:px-6 py-2 font-medium">
             <div class="flex items-center gap-2 overflow-hidden text-gray-700 max-w-xs lg:max-w-1/6">
-              <img src="{{ hackathon.bg_image|default:hackathon.fg_image }}" alt="{{ hackathon.name }}" class="w-auto h-10 rounded-md">
-              {{ hackathon.name }}
+              <img src="{{ hackathon.bg_image|default:hackathon.fg_image }}" alt="{{ hackathon.name }}"
+                   class="w-auto h-10 rounded-md">
+              <span class="hidden lg:block">
+                {{ hackathon.name }}
+              </span>
+              <a class="lg:hidden pr-2" href={{ hackathon.website }} rel="norefer" target="_blank">
+                {{ hackathon.name }}
+              </a>
             </div>
           </th>
-          <td class="px-6 py-2">
-            <a href="{{ hackathon.website }}" target="_blank" class="text-xs text-black bg-white px-3 py-2 rounded-md duration-200 ease-in-out hover:scale-105 hover:bg-gray-200 inline-block rotate-[0.01deg]">
+          <td class="hidden lg:block px-6 py-2">
+            <a href="{{ hackathon.website }}" target="_blank"
+               class="text-xs text-black bg-white py-2 rounded-md duration-200 ease-in-out hover:scale-105 hover:bg-gray-200 inline-block rotate-[0.01deg]">
               Website
             </a>
           </td>
-          <td class="px-6 py-2 text-gray-700 pres min-w-36">
+          <td class="py-2 lg:px-6 text-gray-700 pres min-w-36">
             {{ hackathon.start_date|date:"M d" }} - {{ hackathon.end_date|date:"d, Y" }}
           </td>
-          <td class="py-2 text-sm text-gray-700">
+          <td class="py-2 lg:px-6 text-sm text-gray-700">
             {{ hackathon.location.name }}
           </td>
-          <td class="px-6 py-2">
+          <td class="lg:px-6 py-2">
             {% include "components/vote_buttons.html" with hackathon=hackathon %}
           </td>
         </tr>
@@ -43,3 +55,37 @@
     </tbody>
   </table>
 </div>
+<div class="md:hidden w-full px-2 lg:px-24 pt-12">
+  <table class="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
+    <thead class="text-xs text-gray-700 border-b-2">
+      <tr>
+      </thead>
+      <tbody>
+        {% for hackathon in hackathons %}
+          <tr class="bg-white border-b-2 border-gray-200">
+            <th class="px-2 py-2 font-medium">
+              <div class="flex items-center gap-2 text-gray-700 max-w-xs lg:max-w-1/6">
+                <img src="{{ hackathon.bg_image|default:hackathon.fg_image }}" alt="{{ hackathon.name }}"
+                     class="w-auto h-10 rounded-md">
+                <a href={{ hackathon.website }} rel="noreferrer" target="_blank">{{ hackathon.name }}</a>
+              </div>
+              <div class="flex items-center justify-between gap-4">
+                <button id="{{ hackathon.id }}-save"
+                        class="rounded-md duration-200 ease-in-out hover:bg-gray-200 hover:text-black hover:scale-105 {% if hackathon.user_saved %} bg-[#e5462e] text-white {% else %}bg-white {% endif %}"
+                        type="button"
+                        onclick="{% if user.is_authenticated %}saveHackathon(event, '{{ hackathon.id }}'){% else %}addLoginPop(){% endif %}">
+                  {% if hackathon.user_saved %}Saved{% else %}Save{% endif %}
+                </button>
+                <span>
+                  {{ hackathon.start_date|date:"M d" }} - {{ hackathon.end_date|date:"d, Y" }}, {{ hackathon.location.name }}
+                </span>
+                <div>
+                  {% include "components/vote_buttons.html" with hackathon=hackathon %}
+                </div>
+              </div>
+            </th>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>

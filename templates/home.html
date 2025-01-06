@@ -1,7 +1,7 @@
 {% extends 'base.html' %} {% load static %} {% block content %}
 
   <div class="hero-container-layout">
-    <div class="container">
+    <div class="container md:mx-8 lg:mx-24">
       <h1 class="hero-text-light">Welcome to</h1>
       <h2 class="hero-text-dark">The BEST DATABASE FOR</h2>
       <h3 class="hero-text-red">HACKATHONS</h3>
@@ -84,8 +84,7 @@
 
   <div class="mt-5 mb-10 sm:mx-0 my-2 mx-3 card-header-layout">
     <h5 class="text-4xl text-black">
-      More than just a
-      <span class="text-4xl text-black">website.</span>
+      More than just a website.
     </h5>
   </div>
 
@@ -116,8 +115,8 @@
                     before:from-black
                     before:z-[-5]
                    ">
-          <h4 class="text-white button-discord-blue">
-            Our Hackathon <br>
+          <h4 class="text-white md:text-3xl lg:text-4xl button-discord-blue">
+            Our Hackathon, <br>
             <span class="font-bold text-white">Hack Canada</span>
           </h4>
           <h5 class="m-5 mt-3 text-white">
@@ -126,7 +125,7 @@
         </div>
       </a>
       <a class='w-full sm:w-3/5 hover:scale-105 hover:shadow-lg transition-all duration-300' href="https://discord.gg/m5GPTnT5YB">
-        <img class="rounded-xl card-img-stack mx-0 sm:mx-0 h-full w-full" src="{% static 'assets/discord.png' %}" alt="Image 1" />
+        <img class="rounded-xl object-cover object-left card-img-stack mx-0 sm:mx-0 h-full w-full" src="{% static 'assets/discord.png' %}" alt="Image 1" />
       </a>
     </div>
 
@@ -172,7 +171,7 @@
                    ">
           <h4 class="text-white button-discord-blue">
             Our Partner |
-            <span class="button-discord-blue">Konfur</span>
+            <span class="button-discord-blue">Konfer</span>
           </h4>
           <h5 class="m-5 mt-3 text-white">
             We organize high-impact events connecting innovative businesses to ambitious students and young professionals.
@@ -214,7 +213,7 @@
 
   <div class="flex flex-col items-center justify-center w-full mt-5">
     <p class='mt-10 mb-5 header-text-black'>FAQ<span class='header-text-red'>s</span></p>
-    <div class='grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-2'>
+    <div class='grid w-[80%] grid-cols-1 md:gap-4 md:grid-cols-2 lg:grid-cols-2'>
       <div class = "w-full">
         <div class="w-full mt-3 border-2 rounded-lg">
           <button class="w-full p-4 text-left bg-white-200" onclick="toggleAccordion(1)">
@@ -224,7 +223,7 @@
             </div>
           </button>
           <div id="accordion-content-1" class="hidden px-4 pb-4 bg-white">
-            <p>e are a group of students who have worked together to collect a large list of all hackathons that are occuring in North America. Think of MLH, except we have hackathosn that you didn't even know existed, with prizes you didn't believe was possible.</p>
+            <p>We are a group of students who have worked together to collect a large list of all hackathons that are occurring in North America. Think of MLH, except we have hackathons that you didn't even know existed, with prizes you didn't believe was possible.</p>
           </div>
         </div>
         <div class="w-full mt-3 border-2 rounded-lg">
@@ -307,7 +306,7 @@
             </div>
           </button>
           <div id="accordion-content-8" class="hidden px-4 pb-4 bg-white">
-            <p>Hackathons Canada can help make your hackathon a success by providing exposure to millions of hackers through our social media, sharing the resources and strategies we used to organize Hack Canada, and offering funding support through our partner, Konfur. For more details, reach out to us on Discord!</p>
+            <p>Hackathons Canada can help make your hackathon a success by providing exposure to millions of hackers through our social media, sharing the resources and strategies we used to organize Hack Canada, and offering funding support through our partner, Konfer. For more details, reach out to us on Discord!</p>
           </div>
         </div>
       </div>
@@ -316,7 +315,7 @@
   </div>
   </div>
 
-  <div class="hero">
+  <div class="hero py-32">
     <h1>
       Check out our Social media for <br /> <span class="fw-bold fst-italic"> MAJOR UPDATES, </span>
 

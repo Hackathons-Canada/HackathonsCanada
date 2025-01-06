@@ -1,9 +1,9 @@
-<div class="flex items-center">
+<div class="flex items-center gap-1">
   <button type="button"
-          class="relative flex items-center mx-2"
+          class="relative flex items-center"
           onclick="{% if user.is_authenticated %}handleVote(event, '{{ hackathon.id }}', true, {{ hackathon.user_vote_status }}){% else %}addLoginPop(){% endif %}">
-    <input class="w-6 h-6 appearance-none peer" type="checkbox">
-    <span class="absolute cursor-pointer w-6 h-6 flex items-center justify-center text-white font-bold duration-200 ease-in-out peer-checked:*:fill-[#e5462e] *:stroke-gray-500 peer-checked:*:stroke-[#e5462e] active:scale-75">
+    <input class="w-4 h-4 lg:w-6 lg:h-6 appearance-none peer" type="checkbox">
+    <span class="absolute cursor-pointer w-4 h-4 lg:w-6 lg:h-6 flex items-center justify-center text-white font-bold duration-200 ease-in-out peer-checked:*:fill-[#e5462e] *:stroke-gray-500 peer-checked:*:stroke-[#e5462e] active:scale-75">
       <svg id="{{ hackathon.id }}-up"
            xmlns="http://www.w3.org/2000/svg"
            width="1em"
@@ -14,12 +14,12 @@
       </svg>
     </span>
   </button>
-  <p id="{{ hackathon.id }}-vote-text" class="mx-1 ml-1 text-lg text-gray-700">{{ hackathon.net_vote }}</p>
+  <p id="{{ hackathon.id }}-vote-text" class="lg:mx-1 lg:ml-1 text-lg text-gray-700">{{ hackathon.net_vote }}</p>
   <button type="button"
-          class="relative flex items-center center mx-2"
+          class="relative flex items-center center"
           onclick="{% if user.is_authenticated %}handleVote(event, '{{ hackathon.id }}', false, {{ hackathon.user_vote_status }}){% else %}addLoginPop(){% endif %}">
-    <input class="w-6 h-6 appearance-none peer" type="checkbox">
-    <span class="absolute cursor-pointer w-6 h-6 flex items-center justify-center text-white font-bold duration-200 ease-in-out peer-checked:*:fill-[#e5462e] *:stroke-gray-500 peer-checked:*:stroke-[#e5462e] active:scale-75">
+    <input class="w-4 h-4 lg:w-6 lg:h-6 appearance-none peer" type="checkbox">
+    <span class="absolute cursor-pointer w-4 h-4 lg:w-6 lg:h-6 flex items-center justify-center text-white font-bold duration-200 ease-in-out peer-checked:*:fill-[#e5462e] *:stroke-gray-500 peer-checked:*:stroke-[#e5462e] active:scale-75">
       <svg id="{{ hackathon.id }}-down"
            xmlns="http://www.w3.org/2000/svg"
            width="1em"

@@ -1,100 +1,99 @@
 {% extends 'base.html' %} {% load static %} {% load crispy_forms_tags %}
 {% block title %} Saved Hackathons {% endblock title %} {% block content %}
   {% if saved_hackathons %}
-    <div class="w-full px-24 pt-12 min-h-screen">
+    <div class="hidden md:block w-full  px-4 xl:px-24 pt-12 min-h-screen">
       <table class="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
-        <thead class="text-xs text-gray-700 border-b-2 bo">
-          <tr class="">
-            <th scope="col" class="py-3 px-6 text-lg font-semibold text-center text-gray-700">
-              Save
+        <thead class="text-xs text-gray-700 border-b-2">
+          <tr>
+            <th scope="col" class="py-3 lg:px-6 text-lg font-semibold text-center text-gray-700">
+              <span class="hidden lg:block">Save</span>
             </th>
-            <th scope="col" class="px-6 py-3 text-lg font-semibold text-gray-700">
-              Name
-            </th>
-            <th scope="col" class="px-6 py-3 text-lg font-semibold text-gray-700">
-              Website
-            </th>
-            <th scope="col" class="px-6 py-3 text-lg font-semibold text-gray-700">
-              Date
-            </th>
-            <th scope="col" class="px-6 py-3 text-lg font-semibold text-gray-700">
-              Location
-            </th>
-            <th scope="col" class="px-6 py-3 text-lg font-semibold text-gray-700 text-center">
-              Rating
-            </tr>
-          </thead>
-          <tbody class="">
-            {% for hackathon in saved_hackathons %}
-              <tr class="bg-white border-b-2 border-gray-200 ">
-                <td scope="row" class="flex py-2 justify-center items-center">
-                  <button id="{{hackathon.id}}-save" class="mx-auto px-3 py-2 rounded-md duration-200 ease-in-out hover:bg-gray-200 hover:text-black hover:scale-105 {% if hackathon.user_saved == True %} bg-[#e5462e] text-white {% else %}bg-white {% endif %}" type="button" onclick="{% if user.is_authenticated %}saveHackathon(event, '{{ hackathon.id }}'){% else %}addLoginPop(){% endif %}">Save</button>
-                </td>
-                <th class="px-6 py-2 font-medium whitespace-nowrap">
-                  <div class="flex items-center gap-2 overflow-scroll text-gray-700 max-w-xs lg:max-w-1/6">
-                    {% if hackathon.bgimage %}
-                      <img src="{{ hackathon.bg_image }}" alt="{{ hackathon.name }}" class="w-auto h-10">
-                    {% else %}
-                      <img src="{{ hackathon.fg_image }}" alt="{{ hackathon.name }}" class="w-auto h-10 rounded-md">
-                    {% endif %}
+            <th scope="col" class="lg:px-6 py-3 text-lg font-semibold text-gray-700">Name</th>
+            <th scope="col" class="hidden lg:block px-6 py-3 text-lg font-semibold text-gray-700">Website</th>
+            <th scope="col" class="lg:px-6 py-3 text-lg font-semibold text-gray-700">Date</th>
+            <th scope="col" class="lg:px-6 py-3 text-lg font-semibold text-gray-700">Location</th>
+            <th scope="col" class="lg:px-6 py-3 text-lg font-semibold text-gray-700">Rating</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for hackathon in saved_hackathons %}
+            <tr class="bg-white border-b-2 border-gray-200">
+              <td class="flex py-2 justify-center items-center">
+                <button id="{{ hackathon.id }}-save"
+                        class="mx-auto px-3 py-2 rounded-md duration-200 ease-in-out hover:bg-gray-200 hover:text-black hover:scale-105 {% if hackathon.user_saved %} bg-[#e5462e] text-white {% else %}bg-white {% endif %}"
+                        type="button"
+                        onclick="{% if user.is_authenticated %}saveHackathon(event, '{{ hackathon.id }}'){% else %}addLoginPop(){% endif %}">
+                  {% if hackathon.user_saved %}Saved{% else %}Save{% endif %}
+                </button>
+              </td>
+              <th class="lg:px-6 py-2 font-medium">
+                <div class="flex items-center gap-2 overflow-hidden text-gray-700 max-w-xs lg:max-w-1/6">
+                  <img src="{{ hackathon.bg_image|default:hackathon.fg_image }}" alt="{{ hackathon.name }}"
+                       class="w-auto h-10 rounded-md">
+                  <span class="hidden lg:block">
                     {{ hackathon.name }}
+                  </span>
+                  <a class="lg:hidden pr-2" href={{ hackathon.website }} rel="norefer" target="_blank">
+                    {{ hackathon.name }}
+                  </a>
+                </div>
+              </th>
+              <td class="hidden lg:block px-6 py-2">
+                <a href="{{ hackathon.website }}" target="_blank"
+                   class="text-xs text-black bg-white py-2 rounded-md duration-200 ease-in-out hover:scale-105 hover:bg-gray-200 inline-block rotate-[0.01deg]">
+                  Website
+                </a>
+              </td>
+              <td class="py-2 lg:px-6 text-gray-700 pres min-w-36">
+                {{ hackathon.start_date|date:"M d" }} - {{ hackathon.end_date|date:"d, Y" }}
+              </td>
+              <td class="py-2 lg:px-6 text-sm text-gray-700">
+                {{ hackathon.location.name }}
+              </td>
+              <td class="lg:px-6 py-2">
+                {% include "components/vote_buttons.html" with hackathon=hackathon %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="md:hidden w-full px-2 lg:px-24 pt-12 min-h-screen">
+      <table class="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
+        <thead class="text-xs text-gray-700 border-b-2">
+          <tr>
+          </thead>
+          <tbody>
+            {% for hackathon in saved_hackathons %}
+              <tr class="bg-white border-b-2 border-gray-200">
+                <th class="px-2 py-2 font-medium">
+                  <div class="flex items-center gap-2 text-gray-700 max-w-xs lg:max-w-1/6">
+                    <img src="{{ hackathon.bg_image|default:hackathon.fg_image }}" alt="{{ hackathon.name }}"
+                         class="w-auto h-10 rounded-md">
+                    <a href={{ hackathon.website }} rel="noreferrer" target="_blank">{{ hackathon.name }}</a>
+                  </div>
+                  <div class="flex items-center justify-between gap-4">
+                    <button id="{{ hackathon.id }}-save"
+                            class="rounded-md duration-200 ease-in-out hover:bg-gray-200 hover:text-black hover:scale-105 {% if hackathon.user_saved %} bg-[#e5462e] text-white {% else %}bg-white {% endif %}"
+                            type="button"
+                            onclick="{% if user.is_authenticated %}saveHackathon(event, '{{ hackathon.id }}'){% else %}addLoginPop(){% endif %}">
+                      {% if hackathon.user_saved %}Saved{% else %}Save{% endif %}
+                    </button>
+                    <span>
+                      {{ hackathon.start_date|date:"M d" }} - {{ hackathon.end_date|date:"d, Y" }}, {{ hackathon.location.name }}
+                    </span>
+                    <div>
+                      {% include "components/vote_buttons.html" with hackathon=hackathon %}
+                    </div>
                   </div>
                 </th>
-                <td class="px-6 py-2">
-                  <a href="{{ hackathon.website }}" target="_blank"
-                     class="text-xs text-black bg-white px-3 py-2 rounded-md duration-200 ease-in-out hover:scale-105 hover:bg-gray-200 inline-block rotate-[0.01deg]">
-                    Website
-                  </a>
-                </td>
-                <td class="px-6 py-2 text-gray-700 pres min-w-36">
-                  {{ hackathon.start_date|date:"M d" }}
-          <pre class="inline">-</pre>
-                  {{ hackathon.end_date|date:"d, Y" }}
-                </td>
-                <div class="overflow-scroll">
-                  <td class="py-2 text-sm text-gray-700">
-                    {{ hackathon.location.name }}
-
-                  </td>
-                </div>
-                <td class="px-6 py-2">
-                  <div class="flex items-center">
-
-
-                    <button type="button" class="relative flex items-center mx-2"
-                            onclick="handleVote(event, '{{ hackathon.id }}', 'true')">
-                      <input
-                        class="w-6 h-6 appearance-none peer"
-                        type="checkbox">
-                      <span class="absolute cursor-pointer w-6 h-6 flex items-center justify-center text-white font-bold duration-200 ease-in-out peer-checked:*:fill-[#e5462e] *:stroke-gray-500 peer-checked:*:stroke-[#e5462e] active:scale-75">
-                        <svg  id = "{{hackathon.id }}-up" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"
-                             class="w-6 h-6 duration-200 {% if hackathon.vote_state == True %} fill-black{% else %}fill-white {% endif %}">
-                          <path class="stroke-2"
-                                d="M4 14h4v7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7h4a1.001 1.001 0 0 0 .781-1.625l-8-10c-.381-.475-1.181-.475-1.562 0l-8 10A1.001 1.001 0 0 0 4 14"></path>
-                        </svg>
-                      </span>
-                    </button>
-                    <p id = "{{hackathon.id }}-vote-text" class="mx-1 ml-1 text-lg text-gray-700">{{ hackathon.net_vote }}</p>
-                    <button type="button" class="relative flex items-center center mx-2"
-                            onclick="handleVote(event, '{{ hackathon.id }}', 'false')">
-                      <input
-                        class="w-6 h-6 appearance-none peer"
-                        type="checkbox">
-                      <span class="absolute cursor-pointer w-6 h-6 flex items-center justify-center text-white font-bold duration-200 ease-in-out peer-checked:*:fill-[#e5462e] *:stroke-gray-500 peer-checked:*:stroke-[#e5462e] active:scale-75">
-                        <svg  id = "{{hackathon.id }}-down" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"
-                             class="rotate-180 w-6 h-6 duration-200 {% if hackathon.vote_state == False %}fill-black{% else %}fill-white {% endif %}">
-                          <path class="stroke-2"
-                                d="M4 14h4v7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7h4a1.001 1.001 0 0 0 .781-1.625l-8-10c-.381-.475-1.181-.475-1.562 0l-8 10A1.001 1.001 0 0 0 4 14"></path>
-                        </svg>
-                      </span>
-                    </button>
-                  </div>
+              </tr>
             {% endfor %}
           </tbody>
         </table>
       </div>
   {% else %}
-    <div class = "flex justify-center h-screen my-auto bg-white ">
+    <div class="flex justify-center h-screen my-auto bg-white ">
       <h1>None</h1>
     </div>
   {% endif %}
