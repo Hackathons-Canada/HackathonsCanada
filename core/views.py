@@ -159,13 +159,14 @@ class HackathonListView(ListView):
         """
         context = super().get_context_data(**kwargs)
         view_type = self.request.GET.get("view_type")
-
+        country_options = ["Canada", "United States", "Online", "World Wide"]
         if view_type == "calendar":
             context["hackathons"] = self._prepare_calendar_data(context["hackathons"])
 
         # Add filter parameters to context
         context.update(
             {
+                "country_options": country_options,
                 "type": view_type,
                 "country": self.request.GET.get("country"),
                 "city": self.request.GET.get("city"),

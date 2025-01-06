@@ -173,7 +173,7 @@ body {
 }
 
 .nav-button {
-  border-radius: 11px;
+  border-radius: 18px;
   color: white !important;
   padding: 8px 15px;
   background: linear-gradient(90deg, #ff5a50 0%, #ef6c23 100%);
@@ -185,6 +185,12 @@ body {
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+
+.general-padding{
+  padding: 3vw 0;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .hero-container-layout {
@@ -245,7 +251,7 @@ body {
 
 .hero-add-button {
   display: inline-block;
-  border-radius: 11px;
+  border-radius: 18px;
   color: white;
   padding: 10px 30px;
   background: linear-gradient(90deg, #ff5a50 0%, #ef6c23 100%);
@@ -273,6 +279,11 @@ body {
     text-align: center;
   }
 
+  .general-padding {
+    padding: 3vw;
+    text-align: center;
+  }
+
   .hero-text-body {
     max-width: 100%;
   }
@@ -285,6 +296,9 @@ body {
     display: none;
   }
 }
+
+
+
 
 a {
   text-decoration: none;
@@ -330,7 +344,7 @@ a {
 }
 
 .roundedcards {
-  border-radius: 30px;
+  border-radius: 18px;
 }
 
 .introtext {
@@ -355,7 +369,7 @@ a {
 
 .button-white {
   display: inline-block;
-  border-radius: 7px;
+  border-radius: 18px;
   background-color: #f7f6f6;
   box-shadow: rgba(0, 0, 0, 0.3) 0px 10px 15px;
   color: #000000;
@@ -408,7 +422,7 @@ a {
   margin-right: auto;
   width: 1200px;
   height: auto;
-  border-radius: 8px;
+  border-radius: 18px;
   box-shadow: 0 0 10px rgba(221, 83, 83, 1), 0 0 20px 5px rgba(221, 83, 83, 0.8),
               0 0 30px 15px rgba(221, 83, 83, 0.5);
 }
@@ -427,7 +441,7 @@ a {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: 18px;
 }
 
 .gallery__item--1 {
@@ -488,7 +502,7 @@ section {
 
 .card-web {
   background-color: #F3F4F6;
-  border-radius: 8px;
+  border-radius: 18px;
   padding: 20px;
   width: 350px;
   height: 250px;
@@ -500,13 +514,13 @@ section {
   flex-direction: column;
   background-color: #F9FAFB;
   color: black;
-  border-radius: 25px;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border-radius: 18px;
+
 }
 
 .hackathon-img-front {
-  border-top-left-radius: 25px;
-  border-top-right-radius: 25px;
+  border-top-left-radius: 18px;
+  border-top-right-radius: 18px;
   height: 200px;
   width: 350px;
   overflow: hidden;
@@ -515,8 +529,8 @@ section {
 }
 
 .hackathon-img-back {
-  border-top-left-radius: 25px;
-  border-top-right-radius: 25px;
+  border-top-left-radius: 18px;
+  border-top-right-radius: 18px;
   height: 200px;
   width: 350px;
   overflow: hidden;
@@ -567,14 +581,14 @@ section {
   gap: 10px;
   border: 1px solid #ccc;
   padding: 10px;
-  border-radius: 10px;
+  border-radius: 18px;
 }
 
 .search-bar>div {
   display: flex;
   padding: 10px;
   flex-direction: column;
-  border-radius: 5px;
+  border-radius: 18px;
 }
 
 .search-bar>div:hover {
@@ -588,7 +602,7 @@ section {
 .search-bar input,
 .search-bar button {
   border: 0px solid #ccc;
-  border-radius: 5px;
+  border-radius: 18px;
 }
 
 .filters {
@@ -992,7 +1006,7 @@ section {
   height: 40rem;
   width: 95%;
   max-width: 1200px;
-  border-radius: 20px;
+  border-radius: 18px;
   position: relative;
   display: flex;
   align-items: center;
@@ -1051,7 +1065,7 @@ section {
 .item-scroller-left-layout {
   width: 7vw;
   height: 7.5vw;
-  border-radius: 10px;
+  border-radius: 18px;
   position: absolute;
 }
 
@@ -1158,7 +1172,7 @@ section {
 }
 
 .fc .fc-today-button {
-  border-radius: 11px;
+  border-radius: 18px;
   border: none;
   background: linear-gradient(90deg, #ff5a50 0%, #ef6c23 100%);
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
@@ -1184,26 +1198,26 @@ section {
   width: 50rem !important;
 }
 .fc-col-header {
-  border-radius: 16px !important;
+  border-radius: 18px !important;
 }
 
 .fc-media-screen{width: 50rem !important;
 }
 
 .fc-scrollgrid-section > td {
-  border-radius: 0px 0px 16px 16px !important;
+  border-radius: 0px 0px 18px 18px !important;
 }
 
 .fc-scrollgrid-section > th {
-  border-radius: 0px 16px 0px 0px !important;
+  border-radius: 0px 18px 0px 0px !important;
 }
 
 .fc-scrollgrid {
-  border-radius: 16px !important;
+  border-radius: 18px !important;
 }
 
 .form-button-style {
-  border-radius: 10px;
+  border-radius: 18px;
   border: 0.5px solid var(--1, #000e22);
   background: var(--6, #fff);
   box-shadow: 1px 2px 3px 0px rgba(0, 0, 0, 0.5);

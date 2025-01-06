@@ -1,14 +1,15 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-  <main class="container mx-auto px-4">
-    <section class="banner">
-      <img class="hidden sm:block w-full" src="{% static 'assets/banner.png' %}" alt="Banner Image"/>
-    </section>
+  <section class="banner">
+    <img class="hidden w-full sm:block" src="{% static 'assets/banner.png' %}" alt="Banner Image"/>
+  </section>
+  <div class="container px-4 mx-auto general-padding">
+
 
     {% include "components/search_form.html" %}
 
-    <div class="flex flex-row justify-between pb-3 mt-3 text-black border-b-2 border-gray-500">
+    <div class="flex flex-row justify-between pb-3 mt-3 text-black border-b-2 border-gray-500 md:pb-0">
       {% include "components/view_type_toggle.html" %}
       {% include "components/country_filter.html" %}
     </div>
@@ -24,7 +25,7 @@
         {% endif %}
       </div>
     </div>
-  </main>
+  </d>
   {% if not user.is_authenticated %}
     {% include "components/login_popup.html" %}
   {% endif %}

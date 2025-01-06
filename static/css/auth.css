@@ -12,7 +12,7 @@
               no-repeat;
 }
 .main-section-layout {
-  border-radius: 20px;
+  border-radius: 18px;
   border: 2px solid rgba(255, 255, 255, 0.5);
   background: linear-gradient(
     107deg,
@@ -33,7 +33,7 @@
 }
 
 .main-input-layout {
-  border-radius: 10px;
+  border-radius: 18px;
   border: 0.5px solid #000;
   background: linear-gradient(180deg, #e4ebbe 0%, #f7fcda 100%);
   box-shadow: 1px 2px 3px 0px rgba(0, 0, 0, 0.5);
