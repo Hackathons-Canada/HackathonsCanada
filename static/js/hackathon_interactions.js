@@ -28,22 +28,25 @@ function toggleAccordion(index) {
 function saveHackathon(event, hackathonId) {
     event.preventDefault();
     event.stopPropagation();
-    const saveButton = document.getElementById(`${hackathonId}-save`);
-    const isSaved = saveButton.classList.contains('bg-[#e5462e]');
-    // was not working 
-    // saveButton.classList.toggle('bg-[#e5462e]', !isSaved);
-    // saveButton.classList.toggle('text-white', !isSaved);
-    // saveButton.classList.toggle('bg-white', isSaved);
-    console.log(saveButton.classList);
-    if (!isSaved) {
-        saveButton.classList.remove('bg-white');
-        saveButton.classList.add('bg-[#e5462e]', 'text-white');
-    } else {
-        saveButton.classList.remove('bg-[#e5462e]', 'text-white');
-        saveButton.classList.add('bg-white');
-    }
+    const saveButtons = document.querySelectorAll(`[id$="${hackathonId}-save"]`);
+    console.log(saveButtons)
+    const isSavedBefore = saveButtons[0].classList.contains('bg-[#e5462e]');
 
-    saveButton.textContent = isSaved ? "Save" : "Saved";
+    saveButtons.forEach(saveButton => {
+        const isSaved = saveButton.classList.contains('bg-[#e5462e]');
+        if (!isSaved) {
+            saveButton.classList.remove('bg-white');
+            saveButton.classList.add('bg-[#e5462e]', 'text-white');
+        } else {
+            saveButton.classList.remove('bg-[#e5462e]', 'text-white');
+            saveButton.classList.add('bg-white');
+        }
+        saveButton.textContent = isSaved ? "Save" : "Saved";
+    });
+
+
+    saveButtons[0].textContent = isSavedBefore ? "Save" : "Saved";
+
     fetch(`/hackathons/${hackathonId}/save`, {
         method: 'POST',
         headers: {

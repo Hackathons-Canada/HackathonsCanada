@@ -529,7 +529,8 @@ class Hackathon(MetaDataMixin):
                 When(votes__hacker=user, votes__is_upvote=False, then=Value(-1)),
                 default=Value(0),
                 output_field=IntegerField(),
-            )
+            ),
+            user_saved=Exists(Hacker.objects.filter(saved=OuterRef("pk"), id=user.id)),
         )
 
     def save(self, *args, **kwargs):

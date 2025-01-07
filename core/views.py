@@ -4,7 +4,6 @@ import json
 import os
 import random
 from functools import cache
-
 from django.conf import settings
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import AbstractUser, AnonymousUser
@@ -100,6 +99,7 @@ class HackathonListView(ListView):
         if filters:
             queryset = queryset.filter(filters)
 
+        # Annotate vote saved hackathons - James C - needs to be changed
         # Annotate vote status directly in the query instead of prefetching
         return Hackathon.annotate_vote_status(queryset, self.request.user)
 
@@ -145,13 +145,13 @@ class HackathonListView(ListView):
             queryset=Vote.objects.filter(hacker=hacker),
             to_attr="user_votes",
         )
-        # saved_prefetch = Prefetch(
-        #     "saved_by",
-        #     queryset=Hacker.objects.filter(id=hacker.id),
-        #     to_attr="user_saved_data",
-        # )
+        saved_prefetch = Prefetch(
+            "interested_users",
+            queryset=Hacker.objects.filter(id=hacker.id),
+            to_attr="user_saved",
+        )
 
-        return queryset.prefetch_related(votes_prefetch)
+        return queryset.prefetch_related(votes_prefetch, saved_prefetch)
 
     def get_context_data(self, **kwargs) -> Dict[str, Any]:
         """
@@ -291,8 +291,42 @@ class SavedHackathonsPage(ListView):
     context_object_name = "saved_hackathons"
 
     def get_queryset(self):
+        """
+        Build the queryset with all necessary filters and annotate vote status
+        in a single efficient query.
+        """
+        # Base query with select_related to avoid n+1 queries
+        queryset = Hackathon.objects.select_related("location").filter(
+            end_date__gte=timezone.now(), is_public=True
+        )
+
         user: Hacker = self.request.user
-        return user.saved.all()
+        hackathons = user.saved.all()
+
+        # Annotate vote saved hackathons - James C - needs to be changed
+        # Annotate vote status directly in the query instead of prefetching
+        return hackathons.annotate_vote_status(queryset, self.request.user)
+
+    def _annotate_user_data(self, queryset):
+        """
+        Efficiently annotate queryset with user-specific data using prefetch_related.
+        """
+        hacker = self.request.user
+
+        # Prefetch votes in a single query, return True if the user has upvoted a post, null if no vote and False if downvoted
+
+        votes_prefetch = Prefetch(
+            "votes",
+            queryset=Vote.objects.filter(hacker=hacker),
+            to_attr="user_votes",
+        )
+        saved_prefetch = Prefetch(
+            "interested_users",
+            queryset=Hacker.objects.filter(id=hacker.id),
+            to_attr="user_saved",
+        )
+
+        return queryset.prefetch_related(votes_prefetch, saved_prefetch)
 
 
 # checks if the user is an admin

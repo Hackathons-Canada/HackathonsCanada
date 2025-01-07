@@ -5,11 +5,10 @@
     <h6 class="text-base">{{ hackathon.location.name }}</h6>
     <h5 class="text-lg">
       {{ hackathon.start_date|date:"N d" }}-{{ hackathon.end_date|date:"d, Y" }}
-      {{hackathon.user_saved}}
     </h5>
   </div>
-  <div class="relative flex flex-row items-center justify-center py-3 space-x-6 my-">
-    <button class="px-3 py-1 duration-200 ease-in-out bg-white border-gray-500 rounded-md shadow-sm border-6 hover:bg-gray-200 hover:text-black hover:scale-105" onclick="flipCard('{{ hackathon.id }}')">More</button>
+  <div class="relative flex flex-row items-center justify-center py-3 my-1 space-x-6">
+    <button class="px-3 py-1 duration-200 ease-in-out border-gray-500 rounded-md shadow-sm border-6 hover:bg-gray-200 hover:text-black hover:scale-105" onclick="flipCard('{{ hackathon.id }}')">More</button>
     <button id="{{ hackathon.id }}-save"
             class="px-3 py-1 duration-200 ease-in-out shadow-sm rounded-md hover:bg-gray-200 hover:text-black hover:scale-105 {% if hackathon.user_saved %} bg-[#e5462e] text-white {% else %}bg-white {% endif %}"
             type="button"
