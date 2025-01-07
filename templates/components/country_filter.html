@@ -1,7 +1,7 @@
 <div class="inline-flex p-1 mx-5 bg-gray-100 border border-gray-100 rounded-lg">
   {% for country_option in country_options %}
     <a href="{% url 'hackathons' %}?view_type={{ request.GET.view_type|default:'none' }}&country={{ country_option }}&start={{ request.GET.start }}&end={{ request.GET.end }}&city={{ request.GET.city }}"
-       class="{% if country == country_option %}text-blue-500 bg-white{% endif %} inline-flex items-center gap-2 px-4 py-2 text-sm text-gray-500 rounded-md hover:text-gray-700 focus:relative">
+       class="{% if country == country_option %}text-black bg-white{% endif %} inline-flex items-center gap-2 px-4 py-2 text-sm text-black rounded-md hover:text-gray-700 focus:relative">
       {{ country_option }}
     </a>
   {% endfor %}

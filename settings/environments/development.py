@@ -3,7 +3,7 @@
 SECURITY WARNING: don't run with debug turned on in production!
 """
 
-from settings.components.common import DATABASES, INSTALLED_APPS, MIDDLEWARE
+from settings.components.common import DATABASES
 
 # Setting the development status:
 
@@ -28,8 +28,8 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 
 # DEBUG TOOLBAR
-INSTALLED_APPS.append("debug_toolbar")
-MIDDLEWARE.insert(1, "debug_toolbar.middleware.DebugToolbarMiddleware")
+# INSTALLED_APPS.append("debug_toolbar")
+# MIDDLEWARE.insert(1, "debug_toolbar.middleware.DebugToolbarMiddleware")
 
 # Disable persistent DB connections
 # https://docs.djangoproject.com/en/4.2/ref/databases/#caveats

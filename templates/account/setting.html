@@ -8,8 +8,8 @@
 {% block content %}
 
   <div class = "flex flex-row">
-    <div id="cta-button-sidebar" class="w-1/5 border-r-4 border-black" aria-label="Sidebar">
-      <div class="h-full px-3 py-4 overflow-y-auto bg-[4A5769] rounded-lg">
+    <div id="cta-button-sidebar" class="w-1/5" aria-label="Sidebar">
+      <div class="px-3 py-4 overflow-y-auto rounded-lg bg-gray-50">
         <h1 class = "px-3 mt-5 text-2xl font-bold ">Setting</h1>
 
         <ul class="p-3 space-y-2 font-medium">
@@ -55,7 +55,7 @@
       </div>
     </div>
 
-    <div class="w-4/5 bg-[#D1E9FF] pt-24">
+    <div class="w-4/5 bg-gray-100 D1E9FF] pt-24">
       <form class = "w-1/2 mx-auto mb-10" action="{% url 'setting' %}" method="post">
         {% csrf_token %} {% crispy form_setting %}
 
@@ -64,7 +64,6 @@
         {% csrf_token %} {% crispy form_notification %}
 
       </form>
-      <li>
 
         <!-- <a href="{% url 'account_set_password' %}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
 
@@ -79,7 +78,6 @@
           <span class="ms-3">Change Email</span>
         </a> -->
 
-      </li>
     </div>
   </div>
 {% endblock content %}

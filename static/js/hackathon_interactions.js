@@ -12,16 +12,38 @@ function copyText(text) {
     alert("Copied the text: " + text);
 }
 
+function toggleAccordion(index) {
+    const content = document.getElementById(`accordion-content-${index}`);
+    const allContents = document.querySelectorAll('[id^="accordion-content-"]');
+
+    allContents.forEach((item) => {
+        if (item !== content) {
+            item.classList.add('hidden');
+        }
+    });
+
+    content.classList.toggle('hidden');
+}
+
 function saveHackathon(event, hackathonId) {
     event.preventDefault();
+    event.stopPropagation();
     const saveButton = document.getElementById(`${hackathonId}-save`);
     const isSaved = saveButton.classList.contains('bg-[#e5462e]');
+    // was not working 
+    // saveButton.classList.toggle('bg-[#e5462e]', !isSaved);
+    // saveButton.classList.toggle('text-white', !isSaved);
+    // saveButton.classList.toggle('bg-white', isSaved);
+    console.log(saveButton.classList);
+    if (!isSaved) {
+        saveButton.classList.remove('bg-white');
+        saveButton.classList.add('bg-[#e5462e]', 'text-white');
+    } else {
+        saveButton.classList.remove('bg-[#e5462e]', 'text-white');
+        saveButton.classList.add('bg-white');
+    }
 
-    saveButton.classList.toggle('bg-[#e5462e]', !isSaved);
-    saveButton.classList.toggle('text-white', !isSaved);
-    saveButton.classList.toggle('bg-white', isSaved);
     saveButton.textContent = isSaved ? "Save" : "Saved";
-
     fetch(`/hackathons/${hackathonId}/save`, {
         method: 'POST',
         headers: {

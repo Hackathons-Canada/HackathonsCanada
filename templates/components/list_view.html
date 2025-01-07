@@ -1,21 +1,21 @@
-<div class="hidden md:block w-full  px-4 xl:px-24 pt-12">
-  <table class="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
+<div class="hidden w-full px-4 pt-12 md:block xl:px-24">
+  <table class="w-full text-sm text-left text-black rtl:text-right dark:text-gray-400">
     <thead class="text-xs text-gray-700 border-b-2">
       <tr>
-        <th scope="col" class="py-3 lg:px-6 text-lg font-semibold text-center text-gray-700">
+        <th scope="col" class="py-3 text-lg font-semibold text-center text-gray-700 lg:px-6">
           <span class="hidden lg:block">Save</span>
         </th>
-        <th scope="col" class="lg:px-6 py-3 text-lg font-semibold text-gray-700">Name</th>
-        <th scope="col" class="hidden lg:block px-6 py-3 text-lg font-semibold text-gray-700">Website</th>
-        <th scope="col" class="lg:px-6 py-3 text-lg font-semibold text-gray-700">Date</th>
-        <th scope="col" class="lg:px-6 py-3 text-lg font-semibold text-gray-700">Location</th>
-        <th scope="col" class="lg:px-6 py-3 text-lg font-semibold text-gray-700">Rating</th>
+        <th scope="col" class="py-3 text-lg font-semibold text-gray-700 lg:px-6">Name</th>
+        <th scope="col" class="hidden px-6 py-3 text-lg font-semibold text-gray-700 lg:block">Website</th>
+        <th scope="col" class="py-3 text-lg font-semibold text-gray-700 lg:px-6">Date</th>
+        <th scope="col" class="py-3 text-lg font-semibold text-gray-700 lg:px-6">Location</th>
+        <th scope="col" class="py-3 text-lg font-semibold text-gray-700 lg:px-6">Rating</th>
       </tr>
     </thead>
     <tbody>
       {% for hackathon in hackathons %}
-        <tr class="bg-white border-b-2 border-gray-200">
-          <td class="flex py-2 justify-center items-center">
+        <tr class="bg-gray-100 border-b-2 border-gray-200">
+          <td class="flex items-center justify-center py-2">
             <button id="{{ hackathon.id }}-save"
                     class="mx-auto px-3 py-2 rounded-md duration-200 ease-in-out hover:bg-gray-200 hover:text-black hover:scale-105 {% if hackathon.user_saved %} bg-[#e5462e] text-white {% else %}bg-white {% endif %}"
                     type="button"
@@ -23,31 +23,31 @@
               {% if hackathon.user_saved %}Saved{% else %}Save{% endif %}
             </button>
           </td>
-          <th class="lg:px-6 py-2 font-medium">
-            <div class="flex items-center gap-2 overflow-hidden text-gray-700 max-w-xs lg:max-w-1/6">
+          <th class="py-2 font-medium lg:px-6">
+            <div class="flex items-center max-w-xs gap-2 overflow-hidden text-gray-700 lg:max-w-1/6">
               <img src="{{ hackathon.bg_image|default:hackathon.fg_image }}" alt="{{ hackathon.name }}"
                    class="w-auto h-10 rounded-md">
               <span class="hidden lg:block">
                 {{ hackathon.name }}
               </span>
-              <a class="lg:hidden pr-2" href={{ hackathon.website }} rel="norefer" target="_blank">
+              <a class="pr-2 lg:hidden" href={{ hackathon.website }} rel="norefer" target="_blank">
                 {{ hackathon.name }}
               </a>
             </div>
           </th>
-          <td class="hidden lg:block px-6 py-2">
+          <td class="hidden px-6 py-2 lg:block">
             <a href="{{ hackathon.website }}" target="_blank"
                class="text-xs text-black bg-white py-2 rounded-md duration-200 ease-in-out hover:scale-105 hover:bg-gray-200 inline-block rotate-[0.01deg]">
               Website
             </a>
           </td>
-          <td class="py-2 lg:px-6 text-gray-700 pres min-w-36">
+          <td class="py-2 text-gray-700 lg:px-6 pres min-w-36">
             {{ hackathon.start_date|date:"M d" }} - {{ hackathon.end_date|date:"d, Y" }}
           </td>
-          <td class="py-2 lg:px-6 text-sm text-gray-700">
+          <td class="py-2 text-sm text-gray-700 lg:px-6">
             {{ hackathon.location.name }}
           </td>
-          <td class="lg:px-6 py-2">
+          <td class="py-2 lg:px-6">
             {% include "components/vote_buttons.html" with hackathon=hackathon %}
           </td>
         </tr>
@@ -55,8 +55,8 @@
     </tbody>
   </table>
 </div>
-<div class="md:hidden w-full px-2 lg:px-24 pt-12">
-  <table class="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
+<div class="w-full px-2 pt-12 md:hidden lg:px-24">
+  <table class="w-full text-sm text-left text-black rtl:text-right dark:text-gray-400">
     <thead class="text-xs text-gray-700 border-b-2">
       <tr>
       </thead>
@@ -64,7 +64,7 @@
         {% for hackathon in hackathons %}
           <tr class="bg-white border-b-2 border-gray-200">
             <th class="px-2 py-2 font-medium">
-              <div class="flex items-center gap-2 text-gray-700 max-w-xs lg:max-w-1/6">
+              <div class="flex items-center max-w-xs gap-2 text-gray-700 lg:max-w-1/6">
                 <img src="{{ hackathon.bg_image|default:hackathon.fg_image }}" alt="{{ hackathon.name }}"
                      class="w-auto h-10 rounded-md">
                 <a href={{ hackathon.website }} rel="noreferrer" target="_blank">{{ hackathon.name }}</a>

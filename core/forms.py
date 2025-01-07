@@ -105,7 +105,7 @@ class HackathonForm(forms.ModelForm):
                     "<h2 class='mb-1 form-upload-head'>Click to upload or drag and drop</h2>"
                 ),
                 HTML(
-                    "<h3 class='text-sm text-gray-500 form-upload-side'>PNG or JPG (max. 800x400px)</h3>"
+                    "<h3 class='text-sm text-black form-upload-side'>PNG or JPG (max. 800x400px)</h3>"
                 ),
                 css_class="form-group-style",
             ),

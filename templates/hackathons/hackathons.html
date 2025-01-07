@@ -30,34 +30,22 @@
     {% include "components/login_popup.html" %}
   {% endif %}
 
-  <script src="{% static 'js/hackathon_interactions.js' %}"></script>
 
   <script>
-    // Initialize event listeners when the DOM is fully loaded
-    document.addEventListener('DOMContentLoaded', function() {
-    // Add event listeners for save buttons
-      document.querySelectorAll('[id$="-save"]').forEach(button => {
-        button.addEventListener('click', function(event) {
-          const hackathonId = this.id.split('-')[0];
-          {% if user.is_authenticated %}
-            saveHackathon(event, hackathonId);
-          {% else %}
-            addLoginPop();
-          {% endif %}
-        });
-      });
+
+    // this is making teh save button run twice
 
     // Add event listeners for vote buttons
-      document.querySelectorAll('[id$="-up"], [id$="-down"]').forEach(button => {
-        button.addEventListener('click', function(event) {
-          const [hackathonId, voteType] = this.id.split('-');
-          {% if user.is_authenticated %}
-            handleVote(event, hackathonId, voteType === 'up');
-          {% else %}
-            addLoginPop();
-          {% endif %}
-        });
+    document.querySelectorAll('[id$="-up"], [id$="-down"]').forEach(button => {
+      button.addEventListener('click', function(event) {
+        const [hackathonId, voteType] = this.id.split('-');
+        {% if user.is_authenticated %}
+          handleVote(event, hackathonId, voteType === 'up');
+        {% else %}
+          addLoginPop();
+        {% endif %}
       });
+    });
     });
   </script>
 {% endblock %}

@@ -5,11 +5,15 @@
     <h6 class="text-base">{{ hackathon.location.name }}</h6>
     <h5 class="text-lg">
       {{ hackathon.start_date|date:"N d" }}-{{ hackathon.end_date|date:"d, Y" }}
+      {{hackathon.user_saved}}
     </h5>
   </div>
   <div class="relative flex flex-row items-center justify-center py-3 space-x-6 my-">
     <button class="px-3 py-1 duration-200 ease-in-out bg-white border-gray-500 rounded-md shadow-sm border-6 hover:bg-gray-200 hover:text-black hover:scale-105" onclick="flipCard('{{ hackathon.id }}')">More</button>
-    <button id="{{hackathon.id}}-save" class="mx-3 px-3 py-1 rounded-md duration-200 ease-in-out border-6 border-gray-500 shadow-sm hover:bg-gray-200 hover:text-black hover:scale-105 {% if hackathon.user_saved %}bg-[#e5462e] text-white{% else %}bg-white{% endif %}" type="button" onclick="{% if user.is_authenticated %}saveHackathon(event, '{{ hackathon.id }}'){% else %}addLoginPop(){% endif %}">
+    <button id="{{ hackathon.id }}-save"
+            class="px-3 py-1 duration-200 ease-in-out shadow-sm rounded-md hover:bg-gray-200 hover:text-black hover:scale-105 {% if hackathon.user_saved %} bg-[#e5462e] text-white {% else %}bg-white {% endif %}"
+            type="button"
+            onclick="{% if user.is_authenticated %}saveHackathon(event, '{{ hackathon.id }}'){% else %}addLoginPop(){% endif %}">
       {% if hackathon.user_saved %}Saved{% else %}Save{% endif %}
     </button>
     {% include "components/vote_buttons.html" with hackathon=hackathon %}
