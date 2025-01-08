@@ -13,15 +13,20 @@ from django.contrib.auth.admin import (
     UserAdmin as BaseUserAdmin,
 )
 from django.contrib.auth.models import Group
+from django.contrib.redirects.models import Redirect
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from unfold.admin import ModelAdmin
 from unfold.contrib.forms.widgets import WysiwygWidget
 from unfold.decorators import display
 from unfold.forms import AdminPasswordChangeForm, UserChangeForm
-
+from django.contrib.redirects.admin import RedirectAdmin as BaseRedirectAdmin
 from .models import Category, Hackathon, Hacker, School
 from .models import HackathonLocation
+
+
+class RedirectAdmin(ModelAdmin, BaseRedirectAdmin):
+    pass
 
 
 class EmailAddressAdmin(BaseEmailAddress, ModelAdmin):
@@ -155,3 +160,6 @@ if not app_settings.EMAIL_CONFIRMATION_HMAC:
 
 admin.site.unregister(EmailAddress)
 admin.site.register(EmailAddress, EmailAddressAdmin)
+
+admin.site.unregister(Redirect)
+admin.site.register(Redirect, RedirectAdmin)

@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import json
 import os
 import random
 from functools import cache
@@ -8,7 +7,7 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import AbstractUser, AnonymousUser
 from django.db import transaction
-from django.db.models import F
+from django.db.models import F, Q, Prefetch
 from django.http import HttpRequest
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
@@ -28,7 +27,6 @@ from .forms import (
     CuratorRequestForm,
 )
 from django.views.generic import ListView
-from django.db.models import Prefetch, Q
 from django.utils import timezone
 from django.http import JsonResponse
 from typing import Dict, Any
@@ -133,41 +131,16 @@ class HackathonListView(ListView):
 
         return filters
 
-    def _annotate_user_data(self, queryset):
-        """
-        Efficiently annotate queryset with user-specific data using prefetch_related.
-        """
-        hacker = self.request.user
-
-        # Prefetch votes in a single query, return True if the user has upvoted a post, null if no vote and False if downvoted
-
-        votes_prefetch = Prefetch(
-            "votes",
-            queryset=Vote.objects.filter(hacker=hacker),
-            to_attr="user_votes",
-        )
-        saved_prefetch = Prefetch(
-            "interested_users",
-            queryset=Hacker.objects.filter(id=hacker.id),
-            to_attr="user_saved",
-        )
-
-        return queryset.prefetch_related(votes_prefetch, saved_prefetch)
-
     def get_context_data(self, **kwargs) -> Dict[str, Any]:
         """
         Prepare context data for the template, including calendar data if needed.
         """
         context = super().get_context_data(**kwargs)
         view_type = self.request.GET.get("view_type")
-        country_options = ["Canada", "United States", "Online", "World Wide"]
-        if view_type == "calendar":
-            context["hackathons"] = self._prepare_calendar_data(context["hackathons"])
 
         # Add filter parameters to context
         context.update(
             {
-                "country_options": country_options,
                 "type": view_type,
                 "country": self.request.GET.get("country"),
                 "city": self.request.GET.get("city"),
@@ -177,22 +150,6 @@ class HackathonListView(ListView):
         )
 
         return context
-
-    def _prepare_calendar_data(self, hackathons) -> str:
-        """
-        Transform hackathon data into calendar-friendly format.
-        """
-        calendar_data = [
-            {
-                "title": f"{hackathon.name} - {hackathon.location.name}",
-                "start": hackathon.start_date.strftime("%Y-%m-%d"),
-                "end": hackathon.end_date.strftime("%Y-%m-%d"),
-                "url": hackathon.website,
-            }
-            for hackathon in hackathons
-        ]
-
-        return json.dumps(calendar_data)
 
 
 @login_required
