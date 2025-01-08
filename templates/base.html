@@ -34,8 +34,8 @@
 
   <body class="bg-gray-100">
     {% block header %}
-      <nav class="fixed top-0 z-20 mb-2 nav-container">
-        <ul class="bg-gray-100 border-4 border-gray-100 drop-shadow-md backdrop-blur-sm px-7 nav-bar text-secondary rounded-xl">
+      <nav id = "navbar" class="fixed top-0 z-20 w-full transition-transform duration-300 ease-in-out transform nav-container">
+        <ul class="bg-gray-100 border-4 border-gray-100 drop-shadow-sm backdrop-blur-sm px-7 nav-bar text-secondary rounded-xl">
           <li class="flex items-center justify-center nav-logo">
             <a href="/" class="flex flex-row">
               <img src="{% static 'assets/logo.png' %}" width="50" height="50" class="w-10 h-10"  alt="logo"/>
@@ -186,5 +186,25 @@
       </footer>
     {% endblock footer %}
   </body>
+  <script>
+    // sticky scroll bar 
 
+    const nav = document.getElementById('navbar');;
+    let lastScroll = 0;
+    window.addEventListener('scroll', () => {
+      const currentScroll = window.scrollY;
+      if (currentScroll <= 0) {
+        nav.classList.remove('-translate-y-full');
+
+      } else if (currentScroll > lastScroll ) {
+        nav.classList.add('-translate-y-full');
+
+      } else {
+        nav.classList.remove('-translate-y-full');
+
+      }
+
+      lastScroll = currentScroll;
+    });
+  </script>
 </html>

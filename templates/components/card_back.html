@@ -1,7 +1,7 @@
 <div class="hackathon-card border-6 border-gray-500 shadow-lg h-[350px] w-72 xl:w-[350px]">
   <div class="card-image-overlay"></div>
   <img class="hackathon-img-back" src="{{ hackathon.bg_image|default:hackathon.fg_image }}" alt="{{ hackathon.name }}">
-  <div class="hackathon-card-div">
+  <div class="hackathon-card-div w-72 xl:w-[350px]">
     <div class="relative top-[65%] text-start px-3 max-h-16 overflow-hidden">
       <h6 class="text-lg text-gray-200">{{ hackathon.location.name }} | {{ hackathon.start_date|date:"N-d" }}-{{ hackathon.end_date|date:"d, Y" }}</h6>
       <h3 class="text-3xl font-semibold text-white">{{ hackathon.name }}</h3>

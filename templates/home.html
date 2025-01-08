@@ -3,21 +3,25 @@
   <div class="container mx-auto text-center mt-28">
     <h1 class="mb-4 font-extrabold leading-none tracking-tight hero-text-dark">Discover, connect, and compete in <span class="hero-text-red">North America’s</span>  most exciting <span class="hero-text-red">hackathons</span></h1>
     <p class="w-4/5 mx-auto my-4 mt-12 mb-6 text-lg font-normal text-black 1/2 lg:text-xl sm:px-16 xl:px-48">Browse through to find a complete list of hackathons taking place in Canada and North America. Join our Discord server to ask questions to the organizers of specific events and form teams.</p>
-    <div class="container flex justify-center mx-auto mt-6 space-x-2 md:space-x-6">
-      <a href="https://discord.gg/m5GPTnT5YB" class="text-center my-auto px-[35px] py-[12px] text-lg duration-200 ease-in-out bg-white border-gray-500 rounded-[20px] shadow-sm border-6 hover:bg-gray-200 hover:text-black hover:scale-105">
-        Join Community
-      </a>
-      <a href="{% url 'hackathons' %}" class="text-center my-auto px-[35px] py-[12px] text-lg duration-200 ease-in-out shadow-md hero-add-button">
-        Browse Hackathons ➜
-      </a>
 
-    </div>
 
   </div>
 
-  <div class="container mx-auto mt-20">
+  <div class="w-full pb-12 z-0 bg-cover bg-no-repeat bg-center bg-gray-100 sm:bg-[url({% static 'assets/herosvgbg.svg' %})]">
+    <div class="container z-10 hidden mx-auto sm:block">
+      <div class="container flex justify-center mx-auto space-x-2 md:space-x-6">
+        <a href="https://discord.gg/m5GPTnT5YB" class="text-center my-auto px-[35px] py-[12px] text-lg duration-200 ease-in-out bg-white border-gray-500 rounded-[20px] shadow-sm border-6 hover:bg-gray-200 hover:text-black hover:scale-105">
+          Join Community
+        </a>
+        <a href="{% url 'hackathons' %}" class="text-center my-auto px-[35px] py-[12px] text-lg duration-200 ease-in-out shadow-md hero-add-button">
+          Browse Hackathons ➜
+        </a>
 
-    {% include "components/hero_demo.html" %}
+      </div>
+      <div class="hidden bg-gray-100 rounded-lg pointer-events-none mt-36 sm:block">
+        {% include "components/hero_demo.html" %}
+      </div>
+
   <!-- GO TO "\core\views.py" TO SEE THE COMPLETE LIST OF IMAGES  -->
   <!-- <div class="hero-scroller-layout">
       <div id="scrollerWrapperLeft" class="scroller-wrapper-layout">
@@ -31,8 +35,8 @@
         {% endfor %}
       </div>
     </div> -->
+    </div>
   </div>
-
 
 
 

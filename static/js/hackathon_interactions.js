@@ -5,6 +5,9 @@ function flipCard(hackathonId) {
     card2.classList.toggle("flipped");
 }
 
+
+
+
 function copyText(text) {
 
     navigator.clipboard.writeText(text);
@@ -29,7 +32,6 @@ function saveHackathon(event, hackathonId) {
     event.preventDefault();
     event.stopPropagation();
     const saveButtons = document.querySelectorAll(`[id$="${hackathonId}-save"]`);
-    console.log(saveButtons)
     const isSavedBefore = saveButtons[0].classList.contains('bg-[#e5462e]');
 
     saveButtons.forEach(saveButton => {
