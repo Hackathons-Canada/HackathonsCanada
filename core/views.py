@@ -295,17 +295,13 @@ class SavedHackathonsPage(ListView):
         Build the queryset with all necessary filters and annotate vote status
         in a single efficient query.
         """
-        # Base query with select_related to avoid n+1 queries
-        queryset = Hackathon.objects.select_related("location").filter(
-            end_date__gte=timezone.now(), is_public=True
-        )
-
         user: Hacker = self.request.user
-        hackathons = user.saved.all()
+
+        queryset = user.saved.all()
 
         # Annotate vote saved hackathons - James C - needs to be changed
         # Annotate vote status directly in the query instead of prefetching
-        return hackathons.annotate_vote_status(queryset, self.request.user)
+        return Hacker.annotate_vote_status(queryset, self.request.user)
 
     def _annotate_user_data(self, queryset):
         """

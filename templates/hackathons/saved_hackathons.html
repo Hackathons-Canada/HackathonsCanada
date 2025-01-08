@@ -20,7 +20,7 @@
             <tr class="bg-gray-100 border-b-2 border-gray-200">
               <td class="flex items-center justify-center py-2">
                 <button id="{{ hackathon.id }}-save"
-                        class="mx-auto px-3 py-2 rounded-md duration-200 ease-in-out hover:bg-gray-200 hover:text-black hover:scale-105 {% if hackathon.user_saved %} bg-[#e5462e] text-white {% else %}bg-white {% endif %}"
+                        class="mx-auto px-3 py-2 rounded-md duration-200 ease-in-out hover:bg-gray-200 hover:text-black hover:scale-105  bg-[#e5462e] text-white"
                         type="button"
                         onclick="{% if user.is_authenticated %}saveHackathon(event, '{{ hackathon.id }}'){% else %}addLoginPop(){% endif %}">
                   {% if hackathon.user_saved %}Saved{% else %}Save{% endif %}
@@ -74,7 +74,7 @@
                   </div>
                   <div class="flex items-center justify-between gap-4">
                     <button id="{{ hackathon.id }}-save"
-                            class="rounded-md duration-200 ease-in-out hover:bg-gray-200 hover:text-black hover:scale-105 {% if hackathon.user_saved %} bg-[#e5462e] text-white {% else %}bg-white {% endif %}"
+                            class="rounded-md duration-200 ease-in-out hover:bg-gray-200 hover:text-black hover:scale-105  bg-[#e5462e] text-white"
                             type="button"
                             onclick="{% if user.is_authenticated %}saveHackathon(event, '{{ hackathon.id }}'){% else %}addLoginPop(){% endif %}">
                       {% if hackathon.user_saved %}Saved{% else %}Save{% endif %}
@@ -93,8 +93,8 @@
         </table>
       </div>
   {% else %}
-    <div class="flex justify-center h-screen my-auto bg-white ">
-      <h1>None</h1>
+    <div class="flex justify-center h-screen my-auto bg-gray-100">
+      <h1 class="mx-auto mt-20 text-2xl font-bold">None</h1>
     </div>
   {% endif %}
 

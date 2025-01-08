@@ -205,6 +205,29 @@ class Hacker(AbstractUser):
         null=False,
     )
 
+    @classmethod
+    def annotate_vote_status(cls, queryset, user):
+        """
+        Annotates the queryset with user's vote status using a single efficient query.
+        Returns:
+         - 1 for upvote
+         - -1 for downvote
+         - 0 for no vote
+        """
+        if not user.is_authenticated:
+            return queryset.annotate(
+                user_vote_status=Value(0, output_field=IntegerField())
+            )
+
+        return queryset.annotate(
+            user_vote_status=Case(
+                When(votes__hacker=user, votes__is_upvote=True, then=Value(1)),
+                When(votes__hacker=user, votes__is_upvote=False, then=Value(-1)),
+                default=Value(0),
+                output_field=IntegerField(),
+            )
+        )
+
     def __str__(self):
         return f"Hacker(username={self.username}, email={self.email}, first_name={self.first_name}, last_name={self.last_name})"
 
