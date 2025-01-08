@@ -1,22 +1,29 @@
 {% extends 'base.html' %} {% load static %} {% block content %}
 
-  <div class="hero-container-layout">
-    <div class="container md:mx-8 lg:mx-24">
-      <h1 class="hero-text-light">Welcome to</h1>
-      <h2 class="hero-text-dark">The BEST DATABASE FOR</h2>
-      <h3 class="hero-text-red">HACKATHONS</h3>
-      <p class="hero-text-body">
-        Browse through to find a complete list of hackathons taking place in
-        Canada and North America. Join our Discord server to ask questions to the
-        organizers of specific events and form teams.
-      </p>
-      <a href="{% url 'hackathons' %}" class="hero-add-button">
-        Browse Hackathons ➜
-      </a>
-    </div>
+  <div class="container mx-auto text-center mt-28">
+    <h1 class="mb-4 font-extrabold leading-none tracking-tight hero-text-dark">Discover, connect, and compete in <span class="hero-text-red">North America’s</span>  most exciting <span class="hero-text-red">hackathons</span></h1>
+    <p class="w-4/5 mx-auto my-4 mt-12 mb-6 text-lg font-normal text-black 1/2 lg:text-xl sm:px-16 xl:px-48">Browse through to find a complete list of hackathons taking place in Canada and North America. Join our Discord server to ask questions to the organizers of specific events and form teams.</p>
+
+
+  </div>
+
+  <div class="w-full pb-12 z-0 bg-cover bg-no-repeat bg-center bg-gray-100 sm:bg-[url({% static 'assets/herosvgbg.svg' %})]">
+    <div class="container z-10 hidden mx-auto sm:block">
+      <div class="container flex justify-center mx-auto space-x-2 md:space-x-6">
+        <a href="https://discord.gg/m5GPTnT5YB" class="text-center my-auto px-[35px] py-[12px] text-lg duration-200 ease-in-out bg-white border-gray-500 rounded-[20px] shadow-sm border-6 hover:bg-gray-200 hover:text-black hover:scale-105">
+          Join Community
+        </a>
+        <a href="{% url 'hackathons' %}" class="text-center my-auto px-[35px] py-[12px] text-lg duration-200 ease-in-out shadow-md hero-add-button">
+          Browse Hackathons ➜
+        </a>
+
+      </div>
+      <div class="hidden bg-gray-100 rounded-lg pointer-events-none mt-36 sm:block">
+        {% include "components/hero_demo.html" %}
+      </div>
 
   <!-- GO TO "\core\views.py" TO SEE THE COMPLETE LIST OF IMAGES  -->
-    <div class="hero-scroller-layout">
+  <!-- <div class="hero-scroller-layout">
       <div id="scrollerWrapperLeft" class="scroller-wrapper-layout">
         {% for image in left_images %}
           <img src="{% static image %}" class="item-scroller-left-layout" alt="Hackathon banner icon" />
@@ -27,70 +34,20 @@
           <img alt="Hackathon banner icon" src="{% static image %}" class="item-scroller-right-layout" />
         {% endfor %}
       </div>
-    </div>
-  </div>
-  <div class="container mx-auto p-8">
-    <h1 class="text-4xl font-bold text-center mb-0">Hackathons Page</h1> <!-- Removed margin completely -->
-
-    <!-- Scrollable container where hackathon.html content will be injected -->
-    <div id="hackathonContainer" class="mt-0 h-[800px] overflow-y-auto">
-        <!-- Dynamic content will appear here -->
+    </div> -->
     </div>
   </div>
 
-  <script>
-      // Function to load the hackathon page dynamically into the container
-    function loadHackathon() {
-      fetch('/hackathons_c')  // The URL of your hackathon.html
-        .then(response => response.text())
-        .then(data => {
-          const container = document.getElementById('hackathonContainer');
-          container.innerHTML = data;  // Inject the entire hackathon page into this div
 
-                  // Reinitialize JavaScript functionality for the newly loaded content
-          initializeHackathonScripts();
-        })
-        .catch(error => {
-          console.error('Error loading hackathon page:', error);
-        });
-    }
-
-      // Function to reinitialize JS scripts (e.g., for event listeners)
-    function initializeHackathonScripts() {
-      document.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('[id$="-save"]').forEach(button => {
-          button.addEventListener('click', function(event) {
-            const hackathonId = this.id.split('-')[0];
-                      // Simulating the saveHackathon functionality
-            console.log('Saving hackathon:', hackathonId);
-          });
-        });
-
-        document.querySelectorAll('[id$="-up"], [id$="-down"]').forEach(button => {
-          button.addEventListener('click', function(event) {
-            const [hackathonId, voteType] = this.id.split('-');
-                      // Simulating the vote functionality
-            console.log(`Voting ${voteType} for hackathon ${hackathonId}`);
-          });
-        });
-      });
-    }
-
-      // Automatically load the hackathon page when the page is loaded
-    document.addEventListener('DOMContentLoaded', function() {
-      loadHackathon();
-    });
-  </script>
-
-  <div class="mt-5 mb-10 sm:mx-0 my-2 mx-3 card-header-layout">
+  <div class="mx-3 my-2 mt-5 mb-10 sm:mx-0 card-header-layout">
     <h5 class="text-4xl text-black">
       More than just a website.
     </h5>
   </div>
 
-  <div class="w-full sm:w-4/5 mx-auto px-4 sm:px-0 card-box-layout">
-    <div class="w-full flex flex-col sm:flex-row gap-6">
-      <a class='w-full sm:w-2/5 hover:scale-105 hover:shadow-lg transition-all duration-300' href="https://staging.hackcanada.org/">
+  <div class="w-full px-4 mx-auto sm:w-4/5 sm:px-0 card-box-layout">
+    <div class="flex flex-col w-full gap-6 sm:flex-row">
+      <a class='w-full transition-all duration-300 sm:w-2/5 hover:scale-105 hover:shadow-lg' href="https://staging.hackcanada.org/">
         <div class="rounded-xl
                     w-full
                     h-[30vw]
@@ -124,22 +81,22 @@
           </h5>
         </div>
       </a>
-      <a class='w-full sm:w-3/5 hover:scale-105 hover:shadow-lg transition-all duration-300' href="https://discord.gg/m5GPTnT5YB">
-        <img class="rounded-xl object-cover object-left card-img-stack mx-0 sm:mx-0 h-full w-full" src="{% static 'assets/discord.png' %}" alt="Image 1" />
+      <a class='w-full transition-all duration-300 sm:w-3/5 hover:scale-105 hover:shadow-lg' href="https://discord.gg/m5GPTnT5YB">
+        <img class="object-cover object-left w-full h-full mx-0 rounded-xl card-img-stack sm:mx-0" src="{% static 'assets/discord.png' %}" alt="Image 1" />
       </a>
     </div>
 
-    <div class="w-full flex flex-col sm:flex-row gap-6 my-auto">
-      <a class="w-full sm:w-2/5 hover:scale-105 hover:shadow-lg transition-all duration-300" href="https://www.instagram.com/hackathoncanada/">
+    <div class="flex flex-col w-full gap-6 my-auto sm:flex-row">
+      <a class="w-full transition-all duration-300 sm:w-2/5 hover:scale-105 hover:shadow-lg" href="https://www.instagram.com/hackathoncanada/">
         <img class="w-full rounded-xl card-img-stack max-h-[30rem]" src="{% static 'assets/instagram.png' %}" alt="Image 2" />
       </a>
-      <a class="w-full sm:w-3/5 my-auto hover:scale-105 hover:shadow-lg transition-all duration-300" href="https://calendar.google.com/calendar/u/0?cid=M2Y0ODA2MjUxYTZjMGZhYTMwZWE3ZmE0YmI0NTdjMmE1NTI0ZWZlNGUzZjMwMDc4NmJlMmVlNWRjOGU1MTE3MEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t">
+      <a class="w-full my-auto overflow-hidden transition-all duration-300 sm:w-3/5 hover:scale-105 hover:shadow-lg" href="https://calendar.google.com/calendar/u/0?cid=M2Y0ODA2MjUxYTZjMGZhYTMwZWE3ZmE0YmI0NTdjMmE1NTI0ZWZlNGUzZjMwMDc4NmJlMmVlNWRjOGU1MTE3MEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t">
         <img class="w-full card-img-stack max-h-[30rem]" src="{% static 'assets/gcal.png' %}" alt="Image 1" />
       </a>
     </div>
 
-    <div class="w-full flex flex-col sm:flex-row gap-6">
-      <a class='w-full sm:w-2/5 hover:scale-105 hover:shadow-lg transition-all duration-300' href="https://konfer.ca/">
+    <div class="flex flex-col w-full gap-6 sm:flex-row">
+      <a class='w-full transition-all duration-300 sm:w-2/5 hover:scale-105 hover:shadow-lg' href="https://konfer.ca/">
         <div class="rounded-xl
                     w-full
                     h-[35vw]
@@ -163,9 +120,7 @@
                     before:bg-gradient-to-t
                     before:from-black
                     before:from-30%
-                    before:via-grey-500
                     before:via-60%
-                    before:to-grey-800
                     before:to-90%
                     before:z-[-5]
                    ">
@@ -212,100 +167,100 @@
 
 
   <div class="flex flex-col items-center justify-center w-full mt-5">
-    <p class='mt-10 mb-5 header-text-black'>FAQ<span class='header-text-red'>s</span></p>
-    <div class='grid w-[80%] grid-cols-1 md:gap-4 md:grid-cols-2 lg:grid-cols-2'>
+    <p class='general-padding header-text-black'><span class='header-text-red'>Frequently</span> Asked Questions</p>
+    <div class='grid w-[60%] space-x-4 rid-cols-1 md:gap-4 md:grid-cols-2 lg:grid-cols-2'>
       <div class = "w-full">
-        <div class="w-full mt-3 border-2 rounded-lg">
-          <button class="w-full p-4 text-left bg-white-200" onclick="toggleAccordion(1)">
+        <div class="w-full mt-3 rounded-lg">
+          <button class="w-full p-4 text-left bg-gray-100" onclick="toggleAccordion(1)">
             <div class='flex items-center justify-between'>
               <span class="font-semibold">What is Hackathons Canada?</span>
               <img src='/static/assets/down-arrow.svg' class='w-[20px] h-[20px]'></img>
             </div>
           </button>
-          <div id="accordion-content-1" class="hidden px-4 pb-4 bg-white">
+          <div id="bg-gray-100 accordion-content-1" class="hidden px-4 pb-4 bg-gray-100">
             <p>We are a group of students who have worked together to collect a large list of all hackathons that are occurring in North America. Think of MLH, except we have hackathons that you didn't even know existed, with prizes you didn't believe was possible.</p>
           </div>
         </div>
-        <div class="w-full mt-3 border-2 rounded-lg">
-          <button class="w-full p-4 text-left rounded-lg bg-white-200" onclick="toggleAccordion(2)">
+        <div class="w-full mt-3 rounded-lg">
+          <button class="w-full p-4 text-left bg-gray-100 rounded-lg" onclick="toggleAccordion(2)">
             <div class='flex items-center justify-between'>
               <span class="font-semibold">What is a hackathon? </span>
               <img src='/static/assets/down-arrow.svg' class='w-[20px] h-[20px]'></img>
             </div>
           </button>
-          <div id="accordion-content-2" class="hidden px-4 pb-4 bg-white">
+          <div id="bg-gray-100 accordion-content-2" class="hidden px-4 pb-4 bg-gray-100 ">
             <p>A hackathon is an event where people come together to build something awesome, over the course of a weekend. Teams will work together to solve a real problem faced by Canadians, and at the end, you get to show off what you've built. Think of it as a coding marathon—but with more snacks and less running.</p>
           </div>
         </div>
-        <div class="w-full mt-3 border-2 rounded-lg">
-          <button class="w-full p-4 text-left rounded-lg bg-white-200" onclick="toggleAccordion(3)">
+        <div class="w-full mt-3 rounded-lg">
+          <button class="w-full p-4 text-left bg-gray-100 rounded-lg" onclick="toggleAccordion(3)">
             <div class='flex items-center justify-between'>
               <span class="font-semibold">Where can I connect?</span>
               <img src='/static/assets/down-arrow.svg' class='w-[20px] h-[20px]'></img>
             </div>
           </button>
-          <div id="accordion-content-3" class="hidden px-4 pb-4 bg-white">
+          <div id="bg-gray-100 accordion-content-3" class="hidden px-4 pb-4 bg-gray-100 ">
             <p>Follow us on our instagram @hackathoncanada or join our discord at: https://discord.gg/j92K83nKwq</p>
           </div>
         </div>
-        <div class="w-full mt-3 border-2 rounded-lg">
-          <button class="w-full p-4 text-left rounded-lg bg-white-200" onclick="toggleAccordion(4)">
+        <div class="w-full mt-3 rounded-lg">
+          <button class="w-full p-4 text-left bg-gray-100 rounded-lg" onclick="toggleAccordion(4)">
             <div class='flex items-center justify-between'>
               <span class="font-semibold">Can I join the team?</span>
               <img src='/static/assets/down-arrow.svg' class='w-[20px] h-[20px]'></img>
             </div>
           </button>
-          <div id="accordion-content-4" class="hidden px-4 pb-4 bg-white">
+          <div id="bg-gray-100 accordion-content-4" class="hidden px-4 pb-4 bg-gray-100 ">
             <p>Great news—we're always looking for passionate individuals to join our team! Check out the form above to apply and become part of Hack Canada. Don’t forget to follow us on Instagram @hackathoncanada for updates and announcements!</p>
           </div>
         </div>
       </div>
 
       <div class = "w-full">
-        <div class="w-full mt-3 border-2 rounded-lg">
-          <button class="w-full p-4 text-left rounded-lg bg-white-200" onclick="toggleAccordion(5)">
+        <div class="w-full mt-3 rounded-lg">
+          <button class="w-full p-4 text-left bg-gray-100 rounded-lg" onclick="toggleAccordion(5)">
             <div class='flex items-center justify-between'>
               <span class="font-semibold">Where can I find more hackathons?</span>
               <img src='/static/assets/down-arrow.svg' class='w-[20px] h-[20px]'></img>
             </div>
           </button>
-          <div id="accordion-content-5" class="hidden px-4 pb-4 bg-white">
+          <div id="bg-gray-100 accordion-content-5" class="hidden px-4 pb-4 bg-gray-100 ">
             <p>Want to explore all our hackathons? Click on the 'Hackathons' tab in the navigation bar to see the full list of events we’re hosting! Got questions or want to connect with others? Join the conversation on our Discord server using this <a href="https://discord.gg/j92K83nKwq">link</a>. If you don’t see a hackathon you’re interested in, make a request on the form, and we’ll work on adding it!</p>
           </div>
         </div>
 
-        <div class="w-full mt-3 border-2 rounded-lg">
-          <button class="w-full p-4 text-left rounded-lg bg-white-200" onclick="toggleAccordion(6)">
+        <div class="w-full mt-3 rounded-lg">
+          <button class="w-full p-4 text-left bg-gray-100 rounded-lg" onclick="toggleAccordion(6)">
             <div class='flex items-center justify-between'>
               <span class="font-semibold">Is this a hackathon?</span>
               <img src='/static/assets/down-arrow.svg' class='w-[20px] h-[20px]'></img>
             </div>
           </button>
-          <div id="accordion-content-6" class="hidden px-4 pb-4 bg-white">
+          <div id="bg-gray-100 accordion-content-6" class="hidden px-4 pb-4 bg-gray-100 ">
             <p>No. Hackathons Canada is not a hackathon itself, although we are organizing our first hackathon soon, which is Hack Canada! Check it out <a href="https://hackcanada.pages.dev/">here!</a></p>
           </div>
         </div>
 
-        <div class="w-full mt-3 border-2 rounded-lg">
-          <button class="w-full p-4 text-left rounded-lg bg-white-200" onclick="toggleAccordion(7)">
+        <div class="w-full mt-3 rounded-lg">
+          <button class="w-full p-4 text-left bg-gray-100 rounded-lg" onclick="toggleAccordion(7)">
             <div class='flex items-center justify-between'>
               <span class="font-semibold">What makes Hackathons NA unique?                 </span>
               <img src='/static/assets/down-arrow.svg' class='w-[20px] h-[20px]'></img>
             </div>
           </button>
-          <div id="accordion-content-7" class="hidden px-4 pb-4 bg-white">
+          <div id="bg-gray-100 accordion-content-7" class="hidden px-4 pb-4 bg-gray-100 ">
             <p>Founded in 2023 by William Wang, we have a discord server of every single hackathon and messages going back an entire year. If there was ever anywhere you wanted to look back in a time machine, this is the ONLY place where you can do that.</p>
           </div>
         </div>
 
-        <div class="w-full mt-3 border-2 rounded-lg">
-          <button class="w-full p-4 text-left rounded-lg bg-white-200" onclick="toggleAccordion(8)">
+        <div class="w-full mt-3 rounded-lg">
+          <button class="w-full p-4 text-left bg-gray-100 rounded-lg" onclick="toggleAccordion(8)">
             <div class='flex items-center justify-between'>
               <span class="font-semibold">How Can Hackathons Canada support Hackathon Organizer?                 </span>
               <img src='/static/assets/down-arrow.svg' class='w-[20px] h-[20px]'></img>
             </div>
           </button>
-          <div id="accordion-content-8" class="hidden px-4 pb-4 bg-white">
+          <div id="bg-gray-100 accordion-content-8" class="hidden px-4 pb-4 bg-gray-100 ">
             <p>Hackathons Canada can help make your hackathon a success by providing exposure to millions of hackers through our social media, sharing the resources and strategies we used to organize Hack Canada, and offering funding support through our partner, Konfer. For more details, reach out to us on Discord!</p>
           </div>
         </div>
@@ -315,7 +270,7 @@
   </div>
   </div>
 
-  <div class="hero py-32">
+  <div class="py-32 hero">
     <h1>
       Check out our Social media for <br /> <span class="fw-bold fst-italic"> MAJOR UPDATES, </span>
 
@@ -386,8 +341,8 @@
 
   <script>
     function toggleAccordion(index) {
-      const content = document.getElementById(`accordion-content-${index}`);
-      const allContents = document.querySelectorAll('[id^="accordion-content-"]');
+      const content = document.getElementById(`bg-gray-100 accordion-content-${index}`);
+      const allContents = document.querySelectorAll('[id^="bg-gray-100 accordion-content-"]');
 
       allContents.forEach((item) => {
         if (item !== content) {

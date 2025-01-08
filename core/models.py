@@ -3,7 +3,16 @@ from typing import Final, Tuple, List
 from django.contrib.auth.models import AbstractUser, UserManager
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.db.models import DecimalField, Exists, Subquery, OuterRef, Value, When, Case
+from django.db.models import (
+    DecimalField,
+    BooleanField,
+    Exists,
+    Subquery,
+    OuterRef,
+    Value,
+    When,
+    Case,
+)
 from django.db.models.fields import IntegerField
 from django.utils import timezone
 
@@ -204,6 +213,29 @@ class Hacker(AbstractUser):
         blank=False,
         null=False,
     )
+
+    @classmethod
+    def annotate_vote_status(cls, queryset, user):
+        """
+        Annotates the queryset with user's vote status using a single efficient query.
+        Returns:
+         - 1 for upvote
+         - -1 for downvote
+         - 0 for no vote
+        """
+        if not user.is_authenticated:
+            return queryset.annotate(
+                user_vote_status=Value(0, output_field=IntegerField())
+            )
+
+        return queryset.annotate(
+            user_vote_status=Case(
+                When(votes__hacker=user, votes__is_upvote=True, then=Value(1)),
+                When(votes__hacker=user, votes__is_upvote=False, then=Value(-1)),
+                default=Value(0),
+                output_field=IntegerField(),
+            )
+        )
 
     def __str__(self):
         return f"Hacker(username={self.username}, email={self.email}, first_name={self.first_name}, last_name={self.last_name})"
@@ -510,7 +542,7 @@ class Hackathon(MetaDataMixin):
         return self.name
 
     @classmethod
-    def annotate_vote_status(cls, queryset, user):
+    def annotate_user_data(cls, queryset, user):
         """
         Annotates the queryset with user's vote status using a single efficient query.
         Returns:
@@ -520,7 +552,8 @@ class Hackathon(MetaDataMixin):
         """
         if not user.is_authenticated:
             return queryset.annotate(
-                user_vote_status=Value(0, output_field=IntegerField())
+                user_vote_status=Value(0, output_field=IntegerField()),
+                user_saved=Value(False, output_field=BooleanField()),
             )
 
         return queryset.annotate(
@@ -529,7 +562,8 @@ class Hackathon(MetaDataMixin):
                 When(votes__hacker=user, votes__is_upvote=False, then=Value(-1)),
                 default=Value(0),
                 output_field=IntegerField(),
-            )
+            ),
+            user_saved=Exists(Hacker.objects.filter(saved=OuterRef("pk"), id=user.id)),
         )
 
     def save(self, *args, **kwargs):

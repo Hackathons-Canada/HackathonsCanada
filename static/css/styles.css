@@ -96,7 +96,6 @@ body {
   text-align: center;
   transition: 0.15s ease-in-out;
   position: relative;
-  text-transform: uppercase;
 }
 
 .nav-menu .nav-item a::after {
@@ -173,9 +172,9 @@ body {
 }
 
 .nav-button {
-  border-radius: 11px;
+  border-radius: 18px;
   color: white !important;
-  padding: 10px 30px;
+  padding: 8px 15px;
   background: linear-gradient(90deg, #ff5a50 0%, #ef6c23 100%);
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
@@ -187,8 +186,14 @@ body {
   gap: 20px;
 }
 
+.general-padding{
+  padding: 3vw 0;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
 .hero-container-layout {
-  padding: 5vw 0;
+  padding: 3vw 0;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -214,8 +219,8 @@ body {
 }
 
 .hero-text-dark {
-  color: var(--1, #000e22);
-  font-size: clamp(30px, 4vw, 50px);
+  color: black;
+  font-size: clamp(30px, 4vw, 65px);
   font-weight: 700;
   line-height: 1.01;
   letter-spacing: -0.58px;
@@ -230,27 +235,18 @@ body {
   font-weight: 700;
   line-height: 1.01;
   letter-spacing: 3.24px;
-  text-transform: uppercase;
   margin-bottom: 1rem;
 }
 
-.hero-text-body {
-  color: #000;
-  font-size: 16px;
-  font-weight: 300;
-  line-height: 1.5;
-  max-width: 60ch;
-  margin-bottom: 2rem;
-}
+
 
 .hero-add-button {
   display: inline-block;
-  border-radius: 11px;
+  border-radius: 18px;
   color: white;
   padding: 10px 30px;
   background: linear-gradient(90deg, #ff5a50 0%, #ef6c23 100%);
   text-decoration: none;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   transition: all 0.3s ease;
 }
 
@@ -273,9 +269,11 @@ body {
     text-align: center;
   }
 
-  .hero-text-body {
-    max-width: 100%;
+  .general-padding {
+    padding: 3vw;
+    text-align: center;
   }
+
 
   .hero-image-position {
     max-width: 100%;
@@ -285,6 +283,9 @@ body {
     display: none;
   }
 }
+
+
+
 
 a {
   text-decoration: none;
@@ -330,7 +331,7 @@ a {
 }
 
 .roundedcards {
-  border-radius: 30px;
+  border-radius: 18px;
 }
 
 .introtext {
@@ -355,7 +356,7 @@ a {
 
 .button-white {
   display: inline-block;
-  border-radius: 7px;
+  border-radius: 18px;
   background-color: #f7f6f6;
   box-shadow: rgba(0, 0, 0, 0.3) 0px 10px 15px;
   color: #000000;
@@ -408,7 +409,7 @@ a {
   margin-right: auto;
   width: 1200px;
   height: auto;
-  border-radius: 8px;
+  border-radius: 18px;
   box-shadow: 0 0 10px rgba(221, 83, 83, 1), 0 0 20px 5px rgba(221, 83, 83, 0.8),
               0 0 30px 15px rgba(221, 83, 83, 0.5);
 }
@@ -427,7 +428,7 @@ a {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: 18px;
 }
 
 .gallery__item--1 {
@@ -487,8 +488,8 @@ section {
 }
 
 .card-web {
-  background-color: white;
-  border-radius: 8px;
+  background-color: #F3F4F6;
+  border-radius: 18px;
   padding: 20px;
   width: 350px;
   height: 250px;
@@ -498,15 +499,15 @@ section {
   perspective: 1000px;
   display: flex;
   flex-direction: column;
-  background-color: white;
+  background-color: #F9FAFB;
   color: black;
-  border-radius: 25px;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border-radius: 18px;
+
 }
 
 .hackathon-img-front {
-  border-top-left-radius: 25px;
-  border-top-right-radius: 25px;
+  border-top-left-radius: 18px;
+  border-top-right-radius: 18px;
   height: 200px;
   width: 350px;
   overflow: hidden;
@@ -515,8 +516,8 @@ section {
 }
 
 .hackathon-img-back {
-  border-top-left-radius: 25px;
-  border-top-right-radius: 25px;
+  border-top-left-radius: 18px;
+  border-top-right-radius: 18px;
   height: 200px;
   width: 350px;
   overflow: hidden;
@@ -567,14 +568,14 @@ section {
   gap: 10px;
   border: 1px solid #ccc;
   padding: 10px;
-  border-radius: 10px;
+  border-radius: 18px;
 }
 
 .search-bar>div {
   display: flex;
   padding: 10px;
   flex-direction: column;
-  border-radius: 5px;
+  border-radius: 18px;
 }
 
 .search-bar>div:hover {
@@ -588,7 +589,7 @@ section {
 .search-bar input,
 .search-bar button {
   border: 0px solid #ccc;
-  border-radius: 5px;
+  border-radius: 18px;
 }
 
 .filters {
@@ -612,7 +613,7 @@ section {
 }
 
 .hero {
-  background-color: #fff;
+  background-color: #F3F4F6;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -992,7 +993,7 @@ section {
   height: 40rem;
   width: 95%;
   max-width: 1200px;
-  border-radius: 20px;
+  border-radius: 18px;
   position: relative;
   display: flex;
   align-items: center;
@@ -1051,7 +1052,7 @@ section {
 .item-scroller-left-layout {
   width: 7vw;
   height: 7.5vw;
-  border-radius: 10px;
+  border-radius: 18px;
   position: absolute;
 }
 
@@ -1158,7 +1159,7 @@ section {
 }
 
 .fc .fc-today-button {
-  border-radius: 11px;
+  border-radius: 18px;
   border: none;
   background: linear-gradient(90deg, #ff5a50 0%, #ef6c23 100%);
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
@@ -1169,7 +1170,7 @@ section {
 
 .fc .fc-next-button,
 .fc .fc-prev-button {
-  background-color: white;
+  background-color: #F3F4F6;
 }
 
 .fc-daygrid-body{
@@ -1184,26 +1185,26 @@ section {
   width: 50rem !important;
 }
 .fc-col-header {
-  border-radius: 16px !important;
+  border-radius: 18px !important;
 }
 
 .fc-media-screen{width: 50rem !important;
 }
 
 .fc-scrollgrid-section > td {
-  border-radius: 0px 0px 16px 16px !important;
+  border-radius: 0px 0px 18px 18px !important;
 }
 
 .fc-scrollgrid-section > th {
-  border-radius: 0px 16px 0px 0px !important;
+  border-radius: 0px 18px 0px 0px !important;
 }
 
 .fc-scrollgrid {
-  border-radius: 16px !important;
+  border-radius: 18px !important;
 }
 
 .form-button-style {
-  border-radius: 10px;
+  border-radius: 18px;
   border: 0.5px solid var(--1, #000e22);
   background: var(--6, #fff);
   box-shadow: 1px 2px 3px 0px rgba(0, 0, 0, 0.5);
@@ -1278,82 +1279,4 @@ section {
   box-shadow: 0 0 10px blue;
 }
 
-.hackathon-img-front_c {
-  width: 100%;
-  height: 150px;
-  object-fit: cover;
-}
-
-
-.hackathon-content_c h2 {
-  font-size: 1rem; /* Smaller font size for title */
-  font-weight: 600;
-  margin: 0;  /* Remove default margin */
-  margin-top: 1px;
-  margin-bottom: 8px;
-  line-height: 1.2; /* Slightly tighter line-height */
-  max-height: 4rem;  /* Set a maximum height for the title */
-  padding-bottom: 1rem; /* Added padding to ensure enough space around title */
-  max-width: 100%;  /* Ensures the container is as wide as possible */
-}
-
-.hackathon-content_c h6, .hackathon-content_c h5 {
-  font-size: 1rem; /* Smaller font for date and location */
-  color: #555;
-  margin-bottom: 5px;
-}
-
-.hackathon-content_c {
-  padding: 12px;
-  height: 120px; /* Ensure all content fits without scrolling */
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  margin-bottom: 12px; /* Give more space around the title */
-  margin-top: 1px; /* Give more space around the title */
-}
-
-.grid-cols-6_c {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr); /* Defines 5 equal columns */
-  gap: 0.01rem; /* Small gap between cards in both directions */
-  row-gap: 0.005rem; /* Reduced the gap between rows even further */
-}
-
-.grid-cols-6_c > .hackathon-card_c {
-  margin-bottom: 0.1rem; /* Further reduced space between rows of cards */
-}
-
-.card-body-layout_c {
-  padding: 8px 15px;
-  font-size: 14px;
-}
-
-.card-body-text_c {
-  margin: 3px 0;
-  color: #555;
-}
-
-.card-body-text_c a {
-  color: #007bff;
-  text-decoration: none;
-}
-
-.card-body-text_c a:hover {
-  text-decoration: underline;
-}
-
-.hackathon-card_c {
-  border: 2px solid #ccc; /* Light gray border */
-  border-radius: 2px;      /* Rounded corners */
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-  transition: all 0.3s ease; /* Smooth transition on hover */
-}
-
-.hackathon-card_c:hover {
-  border-color: #000000; /* Darker border color on hover */
-  box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
-}
 

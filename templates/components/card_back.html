@@ -1,20 +1,23 @@
-<div class="hackathon-card h-[350px] w-72 xl:w-[350px]">
+<div class="hackathon-card border-6 border-gray-500 shadow-lg h-[350px] w-72 xl:w-[350px]">
   <div class="card-image-overlay"></div>
   <img class="hackathon-img-back" src="{{ hackathon.bg_image|default:hackathon.fg_image }}" alt="{{ hackathon.name }}">
-  <div class="hackathon-card-div">
-    <div class="relative top-[65%] text-start px-3 max-h-16 overflow-scroll">
-      <h6 class="text-lg text-gray-200">{{ hackathon.location.name }} | {{ hackathon.start_date|date:"N-d" }}-{{ hackathon.application_deadline|date:"d, Y" }}</h6>
+  <div class="hackathon-card-div w-72 xl:w-[350px]">
+    <div class="relative top-[65%] text-start px-3 max-h-16 overflow-hidden">
+      <h6 class="text-lg text-gray-200">{{ hackathon.location.name }} | {{ hackathon.start_date|date:"N-d" }}-{{ hackathon.end_date|date:"d, Y" }}</h6>
       <h3 class="text-3xl font-semibold text-white">{{ hackathon.name }}</h3>
     </div>
   </div>
-  <div class="card-body-layout align-items-start my-auto">
-    <p class="card-body-text">Application: <span class="font-semibold text-red-600">{{ hackathon.application_start|date:"N-d" }}-{{ hackathon.start_date|date:"d, Y" }}</span></p>
+  <div class="my-auto card-body-layout align-items-start">
+    <p class="card-body-text">Application: <span class="font-semibold text-red-600">{{ hackathon.application_start|date:"N-d" }}-{{ hackathon.application_end|date:"d, Y" }}</span></p>
     <p class="card-body-text">Minimum Education: {{ hackathon.minimum_education_level }}</p>
     <p class="card-body-text">Travel Reimbursements: {{ hackathon.reimbursements }}</p>
     <a href="{{ hackathon.website }}" class="card-body-text">Website</a>
-    <div class="relative flex flex-row items-center justify-center my-2">
-      <button class="px-3 py-1 rounded-md duration-200 ease-in-out hover:bg-gray-200 hover:text-black hover:scale-105" onclick="flipCard('{{ hackathon.id }}')">Less</button>
-      <button id="{{hackathon.id}}-save" class="mx-3 px-3 py-1 rounded-md duration-200 ease-in-out hover:bg-gray-200 hover:text-black hover:scale-105 {% if hackathon.user_saved %}bg-[#e5462e] text-white{% else %}bg-white{% endif %}" type="button" onclick="{% if user.is_authenticated %}saveHackathon(event, '{{ hackathon.id }}'){% else %}addLoginPop(){% endif %}">
+    <div class="relative flex flex-row items-center justify-center py-3 space-x-6">
+      <button class="px-3 py-1 duration-200 ease-in-out border-gray-500 rounded-md shadow-sm border-6 hover:bg-gray-200 hover:text-black hover:scale-105" onclick="flipCard('{{ hackathon.id }}')">Less</button>
+      <button id="{{ hackathon.id }}-save"
+              class="px-3 py-1 duration-200 ease-in-out shadow-sm rounded-md hover:bg-gray-200 hover:text-black hover:scale-105 {% if hackathon.user_saved %} bg-[#e5462e] text-white {% else %}bg-white {% endif %}"
+              type="button"
+              onclick="{% if user.is_authenticated %}saveHackathon(event, '{{ hackathon.id }}'){% else %}addLoginPop(){% endif %}">
         {% if hackathon.user_saved %}Saved{% else %}Save{% endif %}
       </button>
       {% include "components/vote_buttons.html" with hackathon=hackathon %}

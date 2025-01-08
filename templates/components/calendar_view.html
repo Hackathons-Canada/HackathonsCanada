@@ -2,10 +2,9 @@
   <a class="inline-block" href="{% url 'calendar_generator' %}?country={{ request.GET.country }}&start={{ request.GET.start }}&end={{ request.GET.end }}&city={{ request.GET.city }}">
     Export to Calendar
   </a>
-  <div id='calendar' class="my-5"></div>
+  <div id='calendar' class="w-1/2 mx-auto my-5"></div>
 </div>
 
-<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');

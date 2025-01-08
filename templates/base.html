@@ -15,19 +15,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Offside&display=swap" rel="stylesheet">
-    <style>
-      /* Custom styles to make the content container scrollable */
-      #hackathonContainer {
-        max-height: 800px; /* Set your desired max height */
-        overflow-y: scroll; /* Enable vertical scrolling */
-        padding: 16px; /* Optional padding for better readability */
-        background-color: #f9fafb; /* Background color for container */
-        border-radius: 8px; /* Optional rounded corners */
-      }
-    </style>
 
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
+
+    <script src="{% static 'js/hackathon_interactions.js' %}"></script>
 
     {% if debug %}
       <script src="https://cdn.tailwindcss.com"></script>
@@ -38,59 +31,59 @@
   </head>
 
 
-  <body>
+  <body class="bg-gray-100">
     {% block header %}
-      <nav class="nav-container">
-        <ul class="nav-bar text-secondary">
-          <li class="nav-logo flex justify-center items-center">
+      <nav id = "navbar" class="fixed top-0 z-20 w-full transition-transform duration-300 ease-in-out transform nav-container">
+        <ul class="bg-gray-100 border-4 border-gray-100 drop-shadow-sm backdrop-blur-sm px-7 nav-bar text-secondary rounded-xl">
+          <li class="flex items-center justify-center nav-logo">
             <a href="/" class="flex flex-row">
-              <img src="{% static 'assets/logo.png' %}" width="50" height="50" class="h-10 w-10"  alt="logo"/>
-              <span class="my-auto nav-head-text">Hackathons Canada</span>
+              <img src="{% static 'assets/logo.png' %}" width="50" height="50" class="w-10 h-10"  alt="logo"/>
+              <span class="my-auto ml-2 nav-head-text">Hackathons Canada</span>
             </a>
           </li>
           <input type='checkbox' id='nav-check' />
           <span class="nav-menu">
             <li class="nav-item">
-              <a href="{% url 'hackathons' %}" class="px-2 nav-link nav-link-text-child"
+              <a href="{% url 'hackathons' %}" class="px-2 font-bold nav-link nav-link-text-child"
                  aria-current="page">Hackathons</a>
             </li>
 
             {% if user.is_authenticated %}
-              <li class="nav-item">
-                <a href="{% url 'add_hackathons' %}" class="px-2 nav-link nav-link-text-child">Add Hackathon</a>
+              <li class=" nav-item">
+                <a href="{% url 'add_hackathons' %}" class="px-2 mx-2 font-bold nav-link nav-link-text-child">Add Hackathon</a>
               </li>
-              <li class="nav-item">
-                <a href="{% url 'saved_hackathons' %}" class="px-2 nav-link nav-link-text-child"
+              <li class=" nav-item">
+                <a href="{% url 'saved_hackathons' %}" class="px-2 mx-2 font-bold nav-link nav-link-text-child"
                    aria-current="page">Saved</a>
               </li>
 
-              <li class="nav-item">
-                <a href="{% url 'setting' %}" class="px-2 hidden sm:block nav-link nav-link-text-child"
+              <li class=" nav-item">
+                <a href="{% url 'setting' %}" class="hidden px-2 mx-2 font-bold sm:block nav-link nav-link-text-child"
                    aria-current="page">Settings</a>
               </li>
 
               {% if user.is_staff %}
-                <li class="nav-item">
-                  <a href="{% url 'admin:index' %}" class="nav-link nav-link-text-child" aria-current="page">Admin</a>
+                <li class=" nav-item">
+                  <a href="{% url 'admin:index' %}" class="mx-2 font-bold nav-link nav-link-text-child" aria-current="page">Admin</a>
                 </li>
               {% endif %}
             {% else %}
-              <li class="nav-item">
-                <a href="{% url 'account_login' %}" class="nav-link nav-link-text-child"
+              <li class=" nav-item">
+                <a href="{% url 'account_login' %}" class="mx-2 font-bold nav-link nav-link-text-child"
                    aria-current="page">Login</a>
               </li>
-              <li class="ml-4">
-                <a href="{% url 'account_signup' %}" class="nav-button">Sign Up</a>
+              <li class="">
+                <a href="{% url 'account_signup' %}" class="mx-2 nav-button">Sign Up</a>
               </li>
             {% endif %}
             <label for="nav-check" class="close-nav-menu"><i class="fas fa-times"></i></label>
           </span>
-          <label for="nav-check" class="open-nav-menu h-12"><i class="fas fa-bars"></i></label>
+          <label for="nav-check" class="my-auto open-nav-menu"><i class="fas fa-bars"></i></label>
         </ul>
       </nav>
     {% endblock header %}
 
-    <main>
+    <main class = "mt-20">
       {% block content %}{% endblock %}
       {% block body %} {% endblock %}
     </main>
@@ -192,5 +185,25 @@
       </footer>
     {% endblock footer %}
   </body>
+  <script>
+    // sticky scroll bar 
 
+    const nav = document.getElementById('navbar');;
+    let lastScroll = 0;
+    window.addEventListener('scroll', () => {
+      const currentScroll = window.scrollY;
+      if (currentScroll <= 0) {
+        nav.classList.remove('-translate-y-full');
+
+      } else if (currentScroll > lastScroll ) {
+        nav.classList.add('-translate-y-full');
+
+      } else {
+        nav.classList.remove('-translate-y-full');
+
+      }
+
+      lastScroll = currentScroll;
+    });
+  </script>
 </html>

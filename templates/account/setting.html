@@ -7,19 +7,11 @@
 
 {% block content %}
 
-  <div class = "flex flex-row border-t-4 border-black">
-    <div id="cta-button-sidebar" class="w-1/5 border-r-4 border-black" aria-label="Sidebar">
-      <div class="h-full px-3 py-4 overflow-y-auto bg-[4A5769] rounded-lg">
+  <div class = "flex flex-row">
+    <div id="cta-button-sidebar" class="w-1/5" aria-label="Sidebar">
+      <div class="px-3 py-4 overflow-y-auto rounded-lg bg-gray-50">
         <h1 class = "px-3 mt-5 text-2xl font-bold ">Setting</h1>
-        <div id="dropdown-cta" class="p-4 mx-3 my-3 mt-3 border-2 border-black rounded-lg" role="alert">
-          <div class="flex items-center mb-3">
-            <span class="bg-orange-100 text-orange-800 text-sm font-semibold me-2 px-2.5 py-0.5 rounded dark:bg-orange-200 dark:text-orange-900">Beta</span>
 
-          </div>
-          <p class="mb-3 text-sm text-black-800 ">
-            The website is still in early development, so many of the sites might not have any css but it functions regardless.
-          </p>
-        </div>
         <ul class="p-3 space-y-2 font-medium">
           <li>
             <a href="{% url 'setting' %}" class="flex items-center p-3 text-gray-900 rounded-lg hover:bg-gray-100 group">
@@ -30,7 +22,7 @@
           <li>
             <a href="{% url 'request_curator_access' %}" class="flex items-center p-3 text-gray-900 rounded-lg hover:bg-gray-100 group">
               <svg class="w-6 h-6 transition duration-75 text-black-500 group-hover:text-gray-900 dark:group-hover:text-white"  width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M9.00195 17H5.60636C4.34793 17 3.71872 17 3.58633 16.9023C3.4376 16.7925 3.40126 16.7277 3.38515 16.5436C3.37082 16.3797 3.75646 15.7486 4.52776 14.4866C5.32411 13.1835 6.00031 11.2862 6.00031 8.6C6.00031 7.11479 6.63245 5.69041 7.75766 4.6402C8.88288 3.59 10.409 3 12.0003 3C13.5916 3 15.1177 3.59 16.2429 4.6402C17.3682 5.69041 18.0003 7.11479 18.0003 8.6C18.0003 11.2862 18.6765 13.1835 19.4729 14.4866C20.2441 15.7486 20.6298 16.3797 20.6155 16.5436C20.5994 16.7277 20.563 16.7925 20.4143 16.9023C20.2819 17 19.6527 17 18.3943 17H15.0003M9.00195 17L9.00031 18C9.00031 19.6569 10.3435 21 12.0003 21C13.6572 21 15.0003 19.6569 15.0003 18V17M9.00195 17H15.0003" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
-              <span class="text-xl ms-3 text-bold">Regsister as an Organizer</span>
+              <span class="text-xl ms-3 text-bold">Register as an Organizer</span>
             </a>
           </li>
           <li>
@@ -53,7 +45,7 @@
               {% endif %}
               <button class="flex items-center p-3 text-gray-900 rounded-lg hover:bg-gray-100 group" type="submit">
                 <svg class="w-6 h-6 transition duration-75 text-black-500 group-hover:text-gray-900 dark:group-hover:text-white" fill="#000000" height="64px" width="64px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 471.2 471.2" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M227.619,444.2h-122.9c-33.4,0-60.5-27.2-60.5-60.5V87.5c0-33.4,27.2-60.5,60.5-60.5h124.9c7.5,0,13.5-6,13.5-13.5 s-6-13.5-13.5-13.5h-124.9c-48.3,0-87.5,39.3-87.5,87.5v296.2c0,48.3,39.3,87.5,87.5,87.5h122.9c7.5,0,13.5-6,13.5-13.5 S235.019,444.2,227.619,444.2z"></path> <path d="M450.019,226.1l-85.8-85.8c-5.3-5.3-13.8-5.3-19.1,0c-5.3,5.3-5.3,13.8,0,19.1l62.8,62.8h-273.9c-7.5,0-13.5,6-13.5,13.5 s6,13.5,13.5,13.5h273.9l-62.8,62.8c-5.3,5.3-5.3,13.8,0,19.1c2.6,2.6,6.1,4,9.5,4s6.9-1.3,9.5-4l85.8-85.8 C455.319,239.9,455.319,231.3,450.019,226.1z"></path> </g> </g> </g></svg>
-                <span class="text-xl ms-3 text-bold">Log OUt</span>
+                <span class="text-xl ms-3 text-bold">Log Out</span>
               </button>
             </form>
           </li>
@@ -63,7 +55,7 @@
       </div>
     </div>
 
-    <div class="w-4/5 bg-[#D1E9FF]">
+    <div class="w-4/5 bg-gray-100 D1E9FF] pt-24">
       <form class = "w-1/2 mx-auto mb-10" action="{% url 'setting' %}" method="post">
         {% csrf_token %} {% crispy form_setting %}
 
@@ -72,7 +64,6 @@
         {% csrf_token %} {% crispy form_notification %}
 
       </form>
-      <li>
 
         <!-- <a href="{% url 'account_set_password' %}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
 
@@ -87,7 +78,6 @@
           <span class="ms-3">Change Email</span>
         </a> -->
 
-      </li>
     </div>
   </div>
 {% endblock content %}

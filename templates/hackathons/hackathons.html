@@ -1,14 +1,15 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-  <main class="container mx-auto px-4">
-    <section class="banner">
-      <img class="hidden sm:block w-full" src="{% static 'assets/banner.png' %}" alt="Banner Image"/>
-    </section>
+  <section class="banner">
+    <img class="hidden w-full sm:block" src="{% static 'assets/banner.png' %}" alt="Banner Image"/>
+  </section>
+  <div class="container px-4 mx-auto general-padding">
+
 
     {% include "components/search_form.html" %}
 
-    <div class="flex flex-row justify-between pb-3 mt-3 text-black border-b-2 border-gray-500">
+    <div class="flex flex-row justify-between pb-3 mt-3 text-black border-b-2 border-gray-500 md:pb-0">
       {% include "components/view_type_toggle.html" %}
       {% include "components/country_filter.html" %}
     </div>
@@ -24,39 +25,27 @@
         {% endif %}
       </div>
     </div>
-  </main>
+  </d>
   {% if not user.is_authenticated %}
     {% include "components/login_popup.html" %}
   {% endif %}
 
-  <script src="{% static 'js/hackathon_interactions.js' %}"></script>
 
   <script>
-    // Initialize event listeners when the DOM is fully loaded
-    document.addEventListener('DOMContentLoaded', function() {
-    // Add event listeners for save buttons
-      document.querySelectorAll('[id$="-save"]').forEach(button => {
-        button.addEventListener('click', function(event) {
-          const hackathonId = this.id.split('-')[0];
-          {% if user.is_authenticated %}
-            saveHackathon(event, hackathonId);
-          {% else %}
-            addLoginPop();
-          {% endif %}
-        });
-      });
+
+    // this is making teh save button run twice
 
     // Add event listeners for vote buttons
-      document.querySelectorAll('[id$="-up"], [id$="-down"]').forEach(button => {
-        button.addEventListener('click', function(event) {
-          const [hackathonId, voteType] = this.id.split('-');
-          {% if user.is_authenticated %}
-            handleVote(event, hackathonId, voteType === 'up');
-          {% else %}
-            addLoginPop();
-          {% endif %}
-        });
+    document.querySelectorAll('[id$="-up"], [id$="-down"]').forEach(button => {
+      button.addEventListener('click', function(event) {
+        const [hackathonId, voteType] = this.id.split('-');
+        {% if user.is_authenticated %}
+          handleVote(event, hackathonId, voteType === 'up');
+        {% else %}
+          addLoginPop();
+        {% endif %}
       });
+    });
     });
   </script>
 {% endblock %}
