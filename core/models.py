@@ -3,7 +3,16 @@ from typing import Final, Tuple, List
 from django.contrib.auth.models import AbstractUser, UserManager
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.db.models import DecimalField, Exists, Subquery, OuterRef, Value, When, Case
+from django.db.models import (
+    DecimalField,
+    BooleanField,
+    Exists,
+    Subquery,
+    OuterRef,
+    Value,
+    When,
+    Case,
+)
 from django.db.models.fields import IntegerField
 from django.utils import timezone
 
@@ -533,7 +542,7 @@ class Hackathon(MetaDataMixin):
         return self.name
 
     @classmethod
-    def annotate_vote_status(cls, queryset, user):
+    def annotate_user_data(cls, queryset, user):
         """
         Annotates the queryset with user's vote status using a single efficient query.
         Returns:
@@ -543,7 +552,8 @@ class Hackathon(MetaDataMixin):
         """
         if not user.is_authenticated:
             return queryset.annotate(
-                user_vote_status=Value(0, output_field=IntegerField())
+                user_vote_status=Value(0, output_field=IntegerField()),
+                user_saved=Value(False, output_field=BooleanField()),
             )
 
         return queryset.annotate(

@@ -89,68 +89,91 @@ function handleVote(event, hackathonId, isUpvote) {
         return;
     }
 
+    // when you just use the first one, it will only work for one side of the card, so the js wont work for the buttons on the back of the cards
+    // this also makes sure the front cards and the back cards are in sync
+
     // Get UI elements
-    const upButton = document.getElementById(`${hackathonId}-up`);
-    const downButton = document.getElementById(`${hackathonId}-down`);
-    const voteText = document.getElementById(`${hackathonId}-vote-text`);
-    const buttonContainer = upButton.closest('div');
+    const upButtons = document.querySelectorAll(`[id$="${hackathonId}-up"]`);
+    const downButtons = document.querySelectorAll(`[id$="${hackathonId}-down"]`);
+    const voteTexts = document.querySelectorAll(`[id$="${hackathonId}-vote-text"]`);
+
+    const buttonContainer1 = upButtons[0].closest('div');
+    const buttonContainer2 = upButtons[1].closest('div');
 
     // Add visual feedback that the vote is being processed
-    buttonContainer.style.opacity = '0.7';
-    buttonContainer.style.pointerEvents = 'none';
+    buttonContainer1.style.opacity = '0.7';
+    buttonContainer1.style.pointerEvents = 'none';
+    buttonContainer2.style.opacity = '0.7';
+    buttonContainer2.style.pointerEvents = 'none';
     pendingVotes.add(hackathonId);
 
     let method, voteChange;
 
     // If clicking upvote button
-    if (isUpvote) {
-        if (upButton.classList.contains('fill-black')) {
-            method = 'DELETE';
-            voteChange = -1;
-            upButton.classList.replace('fill-black', 'fill-white');
-        } else if (downButton.classList.contains('fill-black')) {
-            method = 'POST';
-            voteChange = 2;
-            upButton.classList.replace('fill-white', 'fill-black');
-            downButton.classList.replace('fill-black', 'fill-white');
+    upButtons.forEach((upButton, index) => {
+        if (isUpvote) {
+            if (upButton.classList.contains('fill-black')) {
+                method = 'DELETE';
+                voteChange = -1;
+                upButton.classList.replace('fill-black', 'fill-white');
+            } else if (downButtons[index].classList.contains('fill-black')) {
+                method = 'POST';
+                voteChange = 2;
+                upButton.classList.replace('fill-white', 'fill-black');
+                downButtons[index].classList.replace('fill-black', 'fill-white');
+            } else {
+                method = 'POST';
+                voteChange = 1;
+                upButton.classList.replace('fill-white', 'fill-black');
+            }
         } else {
-            method = 'POST';
-            voteChange = 1;
-            upButton.classList.replace('fill-white', 'fill-black');
+            if (downButtons[index].classList.contains('fill-black')) {
+                method = 'DELETE';
+                voteChange = 1;
+                downButtons[index].classList.replace('fill-black', 'fill-white');
+            } else if (upButton.classList.contains('fill-black')) {
+                method = 'POST';
+                voteChange = -2;
+                downButtons[index].classList.replace('fill-white', 'fill-black');
+                upButton.classList.replace('fill-black', 'fill-white');
+            } else {
+                method = 'POST';
+                voteChange = -1;
+                downButtons[index].classList.replace('fill-white', 'fill-black');
+            }
         }
-    } else {
-        if (downButton.classList.contains('fill-black')) {
-            method = 'DELETE';
-            voteChange = 1;
-            downButton.classList.replace('fill-black', 'fill-white');
-        } else if (upButton.classList.contains('fill-black')) {
-            method = 'POST';
-            voteChange = -2;
-            downButton.classList.replace('fill-white', 'fill-black');
-            upButton.classList.replace('fill-black', 'fill-white');
-        } else {
-            method = 'POST';
-            voteChange = -1;
-            downButton.classList.replace('fill-white', 'fill-black');
-        }
-    }
+    });
 
-    const originalUpButtonState = upButton.classList.contains('fill-black') ? 'fill-black' : 'fill-white';
-    const originalDownButtonState = downButton.classList.contains('fill-black') ? 'fill-black' : 'fill-white';
-    const originalVoteCount = parseInt(voteText.textContent);
+    // because the class has been changed for both the front and back, either works 
 
-    voteText.textContent = (originalVoteCount + voteChange).toString();
+    const originalUpButtonState = upButtons[1].classList.contains('fill-black') ? 'fill-black' : 'fill-white';
+    const originalDownButtonState = downButtons[1].classList.contains('fill-black') ? 'fill-black' : 'fill-white';
+    const originalVoteCount = parseInt(voteTexts[1].textContent);
+
+    voteTexts[0].textContent = (originalVoteCount + voteChange).toString();
+    voteTexts[1].textContent = (originalVoteCount + voteChange).toString();
 
     // Create a function to reset the UI state
     const resetState = () => {
-        buttonContainer.style.opacity = '1';
-        buttonContainer.style.pointerEvents = 'auto';
+        buttonContainer1.style.opacity = '1';
+        buttonContainer1.style.pointerEvents = 'auto';
+
+        buttonContainer2.style.opacity = '1';
+        buttonContainer2.style.pointerEvents = 'auto';
         pendingVotes.delete(hackathonId);
-        voteText.textContent = originalVoteCount;
-        upButton.classList.remove('fill-black', 'fill-white');
-        downButton.classList.remove('fill-black', 'fill-white');
-        upButton.classList.add(originalUpButtonState);
-        downButton.classList.add(originalDownButtonState);
+        // first side
+        voteTexts[0].textContent = originalVoteCount;
+        upButtons[0].classList.remove('fill-black', 'fill-white');
+        downButtons[0].classList.remove('fill-black', 'fill-white');
+        upButtons[0].classList.add(originalUpButtonState);
+        downButtons[0].classList.add(originalDownButtonState);
+
+        // second side 
+        voteTexts[1].textContent = originalVoteCount;
+        upButtons[1].classList.remove('fill-black', 'fill-white');
+        downButtons[1].classList.remove('fill-black', 'fill-white');
+        upButtons[1].classList.add(originalUpButtonState);
+        downButtons[1].classList.add(originalDownButtonState);
     };
 
     fetch(`/hackathons/${hackathonId}/vote/?vote_type=${isUpvote}`, {
@@ -168,8 +191,13 @@ function handleVote(event, hackathonId, isUpvote) {
         .then(data => {
             console.log('Vote successful:', data);
         // Re-enable buttons after successful vote
-            buttonContainer.style.opacity = '1';
-            buttonContainer.style.pointerEvents = 'auto';
+            // first side
+            buttonContainer1.style.opacity = '1';
+            buttonContainer1.style.pointerEvents = 'auto';
+
+            // second side
+            buttonContainer2.style.opacity = '1';
+            buttonContainer2.style.pointerEvents = 'auto';
             pendingVotes.delete(hackathonId);
         })
         .catch(error => {

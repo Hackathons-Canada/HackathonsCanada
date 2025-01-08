@@ -3,16 +3,16 @@
   <img class="hackathon-img-back" src="{{ hackathon.bg_image|default:hackathon.fg_image }}" alt="{{ hackathon.name }}">
   <div class="hackathon-card-div">
     <div class="relative top-[65%] text-start px-3 max-h-16 overflow-hidden">
-      <h6 class="text-lg text-gray-200">{{ hackathon.location.name }} | {{ hackathon.start_date|date:"N-d" }}-{{ hackathon.application_deadline|date:"d, Y" }}</h6>
+      <h6 class="text-lg text-gray-200">{{ hackathon.location.name }} | {{ hackathon.start_date|date:"N-d" }}-{{ hackathon.end_date|date:"d, Y" }}</h6>
       <h3 class="text-3xl font-semibold text-white">{{ hackathon.name }}</h3>
     </div>
   </div>
   <div class="my-auto card-body-layout align-items-start">
-    <p class="card-body-text">Application: <span class="font-semibold text-red-600">{{ hackathon.application_start|date:"N-d" }}-{{ hackathon.start_date|date:"d, Y" }}</span></p>
+    <p class="card-body-text">Application: <span class="font-semibold text-red-600">{{ hackathon.application_start|date:"N-d" }}-{{ hackathon.application_end|date:"d, Y" }}</span></p>
     <p class="card-body-text">Minimum Education: {{ hackathon.minimum_education_level }}</p>
     <p class="card-body-text">Travel Reimbursements: {{ hackathon.reimbursements }}</p>
     <a href="{{ hackathon.website }}" class="card-body-text">Website</a>
-    <div class="relative flex flex-row items-center justify-center py-3 my-1 space-x-6">
+    <div class="relative flex flex-row items-center justify-center py-3 space-x-6">
       <button class="px-3 py-1 duration-200 ease-in-out border-gray-500 rounded-md shadow-sm border-6 hover:bg-gray-200 hover:text-black hover:scale-105" onclick="flipCard('{{ hackathon.id }}')">Less</button>
       <button id="{{ hackathon.id }}-save"
               class="px-3 py-1 duration-200 ease-in-out shadow-sm rounded-md hover:bg-gray-200 hover:text-black hover:scale-105 {% if hackathon.user_saved %} bg-[#e5462e] text-white {% else %}bg-white {% endif %}"

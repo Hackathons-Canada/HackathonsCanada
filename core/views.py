@@ -100,8 +100,9 @@ class HackathonListView(ListView):
             queryset = queryset.filter(filters)
 
         # Annotate vote saved hackathons - James C - needs to be changed
+
         # Annotate vote status directly in the query instead of prefetching
-        return Hackathon.annotate_vote_status(queryset, self.request.user)
+        return Hackathon.annotate_user_data(queryset, self.request.user)
 
     def _build_filters(self) -> Q:
         """
@@ -299,7 +300,6 @@ class SavedHackathonsPage(ListView):
 
         queryset = user.saved.all()
 
-        # Annotate vote saved hackathons - James C - needs to be changed
         # Annotate vote status directly in the query instead of prefetching
         return Hacker.annotate_vote_status(queryset, self.request.user)
 
