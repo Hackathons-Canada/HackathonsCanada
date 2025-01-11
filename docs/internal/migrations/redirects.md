@@ -74,4 +74,4 @@ python manage.py migrate socialaccount zero
 
 # Step 4: Reapply migrations
 python manage.py migrate
-```
+``` 
