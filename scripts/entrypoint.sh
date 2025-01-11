@@ -36,4 +36,6 @@ source /opt/pysetup/.venv/bin/activate
 #done
 #>&2 echo 'PostgreSQL is available'
 
+export DJANGO_ENV=production
+
 exec "$@"

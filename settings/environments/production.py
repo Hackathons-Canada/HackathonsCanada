@@ -1,7 +1,8 @@
-from settings.components.common import SECRET_KEY, DEBUG
+from settings.components import config
 
-if DEBUG is True:
-    raise ValueError("Please set DEBUG to False in production.py")
+DEBUG = False  # noqa: F405
 
-if SECRET_KEY == "CHANGEME":
-    raise ValueError("Please set SECRET_KEY in production.py")
+SECRET_KEY = config("SECRET_KEY", default="")
+
+
+assert SECRET_KEY != "", "SECRET_KEY is not set to a proper value"

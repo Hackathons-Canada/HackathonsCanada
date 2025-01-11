@@ -71,7 +71,7 @@ services:
     env_file:
       - .env
     ports:
-      - 5557:5555
+      - "5557:5555"
     depends_on:
       - valkey
 
