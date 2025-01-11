@@ -12,7 +12,7 @@ services:
       - /srv/media:/app/media
       - ./logs/:/logs/
     depends_on:
-      - postgres
+
       - valkey
     env_file:
       - .env
@@ -35,7 +35,7 @@ services:
       - .env
     depends_on:
       - valkey
-      - postgres
+
     healthcheck:
       test: ["CMD", "/opt/pysetup/.venv/bin/celery", "worker", "-A", "dischannelsaver", "--loglevel=info"]
       interval: 10s
@@ -54,7 +54,6 @@ services:
       - .env
     depends_on:
       - valkey
-      - postgres
     healthcheck:
       test: ["CMD", "/opt/pysetup/.venv/bin/celery", "beat", "-A", "dischannelsaver", "--loglevel=info"]
       interval: 10s
@@ -75,7 +74,7 @@ services:
       - 5557:5555
     depends_on:
       - valkey
-      - postgres
+
 
 volumes:
   static_volume:
