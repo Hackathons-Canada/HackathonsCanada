@@ -311,6 +311,13 @@ def scrapeEth(request):
     return HttpResponse("Scraped!")
 
 
+@login_required
+@user_passes_test(is_admin)
+def scrapeHackclub(request):
+    scrape_all(4)
+    return HttpResponse("Scraped!")
+
+
 @cache_page(60 * 60)  # 1 hour cache
 def calendar_generator(request):
     tdy_date = timezone.now()
